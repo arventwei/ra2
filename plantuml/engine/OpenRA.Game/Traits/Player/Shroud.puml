@@ -1,0 +1,86 @@
+@startuml
+class ShroudInfo {
+    + <<readonly>> FogCheckboxLabel : string = "Fog of War"
+    + <<readonly>> FogCheckboxDescription : string = "Line of sight is required to view enemy forces"
+    + <<readonly>> FogCheckboxEnabled : bool = true
+    + <<readonly>> FogCheckboxLocked : bool = false
+    + <<readonly>> FogCheckboxVisible : bool = true
+    + <<readonly>> FogCheckboxDisplayOrder : int = 0
+    + <<readonly>> ExploredMapCheckboxLabel : string = "Explored Map"
+    + <<readonly>> ExploredMapCheckboxDescription : string = "Initial map shroud is revealed"
+    + <<readonly>> ExploredMapCheckboxEnabled : bool = false
+    + <<readonly>> ExploredMapCheckboxLocked : bool = false
+    + <<readonly>> ExploredMapCheckboxVisible : bool = true
+    + <<readonly>> ExploredMapCheckboxDisplayOrder : int = 0
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Shroud {
+    +  <<event>> OnShroudChanged : Action<PPos> 
+    anyCellTouched : bool
+    disabled : bool
+    + Disabled : bool <<get>> <<set>>
+    fogEnabled : bool
+    + FogEnabled : bool <<get>>
+    + ExploreMapEnabled : bool <<get>>
+    + Hash : int <<get>>
+    shroudGenerationEnabled : bool
+    passiveVisibilityEnabled : bool
+    + Shroud(self:Actor, info:ShroudInfo)
+    Created(self:Actor) : void
+    Tick(self:Actor) : void
+    + {static} ProjectedCellsInRange(map:Map, pos:WPos, minRange:WDist, maxRange:WDist, maxHeightDelta:int) : IEnumerable<PPos>
+    + {static} ProjectedCellsInRange(map:Map, cell:CPos, range:WDist, maxHeightDelta:int) : IEnumerable<PPos>
+    + AddSource(key:object, type:SourceType, projectedCells:PPos[]) : void
+    + RemoveSource(key:object) : void
+    + ExploreProjectedCells(world:World, cells:IEnumerable<PPos>) : void
+    + Explore(s:Shroud) : void
+    + ExploreAll() : void
+    + ResetExploration() : void
+    + IsExplored(pos:WPos) : bool
+    + IsExplored(cell:CPos) : bool
+    + IsExplored(uv:MPos) : bool
+    + IsExplored(puv:PPos) : bool
+    + IsVisible(pos:WPos) : bool
+    + IsVisible(cell:CPos) : bool
+    + IsVisible(uv:MPos) : bool
+    + IsVisible(puv:PPos) : bool
+    + Contains(uv:PPos) : bool
+}
+enum SourceType {
+    PassiveVisibility,
+    Shroud,
+    Visibility,
+}
+enum ShroudCellType {
+    Shroud,
+    Fog,
+    Visible,
+}
+class ShroudSource {
+    + ShroudSource(type:SourceType, projectedCells:PPos[])
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "ProjectedCellLayer`1"<T> {
+}
+TraitInfo <|-- ShroudInfo
+ILobbyOptions <|-- ShroudInfo
+ISync <|-- Shroud
+INotifyCreated <|-- Shroud
+ITick <|-- Shroud
+Shroud --> "self" Actor
+Shroud --> "info" ShroudInfo
+Shroud --> "map" Map
+Shroud o-> "sources<object,ShroudSource>" "Dictionary`2"
+Shroud --> "passiveVisibleCount<short>" "ProjectedCellLayer`1"
+Shroud --> "visibleCount<short>" "ProjectedCellLayer`1"
+Shroud --> "generatedShroudCount<short>" "ProjectedCellLayer`1"
+Shroud --> "explored<bool>" "ProjectedCellLayer`1"
+Shroud --> "touched<bool>" "ProjectedCellLayer`1"
+Shroud --> "resolvedType<ShroudCellType>" "ProjectedCellLayer`1"
+Shroud +-- SourceType
+Shroud +-- ShroudCellType
+Shroud +-- ShroudSource
+ShroudSource --> "Type" SourceType
+@enduml

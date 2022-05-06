@@ -1,0 +1,17 @@
+@startuml
+class HarvestResource {
+    + HarvestResource(self:Actor, targetCell:CPos)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> Cancel(self:Actor, keepQueue:bool) : void
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+Activity <|-- HarvestResource
+HarvestResource --> "harv" Harvester
+HarvestResource --> "harvInfo" HarvesterInfo
+HarvestResource --> "facing" IFacing
+HarvestResource --> "claimLayer" ResourceClaimLayer
+HarvestResource --> "resLayer" ResourceLayer
+HarvestResource --> "body" BodyOrientation
+HarvestResource --> "move" IMove
+HarvestResource --> "targetCell" CPos
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+class PaletteFromEmbeddedSpritePaletteInfo {
+    + <<readonly>> Name : string = null
+    + <<readonly>> Image : string = null
+    + <<readonly>> Sequence : string = null
+    + <<readonly>> AllowModifiers : bool = true
+    + <<readonly>> CursorPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    Palette : string <<get>>
+    ReadPalette(fileSystem:IReadOnlyFileSystem) : ImmutablePalette
+}
+class PaletteFromEmbeddedSpritePalette {
+    + PaletteFromEmbeddedSpritePalette(info:PaletteFromEmbeddedSpritePaletteInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- PaletteFromEmbeddedSpritePaletteInfo
+IProvidesCursorPaletteInfo <|-- PaletteFromEmbeddedSpritePaletteInfo
+ILoadsPalettes <|-- PaletteFromEmbeddedSpritePalette
+IProvidesAssetBrowserPalettes <|-- PaletteFromEmbeddedSpritePalette
+PaletteFromEmbeddedSpritePalette --> "info" PaletteFromEmbeddedSpritePaletteInfo
+PaletteFromEmbeddedSpritePalette --> "PaletteNames<string>" "IEnumerable`1"
+@enduml

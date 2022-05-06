@@ -1,0 +1,18 @@
+@startuml
+class WithDeadBridgeSpriteBodyInfo {
+    + <<readonly>> EditorSequence : string = "editor"
+    + <<readonly>> EditorPalette : string = "terrainalpha"
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithDeadBridgeSpriteBody {
+    + WithDeadBridgeSpriteBody(init:ActorInitializer, info:WithDeadBridgeSpriteBodyInfo)
+    RampExists(self:Actor, offset:CVec) : bool
+}
+WithSpriteBodyInfo <|-- WithDeadBridgeSpriteBodyInfo
+WithDeadBridgeSpriteBodyInfo o-> "AOffset" CVec
+WithDeadBridgeSpriteBodyInfo o-> "BOffset" CVec
+WithSpriteBody <|-- WithDeadBridgeSpriteBody
+WithDeadBridgeSpriteBody --> "bridgeInfo" WithDeadBridgeSpriteBodyInfo
+WithDeadBridgeSpriteBody --> "bridgeLayer" BridgeLayer
+@enduml

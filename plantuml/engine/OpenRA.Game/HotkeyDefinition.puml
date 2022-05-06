@@ -1,0 +1,12 @@
+@startuml
+class HotkeyDefinition <<sealed>> {
+    + <<readonly>> Name : string
+    + <<readonly>> Description : string = ""
+    + HasDuplicates : bool <<get>> <<internal set>>
+    + HotkeyDefinition(name:string, node:MiniYaml)
+}
+class "HashSet`1"<T> {
+}
+HotkeyDefinition o-> "Default" Hotkey
+HotkeyDefinition o-> "Types<string>" "HashSet`1"
+@enduml

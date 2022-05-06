@@ -1,0 +1,30 @@
+@startuml
+class MasterServerPinger {
+    <<const>> MasterPingInterval : int
+    <<const>> RateLimitInterval : int = 1000
+    lastPing : long = 0
+    lastChanged : long = 0
+    isInitialPing : bool = true
+    <<volatile>> isBusy : bool
+    {static} MasterServerPinger()
+    + Tick(server:S) : void
+    + ServerStarted(server:S) : void
+    + LobbyInfoSynced(server:S) : void
+    + GameStarted(server:S) : void
+    + GameEnded(server:S) : void
+    UpdateMasterServer(server:S, postData:string) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Queue`1"<T> {
+}
+ServerTrait <|-- MasterServerPinger
+ITick <|-- MasterServerPinger
+INotifyServerStart <|-- MasterServerPinger
+INotifySyncLobbyInfo <|-- MasterServerPinger
+IStartGame <|-- MasterServerPinger
+IEndGame <|-- MasterServerPinger
+MasterServerPinger --> "LanGameBeacon" Beacon
+MasterServerPinger o-> "MasterServerErrors<int,string>" "Dictionary`2"
+MasterServerPinger o-> "masterServerMessages<string>" "Queue`1"
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+class PaletteFromPaletteWithAlphaInfo {
+    + <<readonly>> Name : string = null
+    + <<readonly>> BasePalette : string = null
+    + <<readonly>> AllowModifiers : bool = true
+    + <<readonly>> Alpha : float = 1.0f
+    + <<readonly>> Premultiply : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PaletteFromPaletteWithAlpha {
+    + PaletteFromPaletteWithAlpha(info:PaletteFromPaletteWithAlphaInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+class AlphaPaletteRemap {
+    <<readonly>> alpha : float
+    <<readonly>> premultiply : bool
+    + AlphaPaletteRemap(alpha:float, premultiply:bool)
+    + GetRemappedColor(original:Color, index:int) : Color
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- PaletteFromPaletteWithAlphaInfo
+ILoadsPalettes <|-- PaletteFromPaletteWithAlpha
+IProvidesAssetBrowserPalettes <|-- PaletteFromPaletteWithAlpha
+PaletteFromPaletteWithAlpha --> "info" PaletteFromPaletteWithAlphaInfo
+PaletteFromPaletteWithAlpha --> "PaletteNames<string>" "IEnumerable`1"
+IPaletteRemap <|-- AlphaPaletteRemap
+@enduml

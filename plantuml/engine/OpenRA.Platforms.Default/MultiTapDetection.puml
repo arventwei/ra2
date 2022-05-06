@@ -1,0 +1,18 @@
+@startuml
+class MultiTapDetection <<static>> {
+    + {static} DetectFromMouse(button:byte, xy:int2) : int
+    + {static} InfoFromMouse(button:byte) : int
+    + {static} DetectFromKeyboard(key:Keycode, mods:Modifiers) : int
+    + {static} InfoFromKeyboard(key:Keycode, mods:Modifiers) : int
+}
+class TapHistory {
+    + TapHistory(now:DateTime)
+    {static} CloseEnough(a:(DateTime Time, int2 Location), b:(DateTime Time, int2 Location)) : bool
+    + GetTapCount(xy:int2) : int
+    + LastTapCount() : int
+}
+class "Cache`2"<T1,T2> {
+}
+MultiTapDetection o-> "keyHistoryCache<(Keycode Key, Modifiers Mods),TapHistory>" "Cache`2"
+MultiTapDetection o-> "clickHistoryCache<byte,TapHistory>" "Cache`2"
+@enduml

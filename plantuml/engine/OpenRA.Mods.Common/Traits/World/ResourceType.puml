@@ -1,0 +1,32 @@
+@startuml
+class ResourceTypeInfo {
+    + <<readonly>> Image : string = "resources"
+    + <<readonly>> Palette : string
+    + <<readonly>> ResourceType : int = 1
+    + <<readonly>> ValuePerUnit : int = 0
+    + <<readonly>> MaxDensity : int = 10
+    + <<readonly>> Type : string = null
+    + <<readonly>> Name : string = null
+    + <<readonly>> TerrainType : string = null
+    + <<readonly>> AllowUnderActors : bool = false
+    + <<readonly>> AllowUnderBuildings : bool = false
+    + <<readonly>> AllowOnRamps : bool = false
+    PopulateMapPreviewSignatureCells(map:Map, ai:ActorInfo, s:ActorReference, destinationBuffer:List<(MPos, Color)>) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ResourceType {
+    + ResourceType(info:ResourceTypeInfo, world:World)
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+}
+class "HashSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- ResourceTypeInfo
+IMapPreviewSignatureInfo <|-- ResourceTypeInfo
+ResourceTypeInfo o-> "AllowedTerrainTypes<string>" "HashSet`1"
+IWorldLoaded <|-- ResourceType
+ResourceType --> "Info" ResourceTypeInfo
+ResourceType --> "Palette" PaletteReference
+ResourceType --> "Variants<string,ISpriteSequence>" "Dictionary`2"
+@enduml

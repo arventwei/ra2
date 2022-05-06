@@ -1,0 +1,26 @@
+@startuml
+class WithTeslaChargeOverlayInfo {
+    + <<readonly>> Sequence : string = "active"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithTeslaChargeOverlay {
+    charging : bool
+    + WithTeslaChargeOverlay(init:ActorInitializer, info:WithTeslaChargeOverlayInfo)
+    Charging(self:Actor, target:Target) : void
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+    Sold(self:Actor) : void
+    Selling(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- WithTeslaChargeOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithTeslaChargeOverlayInfo
+INotifyTeslaCharging <|-- WithTeslaChargeOverlay
+INotifyDamageStateChanged <|-- WithTeslaChargeOverlay
+INotifySold <|-- WithTeslaChargeOverlay
+WithTeslaChargeOverlay --> "overlay" Animation
+WithTeslaChargeOverlay --> "renderSprites" RenderSprites
+WithTeslaChargeOverlay --> "info" WithTeslaChargeOverlayInfo
+@enduml

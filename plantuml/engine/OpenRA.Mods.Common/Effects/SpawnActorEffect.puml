@@ -1,0 +1,14 @@
+@startuml
+class SpawnActorEffect {
+    remainingDelay : int
+    + SpawnActorEffect(actor:Actor)
+    + SpawnActorEffect(actor:Actor, delay:int)
+    + SpawnActorEffect(actor:Actor, delay:int, pathAfterSpawn:CPos[], activityAtDestination:Activity)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- SpawnActorEffect
+SpawnActorEffect --> "actor" Actor
+SpawnActorEffect --> "activityAtDestination" Activity
+SpawnActorEffect --> "move" IMove
+@enduml

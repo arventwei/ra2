@@ -1,0 +1,44 @@
+@startuml
+class ScaredyCatInfo {
+    + <<readonly>> PanicChance : int = 100
+    + <<readonly>> PanicLength : int
+    + <<readonly>> PanicSpeedModifier : int = 200
+    + <<readonly>> AttackPanicChance : int = 20
+    + <<readonly>> PanicSequencePrefix : string = "panic-"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ScaredyCat {
+    panicStartedTick : int
+    Panicking : bool <<get>>
+    IsModifyingSequence : bool <<get>>
+    SequencePrefix : string <<get>>
+    + ScaredyCat(self:Actor, info:ScaredyCatInfo)
+    + Panic() : void
+    Tick(self:Actor) : void
+    TickIdle(self:Actor) : void
+    Damaged(self:Actor, e:AttackInfo) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    GetSpeedModifier() : int
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "Func`2"<T1,T2> {
+}
+TraitInfo <|-- ScaredyCatInfo
+"Requires`1" "<MobileInfo>" <|-- ScaredyCatInfo
+ScaredyCatInfo o-> "AvoidTerrainTypes<string>" "HashSet`1"
+ITick <|-- ScaredyCat
+INotifyIdle <|-- ScaredyCat
+INotifyDamage <|-- ScaredyCat
+INotifyAttack <|-- ScaredyCat
+ISpeedModifier <|-- ScaredyCat
+ISync <|-- ScaredyCat
+IRenderInfantrySequenceModifier <|-- ScaredyCat
+ScaredyCat --> "info" ScaredyCatInfo
+ScaredyCat --> "mobile" Mobile
+ScaredyCat --> "self" Actor
+ScaredyCat --> "avoidTerrainFilter<CPos,bool>" "Func`2"
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+class SequencePlaceBuildingPreviewInfo {
+    + <<readonly>> Sequence : string = "idle"
+    + <<readonly>> SequencePalette : string = null
+    + <<readonly>> SequencePaletteIsPlayerPalette : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SequencePlaceBuildingPreview {
+}
+class SequencePlaceBuildingPreviewPreview {
+    + SequencePlaceBuildingPreviewPreview(wr:WorldRenderer, ai:ActorInfo, info:SequencePlaceBuildingPreviewInfo, init:TypeDictionary)
+}
+class "Requires`1"<T> {
+}
+FootprintPlaceBuildingPreviewInfo <|-- SequencePlaceBuildingPreviewInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- SequencePlaceBuildingPreviewInfo
+SequencePlaceBuildingPreviewInfo o-> "FootprintUnderPreview" PlaceBuildingCellType
+SequencePlaceBuildingPreviewInfo o-> "FootprintOverPreview" PlaceBuildingCellType
+FootprintPlaceBuildingPreviewPreview <|-- SequencePlaceBuildingPreviewPreview
+SequencePlaceBuildingPreviewPreview --> "info" SequencePlaceBuildingPreviewInfo
+SequencePlaceBuildingPreviewPreview --> "preview" Animation
+SequencePlaceBuildingPreviewPreview --> "palette" PaletteReference
+@enduml

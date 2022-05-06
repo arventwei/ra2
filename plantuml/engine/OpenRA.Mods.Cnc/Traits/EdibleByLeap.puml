@@ -1,0 +1,12 @@
+@startuml
+class EdibleByLeapInfo {
+}
+class EdibleByLeap {
+    + CanLeap(targeter:Actor) : bool
+    + GetLeapAtBy(targeter:Actor) : bool
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<EdibleByLeap>" <|-- EdibleByLeapInfo
+EdibleByLeap --> "leaper" Actor
+@enduml

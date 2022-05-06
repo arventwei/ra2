@@ -1,0 +1,113 @@
+@startuml
+class CargoInfo {
+    + <<readonly>> MaxWeight : int = 0
+    + <<readonly>> EjectOnSell : bool = true
+    + <<readonly>> EjectOnDeath : bool = false
+    + <<readonly>> UnloadVoice : string = "Action"
+    + <<readonly>> AfterLoadDelay : int = 8
+    + <<readonly>> BeforeUnloadDelay : int = 8
+    + <<readonly>> AfterUnloadDelay : int = 25
+    + <<readonly>> UnloadCursor : string = "deploy"
+    + <<readonly>> UnloadBlockedCursor : string = "deploy-blocked"
+    + <<readonly>> LoadingCondition : string = null
+    + <<readonly>> LoadedCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Cargo {
+    <<readonly>> checkTerrainType : bool
+    totalWeight : int = 0
+    reservedWeight : int = 0
+    loadingToken : int
+    takeOffAfterLoad : bool
+    initialised : bool
+    + PassengerCount : int <<get>>
+    + Cargo(init:ActorInitializer, info:CargoInfo)
+    Created(self:Actor) : void
+    {static} GetWeight(a:Actor) : int
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    IssueDeployOrder(self:Actor, queued:bool) : Order
+    CanIssueDeployOrder(self:Actor, queued:bool) : bool
+    + ResolveOrder(self:Actor, order:Order) : void
+    + CanUnload(check:BlockedByActor) : bool
+    + CanLoad(self:Actor, a:Actor) : bool
+    LockForPickup(self:Actor) : void
+    ReleaseLock(self:Actor) : void
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    + HasSpace(weight:int) : bool
+    + IsEmpty(self:Actor) : bool
+    + Peek(self:Actor) : Actor
+    + Unload(self:Actor, passenger:Actor) : Actor
+    SetPassengerFacing(passenger:Actor) : void
+    + Load(self:Actor, a:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+    Disposing(self:Actor) : void
+    Selling(self:Actor) : void
+    Sold(self:Actor) : void
+    SpawnPassenger(passenger:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    ModifyTransformActorInit(self:Actor, init:TypeDictionary) : void
+}
+class RuntimeCargoInit {
+    + RuntimeCargoInit(info:TraitInfo, value:Actor[])
+}
+class CargoInit {
+    + CargoInit(info:TraitInfo, value:string[])
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class "List`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+class "Stack`1"<T> {
+}
+class "CachedTransform`2"<T1,T2> {
+}
+enum State {
+    Free,
+    Locked,
+}
+class "ValueActorInit`1"<T> {
+}
+TraitInfo <|-- CargoInfo
+"Requires`1" "<IOccupySpaceInfo>" <|-- CargoInfo
+CargoInfo o-> "Types<string>" "HashSet`1"
+CargoInfo o-> "UnloadTerrainTypes<string>" "HashSet`1"
+CargoInfo o-> "LoadRange" WDist
+CargoInfo o-> "PassengerFacing" WAngle
+CargoInfo o-> "PassengerConditions<string,string>" "Dictionary`2"
+CargoInfo --> "LinterPassengerConditions<string>" "IEnumerable`1"
+IIssueOrder <|-- Cargo
+IResolveOrder <|-- Cargo
+IOrderVoice <|-- Cargo
+INotifyCreated <|-- Cargo
+INotifyKilled <|-- Cargo
+INotifyOwnerChanged <|-- Cargo
+INotifySold <|-- Cargo
+INotifyActorDisposing <|-- Cargo
+IIssueDeployOrder <|-- Cargo
+ITransformActorInitModifier <|-- Cargo
+Cargo --> "Info" CargoInfo
+Cargo --> "self" Actor
+Cargo o-> "cargo<Actor>" "List`1"
+Cargo o-> "reserves<Actor>" "HashSet`1"
+Cargo o-> "passengerTokens<string,Stack<int>>" "Dictionary`2"
+Cargo --> "facing<IFacing>" "Lazy`1"
+Cargo --> "aircraft" Aircraft
+Cargo o-> "loadedTokens<int>" "Stack`1"
+Cargo --> "currentAdjacentCells<CPos,IEnumerable<CPos>>" "CachedTransform`2"
+Cargo --> "CurrentAdjacentCells<CPos>" "IEnumerable`1"
+Cargo --> "Passengers<Actor>" "IEnumerable`1"
+Cargo o-> "state" State
+Cargo --> "Orders<IOrderTargeter>" "IEnumerable`1"
+"ValueActorInit`1" "<Actor[]>" <|-- RuntimeCargoInit
+ISuppressInitExport <|-- RuntimeCargoInit
+"ValueActorInit`1" "<string[]>" <|-- CargoInit
+Cargo +-- State
+@enduml

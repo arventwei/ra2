@@ -1,0 +1,107 @@
+@startuml
+class InstallShieldCABCompression <<sealed>> {
+    <<const>> MaxFileGroupCount : uint = 71
+    + InstallShieldCABCompression(header:Stream, volumes:Dictionary<int, Stream>)
+    + ExtractFile(filename:string, output:Stream, onProgress:Action<int>) : void
+    ExtractFile(file:FileDescriptor, output:Stream, onProgress:Action<int>) : void
+}
+enum CABFlags {
+    FileSplit= 0x1,
+    FileObfuscated= 0x2,
+    FileCompressed= 0x4,
+    FileInvalid= 0x8,
+}
+enum LinkFlags {
+    Prev= 0x1,
+    Next= 0x2,
+}
+class FileGroup <<struct>> {
+    + <<readonly>> Name : string
+    + <<readonly>> FirstFile : uint
+    + <<readonly>> LastFile : uint
+    + FileGroup(stream:Stream, offset:long)
+}
+class CabDescriptor <<struct>> {
+    + <<readonly>> FileTableOffset : long
+    + <<readonly>> FileTableSize : uint
+    + <<readonly>> FileTableSize2 : uint
+    + <<readonly>> DirectoryCount : uint
+    + <<readonly>> FileCount : uint
+    + <<readonly>> FileTableOffset2 : long
+    + CabDescriptor(stream:Stream)
+}
+class DirectoryDescriptor <<struct>> {
+    + <<readonly>> Name : string
+    + DirectoryDescriptor(stream:Stream, nameTableOffset:long)
+}
+class FileDescriptor <<struct>> {
+    + <<readonly>> Index : uint
+    + <<readonly>> ExpandedSize : uint
+    + <<readonly>> CompressedSize : uint
+    + <<readonly>> DataOffset : uint
+    + <<readonly>> NameOffset : uint
+    + <<readonly>> DirectoryIndex : ushort
+    + <<readonly>> LinkToPrevious : uint
+    + <<readonly>> LinkToNext : uint
+    + <<readonly>> Volume : ushort
+    + <<readonly>> Filename : string
+    + FileDescriptor(stream:Stream, index:uint, tableOffset:long)
+}
+class CommonHeader <<struct>> {
+    + <<const>> Size : long = 16
+    + <<readonly>> Version : uint
+    + <<readonly>> VolumeInfo : uint
+    + <<readonly>> CabDescriptorOffset : long
+    + <<readonly>> CabDescriptorSize : uint
+    + CommonHeader(stream:Stream)
+}
+class VolumeHeader <<struct>> {
+    + <<readonly>> DataOffset : uint
+    + <<readonly>> DataOffsetHigh : uint
+    + <<readonly>> FirstFileIndex : uint
+    + <<readonly>> LastFileIndex : uint
+    + <<readonly>> FirstFileOffset : uint
+    + <<readonly>> FirstFileOffsetHigh : uint
+    + <<readonly>> FirstFileSizeExpanded : uint
+    + <<readonly>> FirstFileSizeExpandedHigh : uint
+    + <<readonly>> FirstFileSizeCompressed : uint
+    + <<readonly>> FirstFileSizeCompressedHigh : uint
+    + <<readonly>> LastFileOffset : uint
+    + <<readonly>> LastFileOffsetHigh : uint
+    + <<readonly>> LastFileSizeExpanded : uint
+    + <<readonly>> LastFileSizeExpandedHigh : uint
+    + <<readonly>> LastFileSizeCompressed : uint
+    + <<readonly>> LastFileSizeCompressedHigh : uint
+    + VolumeHeader(stream:Stream)
+}
+class CabExtracter {
+    remainingInArchive : uint
+    toExtract : uint
+    currentVolumeID : int
+    + CabExtracter(file:FileDescriptor, volumes:Dictionary<int, Stream>)
+    + CopyTo(output:Stream, onProgress:Action<int>) : void
+    + GetBytes(count:uint) : byte[]
+    SetVolume(newVolume:int) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+InstallShieldCABCompression o-> "index<string,FileDescriptor>" "Dictionary`2"
+InstallShieldCABCompression --> "volumes<int,Stream>" "Dictionary`2"
+InstallShieldCABCompression --> "Contents<int,IEnumerable<string>>" "IReadOnlyDictionary`2"
+InstallShieldCABCompression +-- CABFlags
+InstallShieldCABCompression +-- LinkFlags
+InstallShieldCABCompression +-- FileGroup
+InstallShieldCABCompression +-- CabDescriptor
+InstallShieldCABCompression +-- DirectoryDescriptor
+InstallShieldCABCompression +-- FileDescriptor
+FileDescriptor --> "Flags" CABFlags
+FileDescriptor --> "LinkFlags" LinkFlags
+InstallShieldCABCompression +-- CommonHeader
+InstallShieldCABCompression +-- VolumeHeader
+InstallShieldCABCompression +-- CabExtracter
+CabExtracter --> "file" FileDescriptor
+CabExtracter --> "volumes<int,Stream>" "Dictionary`2"
+CabExtracter --> "currentVolume" Stream
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+class AttractsWormsInfo {
+    + <<readonly>> Intensity : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttractsWorms {
+    + AttractsWorms(init:ActorInitializer, info:AttractsWormsInfo)
+    GetNoisePercentageAtDistance(distance:int) : int
+    + AttractionAtPosition(pos:WPos) : WVec
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- AttractsWormsInfo
+AttractsWormsInfo o-> "Spread" WDist
+"ConditionalTrait`1" "<AttractsWormsInfo>" <|-- AttractsWorms
+AttractsWorms --> "self" Actor
+@enduml

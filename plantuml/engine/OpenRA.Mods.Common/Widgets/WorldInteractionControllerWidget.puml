@@ -1,0 +1,26 @@
+@startuml
+class WorldInteractionControllerWidget {
+    isDragging : bool = false
+    IsValidDragbox : bool <<get>>
+    + WorldInteractionControllerWidget(world:World, worldRenderer:WorldRenderer)
+    + <<override>> Draw() : void
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    ApplyOrders(world:World, mi:MouseInput) : void
+    + <<override>> GetCursor(screenPos:int2) : string
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+    {static} SelectActorsOnScreen(world:World, wr:WorldRenderer, selectionClasses:IEnumerable<string>, players:IEnumerable<Player>) : IEnumerable<Actor>
+    {static} SelectActorsInWorld(world:World, selectionClasses:IEnumerable<string>, players:IEnumerable<Player>) : IEnumerable<Actor>
+    {static} SelectActorsByOwnerAndSelectionClass(actors:IEnumerable<Actor>, owners:IEnumerable<Player>, selectionClasses:IEnumerable<string>) : IEnumerable<Actor>
+    {static} SelectHighestPriorityActorAtPoint(world:World, a:int2, modifiers:Modifiers) : IEnumerable<Actor>
+    {static} SelectActorsInBoxWithDeadzone(world:World, a:int2, b:int2, modifiers:Modifiers) : IEnumerable<Actor>
+}
+Widget <|-- WorldInteractionControllerWidget
+WorldInteractionControllerWidget o-> "SelectAllKey" HotkeyReference
+WorldInteractionControllerWidget o-> "SelectSameTypeKey" HotkeyReference
+WorldInteractionControllerWidget --> "worldRenderer" WorldRenderer
+WorldInteractionControllerWidget --> "normalSelectionColor" Color
+WorldInteractionControllerWidget --> "altSelectionColor" Color
+WorldInteractionControllerWidget --> "ctrlSelectionColor" Color
+WorldInteractionControllerWidget --> "dragStart" int2
+WorldInteractionControllerWidget --> "mousePos" int2
+@enduml

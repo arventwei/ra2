@@ -1,0 +1,19 @@
+@startuml
+class WithDecorationInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> Sequence : string = null
+    + <<readonly>> Palette : string = "chrome"
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithDecoration {
+    <<readonly>> image : string
+    + WithDecoration(self:Actor, info:WithDecorationInfo)
+    Tick(self:Actor) : void
+}
+class "WithDecorationBase`1"<T> {
+}
+WithDecorationBaseInfo <|-- WithDecorationInfo
+"WithDecorationBase`1" "<WithDecorationInfo>" <|-- WithDecoration
+ITick <|-- WithDecoration
+@enduml

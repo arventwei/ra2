@@ -1,0 +1,23 @@
+@startuml
+class ToggleConditionOnOrderInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> OrderName : string = null
+    + <<readonly>> EnabledSound : string = null
+    + <<readonly>> EnabledSpeech : string = null
+    + <<readonly>> DisabledSound : string = null
+    + <<readonly>> DisabledSpeech : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ToggleConditionOnOrder {
+    conditionToken : int
+    enabled : bool = false
+    + ToggleConditionOnOrder(self:Actor, info:ToggleConditionOnOrderInfo)
+    SetCondition(self:Actor, granted:bool) : void
+    ResolveOrder(self:Actor, order:Order) : void
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- ToggleConditionOnOrderInfo
+"PausableConditionalTrait`1" "<ToggleConditionOnOrderInfo>" <|-- ToggleConditionOnOrder
+IResolveOrder <|-- ToggleConditionOnOrder
+@enduml

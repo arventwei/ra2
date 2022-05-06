@@ -1,0 +1,21 @@
+@startuml
+class WithMirageSpriteBodyInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithMirageSpriteBody {
+    disguiseImage : string
+    + WithMirageSpriteBody(init:ActorInitializer, info:WithMirageSpriteBodyInfo)
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+WithSpriteBodyInfo <|-- WithMirageSpriteBodyInfo
+"Requires`1" "<MirageInfo>" <|-- WithMirageSpriteBodyInfo
+WithSpriteBody <|-- WithMirageSpriteBody
+ITick <|-- WithMirageSpriteBody
+WithMirageSpriteBody --> "info" WithMirageSpriteBodyInfo
+WithMirageSpriteBody --> "mirage" Mirage
+WithMirageSpriteBody --> "renderSprites" RenderSprites
+WithMirageSpriteBody --> "disguiseActor" ActorInfo
+WithMirageSpriteBody --> "disguisePlayer" Player
+@enduml

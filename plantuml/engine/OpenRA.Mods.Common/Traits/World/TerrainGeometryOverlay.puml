@@ -1,0 +1,19 @@
+@startuml
+class TerrainGeometryOverlayInfo {
+}
+class TerrainGeometryOverlay {
+    <<const>> CommandName : string = "terrainoverlay"
+    <<const>> CommandDesc : string = "toggles the terrain geometry overlay."
+    + Enabled : bool
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+    InvokeCommand(name:string, arg:string) : void
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<TerrainGeometryOverlay>" <|-- TerrainGeometryOverlayInfo
+IRenderAnnotations <|-- TerrainGeometryOverlay
+IWorldLoaded <|-- TerrainGeometryOverlay
+IChatCommand <|-- TerrainGeometryOverlay
+@enduml

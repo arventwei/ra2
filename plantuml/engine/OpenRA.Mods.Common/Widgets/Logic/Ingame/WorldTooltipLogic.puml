@@ -1,0 +1,6 @@
+@startuml
+class WorldTooltipLogic {
+    + WorldTooltipLogic(widget:Widget, world:World, tooltipContainer:TooltipContainerWidget, viewport:ViewportControllerWidget)
+}
+ChromeLogic <|-- WorldTooltipLogic
+@enduml

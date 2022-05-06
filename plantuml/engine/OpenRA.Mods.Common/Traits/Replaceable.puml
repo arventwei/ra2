@@ -1,0 +1,15 @@
+@startuml
+class ReplaceableInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Replaceable {
+    + Replaceable(info:ReplaceableInfo)
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ReplaceableInfo
+ReplaceableInfo o-> "Types<string>" "HashSet`1"
+"ConditionalTrait`1" "<ReplaceableInfo>" <|-- Replaceable
+@enduml

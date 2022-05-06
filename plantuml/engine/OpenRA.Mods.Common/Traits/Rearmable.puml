@@ -1,0 +1,19 @@
+@startuml
+class RearmableInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Rearmable {
+    + Rearmable(info:RearmableInfo)
+    Created(self:Actor) : void
+    BeforeResupply(self:Actor, target:Actor, types:ResupplyType) : void
+    ResupplyTick(self:Actor, target:Actor, types:ResupplyType) : void
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- RearmableInfo
+RearmableInfo o-> "RearmActors<string>" "HashSet`1"
+RearmableInfo o-> "AmmoPools<string>" "HashSet`1"
+INotifyCreated <|-- Rearmable
+INotifyResupply <|-- Rearmable
+Rearmable --> "Info" RearmableInfo
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class WorldExtensions <<static>> {
+    + {static} FindActorsOnLine(world:World, lineStart:WPos, lineEnd:WPos, lineWidth:WDist, onlyBlockers:bool) : IEnumerable<Actor>
+    + {static} FindBlockingActorsOnLine(world:World, lineStart:WPos, lineEnd:WPos, lineWidth:WDist) : IEnumerable<Actor>
+    + {static} FindActorsOnCircle(world:World, origin:WPos, r:WDist) : IEnumerable<Actor>
+    + {static} MinimumPointLineProjection(lineStart:WPos, lineEnd:WPos, point:WPos) : WPos
+}
+@enduml

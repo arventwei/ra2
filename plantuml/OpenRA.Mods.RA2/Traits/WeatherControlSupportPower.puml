@@ -1,0 +1,31 @@
+@startuml
+class WeatherControlSupportPowerInfo {
+    + <<readonly>> Weapon : string = null
+    + <<readonly>> PaletteEffectType : string = null
+    + <<readonly>> Duration : int = 180
+    + <<readonly>> HitDelay : int = 10
+    + <<readonly>> ScatterDelay : int = 5
+    + <<readonly>> ScatterCount : int = 1
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class WeatherControlSupportPower {
+    hitDelay : int
+    scatterDelay : int
+    duration : int
+    launched : bool
+    + WeatherControlSupportPower(self:Actor, info:WeatherControlSupportPowerInfo)
+    RandomOffset(world:World) : WVec
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    Tick(self:Actor) : void
+}
+SupportPowerInfo <|-- WeatherControlSupportPowerInfo
+IRulesetLoaded <|-- WeatherControlSupportPowerInfo
+WeatherControlSupportPowerInfo o-> "OffsetsX" int2
+WeatherControlSupportPowerInfo o-> "OffsetsY" int2
+WeatherControlSupportPowerInfo --> "WeaponInfo" WeaponInfo
+SupportPower <|-- WeatherControlSupportPower
+ITick <|-- WeatherControlSupportPower
+WeatherControlSupportPower --> "info" WeatherControlSupportPowerInfo
+WeatherControlSupportPower --> "targetPos" WPos
+@enduml

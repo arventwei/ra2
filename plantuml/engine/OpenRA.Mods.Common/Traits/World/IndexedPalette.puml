@@ -1,0 +1,26 @@
+@startuml
+class IndexedPaletteInfo {
+    + <<readonly>> Name : string = null
+    + <<readonly>> BasePalette : string = null
+    + <<readonly>> AllowModifiers : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class IndexedPalette {
+    + IndexedPalette(info:IndexedPaletteInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+class IndexedColorRemap {
+    + IndexedColorRemap(basePalette:IPalette, ramp:int[], remap:int[])
+    + GetRemappedColor(original:Color, index:int) : Color
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- IndexedPaletteInfo
+IRulesetLoaded <|-- IndexedPaletteInfo
+ILoadsPalettes <|-- IndexedPalette
+IndexedPalette --> "info" IndexedPaletteInfo
+IPaletteRemap <|-- IndexedColorRemap
+IndexedColorRemap o-> "replacements<int,int>" "Dictionary`2"
+IndexedColorRemap --> "basePalette" IPalette
+@enduml

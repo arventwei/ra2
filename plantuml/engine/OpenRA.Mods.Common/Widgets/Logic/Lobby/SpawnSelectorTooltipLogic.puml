@@ -1,0 +1,6 @@
+@startuml
+class SpawnSelectorTooltipLogic {
+    + SpawnSelectorTooltipLogic(widget:Widget, tooltipContainer:TooltipContainerWidget, preview:MapPreviewWidget, showUnoccupiedSpawnpoints:bool)
+}
+ChromeLogic <|-- SpawnSelectorTooltipLogic
+@enduml

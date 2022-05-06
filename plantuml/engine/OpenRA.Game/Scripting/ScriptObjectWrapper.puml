@@ -1,0 +1,11 @@
+@startuml
+abstract class ScriptObjectWrapper {
+    + ScriptObjectWrapper(context:ScriptContext)
+    + ContainsKey(key:string) : bool
+}
+class "Dictionary`2"<T1,T2> {
+}
+IScriptBindable <|-- ScriptObjectWrapper
+ILuaTableBinding <|-- ScriptObjectWrapper
+ScriptObjectWrapper --> "members<string,ScriptMemberWrapper>" "Dictionary`2"
+@enduml

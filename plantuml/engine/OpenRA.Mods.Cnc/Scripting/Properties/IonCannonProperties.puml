@@ -1,0 +1,11 @@
+@startuml
+class IonCannonProperties {
+    + IonCannonProperties(context:ScriptContext, self:Actor)
+    + ActivateIonCannon(target:CPos) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- IonCannonProperties
+"Requires`1" "<IonCannonPowerInfo>" <|-- IonCannonProperties
+IonCannonProperties --> "icp" IonCannonPower
+@enduml

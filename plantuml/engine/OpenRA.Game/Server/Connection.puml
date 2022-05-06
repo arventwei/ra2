@@ -1,0 +1,26 @@
+@startuml
+class Connection {
+    + <<const>> MaxOrderLength : int = 131072
+    + ExpectLength : int = 8
+    + Frame : int = 0
+    + MostRecentFrame : int = 0
+    + Validated : bool
+    + TimeSinceLastResponse : long <<get>>
+    + TimeoutMessageShown : bool = false
+    lastReceivedTime : long = 0
+    + PlayerIndex : int
+    + AuthToken : string
+    + PopBytes(n:int) : byte[]
+    ReadDataInner(server:Server) : bool
+    + ReadData(server:Server) : void
+}
+enum ReceiveState {
+    Header,
+    Data,
+}
+class "List`1"<T> {
+}
+Connection --> "Socket" Socket
+Connection o-> "Data<byte>" "List`1"
+Connection o-> "State" ReceiveState
+@enduml

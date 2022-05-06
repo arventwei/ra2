@@ -1,0 +1,40 @@
+@startuml
+class ObserverProductionIconsWidget {
+    + <<readonly>> TooltipTemplate : string = "PRODUCTION_TOOLTIP"
+    + <<readonly>> TooltipContainer : string
+    <<readonly>> timestep : int
+    + IconWidth : int = 32
+    + IconHeight : int = 24
+    + IconSpacing : int = 1
+    + ClockAnimation : string = "clock"
+    + ClockSequence : string = "idle"
+    + ClockPalette : string = "chrome"
+    lastIconIdx : int
+    + MinWidth : int = 240
+    currentTooltipToken : int
+    + ObserverProductionIconsWidget(world:World, worldRenderer:WorldRenderer)
+    + <<override>> Draw() : void
+    {static} GetOverlayForItem(item:ProductionItem, timestep:int) : string
+    + <<override>> Clone() : Widget
+    + <<override>> Tick() : void
+}
+class "Func`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Lazy`1"<T> {
+}
+class "List`1"<T> {
+}
+Widget <|-- ObserverProductionIconsWidget
+ObserverProductionIconsWidget --> "GetPlayer<Player>" "Func`1"
+ObserverProductionIconsWidget --> "world" World
+ObserverProductionIconsWidget --> "worldRenderer" WorldRenderer
+ObserverProductionIconsWidget --> "TooltipIcon" ProductionIcon
+ObserverProductionIconsWidget --> "GetTooltipIcon<ProductionIcon>" "Func`1"
+ObserverProductionIconsWidget --> "clocks<ProductionQueue,Animation>" "Dictionary`2"
+ObserverProductionIconsWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+ObserverProductionIconsWidget o-> "productionIcons<ProductionIcon>" "List`1"
+ObserverProductionIconsWidget o-> "productionIconsBounds<Rectangle>" "List`1"
+ObserverProductionIconsWidget --> "iconSize" float2
+@enduml

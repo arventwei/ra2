@@ -1,0 +1,17 @@
+@startuml
+class SpriteActorPreview {
+    <<readonly>> scale : float
+    + SpriteActorPreview(animation:Animation, offset:Func<WVec>, zOffset:Func<int>, pr:PaletteReference, scale:float)
+    Tick() : void
+    RenderUI(wr:WorldRenderer, pos:int2, scale:float) : IEnumerable<IRenderable>
+    Render(wr:WorldRenderer, pos:WPos) : IEnumerable<IRenderable>
+    ScreenBounds(wr:WorldRenderer, pos:WPos) : IEnumerable<Rectangle>
+}
+class "Func`1"<T> {
+}
+IActorPreview <|-- SpriteActorPreview
+SpriteActorPreview --> "animation" Animation
+SpriteActorPreview --> "offset<WVec>" "Func`1"
+SpriteActorPreview --> "zOffset<int>" "Func`1"
+SpriteActorPreview --> "pr" PaletteReference
+@enduml

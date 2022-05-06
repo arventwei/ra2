@@ -1,0 +1,30 @@
+@startuml
+class ChatDisplayWidget {
+    + <<readonly>> RemoveTime : int = 0
+    + <<readonly>> UseContrast : bool = false
+    + <<readonly>> UseShadow : bool = false
+    + Notification : string = ""
+    + <<readonly>> TextLineBoxHeight : int = 16
+    + <<readonly>> Space : int = 4
+    <<const>> LogLength : int = 9
+    + <<override>> Draw() : void
+    + AddLine(name:string, nameColor:Color, text:string, textColor:Color) : void
+    + RemoveLine() : void
+    + <<override>> Tick() : void
+}
+class ChatLine {
+    + <<readonly>> Name : string
+    + <<readonly>> Text : string
+    + <<readonly>> Expiration : int
+    + ChatLine(name:string, nameColor:Color, text:string, textColor:Color, expiration:int)
+}
+class "List`1"<T> {
+}
+Widget <|-- ChatDisplayWidget
+ChatDisplayWidget o-> "BackgroundColorDark" Color
+ChatDisplayWidget o-> "BackgroundColorLight" Color
+ChatDisplayWidget o-> "recentLines<ChatLine>" "List`1"
+ChatDisplayWidget --> "EventBounds" Rectangle
+ChatLine --> "NameColor" Color
+ChatLine --> "TextColor" Color
+@enduml

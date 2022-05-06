@@ -1,0 +1,21 @@
+@startuml
+class ImportTiberianDawnLegacyMapCommand {
+    + ImportTiberianDawnLegacyMapCommand()
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+    + <<override>> ValidateMapFormat(format:int) : void
+    UnpackTileData(ms:Stream) : void
+    ReadOverlay(file:IniFile) : void
+    + <<override>> ParseTreeActor(input:string) : string
+    + <<override>> ParseActorLocation(input:string, loc:int) : CPos
+    + <<override>> LoadPlayer(file:IniFile, section:string) : void
+    + <<override>> ReadPacks(file:IniFile, filename:string) : void
+    + <<override>> SaveWaypoint(waypointNumber:int, waypointReference:ActorReference) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+ImportLegacyMapCommand <|-- ImportTiberianDawnLegacyMapCommand
+IUtilityCommand <|-- ImportTiberianDawnLegacyMapCommand
+ImportTiberianDawnLegacyMapCommand o-> "overlayResourceMapping<string,(byte Type, byte Index)>" "Dictionary`2"
+@enduml

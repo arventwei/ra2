@@ -1,0 +1,17 @@
+@startuml
+class RevealsShroudInfo {
+    + <<readonly>> RevealGeneratedShroud : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RevealsShroud {
+    + RevealsShroud(self:Actor, info:RevealsShroudInfo)
+}
+class "IEnumerable`1"<T> {
+}
+AffectsShroudInfo <|-- RevealsShroudInfo
+RevealsShroudInfo o-> "ValidRelationships" PlayerRelationship
+AffectsShroud <|-- RevealsShroud
+RevealsShroud --> "info" RevealsShroudInfo
+RevealsShroud --> "rangeModifiers<int>" "IEnumerable`1"
+RevealsShroud --> "Range" WDist
+@enduml

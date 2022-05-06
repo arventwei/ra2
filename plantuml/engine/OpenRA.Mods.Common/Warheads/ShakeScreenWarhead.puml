@@ -1,0 +1,9 @@
+@startuml
+class ShakeScreenWarhead {
+    + <<readonly>> Duration : int = 0
+    + <<readonly>> Intensity : int = 0
+    + <<override>> DoImpact(target:Target, args:WarheadArgs) : void
+}
+Warhead <|-- ShakeScreenWarhead
+ShakeScreenWarhead o-> "Multiplier" float2
+@enduml

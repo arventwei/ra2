@@ -1,0 +1,47 @@
+@startuml
+class GateInfo {
+    + <<readonly>> OpeningSound : string = null
+    + <<readonly>> ClosingSound : string = null
+    + <<readonly>> CloseDelay : int = 150
+    + <<readonly>> TransitionDelay : int = 33
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Gate {
+    + <<readonly>> OpenPosition : int
+    + Position : int <<get>>
+    desiredPosition : int
+    remainingOpenTime : int
+    + Gate(init:ActorInitializer, info:GateInfo)
+    Tick(self:Actor) : void
+    IsBlocking(self:Actor, cell:CPos) : bool
+    CanRemoveBlockage(self:Actor, blocking:Actor) : bool
+    OnNotifyBlockingMove(self:Actor, blocking:Actor) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    CanRemoveBlockage(self:Actor, blocking:Actor) : bool
+    IsBlocked() : bool
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+PausableConditionalTraitInfo <|-- GateInfo
+ITemporaryBlockerInfo <|-- GateInfo
+IBlocksProjectilesInfo <|-- GateInfo
+"Requires`1" "<BuildingInfo>" <|-- GateInfo
+GateInfo o-> "BlocksProjectilesHeight" WDist
+"PausableConditionalTrait`1" "<GateInfo>" <|-- Gate
+ITick <|-- Gate
+ITemporaryBlocker <|-- Gate
+IBlocksProjectiles <|-- Gate
+INotifyAddedToWorld <|-- Gate
+INotifyRemovedFromWorld <|-- Gate
+INotifyBlockingMove <|-- Gate
+Gate --> "self" Actor
+Gate --> "building" Building
+Gate --> "blockedPositions<CPos>" "IEnumerable`1"
+Gate --> "Footprint<CPos>" "IEnumerable`1"
+Gate --> "BlockingHeight" WDist
+@enduml

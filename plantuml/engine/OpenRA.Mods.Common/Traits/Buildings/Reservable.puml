@@ -1,0 +1,27 @@
+@startuml
+class ReservableInfo {
+}
+class Reservable {
+    Created(self:Actor) : void
+    Tick(self:Actor) : void
+    + Reserve(self:Actor, forActor:Actor, forAircraft:Aircraft) : IDisposable
+    + {static} IsReserved(a:Actor) : bool
+    + {static} IsAvailableFor(reservable:Actor, forActor:Actor) : bool
+    UnReserve(self:Actor) : void
+    Disposing(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    Selling(self:Actor) : void
+    Sold(self:Actor) : void
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<Reservable>" <|-- ReservableInfo
+ITick <|-- Reservable
+INotifyOwnerChanged <|-- Reservable
+INotifySold <|-- Reservable
+INotifyActorDisposing <|-- Reservable
+INotifyCreated <|-- Reservable
+Reservable --> "reservedFor" Actor
+Reservable --> "reservedForAircraft" Aircraft
+Reservable --> "rallyPoint" RallyPoint
+@enduml

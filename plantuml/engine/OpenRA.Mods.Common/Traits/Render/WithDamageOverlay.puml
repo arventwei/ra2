@@ -1,0 +1,28 @@
+@startuml
+class WithDamageOverlayInfo {
+    + <<readonly>> Image : string = "smoke_m"
+    + <<readonly>> IdleSequence : string = "idle"
+    + <<readonly>> LoopSequence : string = "loop"
+    + <<readonly>> EndSequence : string = "end"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithDamageOverlay {
+    isSmoking : bool
+    + WithDamageOverlay(self:Actor, info:WithDamageOverlayInfo)
+    Damaged(self:Actor, e:AttackInfo) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- WithDamageOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithDamageOverlayInfo
+WithDamageOverlayInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+WithDamageOverlayInfo o-> "MinimumDamageState" DamageState
+WithDamageOverlayInfo o-> "MaximumDamageState" DamageState
+INotifyDamage <|-- WithDamageOverlay
+WithDamageOverlay --> "info" WithDamageOverlayInfo
+WithDamageOverlay --> "anim" Animation
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+class LegacyBridgeLayerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class LegacyBridgeLayer {
+    + LegacyBridgeLayer(self:Actor, info:LegacyBridgeLayerInfo)
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    ConvertBridgeToActor(w:World, cell:CPos) : void
+    + GetBridge(cell:CPos) : Bridge
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "CellLayer`1"<T> {
+}
+TraitInfo <|-- LegacyBridgeLayerInfo
+IWorldLoaded <|-- LegacyBridgeLayer
+LegacyBridgeLayer --> "info" LegacyBridgeLayerInfo
+LegacyBridgeLayer o-> "bridgeTypes<ushort,(string Template, int Health)>" "Dictionary`2"
+LegacyBridgeLayer --> "bridges<Bridge>" "CellLayer`1"
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+class ClonesProducedUnitsInfo {
+    + <<readonly>> ProductionType : string = ""
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ClonesProducedUnits {
+    + ClonesProducedUnits(init:ActorInitializer, info:ClonesProducedUnitsInfo)
+    + UnitProducedByOther(self:Actor, producer:Actor, produced:Actor, productionType:string, init:TypeDictionary) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ClonesProducedUnitsInfo
+"Requires`1" "<ProductionInfo>" <|-- ClonesProducedUnitsInfo
+"Requires`1" "<ExitInfo>" <|-- ClonesProducedUnitsInfo
+ClonesProducedUnitsInfo o-> "CloneableTypes<CloneableType>" "BitSet`1"
+"ConditionalTrait`1" "<ClonesProducedUnitsInfo>" <|-- ClonesProducedUnits
+INotifyOtherProduction <|-- ClonesProducedUnits
+@enduml

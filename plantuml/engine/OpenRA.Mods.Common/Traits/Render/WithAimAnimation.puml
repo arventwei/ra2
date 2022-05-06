@@ -1,0 +1,25 @@
+@startuml
+class WithAimAnimationInfo {
+    + <<readonly>> Armament : string = "primary"
+    + <<readonly>> Sequence : string = null
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class WithAimAnimation {
+    + WithAimAnimation(init:ActorInitializer, info:WithAimAnimationInfo)
+    StartedAiming(self:Actor, ab:AttackBase) : void
+    StoppedAiming(self:Actor, ab:AttackBase) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithAimAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithAimAnimationInfo
+"Requires`1" "<AttackBaseInfo>" <|-- WithAimAnimationInfo
+"ConditionalTrait`1" "<WithAimAnimationInfo>" <|-- WithAimAnimation
+INotifyAiming <|-- WithAimAnimation
+WithAimAnimation --> "attack" AttackBase
+WithAimAnimation --> "wsb" WithSpriteBody
+@enduml

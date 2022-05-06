@@ -1,0 +1,24 @@
+@startuml
+class SliderWidget {
+    +  <<event>> OnChange : Action<float> 
+    + Ticks : int = 0
+    + TrackHeight : int = 5
+    + Thumb : string = "slider-thumb"
+    + Track : string = "slider-track"
+    + MinimumValue : float = 0
+    + MaximumValue : float = 1
+    + Value : float = 0
+    + SliderWidget()
+    + SliderWidget(other:SliderWidget)
+    + UpdateValue(newValue:float) : void
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> Clone() : Widget
+    + <<override>> Draw() : void
+}
+class "Func`1"<T> {
+}
+Widget <|-- SliderWidget
+SliderWidget o-> "IsDisabled<bool>" "Func`1"
+SliderWidget --> "GetValue<float>" "Func`1"
+SliderWidget --> "ThumbRect" Rectangle
+@enduml

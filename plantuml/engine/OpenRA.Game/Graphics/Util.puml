@@ -1,0 +1,18 @@
+@startuml
+class Util <<static>> {
+    + {static} FastCreateQuad(vertices:Vertex[], o:float3, r:Sprite, samplers:int2, paletteTextureIndex:float, nv:int, size:float3, tint:float3) : void
+    + {static} FastCreateQuad(vertices:Vertex[], a:float3, b:float3, c:float3, d:float3, r:Sprite, samplers:int2, paletteTextureIndex:float, tint:float3, nv:int) : void
+    + {static} FastCopyIntoChannel(dest:Sprite, src:byte[]) : void
+    + {static} FastCopyIntoSprite(dest:Sprite, src:Png) : void
+    + {static} PremultiplyAlpha(c:Color) : Color
+    + {static} PremultipliedColorLerp(t:float, c1:Color, c2:Color) : Color
+    + {static} IdentityMatrix() : float[]
+    + {static} ScaleMatrix(sx:float, sy:float, sz:float) : float[]
+    + {static} TranslationMatrix(x:float, y:float, z:float) : float[]
+    + {static} MatrixMultiply(lhs:float[], rhs:float[]) : float[]
+    + {static} MatrixVectorMultiply(mtx:float[], vec:float[]) : float[]
+    + {static} MatrixInverse(m:float[]) : float[]
+    + {static} MakeFloatMatrix(imtx:Int32Matrix4x4) : float[]
+    + {static} MatrixAABBMultiply(mtx:float[], bounds:float[]) : float[]
+}
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+class DomainIndexInfo {
+}
+class DomainIndex {
+    + WorldLoaded(world:World, wr:WorldRenderer) : void
+    + IsPassable(p1:CPos, p2:CPos, locomotor:Locomotor) : bool
+    + UpdateCells(world:World, cells:IEnumerable<CPos>) : void
+    + AddFixedConnection(cells:IEnumerable<CPos>) : void
+}
+class MovementClassDomainIndex {
+    <<readonly>> movementClass : uint
+    + MovementClassDomainIndex(world:World, movementClass:uint)
+    + IsPassable(p1:CPos, p2:CPos) : bool
+    + UpdateCells(world:World, dirtyCells:HashSet<CPos>) : void
+    + AddFixedConnection(cells:IEnumerable<CPos>) : void
+    HasConnection(d1:ushort, d2:ushort) : bool
+    CreateConnection(d1:ushort, d2:ushort) : void
+    CanTraverseTile(world:World, p:CPos) : bool
+    BuildDomains(world:World) : void
+}
+class "TraitInfo`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "CellLayer`1"<T> {
+}
+"TraitInfo`1" "<DomainIndex>" <|-- DomainIndexInfo
+IWorldLoaded <|-- DomainIndex
+DomainIndex --> "tileSet" TileSet
+DomainIndex --> "domainIndexes<uint,MovementClassDomainIndex>" "Dictionary`2"
+MovementClassDomainIndex --> "map" Map
+MovementClassDomainIndex --> "domains<ushort>" "CellLayer`1"
+MovementClassDomainIndex --> "transientConnections<ushort,HashSet<ushort>>" "Dictionary`2"
+@enduml

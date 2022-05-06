@@ -1,0 +1,15 @@
+@startuml
+class TileSelectorLogic {
+    + TileSelectorLogic(widget:Widget, world:World, worldRenderer:WorldRenderer)
+    CategoryOrder(category:string) : int
+}
+class TileSelectorTemplate {
+    + <<readonly>> Tooltip : string
+    + TileSelectorTemplate(template:TerrainTemplateInfo)
+}
+CommonSelectorLogic <|-- TileSelectorLogic
+TileSelectorLogic --> "tileset" TileSet
+TileSelectorLogic --> "editorCursor" EditorCursorLayer
+TileSelectorLogic +-- TileSelectorTemplate
+TileSelectorTemplate --> "Template" TerrainTemplateInfo
+@enduml

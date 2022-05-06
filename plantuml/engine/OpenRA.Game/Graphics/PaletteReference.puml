@@ -1,0 +1,11 @@
+@startuml
+class PaletteReference <<sealed>> {
+    <<readonly>> index : float
+    + <<readonly>> Name : string
+    + TextureIndex : float <<get>>
+    + TextureMidIndex : float <<get>>
+    + PaletteReference(name:string, index:int, palette:IPalette, hardwarePalette:HardwarePalette)
+}
+PaletteReference --> "hardwarePalette" HardwarePalette
+PaletteReference --> "Palette" IPalette
+@enduml

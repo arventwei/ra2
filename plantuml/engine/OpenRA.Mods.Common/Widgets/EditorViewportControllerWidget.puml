@@ -1,0 +1,26 @@
+@startuml
+class EditorViewportControllerWidget {
+    + <<readonly>> TooltipContainer : string
+    + <<readonly>> TooltipTemplate : string
+    enableTooltips : bool
+    + EditorViewportControllerWidget(world:World, worldRenderer:WorldRenderer)
+    EditorActionManagerOnChange() : void
+    + ClearBrush() : void
+    + SetBrush(brush:IEditorBrush) : void
+    + <<override>> MouseEntered() : void
+    + <<override>> MouseExited() : void
+    + SetTooltip(tooltip:string) : void
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> Tick() : void
+    + <<override>> Removed() : void
+}
+class "Lazy`1"<T> {
+}
+Widget <|-- EditorViewportControllerWidget
+EditorViewportControllerWidget --> "CurrentBrush" IEditorBrush
+EditorViewportControllerWidget --> "DefaultBrush" EditorDefaultBrush
+EditorViewportControllerWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+EditorViewportControllerWidget --> "worldRenderer" WorldRenderer
+EditorViewportControllerWidget --> "editorActionManager" EditorActionManager
+EditorViewportControllerWidget --> "cachedViewportPosition" WPos
+@enduml

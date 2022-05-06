@@ -1,0 +1,35 @@
+@startuml
+class DeliversCashInfo {
+    + <<readonly>> Payload : int = 500
+    + <<readonly>> PlayerExperience : int = 0
+    + <<readonly>> Type : string = null
+    + <<readonly>> Cursor : string = "enter"
+    + <<readonly>> Voice : string = "Action"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DeliversCash {
+    + DeliversCash(info:DeliversCashInfo)
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    + ResolveOrder(self:Actor, order:Order) : void
+    OnAcceptingCash(self:Actor, donor:Actor) : void
+    OnDeliveringCash(self:Actor, acceptor:Actor) : void
+}
+class "IEnumerable`1"<T> {
+}
+class DeliversCashOrderTargeter {
+    + DeliversCashOrderTargeter(info:DeliversCashInfo)
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+TraitInfo <|-- DeliversCashInfo
+DeliversCashInfo o-> "TargetLineColor" Color
+IIssueOrder <|-- DeliversCash
+IResolveOrder <|-- DeliversCash
+IOrderVoice <|-- DeliversCash
+INotifyCashTransfer <|-- DeliversCash
+DeliversCash --> "info" DeliversCashInfo
+DeliversCash --> "Orders<IOrderTargeter>" "IEnumerable`1"
+DeliversCash +-- DeliversCashOrderTargeter
+UnitOrderTargeter <|-- DeliversCashOrderTargeter
+@enduml

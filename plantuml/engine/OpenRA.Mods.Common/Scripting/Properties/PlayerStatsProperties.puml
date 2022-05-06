@@ -1,0 +1,16 @@
+@startuml
+class PlayerStatsProperties {
+    + PlayerStatsProperties(context:ScriptContext, player:Player)
+    + KillsCost : int <<get>>
+    + DeathsCost : int <<get>>
+    + UnitsKilled : int <<get>>
+    + UnitsLost : int <<get>>
+    + BuildingsKilled : int <<get>>
+    + BuildingsLost : int <<get>>
+}
+class "Requires`1"<T> {
+}
+ScriptPlayerProperties <|-- PlayerStatsProperties
+"Requires`1" "<PlayerStatisticsInfo>" <|-- PlayerStatsProperties
+PlayerStatsProperties --> "stats" PlayerStatistics
+@enduml

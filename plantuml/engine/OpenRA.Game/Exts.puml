@@ -1,0 +1,69 @@
+@startuml
+class Exts <<static>> {
+    + {static} IsUppercase(str:string) : bool
+    + {static} F(fmt:string, args:object[]) : string
+    + {static} WithDefault(def:T, f:Func<T>) : T
+    + {static} Do(e:IEnumerable<T>, fn:Action<T>) : void
+    + {static} Lazy(p:Func<T>) : Lazy<T>
+    + {static} GetNamespaces(a:Assembly) : IEnumerable<string>
+    + {static} HasAttribute(mi:MemberInfo) : bool
+    + {static} GetCustomAttributes(mi:MemberInfo, inherit:bool) : T[]
+    + {static} GetCustomAttributes(mi:ParameterInfo) : T[]
+    + {static} Clamp(val:T, min:T, max:T) : T
+    {static} WindingDirectionTest(v0:int2, v1:int2, p:int2) : int
+    + {static} PolygonContains(polygon:int2[], p:int2) : bool
+    + {static} LinesIntersect(a:int2, b:int2, c:int2, d:int2) : bool
+    + {static} HasModifier(k:Modifiers, mod:Modifiers) : bool
+    + {static} GetOrAdd(d:Dictionary<K, V>, k:K) : V
+    + {static} GetOrAdd(d:Dictionary<K, V>, k:K, v:V) : V
+    + {static} GetOrAdd(d:Dictionary<K, V>, k:K, createFn:Func<K, V>) : V
+    + {static} IndexOf(array:T[], value:T) : int
+    + {static} Random(ts:IEnumerable<T>, r:MersenneTwister) : T
+    + {static} RandomOrDefault(ts:IEnumerable<T>, r:MersenneTwister) : T
+    {static} Random(ts:IEnumerable<T>, r:MersenneTwister, throws:bool) : T
+    + {static} Union(rects:IEnumerable<Rectangle>) : Rectangle
+    + {static} Product(xs:IEnumerable<float>) : float
+    + {static} SymmetricDifference(xs:IEnumerable<T>, ys:IEnumerable<T>) : IEnumerable<T>
+    + {static} Iterate(t:T, f:Func<T, T>) : IEnumerable<T>
+    + {static} MinBy(ts:IEnumerable<T>, selector:Func<T, U>) : T
+    + {static} MaxBy(ts:IEnumerable<T>, selector:Func<T, U>) : T
+    + {static} MinByOrDefault(ts:IEnumerable<T>, selector:Func<T, U>) : T
+    + {static} MaxByOrDefault(ts:IEnumerable<T>, selector:Func<T, U>) : T
+    {static} CompareBy(ts:IEnumerable<T>, selector:Func<T, U>, modifier:int, throws:bool) : T
+    + {static} NextPowerOf2(v:int) : int
+    + {static} IsPowerOf2(v:int) : bool
+    + {static} NextPowerOf2(s:Size) : Size
+    + {static} ISqrt(number:int, round:ISqrtRoundMode) : int
+    + {static} ISqrt(number:uint, round:ISqrtRoundMode) : uint
+    + {static} ISqrt(number:long, round:ISqrtRoundMode) : long
+    + {static} ISqrt(number:ulong, round:ISqrtRoundMode) : ulong
+    + {static} IntegerDivisionRoundingAwayFromZero(dividend:int, divisor:int) : int
+    + {static} JoinWith(ts:IEnumerable<T>, j:string) : string
+    + {static} Append(ts:IEnumerable<T>, moreTs:T[]) : IEnumerable<T>
+    + {static} ToHashSet(source:IEnumerable<T>) : HashSet<T>
+    + {static} ToDictionaryWithConflictLog(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, debugName:string, logKey:Func<TKey, string>, logValue:Func<TSource, string>) : Dictionary<TKey, TSource>
+    + {static} ToDictionaryWithConflictLog(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>, elementSelector:Func<TSource, TElement>, debugName:string, logKey:Func<TKey, string>, logValue:Func<TElement, string>) : Dictionary<TKey, TElement>
+    + {static} ColorLerp(t:float, c1:Color, c2:Color) : Color
+    + {static} MakeArray(count:int, f:Func<int, T>) : T[]
+    + {static} ResizeArray(ts:T[,], t:T, width:int, height:int) : T[,]
+    + {static} ToBits(bits:IEnumerable<bool>) : int
+    + {static} ParseIntegerInvariant(s:string) : int
+    + {static} ParseByte(s:string) : byte
+    + {static} TryParseIntegerInvariant(s:string, i:int) : bool
+    + {static} TryParseInt64Invariant(s:string, i:long) : bool
+    + {static} IsTraitEnabled(trait:T) : bool
+    + {static} FirstEnabledTraitOrDefault(ts:IEnumerable<T>) : T
+    + {static} FirstEnabledTraitOrDefault(ts:T[]) : T
+}
+class "Enum`1"<T> <<static>> {
+    + {static} Parse(s:string) : T
+    + {static} GetValues() : T[]
+    + {static} TryParse(s:string, ignoreCase:bool, value:T) : bool
+}
+enum ISqrtRoundMode {
+    Floor,
+    Nearest,
+    Ceiling,
+}
+Exts +-- ISqrtRoundMode
+@enduml

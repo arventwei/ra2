@@ -1,0 +1,41 @@
+@startuml
+class VqaReader {
+    + <<readonly>> Frames : ushort
+    + <<readonly>> Framerate : byte
+    + <<readonly>> Width : ushort
+    + <<readonly>> Height : ushort
+    currentFrame : int
+    numColors : ushort
+    blockWidth : ushort
+    blockHeight : ushort
+    chunkBufferParts : byte
+    videoFlags : uint
+    sampleRate : int
+    sampleBits : int
+    audioChannels : int
+    cbpIsCompressed : bool
+    maxCbfzSize : int = 256000
+    vtprSize : int = 0
+    currentChunkBuffer : int = 0
+    chunkBufferOffset : int = 0
+    hasAudio : bool
+    + CurrentFrame : int <<get>>
+    + SampleRate : int <<get>>
+    + SampleBits : int <<get>>
+    + AudioChannels : int <<get>>
+    + HasAudio : bool <<get>>
+    + VqaReader(stream:Stream)
+    + Reset() : void
+    CollectAudioData() : void
+    + AdvanceFrame() : void
+    LoadFrame() : void
+    + DecodeVQFR(s:Stream, parentType:string) : void
+    cachedFrame : int
+    DecodeFrameData() : void
+    IsHqVqa : bool <<get>>
+    WriteBlock(blockNumber:int, count:int, x:int, y:int) : void
+    + {static} LCWDecodeInto(src:byte[], dest:byte[], srcOffset:int, reverse:bool) : int
+}
+VqaReader --> "stream" Stream
+VqaReader --> "blocks" int2
+@enduml

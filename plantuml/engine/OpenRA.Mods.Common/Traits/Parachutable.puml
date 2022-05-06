@@ -1,0 +1,36 @@
+@startuml
+class ParachutableInfo {
+    + <<readonly>> KilledOnImpassableTerrain : bool = true
+    + <<readonly>> Image : string = "explosion"
+    + <<readonly>> GroundCorpseSequence : string = null
+    + <<readonly>> GroundCorpsePalette : string = "effect"
+    + <<readonly>> GroundImpactSound : string = null
+    + <<readonly>> WaterCorpseSequence : string = null
+    + <<readonly>> WaterCorpsePalette : string = "effect"
+    + <<readonly>> WaterImpactSound : string = null
+    + <<readonly>> FallRate : int = 13
+    + <<readonly>> ParachutingCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Parachutable {
+    parachutingToken : int
+    + Parachutable(self:Actor, info:ParachutableInfo)
+    + IsInAir : bool <<get>>
+    OnParachute(self:Actor) : void
+    OnLanded(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- ParachutableInfo
+"Requires`1" "<IPositionableInfo>" <|-- ParachutableInfo
+ParachutableInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+ParachutableInfo o-> "WaterTerrainTypes<string>" "HashSet`1"
+INotifyParachute <|-- Parachutable
+Parachutable --> "info" ParachutableInfo
+Parachutable --> "positionable" IPositionable
+Parachutable --> "IgnoreActor" Actor
+@enduml

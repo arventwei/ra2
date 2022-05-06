@@ -1,0 +1,34 @@
+@startuml
+enum OwnerType {
+    Victim,
+    Killer,
+    InternalName,
+}
+class SpawnActorOnDeathInfo {
+    + <<readonly>> Actor : string = null
+    + <<readonly>> Probability : int = 100
+    + <<readonly>> InternalOwner : string = "Neutral"
+    + <<readonly>> EffectiveOwnerFromOwner : bool = false
+    + <<readonly>> DeathType : string = null
+    + <<readonly>> SkipMakeAnimations : bool = true
+    + <<readonly>> RequiresLobbyCreeps : bool = false
+    + <<readonly>> SpawnAfterDefeat : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SpawnActorOnDeath {
+    <<readonly>> faction : string
+    <<readonly>> enabled : bool
+    + SpawnActorOnDeath(init:ActorInitializer, info:SpawnActorOnDeathInfo)
+    Killed(self:Actor, e:AttackInfo) : void
+    RemovedFromWorld(self:Actor) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- SpawnActorOnDeathInfo
+SpawnActorOnDeathInfo o-> "OwnerType" OwnerType
+SpawnActorOnDeathInfo o-> "Offset" CVec
+"ConditionalTrait`1" "<SpawnActorOnDeathInfo>" <|-- SpawnActorOnDeath
+INotifyKilled <|-- SpawnActorOnDeath
+INotifyRemovedFromWorld <|-- SpawnActorOnDeath
+SpawnActorOnDeath --> "attackingPlayer" Player
+@enduml

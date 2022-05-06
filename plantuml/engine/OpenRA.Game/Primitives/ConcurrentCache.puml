@@ -1,0 +1,24 @@
+@startuml
+class "ConcurrentCache`2"<T,U> {
+    + ConcurrentCache(loader:Func<T, U>, c:IEqualityComparer<T>)
+    + ConcurrentCache(loader:Func<T, U>)
+    + ContainsKey(key:T) : bool
+    + TryGetValue(key:T, value:U) : bool
+    + Count : int <<get>>
+    + GetEnumerator() : IEnumerator<KeyValuePair<T, U>>
+    GetEnumerator() : System.Collections.IEnumerator
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "ConcurrentDictionary`2"<T1,T2> {
+}
+class "Func`2"<T1,T2> {
+}
+class "ICollection`1"<T> {
+}
+"IReadOnlyDictionary`2" "<T,U>" <|-- "ConcurrentCache`2"
+"ConcurrentCache`2" --> "cache<T,U>" "ConcurrentDictionary`2"
+"ConcurrentCache`2" --> "loader<T,U>" "Func`2"
+"ConcurrentCache`2" --> "Keys<T>" "ICollection`1"
+"ConcurrentCache`2" --> "Values<U>" "ICollection`1"
+@enduml

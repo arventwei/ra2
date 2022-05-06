@@ -1,0 +1,17 @@
+@startuml
+class WithBuildingRepairDecorationInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithBuildingRepairDecoration {
+    shownPlayer : int = 0
+    + WithBuildingRepairDecoration(self:Actor, info:WithBuildingRepairDecorationInfo)
+    CycleRepairer() : void
+}
+class "Requires`1"<T> {
+}
+WithDecorationInfo <|-- WithBuildingRepairDecorationInfo
+"Requires`1" "<RepairableBuildingInfo>" <|-- WithBuildingRepairDecorationInfo
+WithDecoration <|-- WithBuildingRepairDecoration
+WithBuildingRepairDecoration --> "rb" RepairableBuilding
+WithBuildingRepairDecoration --> "info" WithBuildingRepairDecorationInfo
+@enduml

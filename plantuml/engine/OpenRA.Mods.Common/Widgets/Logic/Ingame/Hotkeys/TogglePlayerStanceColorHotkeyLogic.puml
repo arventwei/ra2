@@ -1,0 +1,6 @@
+@startuml
+class TogglePlayerStanceColorHotkeyLogic {
+    + TogglePlayerStanceColorHotkeyLogic(widget:Widget, modData:ModData, logicArgs:Dictionary<string, MiniYaml>)
+}
+SingleHotkeyBaseLogic <|-- TogglePlayerStanceColorHotkeyLogic
+@enduml

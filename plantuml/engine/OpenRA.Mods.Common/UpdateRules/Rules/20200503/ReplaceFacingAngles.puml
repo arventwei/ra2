@@ -1,0 +1,13 @@
+@startuml
+class ReplaceFacingAngles {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+    + <<override>> UpdateWeaponNode(modData:ModData, weaponNode:MiniYamlNode) : IEnumerable<string>
+}
+class "Dictionary`2"<T1,T2> {
+}
+UpdateRule <|-- ReplaceFacingAngles
+ReplaceFacingAngles o-> "TraitFields<string,string[]>" "Dictionary`2"
+ReplaceFacingAngles o-> "ProjectileFields<string,string[]>" "Dictionary`2"
+@enduml

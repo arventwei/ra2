@@ -1,0 +1,8 @@
+@startuml
+class BeaconGlobal {
+    + BeaconGlobal(context:ScriptContext)
+    + New(owner:Player, position:WPos, duration:int, showRadarPings:bool) : void
+}
+ScriptGlobal <|-- BeaconGlobal
+BeaconGlobal --> "radarPings" RadarPings
+@enduml

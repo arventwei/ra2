@@ -1,0 +1,10 @@
+@startuml
+class MenuButtonWidget {
+    + <<readonly>> MenuContainer : string = "INGAME_MENU"
+    + <<readonly>> Pause : bool = true
+    + <<readonly>> HideIngameUI : bool = true
+    + <<readonly>> DisableWorldSounds : bool = false
+    + MenuButtonWidget(modData:ModData, world:World)
+}
+WorldButtonWidget <|-- MenuButtonWidget
+@enduml

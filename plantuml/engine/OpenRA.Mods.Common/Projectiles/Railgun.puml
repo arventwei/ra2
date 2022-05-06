@@ -1,0 +1,51 @@
+@startuml
+class RailgunInfo {
+    + <<readonly>> DamageActorsInLine : bool = false
+    + <<readonly>> Blockable : bool = false
+    + <<readonly>> Duration : int = 15
+    + <<readonly>> ZOffset : int = 0
+    + <<readonly>> BeamPlayerColor : bool = false
+    + <<readonly>> BeamAlphaDeltaPerTick : int
+    + <<readonly>> HelixRadiusDeltaPerTick : int = 8
+    + <<readonly>> HelixAlphaDeltaPerTick : int
+    + <<readonly>> QuantizationCount : int = 16
+    + <<readonly>> HelixPlayerColor : bool = false
+    + <<readonly>> HitAnim : string = null
+    + <<readonly>> HitAnimSequence : string = "idle"
+    + <<readonly>> HitAnimPalette : string = "effect"
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class Railgun {
+    ticks : int
+    animationComplete : bool
+    + CycleCount : int <<get>>
+    + Railgun(args:ProjectileArgs, info:RailgunInfo, beamColor:Color, helixColor:Color)
+    CalculateVectors() : void
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IProjectileInfo <|-- RailgunInfo
+RailgunInfo o-> "Inaccuracy" WDist
+RailgunInfo o-> "InaccuracyType" InaccuracyType
+RailgunInfo o-> "BeamWidth" WDist
+RailgunInfo o-> "BeamShape" BeamRenderableShape
+RailgunInfo o-> "BeamColor" Color
+RailgunInfo o-> "HelixThickness" WDist
+RailgunInfo o-> "HelixRadius" WDist
+RailgunInfo o-> "HelixPitch" WDist
+RailgunInfo o-> "HelixAngleDeltaPerTick" WAngle
+RailgunInfo o-> "HelixColor" Color
+IProjectile <|-- Railgun
+ISync <|-- Railgun
+Railgun --> "args" ProjectileArgs
+Railgun --> "info" RailgunInfo
+Railgun --> "hitanim" Animation
+Railgun --> "BeamColor" Color
+Railgun --> "HelixColor" Color
+Railgun --> "target" WPos
+Railgun --> "SourceToTarget" WVec
+Railgun --> "ForwardStep" WVec
+Railgun --> "LeftVector" WVec
+Railgun --> "UpVector" WVec
+Railgun --> "AngleStep" WAngle
+@enduml

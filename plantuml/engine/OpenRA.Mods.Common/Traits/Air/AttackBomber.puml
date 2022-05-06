@@ -1,0 +1,25 @@
+@startuml
+class AttackBomberInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackBomber {
+    inAttackRange : bool
+    facingTarget : bool = true
+    +  <<event>> OnRemovedFromWorld : Action<Actor> 
+    +  <<event>> OnEnteredAttackRange : Action<Actor> 
+    +  <<event>> OnExitedAttackRange : Action<Actor> 
+    + AttackBomber(self:Actor, info:AttackBomberInfo)
+    Tick(self:Actor) : void
+    + SetTarget(w:World, pos:WPos) : void
+    RemovedFromWorld(self:Actor) : void
+    + <<override>> GetAttackActivity(self:Actor, source:AttackSource, newTarget:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : Activity
+}
+AttackBaseInfo <|-- AttackBomberInfo
+AttackBomberInfo o-> "FacingTolerance" WAngle
+AttackBase <|-- AttackBomber
+ITick <|-- AttackBomber
+ISync <|-- AttackBomber
+INotifyRemovedFromWorld <|-- AttackBomber
+AttackBomber --> "info" AttackBomberInfo
+AttackBomber --> "target" Target
+@enduml

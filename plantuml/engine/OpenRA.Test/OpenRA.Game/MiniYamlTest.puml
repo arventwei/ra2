@@ -1,0 +1,40 @@
+@startuml
+class MiniYamlTest {
+    <<readonly>> yamlTabStyle : string = @"
+Root1:
+	Child1:
+		Attribute1: Test
+		Attribute2: Test
+	Child2:
+		Attribute1: Test
+		Attribute2: Test
+Root2:
+	Child1:
+		Attribute1: Test
+"
+    <<readonly>> yamlMixedStyle : string = @"
+Root1:
+    Child1:
+        Attribute1: Test
+        Attribute2: Test
+	Child2:
+		Attribute1: Test
+	    Attribute2: Test
+Root2:
+    Child1:
+		Attribute1: Test
+"
+    + TestIndents() : void
+    + InheritanceAndRemovalCanBeComposed() : void
+    + ChildCanBeRemovedAfterMultipleInheritance() : void
+    + ChildCanBeRemovedAndLaterOverridden() : void
+    + ChildCanBeOverriddenThenRemoved() : void
+    + EmptyLinesShouldCountTowardLineNumbers() : void
+    + TestSelfMerging() : void
+    + TestEscapedHashInValues() : void
+    + TestGuardedWhitespace() : void
+    + CommentsShouldCountTowardLineNumbers() : void
+    + CommentsSurviveRoundTrip() : void
+    + CommentsShouldntSurviveRoundTrip() : void
+}
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+class DemolitionProperties {
+    + DemolitionProperties(context:ScriptContext, self:Actor)
+    + Demolish(target:Actor) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- DemolitionProperties
+"Requires`1" "<IMoveInfo>" <|-- DemolitionProperties
+"Requires`1" "<DemolitionInfo>" <|-- DemolitionProperties
+DemolitionProperties --> "info" DemolitionInfo
+@enduml

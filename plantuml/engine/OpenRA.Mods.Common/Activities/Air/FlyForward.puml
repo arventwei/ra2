@@ -1,0 +1,14 @@
+@startuml
+class FlyForward {
+    <<readonly>> flyTicks : int
+    remainingDistance : int
+    ticks : int
+    FlyForward(self:Actor)
+    + FlyForward(self:Actor, ticks:int)
+    + FlyForward(self:Actor, distance:WDist)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- FlyForward
+FlyForward --> "aircraft" Aircraft
+FlyForward --> "cruiseAltitude" WDist
+@enduml

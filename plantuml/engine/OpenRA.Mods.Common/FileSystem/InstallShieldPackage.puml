@@ -1,0 +1,35 @@
+@startuml
+class InstallShieldLoader {
+    TryParsePackage(s:Stream, filename:string, context:FS, package:IReadOnlyPackage) : bool
+}
+class InstallShieldPackage <<sealed>> {
+    + Name : string <<get>>
+    <<readonly>> dataStart : long = 255
+    + InstallShieldPackage(s:Stream, filename:string)
+    accumulatedData : uint = 0
+    ParseFile(dirName:string) : void
+    + GetStream(filename:string) : Stream
+    + OpenPackage(filename:string, context:FS) : IReadOnlyPackage
+    + Contains(filename:string) : bool
+    + Dispose() : void
+}
+class Entry <<struct>> {
+    + <<readonly>> Offset : uint
+    + <<readonly>> Length : uint
+    + Entry(offset:uint, length:uint)
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+IPackageLoader <|-- InstallShieldLoader
+InstallShieldLoader +-- InstallShieldPackage
+IReadOnlyPackage <|-- InstallShieldPackage
+InstallShieldPackage --> "Contents<string>" "IEnumerable`1"
+InstallShieldPackage o-> "index<string,Entry>" "Dictionary`2"
+InstallShieldPackage --> "s" Stream
+InstallShieldPackage --> "Index<string,Entry>" "IReadOnlyDictionary`2"
+InstallShieldPackage +-- Entry
+@enduml

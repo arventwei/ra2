@@ -1,0 +1,7 @@
+@startuml
+class LogicTickerWidget {
+    + <<override>> Tick() : void
+}
+Widget <|-- LogicTickerWidget
+LogicTickerWidget o-> "OnTick" Action
+@enduml

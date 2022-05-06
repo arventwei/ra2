@@ -1,0 +1,32 @@
+@startuml
+class GrantExternalConditionPowerInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> Duration : int = 0
+    + <<readonly>> Footprint : string
+    + <<readonly>> OnFireSound : string = null
+    + <<readonly>> Sequence : string = "active"
+    + <<readonly>> BlockedCursor : string = "move-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantExternalConditionPower {
+    + GrantExternalConditionPower(self:Actor, info:GrantExternalConditionPowerInfo)
+    + <<override>> SelectTarget(self:Actor, order:string, manager:SupportPowerManager) : void
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    + UnitsInRange(xy:CPos) : IEnumerable<Actor>
+}
+class SelectConditionTarget {
+    <<readonly>> order : string
+    + SelectConditionTarget(world:World, order:string, manager:SupportPowerManager, power:GrantExternalConditionPower)
+}
+SupportPowerInfo <|-- GrantExternalConditionPowerInfo
+GrantExternalConditionPowerInfo o-> "Dimensions" CVec
+GrantExternalConditionPowerInfo o-> "ValidRelationships" PlayerRelationship
+SupportPower <|-- GrantExternalConditionPower
+GrantExternalConditionPower --> "info" GrantExternalConditionPowerInfo
+GrantExternalConditionPower +-- SelectConditionTarget
+OrderGenerator <|-- SelectConditionTarget
+SelectConditionTarget --> "power" GrantExternalConditionPower
+SelectConditionTarget --> "dimensions" CVec
+SelectConditionTarget --> "tile" Sprite
+SelectConditionTarget --> "manager" SupportPowerManager
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class SimpleTeleport {
+    + SimpleTeleport(destination:CPos)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- SimpleTeleport
+SimpleTeleport --> "destination" CPos
+@enduml

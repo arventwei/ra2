@@ -1,0 +1,34 @@
+@startuml
+class VariableExpressionTest {
+    AssertFalse(expression:string) : void
+    AssertTrue(expression:string) : void
+    AssertValue(expression:string, value:int) : void
+    AssertParseFailure(expression:string) : void
+    AssertParseFailure(expression:string, errorMessage:string) : void
+    + TestNumbers() : void
+    + TestVariables() : void
+    + TestBoolConsts() : void
+    + TestBooleans() : void
+    + TestAnd() : void
+    + TestOR() : void
+    + TestEquals() : void
+    + TestNotEquals() : void
+    + TestNOT() : void
+    + TestRelations() : void
+    + TestRelationMixedPrecedence() : void
+    + TestAndOrPrecedence() : void
+    + TestParens() : void
+    + TestArithmetic() : void
+    + TestArithmeticMixed() : void
+    + TestHyphen() : void
+    + TestMixedParens() : void
+    + TestParseErrors() : void
+    + TestParseHyphenErrors() : void
+    + TestParseMixedEndErrors() : void
+    + TestParseSpacedBinaryOperatorErrors() : void
+    + TestUndefinedSymbols() : void
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+VariableExpressionTest o-> "testValues<string,int>" "IReadOnlyDictionary`2"
+@enduml

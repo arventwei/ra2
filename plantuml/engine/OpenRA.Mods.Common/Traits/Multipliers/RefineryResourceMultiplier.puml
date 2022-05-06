@@ -1,0 +1,17 @@
+@startuml
+class RefineryResourceMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RefineryResourceMultiplier {
+    + RefineryResourceMultiplier(info:RefineryResourceMultiplierInfo)
+    + GetModifier() : int
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Requires`1"<T> {
+}
+ConditionalTraitInfo <|-- RefineryResourceMultiplierInfo
+"ConditionalTrait`1" "<RefineryResourceMultiplierInfo>" <|-- RefineryResourceMultiplier
+"Requires`1" "<RefineryInfo>" <|-- RefineryResourceMultiplier
+@enduml

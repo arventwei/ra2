@@ -1,0 +1,13 @@
+@startuml
+class ResourceProperties {
+    + ResourceProperties(context:ScriptContext, player:Player)
+    + Resources : int <<get>> <<set>>
+    + ResourceCapacity : int <<get>>
+    + Cash : int <<get>> <<set>>
+}
+class "Requires`1"<T> {
+}
+ScriptPlayerProperties <|-- ResourceProperties
+"Requires`1" "<PlayerResourcesInfo>" <|-- ResourceProperties
+ResourceProperties --> "pr" PlayerResources
+@enduml

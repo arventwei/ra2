@@ -1,0 +1,62 @@
+@startuml
+class MiniYamlExts <<static>> {
+    + {static} WriteToFile(y:MiniYamlNodes, filename:string) : void
+    + {static} WriteToString(y:MiniYamlNodes) : string
+    + {static} ToLines(y:MiniYamlNodes) : IEnumerable<string>
+}
+class MiniYamlNode {
+    + Key : string
+    + Comment : string
+    + MiniYamlNode(k:string, v:MiniYaml, c:string)
+    + MiniYamlNode(k:string, v:MiniYaml, c:string, loc:SourceLocation)
+    + MiniYamlNode(k:string, v:string, c:string)
+    + MiniYamlNode(k:string, v:string, n:List<MiniYamlNode>)
+    + MiniYamlNode(k:string, v:string, c:string, n:List<MiniYamlNode>)
+    + MiniYamlNode(k:string, v:string, c:string, n:List<MiniYamlNode>, loc:SourceLocation)
+    + <<override>> ToString() : string
+    + Clone() : MiniYamlNode
+}
+class MiniYaml {
+    <<const>> SpacesPerLevel : int = 4
+    + Value : string
+    + Clone() : MiniYaml
+    + ToDictionary() : Dictionary<string, MiniYaml>
+    + ToDictionary(elementSelector:Func<MiniYaml, TElement>) : Dictionary<string, TElement>
+    + ToDictionary(keySelector:Func<string, TKey>, elementSelector:Func<MiniYaml, TElement>) : Dictionary<TKey, TElement>
+    + MiniYaml(value:string)
+    + MiniYaml(value:string, nodes:List<MiniYamlNode>)
+    + {static} NodesOrEmpty(y:MiniYaml, s:string) : List<MiniYamlNode>
+    {static} FromLines(lines:IEnumerable<string>, filename:string, discardCommentsAndWhitespace:bool, stringPool:Dictionary<string, string>) : List<MiniYamlNode>
+    + {static} FromFile(path:string, discardCommentsAndWhitespace:bool, stringPool:Dictionary<string, string>) : List<MiniYamlNode>
+    + {static} FromStream(s:Stream, fileName:string, discardCommentsAndWhitespace:bool, stringPool:Dictionary<string, string>) : List<MiniYamlNode>
+    + {static} FromString(text:string, fileName:string, discardCommentsAndWhitespace:bool, stringPool:Dictionary<string, string>) : List<MiniYamlNode>
+    + {static} Merge(sources:IEnumerable<List<MiniYamlNode>>) : List<MiniYamlNode>
+    {static} MergeIntoResolved(overrideNode:MiniYamlNode, existingNodes:List<MiniYamlNode>, tree:Dictionary<string, MiniYaml>, inherited:Dictionary<string, MiniYamlNode.SourceLocation>) : void
+    {static} ResolveInherits(key:string, node:MiniYaml, tree:Dictionary<string, MiniYaml>, inherited:Dictionary<string, MiniYamlNode.SourceLocation>) : List<MiniYamlNode>
+    {static} MergeSelfPartial(existingNodes:MiniYaml) : MiniYaml
+    {static} MergeSelfPartial(existingNodes:List<MiniYamlNode>) : List<MiniYamlNode>
+    {static} MergePartial(existingNodes:MiniYaml, overrideNodes:MiniYaml) : MiniYaml
+    {static} MergePartial(existingNodes:List<MiniYamlNode>, overrideNodes:List<MiniYamlNode>) : List<MiniYamlNode>
+    + ToLines(key:string, comment:string) : IEnumerable<string>
+    + {static} Load(fileSystem:IReadOnlyFileSystem, files:IEnumerable<string>, mapRules:MiniYaml) : List<MiniYamlNode>
+}
+class YamlException {
+    + YamlException(s:string)
+}
+class "List`1"<T> {
+}
+class SourceLocation <<struct>> {
+    + Filename : string
+    + Line : int
+    + <<override>> ToString() : string
+}
+class "Func`2"<T1,T2> {
+}
+MiniYamlNode --> "Location" SourceLocation
+MiniYamlNode --> "Value" MiniYaml
+MiniYaml o-> "StringIdentity<string,string>" "Func`2"
+MiniYaml o-> "MiniYamlIdentity<MiniYaml,MiniYaml>" "Func`2"
+MiniYaml --> "Nodes<MiniYamlNode>" "List`1"
+Exception <|-- YamlException
+MiniYamlNode +-- SourceLocation
+@enduml

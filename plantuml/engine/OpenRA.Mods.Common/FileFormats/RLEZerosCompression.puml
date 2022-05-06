@@ -1,0 +1,5 @@
+@startuml
+class RLEZerosCompression <<static>> {
+    + {static} DecodeInto(src:byte[], dest:byte[], destIndex:int) : void
+}
+@enduml

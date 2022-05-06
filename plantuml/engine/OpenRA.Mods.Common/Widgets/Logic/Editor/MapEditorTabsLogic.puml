@@ -1,0 +1,16 @@
+@startuml
+class MapEditorTabsLogic {
+    + MapEditorTabsLogic(widget:Widget, worldRenderer:WorldRenderer)
+    SetupTab(buttonId:string, tabId:string, tabType:MenuType) : void
+}
+enum MenuType {
+    Tiles,
+    Layers,
+    Actors,
+    History,
+}
+ChromeLogic <|-- MapEditorTabsLogic
+MapEditorTabsLogic --> "widget" Widget
+MapEditorTabsLogic --> "tabContainer" Widget
+MapEditorTabsLogic +-- MenuType
+@enduml

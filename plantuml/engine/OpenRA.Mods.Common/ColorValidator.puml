@@ -1,0 +1,12 @@
+@startuml
+class ColorValidator {
+    + <<readonly>> Threshold : int = 0x50
+    GetColorDelta(colorA:Color, colorB:Color) : double
+    IsValid(askedColor:Color, forbiddenColors:IEnumerable<Color>, forbiddenColor:Color) : bool
+    + IsValid(askedColor:Color, forbiddenColor:Color, terrainColors:IEnumerable<Color>, playerColors:IEnumerable<Color>, errorMessages:HashSet<string>) : bool
+    + RandomPresetColor(random:MersenneTwister, terrainColors:IEnumerable<Color>, playerColors:IEnumerable<Color>) : Color
+    + RandomValidColor(random:MersenneTwister, terrainColors:IEnumerable<Color>, playerColors:IEnumerable<Color>) : Color
+    + MakeValid(askedColor:Color, random:MersenneTwister, terrainColors:IEnumerable<Color>, playerColors:IEnumerable<Color>, onError:Action<string>) : Color
+}
+IGlobalModData <|-- ColorValidator
+@enduml

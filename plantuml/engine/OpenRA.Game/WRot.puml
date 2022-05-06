@@ -1,0 +1,30 @@
+@startuml
+class WRot <<struct>> {
+    <<readonly>> x : int
+    <<readonly>> y : int
+    <<readonly>> z : int
+    <<readonly>> w : int
+    + WRot(roll:WAngle, pitch:WAngle, yaw:WAngle)
+    WRot(x:int, y:int, z:int, w:int)
+    WRot(x:int, y:int, z:int, w:int, roll:WAngle, pitch:WAngle, yaw:WAngle)
+    + {static} FromFacing(facing:int) : WRot
+    + {static} FromYaw(yaw:WAngle) : WRot
+    + Rotate(rot:WRot) : WRot
+    + WithRoll(roll:WAngle) : WRot
+    + WithPitch(pitch:WAngle) : WRot
+    + WithYaw(yaw:WAngle) : WRot
+    + AsMatrix(mtx:Int32Matrix4x4) : void
+    + AsMatrix() : Int32Matrix4x4
+    + <<override>> GetHashCode() : int
+    + Equals(other:WRot) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<WRot>" <|-- WRot
+WRot --> "Roll" WAngle
+WRot --> "Pitch" WAngle
+WRot --> "Yaw" WAngle
+WRot o-> "None" WRot
+@enduml

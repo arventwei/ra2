@@ -1,0 +1,24 @@
+@startuml
+class TransformsIntoTransformsInfo {
+    + <<readonly>> Voice : string = "Action"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TransformsIntoTransforms {
+    + TransformsIntoTransforms(self:Actor, info:TransformsIntoTransformsInfo)
+    ResolveOrder(self:Actor, order:Order) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    IssueDeployOrder(self:Actor, queued:bool) : Order
+    CanIssueDeployOrder(self:Actor, queued:bool) : bool
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- TransformsIntoTransformsInfo
+"Requires`1" "<TransformsInfo>" <|-- TransformsIntoTransformsInfo
+"Requires`1" "<IHealthInfo>" <|-- TransformsIntoTransformsInfo
+"ConditionalTrait`1" "<TransformsIntoTransformsInfo>" <|-- TransformsIntoTransforms
+IResolveOrder <|-- TransformsIntoTransforms
+IOrderVoice <|-- TransformsIntoTransforms
+IIssueDeployOrder <|-- TransformsIntoTransforms
+@enduml

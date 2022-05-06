@@ -1,0 +1,7 @@
+@startuml
+class CameraGlobal {
+    + CameraGlobal(context:ScriptContext)
+}
+ScriptGlobal <|-- CameraGlobal
+CameraGlobal --> "Position" WPos
+@enduml

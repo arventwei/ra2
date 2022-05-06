@@ -1,0 +1,6 @@
+@startuml
+class ModContentDiscTooltipLogic {
+    + ModContentDiscTooltipLogic(widget:Widget, getText:Func<string>)
+}
+ChromeLogic <|-- ModContentDiscTooltipLogic
+@enduml

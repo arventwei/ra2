@@ -1,0 +1,39 @@
+@startuml
+class SlotClient {
+    + <<readonly>> Faction : string
+    + <<readonly>> SpawnPoint : int
+    + <<readonly>> Team : int
+    + <<readonly>> Handicap : int
+    + <<readonly>> Slot : string
+    + <<readonly>> Bot : string
+    + <<readonly>> IsAdmin : bool
+    + <<readonly>> BotName : string
+    + SlotClient()
+    + SlotClient(client:Session.Client)
+    + ApplyTo(client:Session.Client) : void
+    + {static} Deserialize(data:MiniYaml) : SlotClient
+    + Serialize(key:string) : MiniYamlNode
+}
+class GameSave {
+    + <<const>> EOFMarker : int
+    + <<const>> MetadataMarker : int
+    + <<const>> TraitDataMarker : int
+    + LastOrdersFrame : int <<get>>
+    + LastSyncFrame : int <<get>>
+    firstBotSlotIndex : int
+    + GameSave()
+    + GameSave(filepath:string)
+    + StartGame(lobbyInfo:Session, map:MapPreview) : void
+    + DispatchOrders(conn:Connection, frame:int, data:byte[]) : void
+    + ParseOrders(lobbyInfo:Session, packetFn:Action<int, int, byte[]>) : void
+    + AddTraitData(traitIndex:int, data:MiniYaml) : void
+    + Save(path:string) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+SlotClient --> "Color" Color
+GameSave o-> "ordersStream" MemoryStream
+GameSave --> "Slots<string,Session.Slot>" "Dictionary`2"
+GameSave --> "SlotClients<string,SlotClient>" "Dictionary`2"
+GameSave o-> "TraitData<int,MiniYaml>" "Dictionary`2"
+@enduml

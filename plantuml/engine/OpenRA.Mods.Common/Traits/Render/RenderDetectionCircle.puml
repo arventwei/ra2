@@ -1,0 +1,25 @@
+@startuml
+class RenderDetectionCircleInfo {
+    + <<readonly>> TrailCount : int = 0
+    + <<readonly>> Width : float = 1
+    + <<readonly>> BorderWidth : float = 3
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RenderDetectionCircle {
+    + RenderDetectionCircle(self:Actor, info:RenderDetectionCircleInfo)
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- RenderDetectionCircleInfo
+"Requires`1" "<DetectCloakedInfo>" <|-- RenderDetectionCircleInfo
+RenderDetectionCircleInfo o-> "UpdateLineTick" WAngle
+RenderDetectionCircleInfo o-> "Color" Color
+RenderDetectionCircleInfo o-> "BorderColor" Color
+ITick <|-- RenderDetectionCircle
+IRenderAnnotationsWhenSelected <|-- RenderDetectionCircle
+RenderDetectionCircle --> "info" RenderDetectionCircleInfo
+RenderDetectionCircle --> "lineAngle" WAngle
+@enduml

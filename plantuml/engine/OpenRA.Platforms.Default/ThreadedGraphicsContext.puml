@@ -1,0 +1,159 @@
+@startuml
+class ThreadedGraphicsContext <<sealed>> {
+    + <<readonly>> BatchSize : int
+    <<readonly>> syncObject : object
+    + ThreadedGraphicsContext(context:Sdl2GraphicsContext, batchSize:int)
+    RenderThread(contextObject:object) : void
+    GetMessage() : Message
+    QueueMessage(message:Message) : void
+    RunMessage(message:Message) : object
+    + Send(method:Func<T>) : T
+    + Send(method:Func<object, T>, state:object) : T
+    + Post(method:Action) : void
+    + Post(method:Action<object>, state:object) : void
+    + Dispose() : void
+    + GLVersion : string <<get>>
+    + Clear() : void
+    + ClearDepthBuffer() : void
+    + CreateFrameBuffer(s:Size) : IFrameBuffer
+    + CreateFrameBuffer(s:Size, clearColor:Color) : IFrameBuffer
+    + CreateShader(name:string) : IShader
+    + CreateTexture() : ITexture
+    + CreateVertexBuffer(length:int) : IVertexBuffer<Vertex>
+    + DisableDepthBuffer() : void
+    + DisableScissor() : void
+    + DrawPrimitives(type:PrimitiveType, firstVertex:int, numVertices:int) : void
+    + EnableDepthBuffer() : void
+    + EnableScissor(left:int, top:int, width:int, height:int) : void
+    + Present() : void
+    + SetBlendMode(mode:BlendMode) : void
+    + SetVSyncEnabled(enabled:bool) : void
+}
+class ThreadedFrameBuffer {
+    + ThreadedFrameBuffer(device:ThreadedGraphicsContext, frameBuffer:IFrameBuffer)
+    + Bind() : void
+    + Unbind() : void
+    + EnableScissor(rect:Rectangle) : void
+    + DisableScissor() : void
+    + Dispose() : void
+}
+class ThreadedVertexBuffer {
+    + ThreadedVertexBuffer(device:ThreadedGraphicsContext, vertexBuffer:IVertexBuffer<Vertex>)
+    + Bind() : void
+    + SetData(vertices:Vertex[], length:int) : void
+    + SetData(vertices:Vertex[], offset:int, start:int, length:int) : void
+    + Dispose() : void
+}
+class ThreadedTexture {
+    <<readonly>> id : uint
+    + ThreadedTexture(device:ThreadedGraphicsContext, texture:ITextureInternal)
+    + ID : uint <<get>>
+    + SetEmpty(width:int, height:int) : void
+    + GetData() : byte[]
+    + SetData(colors:uint[,]) : void
+    + SetData(colors:byte[], width:int, height:int) : void
+    + Dispose() : void
+}
+class ThreadedShader {
+    + ThreadedShader(device:ThreadedGraphicsContext, shader:IShader)
+    + PrepareRender() : void
+    + SetBool(name:string, value:bool) : void
+    + SetMatrix(param:string, mtx:float[]) : void
+    + SetTexture(param:string, texture:ITexture) : void
+    + SetVec(name:string, x:float) : void
+    + SetVec(name:string, vec:float[], length:int) : void
+    + SetVec(name:string, x:float, y:float) : void
+    + SetVec(name:string, x:float, y:float, z:float) : void
+}
+class "Stack`1"<T> {
+}
+class "Queue`1"<T> {
+}
+class "Func`1"<T> {
+}
+class "Func`2"<T1,T2> {
+}
+class "Action`1"<T> {
+}
+class Message {
+    + Message(device:ThreadedGraphicsContext)
+    <<volatile>> param : object
+    <<volatile>> result : object
+    + SetAction(method:Action) : void
+    + SetAction(method:Action<object>, state:object) : void
+    + SetAction(method:Func<object>) : void
+    + SetAction(method:Func<object, object>, state:object) : void
+    + Execute() : void
+    + Result() : object
+}
+class "IVertexBuffer`1"<T> {
+}
+IGraphicsContext <|-- ThreadedGraphicsContext
+ThreadedGraphicsContext o-> "verticesPool<Vertex[]>" "Stack`1"
+ThreadedGraphicsContext o-> "messagePool<Message>" "Stack`1"
+ThreadedGraphicsContext o-> "messages<Message>" "Queue`1"
+ThreadedGraphicsContext --> "renderThread" Thread
+ThreadedGraphicsContext --> "messageException" ExceptionDispatchInfo
+ThreadedGraphicsContext --> "doClear<object>" "Func`1"
+ThreadedGraphicsContext --> "doClearDepthBuffer" Action
+ThreadedGraphicsContext --> "doDisableDepthBuffer" Action
+ThreadedGraphicsContext --> "doEnableDepthBuffer" Action
+ThreadedGraphicsContext --> "doDisableScissor" Action
+ThreadedGraphicsContext --> "doPresent" Action
+ThreadedGraphicsContext --> "getGLVersion<string>" "Func`1"
+ThreadedGraphicsContext --> "getCreateTexture<ITexture>" "Func`1"
+ThreadedGraphicsContext --> "getCreateFrameBuffer<object,IFrameBuffer>" "Func`2"
+ThreadedGraphicsContext --> "getCreateShader<object,IShader>" "Func`2"
+ThreadedGraphicsContext --> "getCreateVertexBuffer<object,IVertexBuffer<Vertex>>" "Func`2"
+ThreadedGraphicsContext --> "doDrawPrimitives<object>" "Action`1"
+ThreadedGraphicsContext --> "doEnableScissor<object>" "Action`1"
+ThreadedGraphicsContext --> "doSetBlendMode<object>" "Action`1"
+ThreadedGraphicsContext --> "doSetVSync<object>" "Action`1"
+IFrameBuffer <|-- ThreadedFrameBuffer
+ThreadedFrameBuffer --> "device" ThreadedGraphicsContext
+ThreadedFrameBuffer --> "getTexture<ITexture>" "Func`1"
+ThreadedFrameBuffer --> "bind" Action
+ThreadedFrameBuffer --> "unbind" Action
+ThreadedFrameBuffer --> "dispose" Action
+ThreadedFrameBuffer --> "enableScissor<object>" "Action`1"
+ThreadedFrameBuffer --> "disableScissor" Action
+ThreadedFrameBuffer --> "Texture" ITexture
+"IVertexBuffer`1" "<Vertex>" <|-- ThreadedVertexBuffer
+ThreadedVertexBuffer --> "device" ThreadedGraphicsContext
+ThreadedVertexBuffer --> "bind" Action
+ThreadedVertexBuffer --> "setData1<object>" "Action`1"
+ThreadedVertexBuffer --> "setData2<object>" "Action`1"
+ThreadedVertexBuffer --> "setData3<object,object>" "Func`2"
+ThreadedVertexBuffer --> "dispose" Action
+ITextureInternal <|-- ThreadedTexture
+ThreadedTexture --> "device" ThreadedGraphicsContext
+ThreadedTexture --> "getScaleFilter<object>" "Func`1"
+ThreadedTexture --> "setScaleFilter<object>" "Action`1"
+ThreadedTexture --> "getSize<object>" "Func`1"
+ThreadedTexture --> "setEmpty<object>" "Action`1"
+ThreadedTexture --> "getData<byte[]>" "Func`1"
+ThreadedTexture --> "setData1<object,object>" "Func`2"
+ThreadedTexture --> "setData2<object>" "Action`1"
+ThreadedTexture --> "setData3<object,object>" "Func`2"
+ThreadedTexture --> "dispose" Action
+ThreadedTexture --> "ScaleFilter" TextureScaleFilter
+ThreadedTexture --> "Size" Size
+IShader <|-- ThreadedShader
+ThreadedShader --> "device" ThreadedGraphicsContext
+ThreadedShader --> "prepareRender" Action
+ThreadedShader --> "setBool<object>" "Action`1"
+ThreadedShader --> "setMatrix<object>" "Action`1"
+ThreadedShader --> "setTexture<object>" "Action`1"
+ThreadedShader --> "setVec1<object>" "Action`1"
+ThreadedShader --> "setVec2<object>" "Action`1"
+ThreadedShader --> "setVec3<object>" "Action`1"
+ThreadedShader --> "setVec4<object>" "Action`1"
+ThreadedGraphicsContext +-- Message
+Message o-> "completed" AutoResetEvent
+Message --> "device" ThreadedGraphicsContext
+Message --> "action" Action
+Message --> "actionWithParam<object>" "Action`1"
+Message --> "func<object>" "Func`1"
+Message --> "funcWithParam<object,object>" "Func`2"
+Message --> "edi" ExceptionDispatchInfo
+@enduml

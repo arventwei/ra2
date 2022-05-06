@@ -1,0 +1,11 @@
+@startuml
+class TransformProperties {
+    + TransformProperties(context:ScriptContext, self:Actor)
+    + Deploy() : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- TransformProperties
+"Requires`1" "<TransformsInfo>" <|-- TransformProperties
+TransformProperties --> "transforms" Transforms
+@enduml

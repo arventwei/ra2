@@ -1,0 +1,21 @@
+@startuml
+class DeliverUnit {
+    <<readonly>> assignTargetOnFirstRun : bool
+    + DeliverUnit(self:Actor, deliverRange:WDist)
+    + DeliverUnit(self:Actor, destination:Target, deliverRange:WDist)
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+class ReleaseUnit {
+    + ReleaseUnit(self:Actor)
+}
+Activity <|-- DeliverUnit
+DeliverUnit --> "carryall" Carryall
+DeliverUnit --> "body" BodyOrientation
+DeliverUnit --> "deliverRange" WDist
+DeliverUnit --> "destination" Target
+DeliverUnit +-- ReleaseUnit
+Activity <|-- ReleaseUnit
+ReleaseUnit --> "carryall" Carryall
+ReleaseUnit --> "body" BodyOrientation
+ReleaseUnit --> "facing" IFacing
+@enduml

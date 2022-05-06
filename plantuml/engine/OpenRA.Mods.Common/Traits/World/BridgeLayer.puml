@@ -1,0 +1,22 @@
+@startuml
+interface IBridgeSegment {
+    Repair(repairer:Actor) : void
+    Demolish(saboteur:Actor, damageTypes:BitSet<DamageType>) : void
+    Type : string <<get>>
+    Valid : bool <<get>>
+}
+class BridgeLayerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BridgeLayer {
+    + BridgeLayer(world:World)
+    + Add(b:Actor) : void
+    + Remove(b:Actor) : void
+}
+class "CellLayer`1"<T> {
+}
+IBridgeSegment --> "DamageState" DamageState
+IBridgeSegment --> "Location" CPos
+TraitInfo <|-- BridgeLayerInfo
+BridgeLayer --> "bridges<Actor>" "CellLayer`1"
+@enduml

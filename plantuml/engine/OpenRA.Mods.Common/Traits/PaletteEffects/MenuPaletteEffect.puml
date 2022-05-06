@@ -1,0 +1,33 @@
+@startuml
+class MenuPaletteEffectInfo {
+    + <<readonly>> FadeLength : int = 10
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MenuPaletteEffect {
+    frac : float = 0
+    startTime : long
+    endTime : long
+    + MenuPaletteEffect(info:MenuPaletteEffectInfo)
+    + Fade(type:EffectType) : void
+    Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+    {static} ColorForEffect(t:EffectType, orig:Color) : Color
+    + AdjustPalette(palettes:IReadOnlyDictionary<string, MutablePalette>) : void
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+    GameLoaded(world:World) : void
+}
+enum EffectType {
+    None,
+    Black,
+    Desaturated,
+}
+TraitInfo <|-- MenuPaletteEffectInfo
+IPaletteModifier <|-- MenuPaletteEffect
+IRender <|-- MenuPaletteEffect
+IWorldLoaded <|-- MenuPaletteEffect
+INotifyGameLoaded <|-- MenuPaletteEffect
+MenuPaletteEffect --> "Info" MenuPaletteEffectInfo
+MenuPaletteEffect o-> "from" EffectType
+MenuPaletteEffect o-> "to" EffectType
+MenuPaletteEffect +-- EffectType
+@enduml

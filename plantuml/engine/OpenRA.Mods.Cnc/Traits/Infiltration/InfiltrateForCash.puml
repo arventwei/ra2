@@ -1,0 +1,21 @@
+@startuml
+class InfiltrateForCashInfo {
+    + <<readonly>> Percentage : int = 100
+    + <<readonly>> Minimum : int
+    + <<readonly>> Maximum : int
+    + <<readonly>> InfiltratedNotification : string = null
+    + <<readonly>> InfiltrationNotification : string = null
+    + <<readonly>> ShowTicks : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class InfiltrateForCash {
+    + InfiltrateForCash(info:InfiltrateForCashInfo)
+    Infiltrated(self:Actor, infiltrator:Actor, types:BitSet<TargetableType>) : void
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- InfiltrateForCashInfo
+InfiltrateForCashInfo o-> "Types<TargetableType>" "BitSet`1"
+INotifyInfiltrated <|-- InfiltrateForCash
+InfiltrateForCash --> "info" InfiltrateForCashInfo
+@enduml

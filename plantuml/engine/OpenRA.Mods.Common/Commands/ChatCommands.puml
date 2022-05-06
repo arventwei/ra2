@@ -1,0 +1,19 @@
+@startuml
+class ChatCommandsInfo {
+}
+class ChatCommands {
+    + ChatCommands()
+    + OnChat(playername:string, message:string) : bool
+    + RegisterCommand(name:string, command:IChatCommand) : void
+}
+interface IChatCommand {
+    InvokeCommand(command:string, arg:string) : void
+}
+class "TraitInfo`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+"TraitInfo`1" "<ChatCommands>" <|-- ChatCommandsInfo
+INotifyChat <|-- ChatCommands
+ChatCommands --> "Commands<string,IChatCommand>" "Dictionary`2"
+@enduml

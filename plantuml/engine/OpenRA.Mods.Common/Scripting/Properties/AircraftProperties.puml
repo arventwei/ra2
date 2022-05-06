@@ -1,0 +1,14 @@
+@startuml
+class AircraftProperties {
+    + AircraftProperties(context:ScriptContext, self:Actor)
+    + Move(cell:CPos) : void
+    + ReturnToBase(destination:Actor) : void
+    + Land(landOn:Actor) : void
+    + Resupply() : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- AircraftProperties
+"Requires`1" "<AircraftInfo>" <|-- AircraftProperties
+AircraftProperties --> "aircraft" Aircraft
+@enduml

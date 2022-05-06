@@ -1,0 +1,28 @@
+@startuml
+class PrimaryExts <<static>> {
+    + {static} IsPrimaryBuilding(a:Actor) : bool
+}
+class PrimaryBuildingInfo {
+    + <<readonly>> PrimaryCondition : string = null
+    + <<readonly>> SelectionNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PrimaryBuilding {
+    <<const>> OrderID : string = "PrimaryProducer"
+    primaryToken : int
+    + IsPrimary : bool <<get>>
+    + PrimaryBuilding(self:Actor, info:PrimaryBuildingInfo)
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    ResolveOrder(self:Actor, order:Order) : void
+    + SetPrimaryProducer(self:Actor, isPrimary:bool) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+ConditionalTraitInfo <|-- PrimaryBuildingInfo
+"ConditionalTrait`1" "<PrimaryBuildingInfo>" <|-- PrimaryBuilding
+IIssueOrder <|-- PrimaryBuilding
+IResolveOrder <|-- PrimaryBuilding
+PrimaryBuilding --> "Orders<IOrderTargeter>" "IEnumerable`1"
+@enduml

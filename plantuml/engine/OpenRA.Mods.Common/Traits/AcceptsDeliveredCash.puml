@@ -1,0 +1,17 @@
+@startuml
+class AcceptsDeliveredCashInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AcceptsDeliveredCash {
+    + AcceptsDeliveredCash(self:Actor, info:AcceptsDeliveredCashInfo)
+    OnAcceptingCash(self:Actor, donor:Actor) : void
+    OnDeliveringCash(self:Actor, acceptor:Actor) : void
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- AcceptsDeliveredCashInfo
+AcceptsDeliveredCashInfo o-> "ValidTypes<string>" "HashSet`1"
+AcceptsDeliveredCashInfo o-> "ValidRelationships" PlayerRelationship
+INotifyCashTransfer <|-- AcceptsDeliveredCash
+AcceptsDeliveredCash --> "info" AcceptsDeliveredCashInfo
+@enduml

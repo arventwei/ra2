@@ -1,0 +1,15 @@
+@startuml
+abstract class "GlobalButtonOrderGenerator`1"<T> {
+    order : string
+    + GlobalButtonOrderGenerator(order:string)
+}
+class PowerDownOrderGenerator {
+    + PowerDownOrderGenerator()
+}
+class SellOrderGenerator {
+    + SellOrderGenerator()
+}
+OrderGenerator <|-- "GlobalButtonOrderGenerator`1"
+"GlobalButtonOrderGenerator`1" "<ToggleConditionOnOrder>" <|-- PowerDownOrderGenerator
+"GlobalButtonOrderGenerator`1" "<Sellable>" <|-- SellOrderGenerator
+@enduml

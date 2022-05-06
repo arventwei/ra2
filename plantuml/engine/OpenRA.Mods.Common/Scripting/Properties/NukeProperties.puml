@@ -1,0 +1,11 @@
+@startuml
+class NukeProperties {
+    + NukeProperties(context:ScriptContext, self:Actor)
+    + ActivateNukePower(target:CPos) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- NukeProperties
+"Requires`1" "<NukePowerInfo>" <|-- NukeProperties
+NukeProperties --> "np" NukePower
+@enduml

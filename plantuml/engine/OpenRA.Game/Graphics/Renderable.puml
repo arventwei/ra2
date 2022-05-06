@@ -1,0 +1,21 @@
+@startuml
+interface IRenderable {
+    ZOffset : int <<get>>
+    IsDecoration : bool <<get>>
+    WithPalette(newPalette:PaletteReference) : IRenderable
+    WithZOffset(newOffset:int) : IRenderable
+    OffsetBy(offset:WVec) : IRenderable
+    AsDecoration() : IRenderable
+    PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+}
+interface ITintableRenderable {
+    WithTint(newTint:float3) : IRenderable
+}
+interface IFinalizedRenderable {
+    Render(wr:WorldRenderer) : void
+    RenderDebugGeometry(wr:WorldRenderer) : void
+    ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable --> "Pos" WPos
+IRenderable --> "Palette" PaletteReference
+@enduml

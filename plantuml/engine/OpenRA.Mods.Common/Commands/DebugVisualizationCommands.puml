@@ -1,0 +1,15 @@
+@startuml
+class DebugVisualizationCommandsInfo {
+}
+class DebugVisualizationCommands {
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + InvokeCommand(name:string, arg:string) : void
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<DebugVisualizationCommands>" <|-- DebugVisualizationCommandsInfo
+IChatCommand <|-- DebugVisualizationCommands
+IWorldLoaded <|-- DebugVisualizationCommands
+DebugVisualizationCommands --> "debugVis" DebugVisualizations
+DebugVisualizationCommands --> "devMode" DeveloperMode
+@enduml

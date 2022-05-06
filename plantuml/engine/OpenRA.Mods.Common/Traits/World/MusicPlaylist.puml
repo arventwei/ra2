@@ -1,0 +1,44 @@
+@startuml
+class MusicPlaylistInfo {
+    + <<readonly>> StartingMusic : string = null
+    + <<readonly>> VictoryMusic : string = null
+    + <<readonly>> DefeatMusic : string = null
+    + <<readonly>> BackgroundMusic : string = null
+    + <<readonly>> AllowMuteBackgroundMusic : bool = false
+    + <<readonly>> DisableWorldSounds : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MusicPlaylist {
+    + <<readonly>> IsMusicInstalled : bool
+    + <<readonly>> IsMusicAvailable : bool
+    + <<readonly>> AllowMuteBackgroundMusic : bool
+    + IsBackgroundMusicMuted : bool <<get>>
+    + CurrentSongIsBackground : bool <<get>>
+    + MusicPlaylist(world:World, info:MusicPlaylistInfo)
+    WorldLoaded(world:World, wr:WorldRenderer) : void
+    GameLoaded(world:World) : void
+    SongExists(song:string) : bool
+    SongExists(song:MusicInfo) : bool
+    + CurrentSong() : MusicInfo
+    + AvailablePlaylist() : MusicInfo[]
+    GameOver(world:World) : void
+    Play() : void
+    + Play(music:MusicInfo) : void
+    + Play(music:MusicInfo, onComplete:Action) : void
+    + SetBackgroundMusic(music:MusicInfo) : void
+    + GetNextSong() : MusicInfo
+    + GetPrevSong() : MusicInfo
+    GetSong(reverse:bool) : MusicInfo
+    + Stop() : void
+    Disposing(self:Actor) : void
+}
+TraitInfo <|-- MusicPlaylistInfo
+INotifyActorDisposing <|-- MusicPlaylist
+IGameOver <|-- MusicPlaylist
+IWorldLoaded <|-- MusicPlaylist
+INotifyGameLoaded <|-- MusicPlaylist
+MusicPlaylist --> "info" MusicPlaylistInfo
+MusicPlaylist --> "world" World
+MusicPlaylist --> "currentSong" MusicInfo
+MusicPlaylist --> "currentBackgroundSong" MusicInfo
+@enduml

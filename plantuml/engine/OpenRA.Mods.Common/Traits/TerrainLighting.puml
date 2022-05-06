@@ -1,0 +1,41 @@
+@startuml
+class TerrainLightingInfo {
+    + <<readonly>> Intensity : float = 1
+    + <<readonly>> HeightStep : float = 0
+    + <<readonly>> RedTint : float = 1
+    + <<readonly>> GreenTint : float = 1
+    + <<readonly>> BlueTint : float = 1
+    + <<readonly>> BinSize : int = 10
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TerrainLighting <<sealed>> {
+    nextLightSourceToken : int = 1
+    +  <<event>> CellChanged : Action<MPos> 
+    + TerrainLighting(world:World, info:TerrainLightingInfo)
+    Bounds(source:LightSource) : Rectangle
+    + AddLightSource(pos:WPos, range:WDist, intensity:float, tint:float3) : int
+    + RemoveLightSource(token:int) : void
+    TintAt(pos:WPos) : float3
+}
+class LightSource {
+    + <<readonly>> Intensity : float
+    + LightSource(pos:WPos, cell:CPos, range:WDist, intensity:float, tint:float3)
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "SpatiallyPartitioned`1"<T> {
+}
+TraitInfo <|-- TerrainLightingInfo
+ILobbyCustomRulesIgnore <|-- TerrainLightingInfo
+ITerrainLighting <|-- TerrainLighting
+TerrainLighting --> "info" TerrainLightingInfo
+TerrainLighting --> "map" Map
+TerrainLighting o-> "lightSources<int,LightSource>" "Dictionary`2"
+TerrainLighting --> "partitionedLightSources<LightSource>" "SpatiallyPartitioned`1"
+TerrainLighting --> "globalTint" float3
+TerrainLighting +-- LightSource
+LightSource --> "Pos" WPos
+LightSource --> "Cell" CPos
+LightSource --> "Range" WDist
+LightSource --> "Tint" float3
+@enduml

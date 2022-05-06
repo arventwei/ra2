@@ -1,0 +1,24 @@
+@startuml
+class AttackChargesInfo {
+    + <<readonly>> ChargeLevel : int = 25
+    + <<readonly>> ChargeRate : int = 1
+    + <<readonly>> DischargeRate : int = 1
+    + <<readonly>> ChargingCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackCharges {
+    chargingToken : int
+    charging : bool
+    + ChargeLevel : int <<get>>
+    + AttackCharges(self:Actor, info:AttackChargesInfo)
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Selling(self:Actor) : void
+    Sold(self:Actor) : void
+}
+AttackOmniInfo <|-- AttackChargesInfo
+AttackOmni <|-- AttackCharges
+INotifyAttack <|-- AttackCharges
+INotifySold <|-- AttackCharges
+AttackCharges --> "info" AttackChargesInfo
+@enduml

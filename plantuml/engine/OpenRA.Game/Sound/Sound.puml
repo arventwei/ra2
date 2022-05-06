@@ -1,0 +1,79 @@
+@startuml
+interface ISoundLoader {
+    TryParseSound(stream:Stream, sound:ISoundFormat) : bool
+}
+interface ISoundFormat {
+    Channels : int <<get>>
+    SampleBits : int <<get>>
+    SampleRate : int <<get>>
+    LengthInSeconds : float <<get>>
+    GetPCMInputStream() : Stream
+}
+enum SoundType {
+    World,
+    UI,
+}
+class Sound <<sealed>> {
+    + DummyEngine : bool <<get>>
+    + Sound(platform:IPlatform, soundSettings:SoundSettings)
+    LoadSound(filename:string, loadFormat:Func<ISoundFormat, T>) : T
+    + Initialize(loaders:ISoundLoader[], fileSystem:IReadOnlyFileSystem) : void
+    + AvailableDevices() : SoundDevice[]
+    + SetListenerPosition(position:WPos) : void
+    Play(type:SoundType, player:Player, name:string, headRelative:bool, pos:WPos, volumeModifier:float, loop:bool) : ISound
+    + StopAudio() : void
+    + MuteAudio() : void
+    + UnmuteAudio() : void
+    + DisableAllSounds : bool <<get>> <<set>>
+    + DisableWorldSounds : bool <<get>> <<set>>
+    + Play(type:SoundType, name:string) : ISound
+    + Play(type:SoundType, name:string, pos:WPos) : ISound
+    + Play(type:SoundType, name:string, volumeModifier:float) : ISound
+    + Play(type:SoundType, name:string, pos:WPos, volumeModifier:float) : ISound
+    + PlayToPlayer(type:SoundType, player:Player, name:string) : ISound
+    + PlayToPlayer(type:SoundType, player:Player, name:string, pos:WPos) : ISound
+    + PlayLooped(type:SoundType, name:string) : ISound
+    + PlayLooped(type:SoundType, name:string, pos:WPos) : ISound
+    + Play(type:SoundType, names:string[], world:World, player:Player, volumeModifier:float) : ISound
+    + Play(type:SoundType, names:string[], world:World, pos:WPos, player:Player, volumeModifier:float) : ISound
+    + PlayVideo(raw:byte[], channels:int, sampleBits:int, sampleRate:int) : void
+    + PlayVideo() : void
+    + PauseVideo() : void
+    + StopVideo() : void
+    + Tick() : void
+    + MusicPlaying : bool <<get>>
+    + PlayMusic(m:MusicInfo) : void
+    + PlayMusicThen(m:MusicInfo, then:Action) : void
+    + PlayMusic() : void
+    + StopSound(sound:ISound) : void
+    + StopMusic() : void
+    + PauseMusic() : void
+    soundVolumeModifier : float = 1.0f
+    + SoundVolumeModifier : float <<get>> <<set>>
+    InternalSoundVolume : float <<get>>
+    + SoundVolume : float <<get>> <<set>>
+    + MusicVolume : float <<get>> <<set>>
+    + VideoVolume : float <<get>> <<set>>
+    + MusicSeekPosition : float <<get>>
+    + VideoSeekPosition : float <<get>>
+    + PlayPredefined(soundType:SoundType, ruleset:Ruleset, p:Player, voicedActor:Actor, type:string, definition:string, variant:string, relative:bool, pos:WPos, volumeModifier:float, attenuateVolume:bool) : bool
+    + PlayNotification(rules:Ruleset, player:Player, type:string, notification:string, variant:string) : bool
+    + Dispose() : void
+}
+class "Cache`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+IDisposable <|-- ISoundFormat
+IDisposable <|-- Sound
+Sound --> "soundEngine" ISoundEngine
+Sound --> "fileSystem" IReadOnlyFileSystem
+Sound --> "sounds<string,ISoundSource>" "Cache`2"
+Sound --> "videoSource" ISoundSource
+Sound --> "music" ISound
+Sound --> "video" ISound
+Sound --> "currentMusic" MusicInfo
+Sound o-> "currentSounds<uint,ISound>" "Dictionary`2"
+Sound --> "onMusicComplete" Action
+Sound --> "CurrentMusic" MusicInfo
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+class CncLoadScreen <<sealed>> {
+    loadTick : int
+    versionText : string
+    lastDensity : int
+    + <<override>> Init(modData:ModData, info:Dictionary<string, string>) : void
+    + <<override>> DisplayInner(r:Renderer, s:Sheet, density:int) : void
+}
+SheetLoadScreen <|-- CncLoadScreen
+CncLoadScreen --> "nodLogo" Sprite
+CncLoadScreen --> "gdiLogo" Sprite
+CncLoadScreen --> "evaLogo" Sprite
+CncLoadScreen --> "brightBlock" Sprite
+CncLoadScreen --> "dimBlock" Sprite
+CncLoadScreen --> "nodPos" float2
+CncLoadScreen --> "gdiPos" float2
+CncLoadScreen --> "evaPos" float2
+CncLoadScreen --> "bounds" Rectangle
+CncLoadScreen --> "lastSheet" Sheet
+CncLoadScreen --> "lastResolution" Size
+@enduml

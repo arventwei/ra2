@@ -1,0 +1,16 @@
+@startuml
+class AcceptsDeliveredExperienceInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AcceptsDeliveredExperience {
+    + AcceptsDeliveredExperience(self:Actor, info:AcceptsDeliveredExperienceInfo)
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- AcceptsDeliveredExperienceInfo
+"Requires`1" "<GainsExperienceInfo>" <|-- AcceptsDeliveredExperienceInfo
+AcceptsDeliveredExperienceInfo o-> "ValidTypes<string>" "HashSet`1"
+AcceptsDeliveredExperienceInfo o-> "ValidRelationships" PlayerRelationship
+@enduml

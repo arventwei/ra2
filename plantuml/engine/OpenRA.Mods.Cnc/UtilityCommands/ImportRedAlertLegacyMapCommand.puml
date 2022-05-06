@@ -1,0 +1,23 @@
+@startuml
+class ImportRedAlertLegacyMapCommand {
+    + ImportRedAlertLegacyMapCommand()
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+    + <<override>> ValidateMapFormat(format:int) : void
+    UnpackTileData(ms:MemoryStream) : void
+    UnpackOverlayData(ms:MemoryStream) : void
+    + <<override>> ParseTreeActor(input:string) : string
+    + <<override>> ParseActorLocation(input:string, loc:int) : CPos
+    + <<override>> LoadPlayer(file:IniFile, section:string) : void
+    + {static} ReadPackedSection(mapPackSection:IniSection) : MemoryStream
+    + <<override>> ReadPacks(file:IniFile, filename:string) : void
+    + <<override>> ReadActors(file:IniFile) : void
+    + <<override>> SaveWaypoint(waypointNumber:int, waypointReference:ActorReference) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+ImportLegacyMapCommand <|-- ImportRedAlertLegacyMapCommand
+IUtilityCommand <|-- ImportRedAlertLegacyMapCommand
+ImportRedAlertLegacyMapCommand o-> "overlayResourceMapping<string,(byte Type, byte Index)>" "Dictionary`2"
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+class WandersInfo {
+    + <<readonly>> WanderMoveRadius : int = 1
+    + <<readonly>> ReduceMoveRadiusDelay : int = 5
+    + <<readonly>> MinMoveDelay : int = 0
+    + <<readonly>> MaxMoveDelay : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Wanders {
+    countdown : int
+    ticksIdle : int
+    effectiveMoveRadius : int
+    + Wanders(self:Actor, info:WandersInfo)
+    OnBecomingIdle(self:Actor) : void
+    TickIdle(self:Actor) : void
+    PickTargetLocation() : CPos?
+    + <<virtual>> DoAction(self:Actor, targetCell:CPos) : void
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WandersInfo
+"Requires`1" "<IMoveInfo>" <|-- WandersInfo
+WandersInfo o-> "AvoidTerrainTypes<string>" "HashSet`1"
+"ConditionalTrait`1" "<WandersInfo>" <|-- Wanders
+INotifyIdle <|-- Wanders
+INotifyBecomingIdle <|-- Wanders
+Wanders --> "self" Actor
+Wanders --> "info" WandersInfo
+Wanders --> "move" IResolveOrder
+@enduml

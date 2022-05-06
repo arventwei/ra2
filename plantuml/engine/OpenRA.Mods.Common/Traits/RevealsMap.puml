@@ -1,0 +1,18 @@
+@startuml
+class RevealsMapInfo {
+    + <<readonly>> RevealGeneratedShroud : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RevealsMap {
+    + RevealsMap(info:RevealsMapInfo)
+    Disposing(self:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- RevealsMapInfo
+RevealsMapInfo o-> "ValidRelationships" PlayerRelationship
+"ConditionalTrait`1" "<RevealsMapInfo>" <|-- RevealsMap
+INotifyKilled <|-- RevealsMap
+INotifyActorDisposing <|-- RevealsMap
+@enduml

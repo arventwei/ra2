@@ -1,0 +1,72 @@
+@startuml
+enum ServerState {
+    WaitingPlayers= 1,
+    GameStarted= 2,
+    ShuttingDown= 3,
+}
+enum ServerType {
+    Local= 0,
+    Multiplayer= 1,
+    Dedicated= 2,
+}
+class Server {
+    + <<readonly>> TwoHumansRequiredText : string = "This server requires at least two human players to start a match."
+    <<readonly>> randomSeed : int
+    waitingForAuthenticationCallback : int = 0
+    + {static} SyncClientToPlayerReference(c:Session.Client, pr:PlayerReference) : void
+    {static} SendData(s:Socket, data:byte[]) : void
+    + Shutdown() : void
+    + EndGame() : void
+    + RecordFakeHandshake() : void
+    + Server(endpoints:List<IPEndPoint>, settings:ServerSettings, modData:ModData, type:ServerType)
+    nextPlayerIndex : int
+    + ChooseFreePlayerIndex() : int
+    AcceptConnection(listener:TcpListener) : void
+    ValidateClient(newConn:Connection, data:string) : void
+    DispatchOrdersToClient(c:Connection, client:int, frame:int, data:byte[]) : void
+    AnyUndefinedWinStates() : bool
+    SetPlayerDefeat(playerIndex:int) : void
+    OutOfSync(frame:int) : void
+    lastDefeatStateFrame : int
+    lastDefeatState : ulong
+    HandleSyncOrder(frame:int, packet:byte[]) : void
+    + DispatchOrdersToClients(conn:Connection, frame:int, data:byte[]) : void
+    + DispatchOrders(conn:Connection, frame:int, data:byte[]) : void
+    InterpretServerOrders(conn:Connection, data:byte[]) : void
+    + SendOrderTo(conn:Connection, order:string, data:string) : void
+    + SendMessage(text:string, conn:Connection) : void
+    InterpretServerOrder(conn:Connection, o:Order) : void
+    + GetClient(conn:Connection) : Session.Client
+    + DropClient(toDrop:Connection) : void
+    + SyncLobbyInfo() : void
+    + SyncLobbyClients() : void
+    + SyncLobbySlots() : void
+    + SyncLobbyGlobalSettings() : void
+    + SyncClientPing() : void
+    + StartGame() : void
+    + GetEndpointForLocalConnection() : ConnectionTarget
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+Server o-> "Random" MersenneTwister
+Server --> "Type" ServerType
+Server o-> "Conns<Connection>" "List`1"
+Server o-> "PreConns<Connection>" "List`1"
+Server --> "LobbyInfo" Session
+Server --> "Settings" ServerSettings
+Server --> "ModData" ModData
+Server o-> "TempBans<string>" "List`1"
+Server --> "Map" MapPreview
+Server o-> "GameSave" GameSave
+Server o-> "listeners<TcpListener>" "List`1"
+Server o-> "serverTraits" TypeDictionary
+Server --> "playerDatabase" PlayerDatabase
+Server o-> "delayedActions" ActionQueue
+Server --> "recorder" ReplayRecorder
+Server --> "gameInfo" GameInformation
+Server o-> "worldPlayers<GameInformation.Player>" "List`1"
+Server --> "State" ServerState
+Server o-> "syncForFrame<int,byte[]>" "Dictionary`2"
+@enduml

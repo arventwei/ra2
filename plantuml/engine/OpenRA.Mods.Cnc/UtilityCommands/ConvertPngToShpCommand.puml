@@ -1,0 +1,9 @@
+@startuml
+class ConvertPngToShpCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+    {static} GlobArgs(args:string[], startIndex:int) : IEnumerable<string>
+}
+IUtilityCommand <|-- ConvertPngToShpCommand
+@enduml

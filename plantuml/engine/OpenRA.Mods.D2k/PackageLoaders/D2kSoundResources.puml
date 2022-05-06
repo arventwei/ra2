@@ -1,0 +1,29 @@
+@startuml
+class D2kSoundResourcesLoader {
+    TryParsePackage(s:Stream, filename:string, context:FileSystem.FileSystem, package:IReadOnlyPackage) : bool
+}
+class D2kSoundResources <<sealed>> {
+    + Name : string <<get>>
+    + D2kSoundResources(s:Stream, filename:string)
+    + GetStream(filename:string) : Stream
+    + OpenPackage(filename:string, context:FileSystem.FileSystem) : IReadOnlyPackage
+    + Contains(filename:string) : bool
+    + Dispose() : void
+}
+class Entry <<struct>> {
+    + <<readonly>> Offset : uint
+    + <<readonly>> Length : uint
+    + Entry(offset:uint, length:uint)
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+IPackageLoader <|-- D2kSoundResourcesLoader
+D2kSoundResourcesLoader +-- D2kSoundResources
+IReadOnlyPackage <|-- D2kSoundResources
+D2kSoundResources --> "Contents<string>" "IEnumerable`1"
+D2kSoundResources --> "s" Stream
+D2kSoundResources o-> "index<string,Entry>" "Dictionary`2"
+D2kSoundResources +-- Entry
+@enduml

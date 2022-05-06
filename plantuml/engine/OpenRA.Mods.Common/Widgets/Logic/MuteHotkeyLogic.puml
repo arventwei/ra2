@@ -1,0 +1,6 @@
+@startuml
+class MuteHotkeyLogic {
+    + MuteHotkeyLogic(widget:Widget, modData:ModData, logicArgs:Dictionary<string, MiniYaml>)
+}
+SingleHotkeyBaseLogic <|-- MuteHotkeyLogic
+@enduml

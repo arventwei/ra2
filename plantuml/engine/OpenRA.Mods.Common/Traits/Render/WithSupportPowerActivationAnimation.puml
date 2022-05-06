@@ -1,0 +1,21 @@
+@startuml
+class WithSupportPowerActivationAnimationInfo {
+    + <<readonly>> Sequence : string = "active"
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithSupportPowerActivationAnimation {
+    + WithSupportPowerActivationAnimation(self:Actor, info:WithSupportPowerActivationAnimationInfo)
+    Charged(self:Actor) : void
+    Activated(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithSupportPowerActivationAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithSupportPowerActivationAnimationInfo
+"ConditionalTrait`1" "<WithSupportPowerActivationAnimationInfo>" <|-- WithSupportPowerActivationAnimation
+INotifySupportPower <|-- WithSupportPowerActivationAnimation
+WithSupportPowerActivationAnimation --> "wsb" WithSpriteBody
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+class PlayerPowerProperties {
+    + PlayerPowerProperties(context:ScriptContext, player:Player)
+    + PowerProvided : int <<get>>
+    + PowerDrained : int <<get>>
+    + PowerState : string <<get>>
+    + TriggerPowerOutage(ticks:int) : void
+}
+class ActorPowerProperties {
+    + ActorPowerProperties(context:ScriptContext, self:Actor)
+    + Power : int <<get>>
+}
+class "Requires`1"<T> {
+}
+ScriptPlayerProperties <|-- PlayerPowerProperties
+"Requires`1" "<PowerManagerInfo>" <|-- PlayerPowerProperties
+PlayerPowerProperties --> "pm" PowerManager
+ScriptActorProperties <|-- ActorPowerProperties
+"Requires`1" "<PowerInfo>" <|-- ActorPowerProperties
+@enduml

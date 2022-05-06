@@ -1,0 +1,19 @@
+@startuml
+class RenderJammerCircleInfo {
+    + <<readonly>> Width : float = 1
+    + <<readonly>> BorderWidth : float = 3
+    + RenderAnnotations(wr:WorldRenderer, w:World, ai:ActorInfo, centerPosition:WPos) : IEnumerable<IRenderable>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RenderJammerCircle {
+    + RenderJammerCircle(info:RenderJammerCircleInfo)
+    + RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+TraitInfo <|-- RenderJammerCircleInfo
+IPlaceBuildingDecorationInfo <|-- RenderJammerCircleInfo
+RenderJammerCircleInfo o-> "Color" Color
+RenderJammerCircleInfo o-> "BorderColor" Color
+IRenderAnnotationsWhenSelected <|-- RenderJammerCircle
+RenderJammerCircle --> "info" RenderJammerCircleInfo
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+class DropPodsPowerInfo {
+    + <<readonly>> PodScatter : int = 3
+    + <<readonly>> EntryEffect : string = "podring"
+    + <<readonly>> EntryEffectSequence : string = "idle"
+    + <<readonly>> EntryEffectPalette : string = "effect"
+    + <<readonly>> CameraActor : string = null
+    + <<readonly>> CameraRemoveDelay : int = 25
+    + <<readonly>> Weapon : string = "Vulcan2"
+    + <<readonly>> WeaponDelay : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class DropPodsPower {
+    + DropPodsPower(self:Actor, info:DropPodsPowerInfo)
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    + SendDropPods(self:Actor, order:Order, facing:WAngle) : void
+}
+SupportPowerInfo <|-- DropPodsPowerInfo
+IRulesetLoaded <|-- DropPodsPowerInfo
+DropPodsPowerInfo o-> "Drops" int2
+DropPodsPowerInfo o-> "PodFacing" WAngle
+DropPodsPowerInfo --> "WeaponInfo" WeaponInfo
+SupportPower <|-- DropPodsPower
+DropPodsPower --> "info" DropPodsPowerInfo
+@enduml

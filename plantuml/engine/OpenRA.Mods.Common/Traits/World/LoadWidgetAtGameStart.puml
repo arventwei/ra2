@@ -1,0 +1,22 @@
+@startuml
+class LoadWidgetAtGameStartInfo {
+    + <<readonly>> ShellmapRoot : string = "MAINMENU"
+    + <<readonly>> IngameRoot : string = "INGAME_ROOT"
+    + <<readonly>> EditorRoot : string = "EDITOR_ROOT"
+    + <<readonly>> GameSaveLoadingRoot : string = "GAMESAVE_LOADING_SCREEN"
+    + <<readonly>> ClearRoot : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class LoadWidgetAtGameStart {
+    + LoadWidgetAtGameStart(info:LoadWidgetAtGameStartInfo)
+    GameLoading(world:World) : void
+    WorldLoaded(world:World, wr:WorldRenderer) : void
+    GameLoaded(world:World) : void
+}
+TraitInfo <|-- LoadWidgetAtGameStartInfo
+IWorldLoaded <|-- LoadWidgetAtGameStart
+INotifyGameLoading <|-- LoadWidgetAtGameStart
+INotifyGameLoaded <|-- LoadWidgetAtGameStart
+LoadWidgetAtGameStart --> "info" LoadWidgetAtGameStartInfo
+LoadWidgetAtGameStart --> "root" Widget
+@enduml

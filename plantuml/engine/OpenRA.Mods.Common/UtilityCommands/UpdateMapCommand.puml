@@ -1,0 +1,11 @@
+@startuml
+class UpdateMapCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+    {static} ApplyRules(modData:ModData, mapPackage:IReadWritePackage, rules:IEnumerable<UpdateRule>) : void
+}
+class "List`1"<T> {
+}
+IUtilityCommand <|-- UpdateMapCommand
+@enduml

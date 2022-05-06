@@ -1,0 +1,9 @@
+@startuml
+class FieldSaver <<static>> {
+    + {static} Save(o:object, includePrivateByDefault:bool) : MiniYaml
+    + {static} SaveDifferences(o:object, from:object, includePrivateByDefault:bool) : MiniYaml
+    + {static} SaveField(o:object, field:string) : MiniYamlNode
+    + {static} FormatValue(v:object) : string
+    + {static} FormatValue(o:object, f:FieldInfo) : string
+}
+@enduml

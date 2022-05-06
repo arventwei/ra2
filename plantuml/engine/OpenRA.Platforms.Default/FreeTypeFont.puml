@@ -1,0 +1,15 @@
+@startuml
+class FreeType <<static>> {
+}
+class FreeTypeFont <<sealed>> {
+    disposed : bool
+    + FreeTypeFont(data:byte[])
+    + CreateGlyph(c:char, size:int, deviceScale:float) : FontGlyph
+    + Dispose() : void
+}
+IFont <|-- FreeTypeFont
+FreeTypeFont o-> "EmptyGlyph" FontGlyph
+FreeTypeFont o-> "library" IntPtr
+FreeTypeFont --> "faceHandle" GCHandle
+FreeTypeFont --> "face" IntPtr
+@enduml

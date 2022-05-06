@@ -1,0 +1,66 @@
+@startuml
+class GrantTimedConditionOnDeployInfo {
+    + <<readonly>> DeployingCondition : string = null
+    + <<readonly>> DeployedCondition : string = null
+    + <<readonly>> CooldownTicks : int
+    + <<readonly>> DeployedTicks : int
+    + <<readonly>> DeployCursor : string = "deploy"
+    + <<readonly>> DeployBlockedCursor : string = "deploy-blocked"
+    + <<readonly>> DeployAnimation : string = null
+    + <<readonly>> UndeployAnimation : string = null
+    + <<readonly>> Facing : WAngle? = null
+    + <<readonly>> DeploySound : string = null
+    + <<readonly>> UndeploySound : string = null
+    + <<readonly>> StartsFullyCharged : bool = false
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> ShowSelectionBar : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+enum TimedDeployState {
+    Charging,
+    Ready,
+    Active,
+    Deploying,
+    Undeploying,
+}
+class GrantTimedConditionOnDeploy {
+    <<readonly>> canTurn : bool
+    deployedToken : int
+    deployingToken : int
+    ticks : int
+    + GrantTimedConditionOnDeploy(init:ActorInitializer, info:GrantTimedConditionOnDeployInfo)
+    IssueDeployOrder(self:Actor, queued:bool) : Order
+    CanIssueDeployOrder(self:Actor, queued:bool) : bool
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    ResolveOrder(self:Actor, order:Order) : void
+    IsCursorBlocked() : bool
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    Deploy() : void
+    OnDeployCompleted() : void
+    RevokeDeploy() : void
+    OnUndeployCompleted() : void
+    Tick(self:Actor) : void
+    GetValue() : float
+    DisplayWhenEmpty : bool <<get>>
+    GetColor() : Color
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+PausableConditionalTraitInfo <|-- GrantTimedConditionOnDeployInfo
+GrantTimedConditionOnDeployInfo o-> "ChargingColor" Color
+GrantTimedConditionOnDeployInfo o-> "DischargingColor" Color
+"PausableConditionalTrait`1" "<GrantTimedConditionOnDeployInfo>" <|-- GrantTimedConditionOnDeploy
+IResolveOrder <|-- GrantTimedConditionOnDeploy
+IIssueOrder <|-- GrantTimedConditionOnDeploy
+INotifyCreated <|-- GrantTimedConditionOnDeploy
+ISelectionBar <|-- GrantTimedConditionOnDeploy
+IOrderVoice <|-- GrantTimedConditionOnDeploy
+ISync <|-- GrantTimedConditionOnDeploy
+ITick <|-- GrantTimedConditionOnDeploy
+IIssueDeployOrder <|-- GrantTimedConditionOnDeploy
+GrantTimedConditionOnDeploy --> "self" Actor
+GrantTimedConditionOnDeploy --> "deployState" TimedDeployState
+GrantTimedConditionOnDeploy --> "Orders<IOrderTargeter>" "IEnumerable`1"
+@enduml

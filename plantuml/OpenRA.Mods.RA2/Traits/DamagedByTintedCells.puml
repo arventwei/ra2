@@ -1,0 +1,29 @@
+@startuml
+class DamagedByTintedCellsInfo {
+    + <<readonly>> LayerName : string = "radioactivity"
+    + <<readonly>> Damage : int = 500
+    + <<readonly>> DamageLevel : int = 100
+    + <<readonly>> DamageInterval : int = 16
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, info:ActorInfo) : void
+}
+class DamagedByTintedCells {
+    damageTicks : int
+    + DamagedByTintedCells(self:Actor, info:DamagedByTintedCellsInfo)
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- DamagedByTintedCellsInfo
+"Requires`1" "<HealthInfo>" <|-- DamagedByTintedCellsInfo
+IRulesetLoaded <|-- DamagedByTintedCellsInfo
+DamagedByTintedCellsInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+"ConditionalTrait`1" "<DamagedByTintedCellsInfo>" <|-- DamagedByTintedCells
+ITick <|-- DamagedByTintedCells
+ISync <|-- DamagedByTintedCells
+DamagedByTintedCells --> "tintedCellLayer" TintedCellsLayer
+@enduml

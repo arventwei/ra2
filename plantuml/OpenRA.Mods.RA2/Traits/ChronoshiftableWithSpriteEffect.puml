@@ -1,0 +1,16 @@
+@startuml
+class ChronoshiftableWithSpriteEffectInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> WarpInSequence : string = null
+    + <<readonly>> WarpOutSequence : string = null
+    + <<readonly>> Palette : string = "effect"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ChronoshiftableWithSpriteEffect {
+    + ChronoshiftableWithSpriteEffect(init:ActorInitializer, info:ChronoshiftableWithSpriteEffectInfo)
+    + <<override>> Teleport(self:Actor, targetLocation:CPos, duration:int, killCargo:bool, chronosphere:Actor) : bool
+}
+ChronoshiftableInfo <|-- ChronoshiftableWithSpriteEffectInfo
+Chronoshiftable <|-- ChronoshiftableWithSpriteEffect
+ChronoshiftableWithSpriteEffect --> "info" ChronoshiftableWithSpriteEffectInfo
+@enduml

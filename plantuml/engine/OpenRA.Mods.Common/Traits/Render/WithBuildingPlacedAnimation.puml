@@ -1,0 +1,20 @@
+@startuml
+class WithBuildingPlacedAnimationInfo {
+    + <<readonly>> Sequence : string = "build"
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithBuildingPlacedAnimation {
+    + WithBuildingPlacedAnimation(self:Actor, info:WithBuildingPlacedAnimationInfo)
+    BuildingPlaced(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithBuildingPlacedAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithBuildingPlacedAnimationInfo
+"ConditionalTrait`1" "<WithBuildingPlacedAnimationInfo>" <|-- WithBuildingPlacedAnimation
+INotifyBuildingPlaced <|-- WithBuildingPlacedAnimation
+WithBuildingPlacedAnimation --> "wsb" WithSpriteBody
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+class TabCompletionLogic {
+    currentCandidateIndex : int = 0
+    lastCompleted : string
+    prefix : string
+    suffix : string
+    + Complete(text:string) : string
+}
+class "IList`1"<T> {
+}
+ChromeLogic <|-- TabCompletionLogic
+TabCompletionLogic o-> "candidates<string>" "IList`1"
+TabCompletionLogic --> "Commands<string>" "IList`1"
+TabCompletionLogic --> "Names<string>" "IList`1"
+@enduml

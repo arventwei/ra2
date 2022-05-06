@@ -1,0 +1,29 @@
+@startuml
+interface "IPriorityQueue`1"<T> {
+    Add(item:T) : void
+    Empty : bool <<get>>
+    Peek() : T
+    Pop() : T
+}
+class "PriorityQueue`1"<T> {
+    level : int
+    index : int
+    + PriorityQueue()
+    + PriorityQueue(comparer:IComparer<T>)
+    + Add(item:T) : void
+    + Empty : bool <<get>>
+    At(level:int, index:int) : T
+    Above(level:int, index:int) : T
+    Last() : T
+    + Peek() : T
+    + Pop() : T
+    BubbleInto(intoLevel:int, intoIndex:int, val:T) : void
+}
+class "List`1"<T> {
+}
+class "IComparer`1"<T> {
+}
+"IPriorityQueue`1" "<T>" <|-- "PriorityQueue`1"
+"PriorityQueue`1" --> "items<T[]>" "List`1"
+"PriorityQueue`1" --> "comparer<T>" "IComparer`1"
+@enduml

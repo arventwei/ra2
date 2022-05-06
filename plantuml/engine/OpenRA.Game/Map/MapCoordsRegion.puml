@@ -1,0 +1,29 @@
+@startuml
+class MapCoordsRegion <<struct>> {
+    + MapCoordsRegion(mapTopLeft:MPos, mapBottomRight:MPos)
+    + GetEnumerator() : MapCoordsEnumerator
+    GetEnumerator() : IEnumerator<MPos>
+    GetEnumerator() : IEnumerator
+}
+class "IEnumerable`1"<T> {
+}
+class MapCoordsEnumerator <<struct>> {
+    + MapCoordsEnumerator(region:MapCoordsRegion)
+    + MoveNext() : bool
+    + Reset() : void
+    Current : object <<get>>
+    + Dispose() : void
+}
+class "IEnumerator`1"<T> {
+}
+"IEnumerable`1" "<MPos>" <|-- MapCoordsRegion
+MapCoordsRegion --> "topLeft" MPos
+MapCoordsRegion --> "bottomRight" MPos
+MapCoordsRegion --> "TopLeft" MPos
+MapCoordsRegion --> "BottomRight" MPos
+MapCoordsRegion +-- MapCoordsEnumerator
+"IEnumerator`1" "<MPos>" <|-- MapCoordsEnumerator
+MapCoordsEnumerator --> "r" MapCoordsRegion
+MapCoordsEnumerator --> "current" MPos
+MapCoordsEnumerator --> "Current" MPos
+@enduml

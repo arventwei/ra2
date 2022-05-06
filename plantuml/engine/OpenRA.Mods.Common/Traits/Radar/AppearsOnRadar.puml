@@ -1,0 +1,17 @@
+@startuml
+class AppearsOnRadarInfo {
+    + <<readonly>> UseLocation : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AppearsOnRadar {
+    + AppearsOnRadar(info:AppearsOnRadarInfo)
+    + PopulateRadarSignatureCells(self:Actor, destinationBuffer:List<(CPos Cell, Color Color)>) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- AppearsOnRadarInfo
+AppearsOnRadarInfo o-> "ValidRelationships" PlayerRelationship
+"ConditionalTrait`1" "<AppearsOnRadarInfo>" <|-- AppearsOnRadar
+IRadarSignature <|-- AppearsOnRadar
+AppearsOnRadar --> "modifier" IRadarColorModifier
+@enduml

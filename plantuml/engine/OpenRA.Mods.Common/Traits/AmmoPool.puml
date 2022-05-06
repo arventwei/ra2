@@ -1,0 +1,33 @@
+@startuml
+class AmmoPoolInfo {
+    + <<readonly>> Name : string = "primary"
+    + <<readonly>> Ammo : int = 1
+    + <<readonly>> InitialAmmo : int
+    + <<readonly>> ReloadCount : int = 1
+    + <<readonly>> RearmSound : string = null
+    + <<readonly>> ReloadDelay : int = 50
+    + <<readonly>> AmmoCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AmmoPool {
+    + RemainingTicks : int
+    + CurrentAmmoCount : int <<get>>
+    + HasAmmo : bool <<get>>
+    + HasFullAmmo : bool <<get>>
+    + AmmoPool(self:Actor, info:AmmoPoolInfo)
+    + GiveAmmo(self:Actor, count:int) : bool
+    + TakeAmmo(self:Actor, count:int) : bool
+    Created(self:Actor) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    UpdateCondition(self:Actor) : void
+}
+class "Stack`1"<T> {
+}
+TraitInfo <|-- AmmoPoolInfo
+INotifyCreated <|-- AmmoPool
+INotifyAttack <|-- AmmoPool
+ISync <|-- AmmoPool
+AmmoPool --> "Info" AmmoPoolInfo
+AmmoPool o-> "tokens<int>" "Stack`1"
+@enduml

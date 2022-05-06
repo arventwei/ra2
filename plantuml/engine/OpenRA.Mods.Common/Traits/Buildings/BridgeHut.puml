@@ -1,0 +1,47 @@
+@startuml
+class BridgeHutInfo {
+    + <<readonly>> RepairPropagationDelay : int = 20
+    + <<readonly>> DemolishPropagationDelay : int = 5
+    + <<readonly>> RequireForceAttackForHeal : bool = false
+    + IsValidTarget(actorInfo:ActorInfo, saboteur:Actor) : bool
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BridgeHut {
+    repairStep : int
+    repairDelay : int
+    demolishStep : int
+    demolishDelay : int
+    + BridgeHut(world:World, info:BridgeHutInfo)
+    Created(self:Actor) : void
+    Tick(self:Actor) : void
+    NextNeighbourStep(seed:IEnumerable<CPos>, processed:HashSet<CPos>) : IEnumerable<IBridgeSegment>
+    + Repair(self:Actor, repairer:Actor) : void
+    + RepairStep() : void
+    IsValidTarget(self:Actor, saboteur:Actor) : bool
+    Demolish(self:Actor, saboteur:Actor, delay:int, damageTypes:BitSet<DamageType>) : void
+    + DemolishStep() : void
+    + Repairing : bool <<get>>
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "HashSet`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- BridgeHutInfo
+IDemolishableInfo <|-- BridgeHutInfo
+INotifyCreated <|-- BridgeHut
+IDemolishable <|-- BridgeHut
+ITick <|-- BridgeHut
+BridgeHut --> "Info" BridgeHutInfo
+BridgeHut --> "bridgeLayer" BridgeLayer
+BridgeHut o-> "segmentLocations<CPos[]>" "List`1"
+BridgeHut o-> "segments<CPos,IBridgeSegment>" "Dictionary`2"
+BridgeHut o-> "dirtyLocations<CPos>" "HashSet`1"
+BridgeHut --> "repairRepairer" Actor
+BridgeHut --> "demolishSaboteur" Actor
+BridgeHut --> "demolishDamageTypes<DamageType>" "BitSet`1"
+BridgeHut --> "BridgeDamageState" DamageState
+@enduml

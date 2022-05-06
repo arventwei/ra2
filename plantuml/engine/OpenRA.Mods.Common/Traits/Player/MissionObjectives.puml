@@ -1,0 +1,64 @@
+@startuml
+enum ObjectiveState {
+    Incomplete,
+    Completed,
+    Failed,
+}
+class MissionObjective {
+    + <<readonly>> Required : bool
+    + <<readonly>> Description : string
+    + <<readonly>> Type : string
+    + MissionObjective(description:string, type:string, required:bool)
+}
+class MissionObjectivesInfo {
+    + <<readonly>> Cooperative : bool = false
+    + <<readonly>> EarlyGameOver : bool = false
+    + <<readonly>> GameOverDelay : int = 1500
+    + <<readonly>> WinNotification : string = null
+    + <<readonly>> LoseNotification : string = null
+    + <<readonly>> LeaveNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MissionObjectives {
+    + ObjectivesHash : int <<get>>
+    + MissionObjectives(player:Player, info:MissionObjectivesInfo)
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+    + Add(player:Player, description:string, type:string, required:bool, inhibitAnnouncement:bool) : int
+    + MarkCompleted(player:Player, objectiveID:int) : void
+    + MarkFailed(player:Player, objectiveID:int) : void
+    CheckIfGameIsOver(player:Player) : void
+    OnPlayerWon(player:Player) : void
+    OnPlayerLost(player:Player) : void
+    + ForceDefeat(player:Player) : void
+    +  <<event>> ObjectiveAdded : Action<Player, bool> 
+    + ResolveOrder(self:Actor, order:Order) : void
+}
+class ObjectivesPanelInfo {
+    + PanelName : string = null
+    + ExitDelay : int = 1400
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ObjectivesPanel {
+    + ObjectivesPanel(info:ObjectivesPanelInfo)
+    + PanelName : string <<get>>
+    + ExitDelay : int <<get>>
+}
+class "List`1"<T> {
+}
+class "ReadOnlyList`1"<T> {
+}
+MissionObjective --> "State" ObjectiveState
+TraitInfo <|-- MissionObjectivesInfo
+INotifyWinStateChanged <|-- MissionObjectives
+ISync <|-- MissionObjectives
+IResolveOrder <|-- MissionObjectives
+IWorldLoaded <|-- MissionObjectives
+MissionObjectives --> "Info" MissionObjectivesInfo
+MissionObjectives o-> "objectives<MissionObjective>" "List`1"
+MissionObjectives --> "player" Player
+MissionObjectives --> "Objectives<MissionObjective>" "ReadOnlyList`1"
+MissionObjectives --> "WinStateCooperative" WinState
+TraitInfo <|-- ObjectivesPanelInfo
+IObjectivesPanel <|-- ObjectivesPanel
+ObjectivesPanel --> "info" ObjectivesPanelInfo
+@enduml

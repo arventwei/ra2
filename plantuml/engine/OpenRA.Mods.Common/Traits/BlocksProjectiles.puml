@@ -1,0 +1,18 @@
+@startuml
+class BlocksProjectilesInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BlocksProjectiles {
+    + BlocksProjectiles(self:Actor, info:BlocksProjectilesInfo)
+    + {static} AnyBlockingActorAt(world:World, pos:WPos) : bool
+    + {static} AnyBlockingActorsBetween(world:World, start:WPos, end:WPos, width:WDist, hit:WPos) : bool
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- BlocksProjectilesInfo
+IBlocksProjectilesInfo <|-- BlocksProjectilesInfo
+BlocksProjectilesInfo o-> "Height" WDist
+"ConditionalTrait`1" "<BlocksProjectilesInfo>" <|-- BlocksProjectiles
+IBlocksProjectiles <|-- BlocksProjectiles
+BlocksProjectiles --> "BlockingHeight" WDist
+@enduml

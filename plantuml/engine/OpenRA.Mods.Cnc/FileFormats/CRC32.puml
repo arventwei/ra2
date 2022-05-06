@@ -1,0 +1,8 @@
+@startuml
+class CRC32 <<static>> {
+    + {static} Calculate(data:byte[], polynomial:uint) : uint
+    + {static} Calculate(data:byte[]) : uint
+    + {static} <<unsafe>> Calculate(data:byte*, len:uint, polynomial:uint) : uint
+    + {static} <<unsafe>> Calculate(data:byte*, len:uint) : uint
+}
+@enduml

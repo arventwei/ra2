@@ -1,0 +1,39 @@
+@startuml
+class SelectDirectionalTarget {
+    <<const>> MinDragThreshold : int = 20
+    <<const>> MaxDragThreshold : int = 75
+    <<readonly>> order : string
+    <<readonly>> cursor : string
+    <<readonly>> directionArrowPalette : string
+    activated : bool
+    dragStarted : bool
+    + SelectDirectionalTarget(world:World, order:string, manager:SupportPowerManager, cursor:string, directionArrowAnimation:string, directionArrowPalette:string)
+    Order(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : IEnumerable<Order>
+    Tick(world:World) : void
+    SelectionChanged(world:World, selected:IEnumerable<Actor>) : void
+    IsOutsideDragZone : bool <<get>>
+    Render(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    RenderAboveShroud(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    RenderAnnotations(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    GetCursor(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : string
+    HandleKeyPress(e:KeyInput) : bool
+    Deactivate() : void
+    {static} AngleOf(delta:float2) : double
+    GetArrow(degree:double) : Arrow
+    LoadArrows(cursorAnimation:string, world:World, noOfDividingPoints:int) : Arrow[]
+}
+class Arrow {
+    + EndAngle : double <<get>>
+    + Arrow(sprite:Sprite, endAngle:double, direction:WAngle)
+}
+IOrderGenerator <|-- SelectDirectionalTarget
+SelectDirectionalTarget --> "manager" SupportPowerManager
+SelectDirectionalTarget --> "targetCell" CPos
+SelectDirectionalTarget --> "targetLocation" int2
+SelectDirectionalTarget --> "dragDirection" float2
+SelectDirectionalTarget --> "currentArrow" Arrow
+SelectDirectionalTarget --> "mouseAttachment" MouseAttachmentWidget
+SelectDirectionalTarget +-- Arrow
+Arrow --> "Sprite" Sprite
+Arrow --> "Direction" WAngle
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+class LegacyBridgeHutInfo {
+    + IsValidTarget(actorInfo:ActorInfo, saboteur:Actor) : bool
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class LegacyBridgeHut {
+    + Repairing : bool <<get>>
+    repairDirections : int = 0
+    + LegacyBridgeHut(init:ActorInitializer, info:LegacyBridgeHutInfo)
+    + Repair(repairer:Actor) : void
+    IsValidTarget(self:Actor, saboteur:Actor) : bool
+    Demolish(self:Actor, saboteur:Actor, delay:int, damageTypes:BitSet<DamageType>) : void
+}
+TraitInfo <|-- LegacyBridgeHutInfo
+IDemolishableInfo <|-- LegacyBridgeHutInfo
+IDemolishable <|-- LegacyBridgeHut
+LegacyBridgeHut --> "FirstBridge" Bridge
+LegacyBridgeHut --> "Bridge" Bridge
+LegacyBridgeHut --> "BridgeDamageState" DamageState
+@enduml

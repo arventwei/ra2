@@ -1,0 +1,19 @@
+@startuml
+class PathSearch <<sealed>> {
+    {static} LayerPoolForWorld(world:World) : CellInfoLayerPool
+    + {static} Search(world:World, locomotor:Locomotor, self:Actor, check:BlockedByActor, goalCondition:Func<CPos, bool>) : IPathSearch
+    + {static} FromPoint(world:World, locomotor:Locomotor, self:Actor, @from:CPos, target:CPos, check:BlockedByActor) : IPathSearch
+    + {static} FromPoints(world:World, locomotor:Locomotor, self:Actor, froms:IEnumerable<CPos>, target:CPos, check:BlockedByActor) : IPathSearch
+    + <<override>> Expand() : CPos
+}
+class "ConditionalWeakTable`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class "LinkedList`1"<T> {
+}
+BasePathSearch <|-- PathSearch
+PathSearch o-> "LayerPoolTable<World,CellInfoLayerPool>" "ConditionalWeakTable`2"
+PathSearch --> "Considered<(CPos, int)>" "IEnumerable`1"
+PathSearch --> "considered<(CPos, int)>" "LinkedList`1"
+@enduml

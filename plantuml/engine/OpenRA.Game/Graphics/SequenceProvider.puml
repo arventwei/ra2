@@ -1,0 +1,47 @@
+@startuml
+interface ISpriteSequence {
+    Name : string <<get>>
+    Start : int <<get>>
+    Length : int <<get>>
+    Stride : int <<get>>
+    Facings : int <<get>>
+    Tick : int <<get>>
+    ZOffset : int <<get>>
+    ShadowStart : int <<get>>
+    ShadowZOffset : int <<get>>
+    IgnoreWorldTint : bool <<get>>
+    GetSprite(frame:int) : Sprite
+    GetSprite(frame:int, facing:WAngle) : Sprite
+    GetShadow(frame:int, facing:WAngle) : Sprite
+}
+interface ISpriteSequenceLoader {
+    ParseSequences(modData:ModData, tileSet:string, cache:SpriteCache, node:MiniYamlNode) : IReadOnlyDictionary<string, ISpriteSequence>
+}
+class SequenceProvider {
+    <<readonly>> tileSet : string
+    + SequenceProvider(fileSystem:IReadOnlyFileSystem, modData:ModData, tileSet:string, additionalSequences:MiniYaml)
+    + GetSequence(unitName:string, sequenceName:string) : ISpriteSequence
+    + HasSequence(unitName:string) : bool
+    + HasSequence(unitName:string, sequenceName:string) : bool
+    + Sequences(unitName:string) : IEnumerable<string>
+    Load(fileSystem:IReadOnlyFileSystem, additionalSequences:MiniYaml) : Sequences
+    + Preload() : void
+    + Dispose() : void
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Lazy`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+ISpriteSequence --> "Bounds" Rectangle
+IDisposable <|-- SequenceProvider
+SequenceProvider --> "modData" ModData
+SequenceProvider --> "sequences<Sequences>" "Lazy`1"
+SequenceProvider --> "spriteCache<SpriteCache>" "Lazy`1"
+SequenceProvider --> "SpriteCache" SpriteCache
+SequenceProvider o-> "sequenceCache<string,UnitSequences>" "Dictionary`2"
+SequenceProvider --> "Images<string>" "IEnumerable`1"
+@enduml

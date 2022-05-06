@@ -1,0 +1,11 @@
+@startuml
+class Hunt {
+    + Hunt(self:Actor)
+    + <<override>> Tick(self:Actor) : bool
+}
+class "IEnumerable`1"<T> {
+}
+Activity <|-- Hunt
+Hunt --> "targets<Actor>" "IEnumerable`1"
+Hunt --> "move" IMove
+@enduml

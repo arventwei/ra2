@@ -1,0 +1,26 @@
+@startuml
+enum AttackState {
+    Uninitialized,
+    Burrowed,
+    Attacking,
+}
+class SwallowActor {
+    <<const>> NearEnough : int = 1
+    countdown : int
+    attackingToken : int
+    + SwallowActor(self:Actor, target:Target, a:Armament, facing:IFacing)
+    AttackTargets(self:Actor, targets:IEnumerable<Actor>) : bool
+    + <<override>> Tick(self:Actor) : bool
+    RevokeCondition(self:Actor) : void
+}
+Activity <|-- SwallowActor
+SwallowActor --> "target" Target
+SwallowActor --> "sandworm" Sandworm
+SwallowActor --> "weapon" WeaponInfo
+SwallowActor --> "armament" Armament
+SwallowActor --> "swallow" AttackSwallow
+SwallowActor --> "positionable" IPositionable
+SwallowActor --> "facing" IFacing
+SwallowActor --> "burrowLocation" CPos
+SwallowActor --> "stance" AttackState
+@enduml

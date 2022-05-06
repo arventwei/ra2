@@ -1,0 +1,12 @@
+@startuml
+class SelectableExts <<static>> {
+    + {static} SelectionPriority(a:ActorInfo, modifiers:Modifiers) : int
+    <<const>> PriorityRange : int = 30
+    + {static} SelectionPriority(a:Actor, modifiers:Modifiers) : int
+    {static} BaseSelectionPriority(info:ISelectableInfo, modifiers:Modifiers) : int
+    + {static} WithHighestSelectionPriority(actors:IEnumerable<ActorBoundsPair>, selectionPixel:int2, modifiers:Modifiers) : Actor
+    + {static} WithHighestSelectionPriority(actors:IEnumerable<FrozenActor>, selectionPixel:int2, modifiers:Modifiers) : FrozenActor
+    {static} CalculateActorSelectionPriority(info:ActorInfo, bounds:Polygon, selectionPixel:int2, modifiers:Modifiers) : long
+    + {static} SubsetWithHighestSelectionPriority(actors:IEnumerable<Actor>, modifiers:Modifiers) : IEnumerable<Actor>
+}
+@enduml

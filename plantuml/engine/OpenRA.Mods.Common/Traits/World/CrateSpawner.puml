@@ -1,0 +1,43 @@
+@startuml
+class CrateSpawnerInfo {
+    + <<readonly>> CheckboxLabel : string = "Crates"
+    + <<readonly>> CheckboxDescription : string = "Collect crates with units to receive random bonuses or penalties"
+    + <<readonly>> CheckboxEnabled : bool = true
+    + <<readonly>> CheckboxLocked : bool = false
+    + <<readonly>> CheckboxVisible : bool = true
+    + <<readonly>> CheckboxDisplayOrder : int = 0
+    + <<readonly>> Minimum : int = 1
+    + <<readonly>> Maximum : int = 255
+    + <<readonly>> SpawnInterval : int
+    + <<readonly>> InitialSpawnDelay : int = 0
+    + <<readonly>> WaterChance : int = 20
+    + <<readonly>> DeliveryAircraft : string = null
+    + <<readonly>> QuantizedFacings : int = 32
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CrateSpawner {
+    enabled : bool
+    crates : int
+    ticks : int
+    + CrateSpawner(self:Actor, info:CrateSpawnerInfo)
+    Created(self:Actor) : void
+    Tick(self:Actor) : void
+    SpawnCrate(self:Actor) : void
+    ChooseDropCell(self:Actor, inWater:bool, maxTries:int) : CPos?
+    ChooseCrateActor() : string
+    + IncrementCrates() : void
+    + DecrementCrates() : void
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- CrateSpawnerInfo
+ILobbyOptions <|-- CrateSpawnerInfo
+CrateSpawnerInfo o-> "ValidGround<string>" "HashSet`1"
+CrateSpawnerInfo o-> "ValidWater<string>" "HashSet`1"
+CrateSpawnerInfo o-> "Cordon" WDist
+ITick <|-- CrateSpawner
+INotifyCreated <|-- CrateSpawner
+CrateSpawner --> "self" Actor
+CrateSpawner --> "info" CrateSpawnerInfo
+@enduml

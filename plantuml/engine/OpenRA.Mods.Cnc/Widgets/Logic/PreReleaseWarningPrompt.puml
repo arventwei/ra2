@@ -1,0 +1,8 @@
+@startuml
+class PreReleaseWarningPrompt {
+    {static} promptAccepted : bool
+    + PreReleaseWarningPrompt(widget:Widget, world:World, modData:ModData)
+    ShowMainMenu(world:World) : void
+}
+ChromeLogic <|-- PreReleaseWarningPrompt
+@enduml

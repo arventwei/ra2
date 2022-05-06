@@ -1,0 +1,8 @@
+@startuml
+class FlashPaletteEffectWarhead {
+    + <<readonly>> FlashType : string = null
+    + <<readonly>> Duration : int = 0
+    + <<override>> DoImpact(target:Target, args:WarheadArgs) : void
+}
+Warhead <|-- FlashPaletteEffectWarhead
+@enduml

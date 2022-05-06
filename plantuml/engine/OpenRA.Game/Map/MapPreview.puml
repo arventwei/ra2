@@ -1,0 +1,102 @@
+@startuml
+enum MapStatus {
+    Available,
+    Unavailable,
+    Searching,
+    DownloadAvailable,
+    Downloading,
+    DownloadError,
+}
+enum MapClassification {
+    Unknown= 0,
+    System= 1,
+    User= 2,
+    Remote= 4,
+}
+enum MapRuleStatus {
+    Unknown,
+    Cached,
+    Invalid,
+}
+class RemoteMapData {
+    + <<readonly>> title : string
+    + <<readonly>> author : string
+    + <<readonly>> players : int
+    + <<readonly>> minimap : string
+    + <<readonly>> downloading : bool
+    + <<readonly>> tileset : string
+    + <<readonly>> rules : string
+    + <<readonly>> players_block : string
+}
+class MapPreview {
+    + <<readonly>> Uid : string
+    + Title : string <<get>>
+    + Author : string <<get>>
+    + TileSet : string <<get>>
+    + PlayerCount : int <<get>>
+    + InvalidCustomRules : bool <<get>>
+    + RulesLoaded : bool <<get>>
+    + DefinesUnsafeCustomRules : bool <<get>>
+    + DownloadBytes : long <<get>>
+    + DownloadPercentage : int <<get>>
+    generatingMinimap : bool
+    + GetMinimap() : Sprite
+    + MapPreview(modData:ModData, uid:string, gridType:MapGridType, cache:MapCache)
+    + UpdateFromMap(p:IReadOnlyPackage, parent:IReadOnlyPackage, classification:MapClassification, mapCompatibility:string[], gridType:MapGridType) : void
+    LoadRuleSection(yaml:Dictionary<string, MiniYaml>, section:string) : MiniYaml
+    + PreloadRules() : void
+    + UpdateRemoteSearch(status:MapStatus, yaml:MiniYaml, parseMetadata:Action<MapPreview>) : void
+    + Install(mapRepositoryUrl:string, onSuccess:Action) : void
+    + CancelInstall() : void
+    + Invalidate() : void
+    + Dispose() : void
+    + Delete() : void
+    Open(filename:string) : Stream
+    TryGetPackageContaining(path:string, package:IReadOnlyPackage, filename:string) : bool
+    TryOpen(filename:string, s:Stream) : bool
+    Exists(filename:string) : bool
+    IsExternalModFile(filename:string) : bool
+}
+class InnerData {
+    + Title : string
+    + Author : string
+    + TileSet : string
+    + PlayerCount : int
+    + InvalidCustomRules : bool <<get>>
+    + DefinesUnsafeCustomRules : bool <<get>>
+    + RulesLoaded : bool <<get>>
+    + SetRulesetGenerator(modData:ModData, generator:Func<(Ruleset Ruleset, bool DefinesUnsafeCustomRules)>) : void
+    + Clone() : InnerData
+}
+class "Lazy`1"<T> {
+}
+RemoteMapData --> "bounds" Rectangle
+RemoteMapData --> "map_grid_type" MapGridType
+IDisposable <|-- MapPreview
+IReadOnlyFileSystem <|-- MapPreview
+MapPreview --> "cache" MapCache
+MapPreview --> "modData" ModData
+MapPreview --> "Package" IReadOnlyPackage
+MapPreview --> "parentPackage" IReadOnlyPackage
+MapPreview --> "innerData" InnerData
+MapPreview --> "Players" MapPlayers
+MapPreview --> "GridType" MapGridType
+MapPreview --> "Bounds" Rectangle
+MapPreview --> "Preview" Png
+MapPreview --> "Status" MapStatus
+MapPreview --> "Class" MapClassification
+MapPreview --> "Visibility" MapVisibility
+MapPreview --> "Rules" Ruleset
+MapPreview --> "download" Download
+MapPreview --> "minimap" Sprite
+MapPreview +-- InnerData
+InnerData --> "Players" MapPlayers
+InnerData --> "GridType" MapGridType
+InnerData --> "Bounds" Rectangle
+InnerData --> "Preview" Png
+InnerData --> "Status" MapStatus
+InnerData --> "Class" MapClassification
+InnerData --> "Visibility" MapVisibility
+InnerData --> "rules<Ruleset>" "Lazy`1"
+InnerData --> "Rules" Ruleset
+@enduml

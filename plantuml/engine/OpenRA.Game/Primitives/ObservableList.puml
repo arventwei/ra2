@@ -1,0 +1,27 @@
+@startuml
+class "ObservableList`1"<T> {
+    +  <<event>> OnAdd : Action<IObservableCollection, object> 
+    +  <<event>> OnRemove : Action<IObservableCollection, object> 
+    +  <<event>> OnRemoveAt : Action<IObservableCollection, int> 
+    +  <<event>> OnSet : Action<IObservableCollection, object, object> 
+    +  <<event>> OnRefresh : Action<IObservableCollection> 
+    + ObservableList()
+    + <<virtual>> Add(item:T) : void
+    + Remove(item:T) : bool
+    + Clear() : void
+    + Insert(index:int, item:T) : void
+    + Count : int <<get>>
+    + IndexOf(item:T) : int
+    + Contains(item:T) : bool
+    + RemoveAt(index:int) : void
+    + CopyTo(array:T[], arrayIndex:int) : void
+    + GetEnumerator() : IEnumerator<T>
+    GetEnumerator() : IEnumerator
+    + IsReadOnly : bool <<get>>
+}
+class "IList`1"<T> {
+}
+"IList`1" "<T>" <|-- "ObservableList`1"
+IObservableCollection <|-- "ObservableList`1"
+"ObservableList`1" --> "ObservedItems" IEnumerable
+@enduml

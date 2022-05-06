@@ -1,0 +1,21 @@
+@startuml
+class ProgressBarWidget {
+    + Background : string = "progressbar-bg"
+    + Bar : string = "progressbar-thumb"
+    + Percentage : int = 0
+    + Indeterminate : bool = false
+    offset : float = 0f
+    tickStep : float = 0.04f
+    + ProgressBarWidget()
+    + <<override>> Draw() : void
+    wasIndeterminate : bool
+    + <<override>> Tick() : void
+    + <<override>> Clone() : Widget
+}
+class "Func`1"<T> {
+}
+Widget <|-- ProgressBarWidget
+ProgressBarWidget o-> "BarMargin" Size
+ProgressBarWidget --> "GetPercentage<int>" "Func`1"
+ProgressBarWidget --> "IsIndeterminate<bool>" "Func`1"
+@enduml

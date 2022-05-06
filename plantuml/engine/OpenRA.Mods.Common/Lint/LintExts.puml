@@ -1,0 +1,6 @@
+@startuml
+class LintExts {
+    + {static} GetFieldValues(ruleInfo:object, fieldInfo:FieldInfo, emitError:Action<string>, dictionaryReference:LintDictionaryReference) : IEnumerable<string>
+    + {static} GetPropertyValues(ruleInfo:object, propertyInfo:PropertyInfo, emitError:Action<string>, dictionaryReference:LintDictionaryReference) : IEnumerable<string>
+}
+@enduml

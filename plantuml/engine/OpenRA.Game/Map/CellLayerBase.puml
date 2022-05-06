@@ -1,0 +1,15 @@
+@startuml
+abstract class "CellLayerBase`1"<T> {
+    + CellLayerBase(map:Map)
+    + CellLayerBase(gridType:MapGridType, size:Size)
+    + <<virtual>> CopyValuesFrom(anotherLayer:CellLayerBase<T>) : void
+    + Clear(clearValue:T) : void
+    + GetEnumerator() : IEnumerator<T>
+    GetEnumerator() : IEnumerator
+}
+class "IEnumerable`1"<T> {
+}
+"IEnumerable`1" "<T>" <|-- "CellLayerBase`1"
+"CellLayerBase`1" --> "Size" Size
+"CellLayerBase`1" --> "GridType" MapGridType
+@enduml

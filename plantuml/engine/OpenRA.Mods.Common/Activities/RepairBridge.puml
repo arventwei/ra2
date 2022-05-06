@@ -1,0 +1,12 @@
+@startuml
+class RepairBridge {
+    <<readonly>> notification : string
+    + RepairBridge(self:Actor, target:Target, enterBehaviour:EnterBehaviour, notification:string, targetLineColor:Color)
+    CanEnterHut() : bool
+}
+Enter <|-- RepairBridge
+RepairBridge --> "enterBehaviour" EnterBehaviour
+RepairBridge --> "enterActor" Actor
+RepairBridge --> "enterHut" BridgeHut
+RepairBridge --> "enterLegacyHut" LegacyBridgeHut
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+class GenericSelectTarget {
+    + <<readonly>> OrderName : string
+    + GenericSelectTarget(subjects:IEnumerable<Actor>, order:string, cursor:string, button:MouseButton)
+    + GenericSelectTarget(subjects:IEnumerable<Actor>, order:string, cursor:string)
+    + GenericSelectTarget(subject:Actor, order:string, cursor:string)
+    + GenericSelectTarget(subject:Actor, order:string, cursor:string, button:MouseButton)
+    + <<override>> Order(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : IEnumerable<Order>
+    + <<override>> GetCursor(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : string
+    + <<override>> InputOverridesSelection(world:World, xy:int2, mi:MouseInput) : bool
+    + <<override>> SelectionChanged(world:World, selected:IEnumerable<Actor>) : void
+    + <<override>> ClearSelectionOnLeftClick : bool <<get>>
+}
+UnitOrderGenerator <|-- GenericSelectTarget
+@enduml

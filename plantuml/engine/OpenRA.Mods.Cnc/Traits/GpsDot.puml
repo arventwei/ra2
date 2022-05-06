@@ -1,0 +1,20 @@
+@startuml
+class GpsDotInfo {
+    + <<readonly>> Image : string = "gpsdot"
+    + <<readonly>> String : string = "Infantry"
+    + <<readonly>> IndicatorPalettePrefix : string = "player"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GpsDot {
+    + GpsDot(info:GpsDotInfo)
+    Created(self:Actor) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+}
+TraitInfo <|-- GpsDotInfo
+INotifyCreated <|-- GpsDot
+INotifyAddedToWorld <|-- GpsDot
+INotifyRemovedFromWorld <|-- GpsDot
+GpsDot --> "info" GpsDotInfo
+GpsDot --> "effect" GpsDotEffect
+@enduml

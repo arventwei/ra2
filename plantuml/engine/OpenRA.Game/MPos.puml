@@ -1,0 +1,30 @@
+@startuml
+class MPos <<struct>> {
+    + <<readonly>> U : int
+    + <<readonly>> V : int
+    + MPos(u:int, v:int)
+    + <<override>> GetHashCode() : int
+    + Equals(other:MPos) : bool
+    + <<override>> Equals(obj:object) : bool
+    + Clamp(r:Rectangle) : MPos
+    + <<override>> ToString() : string
+    + ToCPos(map:Map) : CPos
+    + ToCPos(gridType:MapGridType) : CPos
+}
+class PPos <<struct>> {
+    + <<readonly>> U : int
+    + <<readonly>> V : int
+    + PPos(u:int, v:int)
+    + Clamp(r:Rectangle) : PPos
+    + <<override>> GetHashCode() : int
+    + Equals(other:PPos) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<MPos>" <|-- MPos
+MPos o-> "Zero" MPos
+"IEquatable`1" "<PPos>" <|-- PPos
+PPos o-> "Zero" PPos
+@enduml

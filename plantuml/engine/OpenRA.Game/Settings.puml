@@ -1,0 +1,149 @@
+@startuml
+enum MouseScrollType {
+    Disabled,
+    Standard,
+    Inverted,
+    Joystick,
+}
+enum StatusBarsType {
+    Standard,
+    DamageShow,
+    AlwaysShow,
+}
+enum TargetLinesType {
+    Disabled,
+    Manual,
+    Automatic,
+}
+enum MPGameFilters {
+    None= 0,
+    Waiting= 1,
+    Empty= 2,
+    Protected= 4,
+    Started= 8,
+    Incompatible= 16,
+}
+enum WorldViewport {
+    Native,
+    Close,
+    Medium,
+    Far,
+}
+class ServerSettings {
+    + Name : string = "OpenRA Game"
+    + ListenPort : int = 1234
+    + AdvertiseOnline : bool = true
+    + Password : string = ""
+    + DiscoverNatDevices : bool = false
+    + NatDiscoveryTimeout : int = 5000
+    + Map : string = null
+    + RequireAuthentication : bool = false
+    + EnableSingleplayer : bool = false
+    + QueryMapRepository : bool = true
+    + EnableSyncReports : bool = false
+    + TimestampFormat : string = "yyyy-MM-ddTHH:mm:ss"
+    + ShareAnonymizedIPs : bool = true
+    + EnableGeoIP : bool = true
+    + RecordReplays : bool = false
+    + Clone() : ServerSettings
+}
+class DebugSettings {
+    + PerfText : bool = false
+    + PerfGraph : bool = false
+    + Samples : int = 25
+    + CheckVersion : bool = true
+    + SendSystemInformation : bool = true
+    + SystemInformationVersionPrompt : int = 0
+    + UUID : string
+    + DisplayDeveloperSettings : bool = false
+    + BotDebug : bool = false
+    + LuaDebug : bool = false
+    + EnableDebugCommandsInReplays : bool = false
+    + LongTickThresholdMs : float = 1
+    + SyncCheckUnsyncedCode : bool = false
+    + SyncCheckBotModuleCode : bool = false
+}
+class GraphicSettings {
+    + VSync : bool = true
+    + CursorDouble : bool = false
+    + UIScale : float = 1
+    + CapFramerate : bool = false
+    + MaxFramerate : int = 60
+    + DisableWindowsRenderThread : bool = true
+    + DisableGLDebugMessageCallback : bool = false
+    + DisableHardwareCursors : bool = false
+    + DisableLegacyGL : bool = true
+    + VideoDisplay : int = 0
+    + BatchSize : int = 8192
+    + SheetSize : int = 2048
+    + Language : string = "english"
+    + DefaultLanguage : string = "english"
+}
+class SoundSettings {
+    + SoundVolume : float = 0.5f
+    + MusicVolume : float = 0.5f
+    + VideoVolume : float = 0.5f
+    + Shuffle : bool = false
+    + Repeat : bool = false
+    + Device : string = null
+    + CashTicks : bool = true
+    + Mute : bool = false
+    + MuteBackgroundMusic : bool = false
+}
+class PlayerSettings {
+    + Name : string = "Commander"
+    + LastServer : string = "localhost:1234"
+}
+class GameSettings {
+    + Platform : string = "Default"
+    + ViewportEdgeScroll : bool = true
+    + ViewportEdgeScrollMargin : int = 5
+    + LockMouseWindow : bool = false
+    + ViewportEdgeScrollStep : float = 30f
+    + UIScrollSpeed : float = 50f
+    + ZoomSpeed : float = 0.04f
+    + SelectionDeadzone : int = 24
+    + MouseScrollDeadzone : int = 8
+    + UseClassicMouseStyle : bool = false
+    + UseAlternateScrollButton : bool = false
+    + UsePlayerStanceColors : bool = false
+    + AllowDownloading : bool = true
+    + AuthProfile : string = "player.oraid"
+    + FetchNews : bool = true
+    + IntroductionPromptVersion : int = 0
+    + PauseShellmap : bool = false
+}
+class Settings {
+    <<readonly>> settingsFile : string
+    + Settings(file:string, args:Arguments)
+    + Save() : void
+    {static} SanitizedName(dirty:string) : string
+    + {static} SanitizedServerName(dirty:string) : string
+    + {static} SanitizedPlayerName(dirty:string) : string
+    {static} LoadSectionYaml(yaml:MiniYaml, section:object) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+GraphicSettings o-> "Mode" WindowMode
+GraphicSettings o-> "FullscreenSize" int2
+GraphicSettings o-> "WindowedSize" int2
+GraphicSettings o-> "ViewportDistance" WorldViewport
+GraphicSettings o-> "GLProfile" GLProfile
+PlayerSettings o-> "Color" Color
+GameSettings o-> "MouseScroll" MouseScrollType
+GameSettings o-> "MouseButtonPreference" MouseButtonPreference
+GameSettings o-> "StatusBars" StatusBarsType
+GameSettings o-> "TargetLines" TargetLinesType
+GameSettings o-> "ZoomModifier" Modifiers
+GameSettings o-> "MPGameFilters" MPGameFilters
+Settings o-> "Player" PlayerSettings
+Settings o-> "Game" GameSettings
+Settings o-> "Sound" SoundSettings
+Settings o-> "Graphics" GraphicSettings
+Settings o-> "Server" ServerSettings
+Settings o-> "Debug" DebugSettings
+Settings --> "Sections<string,object>" "Dictionary`2"
+Settings o-> "yamlCache<MiniYamlNode>" "List`1"
+@enduml

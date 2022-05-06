@@ -1,0 +1,9 @@
+@startuml
+class WorldButtonWidget {
+    + WorldButtonWidget(modData:ModData, world:World)
+    + <<override>> MouseEntered() : void
+    + <<override>> Clone() : Widget
+}
+ButtonWidget <|-- WorldButtonWidget
+WorldButtonWidget --> "world" World
+@enduml

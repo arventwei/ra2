@@ -1,0 +1,16 @@
+@startuml
+abstract class PausableConditionalTraitInfo {
+    + PausedByDefault : bool <<get>>
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+abstract class "PausableConditionalTrait`1"<InfoType> {
+    + IsTraitPaused : bool <<get>>
+    + <<override>> GetVariableObservers() : IEnumerable<VariableObserver>
+    PauseConditionsChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- PausableConditionalTraitInfo
+PausableConditionalTraitInfo o-> "PauseOnCondition" BooleanExpression
+"ConditionalTrait`1" "<InfoType>" <|-- "PausableConditionalTrait`1"
+@enduml

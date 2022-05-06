@@ -1,0 +1,20 @@
+@startuml
+class MPStartUnitsInfo {
+    + <<readonly>> Class : string = "none"
+    + <<readonly>> ClassName : string = "Unlabeled"
+    + <<readonly>> BaseActor : string = null
+    + <<readonly>> InnerSupportRadius : int = 2
+    + <<readonly>> OuterSupportRadius : int = 4
+    + <<readonly>> BaseActorFacing : WAngle?
+    + <<readonly>> SupportActorsFacing : WAngle? = null
+}
+class MPStartUnits {
+}
+class "TraitInfo`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"TraitInfo`1" "<MPStartUnits>" <|-- MPStartUnitsInfo
+MPStartUnitsInfo o-> "Factions<string>" "HashSet`1"
+MPStartUnitsInfo o-> "BaseActorOffset" CVec
+@enduml

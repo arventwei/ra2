@@ -1,0 +1,17 @@
+@startuml
+class ColorBlockWidget {
+    + ColorBlockWidget()
+    + <<override>> Clone() : Widget
+    + <<override>> Draw() : void
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+}
+class "Func`1"<T> {
+}
+class "Action`1"<T> {
+}
+Widget <|-- ColorBlockWidget
+ColorBlockWidget --> "Color" Color
+ColorBlockWidget --> "GetColor<Color>" "Func`1"
+ColorBlockWidget o-> "OnMouseDown<MouseInput>" "Action`1"
+ColorBlockWidget o-> "OnMouseUp<MouseInput>" "Action`1"
+@enduml

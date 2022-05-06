@@ -1,0 +1,13 @@
+@startuml
+class AmmoPoolProperties {
+    + AmmoPoolProperties(context:ScriptContext, self:Actor)
+    + AmmoCount(poolName:string) : int
+    + MaximumAmmoCount(poolName:string) : int
+    + Reload(poolName:string, amount:int) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- AmmoPoolProperties
+"Requires`1" "<AmmoPoolInfo>" <|-- AmmoPoolProperties
+AmmoPoolProperties --> "self" Actor
+@enduml

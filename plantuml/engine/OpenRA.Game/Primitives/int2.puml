@@ -1,0 +1,30 @@
+@startuml
+class int2 <<struct>> {
+    + <<readonly>> X : int
+    + <<readonly>> Y : int
+    + int2(x:int, y:int)
+    + int2(p:Size)
+    + <<override>> GetHashCode() : int
+    + Equals(other:int2) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+    + Sign() : int2
+    + Abs() : int2
+    + LengthSquared : int <<get>>
+    + Length : int <<get>>
+    + WithX(newX:int) : int2
+    + WithY(newY:int) : int2
+    + {static} Max(a:int2, b:int2) : int2
+    + {static} Min(a:int2, b:int2) : int2
+    + ToFloat2() : float2
+    + {static} Swap(orig:uint) : uint
+    + {static} Lerp(a:int, b:int, mul:int, div:int) : int
+    + {static} Lerp(a:int2, b:int2, mul:int, div:int) : int2
+    + Clamp(r:Rectangle) : int2
+    + {static} Dot(a:int2, b:int2) : int
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<int2>" <|-- int2
+int2 o-> "Zero" int2
+@enduml

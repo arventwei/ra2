@@ -1,0 +1,27 @@
+@startuml
+class WithMindControlArcInfo {
+    + <<readonly>> UsePlayerColor : bool = false
+    + <<readonly>> Transparency : int = 255
+    + <<readonly>> QuantizedSegments : int = 16
+    + <<readonly>> ZOffset : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithMindControlArc {
+    + WithMindControlArc(self:Actor, info:WithMindControlArcInfo)
+    Created(self:Actor) : void
+    Selected(a:Actor) : void
+    RenderAboveShroud(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+TraitInfo <|-- WithMindControlArcInfo
+WithMindControlArcInfo o-> "Color" Color
+WithMindControlArcInfo o-> "Offset" WVec
+WithMindControlArcInfo o-> "Angle" WAngle
+WithMindControlArcInfo o-> "Width" WDist
+IRenderAboveShroudWhenSelected <|-- WithMindControlArc
+INotifySelected <|-- WithMindControlArc
+INotifyCreated <|-- WithMindControlArc
+WithMindControlArc --> "info" WithMindControlArcInfo
+WithMindControlArc --> "mindController" MindController
+WithMindControlArc --> "mindControllable" MindControllable
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+class DropPodImpact {
+    <<readonly>> entryPalette : string
+    weaponDelay : int
+    impacted : bool = false
+    + DropPodImpact(firedBy:Player, weapon:WeaponInfo, world:World, launchPos:WPos, target:Target, delay:int, entryEffect:string, entrySequence:string, entryPalette:string)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    Finish(world:World) : void
+}
+IProjectile <|-- DropPodImpact
+DropPodImpact --> "target" Target
+DropPodImpact --> "entryAnimation" Animation
+DropPodImpact --> "firedBy" Player
+DropPodImpact --> "weapon" WeaponInfo
+DropPodImpact --> "launchPos" WPos
+@enduml

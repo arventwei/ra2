@@ -1,0 +1,43 @@
+@startuml
+class LineGraphWidget {
+    + ValueFormat : string = "{0&#125;"
+    + XAxisValueFormat : string = "{0&#125;"
+    + YAxisValueFormat : string = "{0&#125;"
+    + XAxisSize : int = 10
+    + YAxisSize : int = 10
+    + XAxisTicksPerLabel : int = 1
+    + XAxisLabel : string = ""
+    + YAxisLabel : string = ""
+    + DisplayFirstYAxisValue : bool = false
+    + LabelFont : string
+    + AxisFont : string
+    + Padding : int = 5
+    + LineGraphWidget()
+    + <<override>> Draw() : void
+    + <<override>> Clone() : Widget
+}
+class LineGraphSeries {
+    + Key : string
+    + LineGraphSeries(key:string, color:Color, points:IEnumerable<float>)
+}
+class "Func`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+Widget <|-- LineGraphWidget
+LineGraphWidget --> "GetSeries<IEnumerable<LineGraphSeries>>" "Func`1"
+LineGraphWidget --> "GetValueFormat<string>" "Func`1"
+LineGraphWidget --> "GetXAxisValueFormat<string>" "Func`1"
+LineGraphWidget --> "GetYAxisValueFormat<string>" "Func`1"
+LineGraphWidget --> "GetXAxisSize<int>" "Func`1"
+LineGraphWidget --> "GetYAxisSize<int>" "Func`1"
+LineGraphWidget --> "GetXAxisLabel<string>" "Func`1"
+LineGraphWidget --> "GetYAxisLabel<string>" "Func`1"
+LineGraphWidget --> "GetDisplayFirstYAxisValue<bool>" "Func`1"
+LineGraphWidget --> "GetLabelFont<string>" "Func`1"
+LineGraphWidget --> "GetAxisFont<string>" "Func`1"
+LineGraphWidget o-> "BackgroundColorDark" Color
+LineGraphWidget o-> "BackgroundColorLight" Color
+LineGraphSeries --> "Color" Color
+LineGraphSeries --> "Points<float>" "IEnumerable`1"
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+class GameSpeed {
+    + <<readonly>> Name : string = "Default"
+    + <<readonly>> Timestep : int = 40
+    + <<readonly>> OrderLatency : int = 3
+}
+class GameSpeeds {
+    {static} LoadSpeeds(y:MiniYaml) : object
+}
+class "Dictionary`2"<T1,T2> {
+}
+IGlobalModData <|-- GameSpeeds
+GameSpeeds --> "Speeds<string,GameSpeed>" "Dictionary`2"
+@enduml

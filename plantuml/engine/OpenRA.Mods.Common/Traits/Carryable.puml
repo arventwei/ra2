@@ -1,0 +1,43 @@
+@startuml
+class CarryableInfo {
+    + <<readonly>> ReservedCondition : string = null
+    + <<readonly>> CarriedCondition : string = null
+    + <<readonly>> LockedCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+enum LockResponse {
+    Success,
+    Pending,
+    Failed,
+}
+interface IDelayCarryallPickup {
+    TryLockForPickup(self:Actor, carrier:Actor) : bool
+}
+class Carryable {
+    reservedToken : int
+    carriedToken : int
+    lockedToken : int
+    + Reserved : bool <<get>>
+    + Destination : CPos? <<get>> <<protected set>>
+    + WantsTransport : bool <<get>>
+    + Carryable(self:Actor, info:CarryableInfo)
+    + <<virtual>> Attached(self:Actor) : void
+    + <<virtual>> Detached(self:Actor) : void
+    + <<virtual>> Reserve(self:Actor, carrier:Actor) : bool
+    + <<virtual>> UnReserve(self:Actor) : void
+    + <<virtual>> LockForPickup(self:Actor, carrier:Actor) : LockResponse
+}
+class "ConditionalTrait`1"<T> {
+}
+enum State {
+    Free,
+    Reserved,
+    Locked,
+}
+ConditionalTraitInfo <|-- CarryableInfo
+CarryableInfo o-> "LocalOffset" WVec
+"ConditionalTrait`1" "<CarryableInfo>" <|-- Carryable
+Carryable --> "mobile" Mobile
+Carryable --> "Carrier" Actor
+Carryable +-- State
+@enduml

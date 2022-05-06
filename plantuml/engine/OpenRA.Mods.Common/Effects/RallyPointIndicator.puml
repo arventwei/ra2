@@ -1,0 +1,22 @@
+@startuml
+class RallyPointIndicator {
+    + RallyPointIndicator(building:Actor, rp:RallyPoint)
+    Tick(world:World) : void
+    UpdateTargetLineNodes(world:World) : void
+    Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAboveShroud(wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAnnotation(wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderInner(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+class "List`1"<T> {
+}
+IEffect <|-- RallyPointIndicator
+IEffectAboveShroud <|-- RallyPointIndicator
+IEffectAnnotation <|-- RallyPointIndicator
+RallyPointIndicator --> "building" Actor
+RallyPointIndicator --> "rp" RallyPoint
+RallyPointIndicator --> "flag" Animation
+RallyPointIndicator --> "circles" Animation
+RallyPointIndicator o-> "targetLineNodes<WPos>" "List`1"
+RallyPointIndicator --> "cachedLocations<CPos>" "List`1"
+@enduml

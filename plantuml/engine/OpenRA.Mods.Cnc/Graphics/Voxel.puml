@@ -1,0 +1,18 @@
+@startuml
+class Limb <<struct>> {
+    + Scale : float
+}
+class Voxel {
+    <<readonly>> frames : uint
+    <<readonly>> limbs : uint
+    Frames : uint <<get>>
+    Sections : uint <<get>>
+    + Voxel(loader:VoxelLoader, vxl:VxlReader, hva:HvaReader)
+    + TransformationMatrix(limb:uint, frame:uint) : float[]
+    + RenderData(limb:uint) : ModelRenderData
+    + Bounds(frame:uint) : float[]
+}
+Limb --> "RenderData" ModelRenderData
+IModel <|-- Voxel
+Voxel --> "AggregateBounds" Rectangle
+@enduml

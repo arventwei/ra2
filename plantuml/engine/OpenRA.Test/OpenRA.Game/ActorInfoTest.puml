@@ -1,0 +1,45 @@
+@startuml
+interface IMock {
+}
+class MockTraitInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MockInheritInfo {
+}
+class MockAInfo {
+}
+class MockBInfo {
+}
+class MockCInfo {
+}
+class MockDInfo {
+}
+class MockEInfo {
+}
+class MockFInfo {
+}
+class ActorInfoTest {
+    + TraitOrderingSortsCorrectly() : void
+    + TraitOrderingReportsMissingDependencies() : void
+    + TraitOrderingReportsCyclicDependencies() : void
+}
+class "Requires`1"<T> {
+}
+ITraitInfoInterface <|-- IMock
+TraitInfo <|-- MockTraitInfo
+MockTraitInfo <|-- MockInheritInfo
+MockInheritInfo <|-- MockAInfo
+IMock <|-- MockAInfo
+MockTraitInfo <|-- MockBInfo
+"Requires`1" "<MockAInfo>" <|-- MockBInfo
+"Requires`1" "<IMock>" <|-- MockBInfo
+"Requires`1" "<MockInheritInfo>" <|-- MockBInfo
+MockTraitInfo <|-- MockCInfo
+"Requires`1" "<MockBInfo>" <|-- MockCInfo
+MockTraitInfo <|-- MockDInfo
+"Requires`1" "<MockEInfo>" <|-- MockDInfo
+MockTraitInfo <|-- MockEInfo
+"Requires`1" "<MockFInfo>" <|-- MockEInfo
+MockTraitInfo <|-- MockFInfo
+"Requires`1" "<MockDInfo>" <|-- MockFInfo
+@enduml

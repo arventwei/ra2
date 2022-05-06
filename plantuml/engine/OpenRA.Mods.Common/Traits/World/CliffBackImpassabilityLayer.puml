@@ -1,0 +1,13 @@
+@startuml
+class CliffBackImpassabilityLayerInfo {
+    + <<readonly>> TerrainType : string = "Impassable"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CliffBackImpassabilityLayer {
+    + CliffBackImpassabilityLayer(info:CliffBackImpassabilityLayerInfo)
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+}
+TraitInfo <|-- CliffBackImpassabilityLayerInfo
+IWorldLoaded <|-- CliffBackImpassabilityLayer
+CliffBackImpassabilityLayer --> "info" CliffBackImpassabilityLayerInfo
+@enduml

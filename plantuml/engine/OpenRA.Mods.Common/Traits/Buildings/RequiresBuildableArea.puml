@@ -1,0 +1,16 @@
+@startuml
+class RequiresBuildableAreaInfo {
+    + <<readonly>> Adjacent : int = 2
+}
+class RequiresBuildableArea {
+}
+class "TraitInfo`1"<T> {
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"TraitInfo`1" "<RequiresBuildableArea>" <|-- RequiresBuildableAreaInfo
+"Requires`1" "<BuildingInfo>" <|-- RequiresBuildableAreaInfo
+RequiresBuildableAreaInfo o-> "AreaTypes<string>" "HashSet`1"
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+class FlashTarget {
+    <<readonly>> count : int
+    <<readonly>> interval : int
+    tick : int
+    + FlashTarget(target:Actor, asPlayer:Player, count:int, interval:int, delay:int)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- FlashTarget
+FlashTarget --> "target" Actor
+FlashTarget --> "player" Player
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+class MapCache <<sealed>> {
+    previewLoaderThreadShutDown : bool = true
+    syncRoot : object
+    + MapCache(modData:ModData)
+    + LoadMaps() : void
+    + EnumerateMapPackagesWithoutCaching(classification:MapClassification) : IEnumerable<IReadWritePackage>
+    + EnumerateMapsWithoutCaching(classification:MapClassification) : IEnumerable<Map>
+    + QueryRemoteMapDetails(repositoryUrl:string, uids:IEnumerable<string>, mapDetailsReceived:Action<MapPreview>, queryFailed:Action) : void
+    LoadAsyncInternal() : void
+    + CacheMinimap(preview:MapPreview) : void
+    IsSuitableInitialMap(map:MapPreview) : bool
+    + ChooseInitialMap(initialUid:string, random:MersenneTwister) : string
+    + GetEnumerator() : IEnumerator<MapPreview>
+    GetEnumerator() : IEnumerator
+    + Dispose() : void
+}
+class "IEnumerable`1"<T> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Cache`2"<T1,T2> {
+}
+class "Queue`1"<T> {
+}
+"IEnumerable`1" "<MapPreview>" <|-- MapCache
+IDisposable <|-- MapCache
+MapCache o-> "UnknownMap" MapPreview
+MapCache --> "MapLocations<IReadOnlyPackage,MapClassification>" "IReadOnlyDictionary`2"
+MapCache o-> "mapLocations<IReadOnlyPackage,MapClassification>" "Dictionary`2"
+MapCache --> "previews<string,MapPreview>" "Cache`2"
+MapCache --> "modData" ModData
+MapCache --> "sheetBuilder" SheetBuilder
+MapCache --> "previewLoaderThread" Thread
+MapCache o-> "generateMinimap<MapPreview>" "Queue`1"
+MapCache o-> "StringPool<string,string>" "Dictionary`2"
+@enduml

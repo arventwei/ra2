@@ -1,0 +1,22 @@
+@startuml
+class PolygonAnnotationRenderable <<struct>> {
+    <<readonly>> width : int
+    + PolygonAnnotationRenderable(vertices:WPos[], effectivePos:WPos, width:int, color:Color)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- PolygonAnnotationRenderable
+IFinalizedRenderable <|-- PolygonAnnotationRenderable
+PolygonAnnotationRenderable --> "effectivePos" WPos
+PolygonAnnotationRenderable --> "color" Color
+PolygonAnnotationRenderable --> "Pos" WPos
+PolygonAnnotationRenderable --> "Palette" PaletteReference
+@enduml

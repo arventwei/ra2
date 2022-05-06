@@ -1,0 +1,25 @@
+@startuml
+class MSCabCompression <<sealed>> {
+    + MSCabCompression(stream:Stream)
+    + ExtractFile(filename:string, output:Stream, onProgress:Action<int>) : void
+}
+class CabFolder {
+    + <<readonly>> BlockOffset : uint
+    + <<readonly>> BlockCount : ushort
+    + <<readonly>> CompressionType : ushort
+    + CabFolder(stream:Stream)
+}
+class CabFile {
+    + <<readonly>> FileName : string
+    + <<readonly>> DecompressedLength : uint
+    + <<readonly>> DecompressedOffset : uint
+    + <<readonly>> FolderIndex : ushort
+    + CabFile(stream:Stream)
+}
+class "IEnumerable`1"<T> {
+}
+MSCabCompression --> "stream" Stream
+MSCabCompression --> "Contents<string>" "IEnumerable`1"
+MSCabCompression +-- CabFolder
+MSCabCompression +-- CabFile
+@enduml

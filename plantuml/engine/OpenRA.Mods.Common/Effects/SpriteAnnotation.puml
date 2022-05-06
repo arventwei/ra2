@@ -1,0 +1,13 @@
+@startuml
+class SpriteAnnotation {
+    <<readonly>> palette : string
+    + SpriteAnnotation(pos:WPos, world:World, image:string, sequence:string, palette:string)
+    Tick(world:World) : void
+    Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAnnotation(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- SpriteAnnotation
+IEffectAnnotation <|-- SpriteAnnotation
+SpriteAnnotation --> "anim" Animation
+SpriteAnnotation --> "pos" WPos
+@enduml

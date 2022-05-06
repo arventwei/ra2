@@ -1,0 +1,28 @@
+@startuml
+class LocalProfileLogic {
+    notFound : bool
+    badgesVisible : bool
+    + LocalProfileLogic(widget:Widget, worldRenderer:WorldRenderer, minimalProfile:Func<bool>)
+    + RefreshComplete(updateNotFound:bool) : void
+}
+class RegisteredProfileTooltipLogic {
+    profileLoaded : bool
+    + RegisteredProfileTooltipLogic(widget:Widget, worldRenderer:WorldRenderer, modData:ModData, client:Session.Client)
+}
+class PlayerProfileBadgesLogic {
+    + PlayerProfileBadgesLogic(widget:Widget, profile:PlayerProfile, negotiateWidth:Func<int, int>)
+}
+class AnonymousProfileTooltipLogic {
+    + AnonymousProfileTooltipLogic(widget:Widget, orderManager:OrderManager, client:Session.Client)
+}
+ChromeLogic <|-- LocalProfileLogic
+LocalProfileLogic --> "worldRenderer" WorldRenderer
+LocalProfileLogic --> "localProfile" LocalPlayerProfile
+LocalProfileLogic --> "badgeContainer" Widget
+LocalProfileLogic --> "widget" Widget
+ChromeLogic <|-- RegisteredProfileTooltipLogic
+RegisteredProfileTooltipLogic --> "playerDatabase" PlayerDatabase
+RegisteredProfileTooltipLogic --> "profile" PlayerProfile
+ChromeLogic <|-- PlayerProfileBadgesLogic
+ChromeLogic <|-- AnonymousProfileTooltipLogic
+@enduml

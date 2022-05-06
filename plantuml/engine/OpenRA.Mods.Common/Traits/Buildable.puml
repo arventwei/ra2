@@ -1,0 +1,23 @@
+@startuml
+class BuildableInfo {
+    + <<readonly>> BuildAtProductionType : string = null
+    + <<readonly>> BuildLimit : int = 0
+    + <<readonly>> ForceFaction : string = null
+    + <<readonly>> Icon : string = "icon"
+    + <<readonly>> IconPalette : string = "chrome"
+    + <<readonly>> IconPaletteIsPlayerPalette : bool = false
+    + <<readonly>> BuildDuration : int
+    + <<readonly>> BuildDurationModifier : int = 60
+    + <<readonly>> BuildPaletteOrder : int = 9999
+    + <<readonly>> Description : string = ""
+    + {static} GetInitialFaction(ai:ActorInfo, defaultFaction:string) : string
+}
+class Buildable {
+}
+class "TraitInfo`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"TraitInfo`1" "<Buildable>" <|-- BuildableInfo
+BuildableInfo o-> "Queue<string>" "HashSet`1"
+@enduml

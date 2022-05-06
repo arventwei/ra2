@@ -1,0 +1,24 @@
+@startuml
+class WavLoader {
+    IsWave(s:Stream) : bool
+    TryParseSound(stream:Stream, sound:ISoundFormat) : bool
+}
+class WavFormat <<sealed>> {
+    + Channels : int <<get>>
+    + SampleBits : int <<get>>
+    + SampleRate : int <<get>>
+    + LengthInSeconds : float <<get>>
+    + GetPCMInputStream() : Stream
+    + Dispose() : void
+    <<readonly>> channels : short
+    <<readonly>> sampleBits : int
+    <<readonly>> sampleRate : int
+    + WavFormat(stream:Stream)
+}
+class "Func`1"<T> {
+}
+ISoundLoader <|-- WavLoader
+ISoundFormat <|-- WavFormat
+WavFormat --> "sourceStream" Stream
+WavFormat --> "wavStreamFactory<Stream>" "Func`1"
+@enduml

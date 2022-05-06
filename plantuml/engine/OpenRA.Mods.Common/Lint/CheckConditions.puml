@@ -1,0 +1,6 @@
+@startuml
+class CheckConditions {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, rules:Ruleset) : void
+}
+ILintRulesPass <|-- CheckConditions
+@enduml

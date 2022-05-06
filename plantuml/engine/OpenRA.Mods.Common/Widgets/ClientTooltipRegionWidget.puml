@@ -1,0 +1,17 @@
+@startuml
+class ClientTooltipRegionWidget {
+    + <<readonly>> TooltipContainer : string
+    + Template : string
+    + ClientTooltipRegionWidget()
+    + <<override>> Clone() : Widget
+    + Bind(orderManager:OrderManager, worldRenderer:WorldRenderer, client:Session.Client) : void
+    + <<override>> MouseEntered() : void
+    + <<override>> MouseExited() : void
+}
+class "Lazy`1"<T> {
+}
+Widget <|-- ClientTooltipRegionWidget
+ClientTooltipRegionWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+ClientTooltipRegionWidget --> "orderManager" OrderManager
+ClientTooltipRegionWidget --> "worldRenderer" WorldRenderer
+@enduml

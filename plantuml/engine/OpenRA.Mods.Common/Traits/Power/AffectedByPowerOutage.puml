@@ -1,0 +1,27 @@
+@startuml
+class AffectedByPowerOutageInfo {
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AffectedByPowerOutage {
+    token : int
+    + AffectedByPowerOutage(self:Actor, info:AffectedByPowerOutageInfo)
+    AddedToWorld(self:Actor) : void
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+    + UpdateStatus(self:Actor) : void
+    Grant(self:Actor) : void
+    Revoke(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- AffectedByPowerOutageInfo
+"ConditionalTrait`1" "<AffectedByPowerOutageInfo>" <|-- AffectedByPowerOutage
+INotifyOwnerChanged <|-- AffectedByPowerOutage
+ISelectionBar <|-- AffectedByPowerOutage
+INotifyCreated <|-- AffectedByPowerOutage
+INotifyAddedToWorld <|-- AffectedByPowerOutage
+AffectedByPowerOutage --> "playerPower" PowerManager
+@enduml

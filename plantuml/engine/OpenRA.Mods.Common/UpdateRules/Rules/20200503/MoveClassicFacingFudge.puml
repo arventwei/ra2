@@ -1,0 +1,13 @@
+@startuml
+class MoveClassicFacingFudge {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> AfterUpdate(modData:ModData) : IEnumerable<string>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+    + <<override>> UpdateSequenceNode(modData:ModData, sequenceNode:MiniYamlNode) : IEnumerable<string>
+}
+class "List`1"<T> {
+}
+UpdateRule <|-- MoveClassicFacingFudge
+MoveClassicFacingFudge o-> "locations<string>" "List`1"
+@enduml

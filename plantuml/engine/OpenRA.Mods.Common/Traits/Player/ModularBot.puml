@@ -1,0 +1,31 @@
+@startuml
+class ModularBotInfo <<sealed>> {
+    + <<readonly>> Type : string = null
+    + <<readonly>> Name : string = "Unnamed Bot"
+    + <<readonly>> MinOrderQuotientPerTick : int = 5
+    Type : string <<get>>
+    Name : string <<get>>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ModularBot <<sealed>> {
+    + IsEnabled : bool
+    + ModularBot(info:ModularBotInfo, init:ActorInitializer)
+    + Activate(p:Player) : void
+    QueueOrder(order:Order) : void
+    Tick(self:Actor) : void
+    Damaged(self:Actor, e:AttackInfo) : void
+}
+class "Queue`1"<T> {
+}
+TraitInfo <|-- ModularBotInfo
+IBotInfo <|-- ModularBotInfo
+ITick <|-- ModularBot
+IBot <|-- ModularBot
+INotifyDamage <|-- ModularBot
+ModularBot --> "info" ModularBotInfo
+ModularBot --> "world" World
+ModularBot o-> "orders<Order>" "Queue`1"
+ModularBot --> "player" Player
+ModularBot --> "Info" IBotInfo
+ModularBot --> "Player" Player
+@enduml

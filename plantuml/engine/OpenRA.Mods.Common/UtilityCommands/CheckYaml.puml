@@ -1,0 +1,12 @@
+@startuml
+class CheckYaml {
+    Name : string <<get>>
+    {static} errors : int = 0
+    {static} EmitError(e:string) : void
+    {static} EmitWarning(e:string) : void
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+    CheckRules(modData:ModData, rules:Ruleset, map:Map) : void
+}
+IUtilityCommand <|-- CheckYaml
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+class ArcRenderable <<struct>> {
+    <<readonly>> zOffset : int
+    <<readonly>> segments : int
+    + ArcRenderable(a:WPos, b:WPos, zOffset:int, angle:WAngle, color:Color, width:WDist, segments:int)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    Render(wr:WorldRenderer) : void
+    RenderDebugGeometry(wr:WorldRenderer) : void
+    ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- ArcRenderable
+IFinalizedRenderable <|-- ArcRenderable
+ArcRenderable --> "color" Color
+ArcRenderable --> "a" WPos
+ArcRenderable --> "b" WPos
+ArcRenderable --> "angle" WAngle
+ArcRenderable --> "width" WDist
+ArcRenderable --> "Pos" WPos
+ArcRenderable --> "Palette" PaletteReference
+@enduml

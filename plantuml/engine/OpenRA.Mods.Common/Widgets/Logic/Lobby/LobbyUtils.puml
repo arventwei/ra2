@@ -1,0 +1,59 @@
+@startuml
+class LobbyUtils <<static>> {
+    + {static} ShowSlotDropDown(dropdown:DropDownButtonWidget, slot:Session.Slot, client:Session.Client, orderManager:OrderManager, map:MapPreview) : void
+    + {static} ShowPlayerActionDropDown(dropdown:DropDownButtonWidget, slot:Session.Slot, c:Session.Client, orderManager:OrderManager, lobby:Widget, before:Action, after:Action) : void
+    + {static} ShowTeamDropDown(dropdown:DropDownButtonWidget, client:Session.Client, orderManager:OrderManager, teamCount:int) : void
+    + {static} ShowHandicapDropDown(dropdown:DropDownButtonWidget, client:Session.Client, orderManager:OrderManager) : void
+    + {static} ShowSpawnDropDown(dropdown:DropDownButtonWidget, client:Session.Client, orderManager:OrderManager, spawnPoints:IEnumerable<int>) : void
+    {static} SplitOnFirstToken(input:string, token:string) : (string First, string Second)
+    + {static} ShowFactionDropDown(dropdown:DropDownButtonWidget, client:Session.Client, orderManager:OrderManager, factions:Dictionary<string, LobbyFaction>) : void
+    + {static} ShowColorDropDown(color:DropDownButtonWidget, client:Session.Client, orderManager:OrderManager, world:World, preview:ColorPreviewManagerWidget) : void
+    + {static} SelectSpawnPoint(orderManager:OrderManager, mapPreview:MapPreviewWidget, preview:MapPreview, mi:MouseInput) : void
+    {static} SelectPlayerSpawnPoint(orderManager:OrderManager, mapPreview:MapPreviewWidget, preview:MapPreview, mi:MouseInput) : void
+    {static} ClearPlayerSpawnPoint(orderManager:OrderManager, mapPreview:MapPreviewWidget, preview:MapPreview, mi:MouseInput) : void
+    {static} DetermineSelectedSpawnPoint(mapPreview:MapPreviewWidget, preview:MapPreview, mi:MouseInput) : int
+    {static} SetSpawnPoint(orderManager:OrderManager, playerToMove:Session.Client, selectedSpawnPoint:int) : void
+    + {static} AvailableSpawnPoints(spawnPoints:int, lobbyInfo:Session) : List<int>
+    + {static} InsufficientEnabledSpawnPoints(map:MapPreview, lobbyInfo:Session) : bool
+    + {static} LatencyColor(ping:Session.ClientPing) : Color
+    + {static} LatencyDescription(ping:Session.ClientPing) : string
+    + {static} SetupLatencyWidget(parent:Widget, c:Session.Client, orderManager:OrderManager) : void
+    + {static} SetupProfileWidget(parent:Widget, c:Session.Client, orderManager:OrderManager, worldRenderer:WorldRenderer) : void
+    + {static} SetupEditableNameWidget(parent:Widget, s:Session.Slot, c:Session.Client, orderManager:OrderManager, worldRenderer:WorldRenderer) : void
+    + {static} SetupNameWidget(parent:Widget, s:Session.Slot, c:Session.Client, orderManager:OrderManager, worldRenderer:WorldRenderer) : void
+    + {static} SetupEditableSlotWidget(parent:Widget, s:Session.Slot, c:Session.Client, orderManager:OrderManager, worldRenderer:WorldRenderer, map:MapPreview) : void
+    + {static} SetupSlotWidget(parent:Widget, s:Session.Slot, c:Session.Client) : void
+    + {static} SetupPlayerActionWidget(parent:Widget, s:Session.Slot, c:Session.Client, orderManager:OrderManager, worldRenderer:WorldRenderer, lobby:Widget, before:Action, after:Action) : void
+    + {static} SetupKickSpectatorsWidget(parent:Widget, orderManager:OrderManager, lobby:Widget, before:Action, after:Action, skirmishMode:bool) : void
+    + {static} SetupEditableColorWidget(parent:Widget, s:Session.Slot, c:Session.Client, orderManager:OrderManager, world:World, colorPreview:ColorPreviewManagerWidget) : void
+    + {static} SetupColorWidget(parent:Widget, s:Session.Slot, c:Session.Client) : void
+    + {static} SetupEditableFactionWidget(parent:Widget, s:Session.Slot, c:Session.Client, orderManager:OrderManager, factions:Dictionary<string, LobbyFaction>) : void
+    + {static} SetupFactionWidget(parent:Widget, s:Session.Slot, c:Session.Client, factions:Dictionary<string, LobbyFaction>) : void
+    + {static} SetupEditableTeamWidget(parent:Widget, s:Session.Slot, c:Session.Client, orderManager:OrderManager, map:MapPreview) : void
+    + {static} SetupTeamWidget(parent:Widget, s:Session.Slot, c:Session.Client) : void
+    + {static} SetupEditableHandicapWidget(parent:Widget, s:Session.Slot, c:Session.Client, orderManager:OrderManager, map:MapPreview) : void
+    + {static} SetupHandicapWidget(parent:Widget, s:Session.Slot, c:Session.Client) : void
+    + {static} SetupEditableSpawnWidget(parent:Widget, s:Session.Slot, c:Session.Client, orderManager:OrderManager, map:MapPreview) : void
+    + {static} SetupSpawnWidget(parent:Widget, s:Session.Slot, c:Session.Client) : void
+    + {static} SetupEditableReadyWidget(parent:Widget, s:Session.Slot, c:Session.Client, orderManager:OrderManager, map:MapPreview) : void
+    + {static} SetupReadyWidget(parent:Widget, s:Session.Slot, c:Session.Client) : void
+    + {static} HideReadyWidgets(parent:Widget) : void
+    + {static} SetupChatLine(template:ContainerWidget, time:DateTime, name:string, nameColor:Color, text:string, textColor:Color) : void
+    {static} HideChildWidget(parent:Widget, widgetId:string) : void
+}
+class ShowPlayerActionDropDownOption {
+    + Title : string
+    + ShowPlayerActionDropDownOption(title:string, click:Action)
+}
+class SlotDropDownOption {
+    + Title : string
+    + Order : string
+    + SlotDropDownOption(title:string, order:string, selected:Func<bool>)
+}
+class "Func`1"<T> {
+}
+ShowPlayerActionDropDownOption --> "Click" Action
+ShowPlayerActionDropDownOption o-> "Selected<bool>" "Func`1"
+LobbyUtils +-- SlotDropDownOption
+SlotDropDownOption --> "Selected<bool>" "Func`1"
+@enduml

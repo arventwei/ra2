@@ -1,0 +1,8 @@
+@startuml
+page 10x10
+!include .\\engine\OpenRA.Game\Actor.puml
+!include .\\engine\OpenRA.Game\CacheStorage.puml
+!include .\\engine\OpenRA.Game\CPos.puml
+!include .\\engine\OpenRA.Game\CryptoUtil.puml
+!include .\\engine\OpenRA.Game\CVec.puml
+@enduml

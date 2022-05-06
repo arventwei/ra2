@@ -1,0 +1,6 @@
+@startuml
+class RemoveSelf {
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- RemoveSelf
+@enduml

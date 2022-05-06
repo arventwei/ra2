@@ -1,0 +1,22 @@
+@startuml
+class WithChargeOverlayInfo {
+    + <<readonly>> Sequence : string = "active"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithChargeOverlay {
+    + WithChargeOverlay(self:Actor, info:WithChargeOverlayInfo)
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- WithChargeOverlayInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithChargeOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithChargeOverlayInfo
+"PausableConditionalTrait`1" "<WithChargeOverlayInfo>" <|-- WithChargeOverlay
+INotifyDamageStateChanged <|-- WithChargeOverlay
+WithChargeOverlay --> "overlay" Animation
+@enduml

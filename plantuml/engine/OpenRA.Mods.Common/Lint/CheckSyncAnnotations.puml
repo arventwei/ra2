@@ -1,0 +1,11 @@
+@startuml
+class CheckSyncAnnotations {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData) : void
+    {static} TypeImplementsSync(type:Type) : bool
+    {static} AnyTypeMemberIsSynced(type:Type) : bool
+    {static} CheckTypesWithSyncableMembersImplementSyncInterface(types:IEnumerable<Type>, emitWarning:Action<string>) : void
+    {static} CheckTypesImplementingSyncInterfaceHaveSyncableMembers(types:IEnumerable<Type>, emitWarning:Action<string>) : void
+}
+ILintPass <|-- CheckSyncAnnotations
+CheckSyncAnnotations o-> "SyncInterface" Type
+@enduml

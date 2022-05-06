@@ -1,0 +1,24 @@
+@startuml
+class PlaceBeaconInfo {
+    + <<readonly>> Duration : int
+    + <<readonly>> NotificationType : string = "Sounds"
+    + <<readonly>> Notification : string = "Beacon"
+    + <<readonly>> IsPlayerPalette : bool = true
+    + <<readonly>> Palette : string = "player"
+    + <<readonly>> BeaconImage : string = "beacon"
+    + <<readonly>> BeaconSequence : string = null
+    + <<readonly>> ArrowSequence : string = "arrow"
+    + <<readonly>> CircleSequence : string = "circles"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PlaceBeacon {
+    + PlaceBeacon(self:Actor, info:PlaceBeaconInfo)
+    + ResolveOrder(self:Actor, order:Order) : void
+}
+TraitInfo <|-- PlaceBeaconInfo
+IResolveOrder <|-- PlaceBeacon
+PlaceBeacon --> "info" PlaceBeaconInfo
+PlaceBeacon --> "radarPings" RadarPings
+PlaceBeacon --> "playerBeacon" Beacon
+PlaceBeacon --> "playerRadarPing" RadarPing
+@enduml

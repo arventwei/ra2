@@ -1,0 +1,23 @@
+@startuml
+class SpriteRenderer {
+    <<const>> SheetCount : int = 7
+    nv : int = 0
+    ns : int = 0
+    + SpriteRenderer(renderer:Renderer, shader:IShader)
+    + Flush() : void
+    SetRenderStateForSprite(s:Sprite) : int2
+    + DrawSprite(s:Sprite, location:float3, pal:PaletteReference) : void
+    + DrawSprite(s:Sprite, location:float3, pal:PaletteReference, size:float3) : void
+    + DrawSprite(s:Sprite, a:float3, b:float3, c:float3, d:float3) : void
+    + DrawSpriteWithTint(s:Sprite, location:float3, pal:PaletteReference, size:float3, tint:float3) : void
+    + DrawSpriteWithTint(s:Sprite, a:float3, b:float3, c:float3, d:float3, tint:float3) : void
+    + DrawVertexBuffer(buffer:IVertexBuffer<Vertex>, start:int, length:int, type:PrimitiveType, sheet:Sheet, blendMode:BlendMode) : void
+    + SetPalette(palette:ITexture) : void
+    + SetViewportParams(screen:Size, depthScale:float, depthOffset:float, scroll:int2) : void
+    + SetDepthPreviewEnabled(enabled:bool) : void
+    + SetAntialiasingPixelsPerTexel(pxPerTx:float) : void
+}
+SpriteRenderer --> "renderer" Renderer
+SpriteRenderer --> "shader" IShader
+SpriteRenderer o-> "currentBlend" BlendMode
+@enduml

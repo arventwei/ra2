@@ -1,0 +1,22 @@
+@startuml
+class CombatProperties {
+    + CombatProperties(context:ScriptContext, self:Actor)
+    + Hunt() : void
+    + AttackMove(cell:CPos, closeEnough:int) : void
+    + Patrol(waypoints:CPos[], loop:bool, wait:int) : void
+    + PatrolUntil(waypoints:CPos[], func:LuaFunction, wait:int) : void
+}
+class GeneralCombatProperties {
+    + GeneralCombatProperties(context:ScriptContext, self:Actor)
+    + Attack(targetActor:Actor, allowMove:bool, forceAttack:bool) : void
+    + CanTarget(targetActor:Actor) : bool
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- CombatProperties
+"Requires`1" "<AttackBaseInfo>" <|-- CombatProperties
+"Requires`1" "<IMoveInfo>" <|-- CombatProperties
+CombatProperties --> "move" IMove
+ScriptActorProperties <|-- GeneralCombatProperties
+"Requires`1" "<AttackBaseInfo>" <|-- GeneralCombatProperties
+@enduml

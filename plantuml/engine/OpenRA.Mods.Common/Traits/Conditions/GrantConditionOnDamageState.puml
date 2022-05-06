@@ -1,0 +1,23 @@
+@startuml
+class GrantConditionOnDamageStateInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> GrantPermanently : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnDamageState {
+    conditionToken : int
+    + GrantConditionOnDamageState(self:Actor, info:GrantConditionOnDamageStateInfo)
+    Created(self:Actor) : void
+    GrantConditionOnValidDamageState(self:Actor, state:DamageState) : void
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- GrantConditionOnDamageStateInfo
+"Requires`1" "<IHealthInfo>" <|-- GrantConditionOnDamageStateInfo
+GrantConditionOnDamageStateInfo o-> "ValidDamageStates" DamageState
+INotifyDamageStateChanged <|-- GrantConditionOnDamageState
+INotifyCreated <|-- GrantConditionOnDamageState
+GrantConditionOnDamageState --> "info" GrantConditionOnDamageStateInfo
+GrantConditionOnDamageState --> "health" IHealth
+@enduml

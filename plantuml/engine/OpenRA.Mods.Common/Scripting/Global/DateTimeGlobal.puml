@@ -1,0 +1,13 @@
+@startuml
+class DateGlobal {
+    + DateGlobal(context:ScriptContext)
+    + IsHalloween : bool <<get>>
+    + GameTime : int <<get>>
+    + Seconds(seconds:int) : int
+    + Minutes(minutes:int) : int
+    + TimeLimit : int <<get>> <<set>>
+    + TimeLimitNotification : string <<get>> <<set>>
+}
+ScriptGlobal <|-- DateGlobal
+DateGlobal --> "tlm" TimeLimitManager
+@enduml

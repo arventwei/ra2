@@ -1,0 +1,29 @@
+@startuml
+class PerfTimer <<sealed>> {
+    <<const>> Digits : int = 6
+    <<const>> IndentationString : string = "|   "
+    <<const>> FormatSeperation : string = " ms "
+    {static} <<readonly>> FormatString : string
+    <<readonly>> name : string
+    <<readonly>> thresholdMs : float
+    <<readonly>> depth : byte
+    ticks : long
+    + PerfTimer(name:string, thresholdMs:float)
+    + Dispose() : void
+    Write() : void
+    ElapsedMs : float <<get>>
+    + {static} LogLongTick(startStopwatchTicks:long, endStopwatchTicks:long, name:string, item:object) : void
+    + {static} LongTickThresholdInStopwatchTicks : long <<get>>
+    {static} GetHeader(indentation:string, label:string) : string
+    {static} GetFooter(indentation:string) : string
+    Indentation : string <<get>>
+}
+class "List`1"<T> {
+}
+class "ThreadLocal`1"<T> {
+}
+IDisposable <|-- PerfTimer
+PerfTimer --> "parent" PerfTimer
+PerfTimer --> "children<PerfTimer>" "List`1"
+PerfTimer o-> "parentThreadLocal<PerfTimer>" "ThreadLocal`1"
+@enduml

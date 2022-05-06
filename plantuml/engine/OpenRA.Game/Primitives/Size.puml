@@ -1,0 +1,15 @@
+@startuml
+class Size <<struct>> {
+    + <<readonly>> Width : int
+    + <<readonly>> Height : int
+    + Size(width:int, height:int)
+    + IsEmpty : bool <<get>>
+    + Equals(other:Size) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> GetHashCode() : int
+    + <<override>> ToString() : string
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<Size>" <|-- Size
+@enduml

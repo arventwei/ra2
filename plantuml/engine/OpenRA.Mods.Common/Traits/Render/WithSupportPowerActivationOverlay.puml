@@ -1,0 +1,25 @@
+@startuml
+class WithSupportPowerActivationOverlayInfo {
+    + <<readonly>> Sequence : string = "active"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithSupportPowerActivationOverlay {
+    visible : bool
+    + WithSupportPowerActivationOverlay(self:Actor, info:WithSupportPowerActivationOverlayInfo)
+    Charged(self:Actor) : void
+    Activated(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithSupportPowerActivationOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithSupportPowerActivationOverlayInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithSupportPowerActivationOverlayInfo
+WithSupportPowerActivationOverlayInfo o-> "Offset" WVec
+"ConditionalTrait`1" "<WithSupportPowerActivationOverlayInfo>" <|-- WithSupportPowerActivationOverlay
+INotifySupportPower <|-- WithSupportPowerActivationOverlay
+WithSupportPowerActivationOverlay --> "overlay" Animation
+@enduml

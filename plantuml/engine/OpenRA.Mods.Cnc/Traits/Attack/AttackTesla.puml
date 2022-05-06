@@ -1,0 +1,45 @@
+@startuml
+class AttackTeslaInfo {
+    + <<readonly>> MaxCharges : int = 1
+    + <<readonly>> ReloadDelay : int = 120
+    + <<readonly>> InitialChargeDelay : int = 22
+    + <<readonly>> ChargeDelay : int = 3
+    + <<readonly>> ChargeAudio : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackTesla {
+    charges : int
+    timeToRecharge : int
+    + AttackTesla(self:Actor, info:AttackTeslaInfo)
+    Tick(self:Actor) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    + <<override>> GetAttackActivity(self:Actor, source:AttackSource, newTarget:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : Activity
+}
+class ChargeAttack {
+    <<readonly>> forceAttack : bool
+    <<readonly>> targetLineColor : Color?
+    + ChargeAttack(attack:AttackTesla, target:Target, forceAttack:bool, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    StanceChanged(self:Actor, autoTarget:AutoTarget, oldStance:UnitStance, newStance:UnitStance) : void
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+class ChargeFire {
+    + ChargeFire(attack:AttackTesla, target:Target)
+    + <<override>> Tick(self:Actor) : bool
+}
+AttackBaseInfo <|-- AttackTeslaInfo
+AttackBase <|-- AttackTesla
+ITick <|-- AttackTesla
+INotifyAttack <|-- AttackTesla
+AttackTesla --> "info" AttackTeslaInfo
+AttackTesla +-- ChargeAttack
+Activity <|-- ChargeAttack
+IActivityNotifyStanceChanged <|-- ChargeAttack
+ChargeAttack --> "attack" AttackTesla
+ChargeAttack --> "target" Target
+AttackTesla +-- ChargeFire
+Activity <|-- ChargeFire
+ChargeFire --> "attack" AttackTesla
+ChargeFire --> "target" Target
+@enduml

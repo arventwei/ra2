@@ -1,0 +1,6 @@
+@startuml
+class GameInfoStatsLogic {
+    + GameInfoStatsLogic(widget:Widget, world:World, orderManager:OrderManager, worldRenderer:WorldRenderer, hideMenu:Action<bool>)
+}
+ChromeLogic <|-- GameInfoStatsLogic
+@enduml

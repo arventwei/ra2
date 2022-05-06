@@ -1,0 +1,11 @@
+@startuml
+class CheckPalettes {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, rules:Ruleset) : void
+    GetPalettes(emitError:Action<string>, rules:Ruleset) : void
+}
+class "List`1"<T> {
+}
+ILintRulesPass <|-- CheckPalettes
+CheckPalettes o-> "palettes<string>" "List`1"
+CheckPalettes o-> "playerPalettes<string>" "List`1"
+@enduml

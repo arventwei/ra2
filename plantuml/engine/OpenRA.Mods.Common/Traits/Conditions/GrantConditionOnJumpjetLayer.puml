@@ -1,0 +1,16 @@
+@startuml
+class GrantConditionOnJumpjetLayerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class GrantConditionOnJumpjetLayer {
+    jumpjetInAir : bool
+    + GrantConditionOnJumpjetLayer(self:Actor, info:GrantConditionOnJumpjetLayerInfo)
+    FinishedMoving(self:Actor, oldLayer:byte, newLayer:byte) : void
+}
+class "GrantConditionOnLayer`1"<T> {
+}
+GrantConditionOnLayerInfo <|-- GrantConditionOnJumpjetLayerInfo
+"GrantConditionOnLayer`1" "<GrantConditionOnJumpjetLayerInfo>" <|-- GrantConditionOnJumpjetLayer
+INotifyFinishedMoving <|-- GrantConditionOnJumpjetLayer
+@enduml

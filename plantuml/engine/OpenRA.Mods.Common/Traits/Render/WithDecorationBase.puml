@@ -1,0 +1,34 @@
+@startuml
+enum BlinkState {
+    Off,
+    On,
+}
+abstract class WithDecorationBaseInfo {
+    + <<readonly>> Position : string = "TopLeft"
+    + <<readonly>> RequiresSelection : bool = false
+    + <<readonly>> BlinkInterval : int = 5
+}
+abstract class "WithDecorationBase`1"<InfoType> {
+    + WithDecorationBase(self:Actor, info:InfoType)
+    RequiresSelection : bool <<get>>
+    RenderDecoration(self:Actor, wr:WorldRenderer, container:ISelectionDecorations) : IEnumerable<IRenderable>
+    + <<override>> GetVariableObservers() : IEnumerable<VariableObserver>
+    OffsetConditionChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+    BlinkConditionsChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithDecorationBaseInfo
+WithDecorationBaseInfo o-> "ValidRelationships" PlayerRelationship
+WithDecorationBaseInfo o-> "Margin" int2
+WithDecorationBaseInfo o-> "Offsets<BooleanExpression,int2>" "Dictionary`2"
+WithDecorationBaseInfo o-> "BlinkPatterns<BooleanExpression,BlinkState[]>" "Dictionary`2"
+WithDecorationBaseInfo --> "ConsumedConditions<string>" "IEnumerable`1"
+"ConditionalTrait`1" "<InfoType>" <|-- "WithDecorationBase`1"
+IDecoration <|-- "WithDecorationBase`1"
+"WithDecorationBase`1" --> "conditionalOffset" int2
+@enduml

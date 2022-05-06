@@ -1,0 +1,52 @@
+@startuml
+class ChronoshiftPowerInfo {
+    + <<readonly>> Footprint : string
+    + <<readonly>> Duration : int = 750
+    + <<readonly>> TargetOverlayPalette : string
+    + <<readonly>> FootprintImage : string = "overlay"
+    + <<readonly>> ValidFootprintSequence : string = "target-valid"
+    + <<readonly>> InvalidFootprintSequence : string = "target-invalid"
+    + <<readonly>> SourceFootprintSequence : string = "target-select"
+    + <<readonly>> KillCargo : bool = true
+    + <<readonly>> SelectionCursor : string = "chrono-select"
+    + <<readonly>> TargetCursor : string = "chrono-target"
+    + <<readonly>> TargetBlockedCursor : string = "move-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ChronoshiftPower {
+    + ChronoshiftPower(self:Actor, info:ChronoshiftPowerInfo)
+    + <<override>> SelectTarget(self:Actor, order:string, manager:SupportPowerManager) : void
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    + UnitsInRange(xy:CPos) : IEnumerable<Actor>
+    + SimilarTerrain(xy:CPos, sourceLocation:CPos) : bool
+}
+class SelectChronoshiftTarget {
+    <<readonly>> order : string
+    + SelectChronoshiftTarget(world:World, order:string, manager:SupportPowerManager, power:ChronoshiftPower)
+}
+class SelectDestination {
+    <<readonly>> order : string
+    + SelectDestination(world:World, order:string, manager:SupportPowerManager, power:ChronoshiftPower, sourceLocation:CPos)
+    OrderInner(xy:CPos) : IEnumerable<Order>
+    IsValidTarget(xy:CPos) : bool
+}
+SupportPowerInfo <|-- ChronoshiftPowerInfo
+ChronoshiftPowerInfo o-> "Dimensions" CVec
+SupportPower <|-- ChronoshiftPower
+ChronoshiftPower --> "dimensions" CVec
+ChronoshiftPower +-- SelectChronoshiftTarget
+OrderGenerator <|-- SelectChronoshiftTarget
+SelectChronoshiftTarget --> "power" ChronoshiftPower
+SelectChronoshiftTarget --> "dimensions" CVec
+SelectChronoshiftTarget --> "tile" Sprite
+SelectChronoshiftTarget --> "manager" SupportPowerManager
+ChronoshiftPower +-- SelectDestination
+OrderGenerator <|-- SelectDestination
+SelectDestination --> "power" ChronoshiftPower
+SelectDestination --> "sourceLocation" CPos
+SelectDestination --> "dimensions" CVec
+SelectDestination --> "validTile" Sprite
+SelectDestination --> "invalidTile" Sprite
+SelectDestination --> "sourceTile" Sprite
+SelectDestination --> "manager" SupportPowerManager
+@enduml

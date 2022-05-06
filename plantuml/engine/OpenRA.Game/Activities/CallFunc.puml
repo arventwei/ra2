@@ -1,0 +1,9 @@
+@startuml
+class CallFunc {
+    + CallFunc(a:Action)
+    + CallFunc(a:Action, interruptible:bool)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- CallFunc
+CallFunc --> "a" Action
+@enduml

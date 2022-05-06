@@ -1,0 +1,25 @@
+@startuml
+class GrantConditionOnPrerequisiteManagerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnPrerequisiteManager {
+    + GrantConditionOnPrerequisiteManager(init:ActorInitializer)
+    {static} MakeKey(prerequisites:string[]) : string
+    + Register(actor:Actor, u:GrantConditionOnPrerequisite, prerequisites:string[]) : void
+    + Unregister(actor:Actor, u:GrantConditionOnPrerequisite, prerequisites:string[]) : void
+    + PrerequisitesAvailable(key:string) : void
+    + PrerequisitesUnavailable(key:string) : void
+    + PrerequisitesItemHidden(key:string) : void
+    + PrerequisitesItemVisible(key:string) : void
+}
+class "Requires`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- GrantConditionOnPrerequisiteManagerInfo
+"Requires`1" "<TechTreeInfo>" <|-- GrantConditionOnPrerequisiteManagerInfo
+ITechTreeElement <|-- GrantConditionOnPrerequisiteManager
+GrantConditionOnPrerequisiteManager --> "self" Actor
+GrantConditionOnPrerequisiteManager o-> "upgradables<string,List<(Actor Actor, GrantConditionOnPrerequisite GrantConditionOnPrerequisite)>>" "Dictionary`2"
+GrantConditionOnPrerequisiteManager --> "techTree" TechTree
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+class HealthInfo {
+    + <<readonly>> HP : int = 0
+    + <<readonly>> NotifyAppliedDamage : bool = true
+    + <<readonly>> EditorHealthDisplayOrder : int = 2
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+    MaxHP : int <<get>>
+    ActorOptions(ai:ActorInfo, world:World) : IEnumerable<EditorActorOption>
+}
+class Health {
+    hp : int
+    + DisplayHP : int <<get>>
+    + Health(init:ActorInitializer, info:HealthInfo)
+    + HP : int <<get>>
+    + MaxHP : int <<get>>
+    + IsDead : bool <<get>>
+    + RemoveOnDeath : bool = true
+    Created(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    + Resurrect(self:Actor, repairer:Actor) : void
+    + InflictDamage(self:Actor, attacker:Actor, damage:Damage, ignoreModifiers:bool) : void
+    + Kill(self:Actor, attacker:Actor, damageTypes:BitSet<DamageType>) : void
+    Tick(self:Actor) : void
+}
+class HealthInit {
+    <<readonly>> allowZero : bool
+    + HealthInit(value:int, allowZero:bool)
+    + <<override>> Value : int <<get>>
+}
+class "ValueActorInit`1"<T> {
+}
+TraitInfo <|-- HealthInfo
+IHealthInfo <|-- HealthInfo
+IRulesetLoaded <|-- HealthInfo
+IEditorActorOptions <|-- HealthInfo
+IHealth <|-- Health
+ISync <|-- Health
+ITick <|-- Health
+INotifyCreated <|-- Health
+INotifyOwnerChanged <|-- Health
+Health --> "Info" HealthInfo
+Health --> "DamageState" DamageState
+"ValueActorInit`1" "<int>" <|-- HealthInit
+ISingleInstanceInit <|-- HealthInit
+@enduml

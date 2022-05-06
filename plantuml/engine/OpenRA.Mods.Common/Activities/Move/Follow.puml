@@ -1,0 +1,16 @@
+@startuml
+class Follow {
+    <<readonly>> targetLineColor : Color?
+    useLastVisibleTarget : bool
+    wasMovingWithinRange : bool
+    + Follow(self:Actor, target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+Activity <|-- Follow
+Follow --> "minRange" WDist
+Follow --> "maxRange" WDist
+Follow --> "move" IMove
+Follow --> "target" Target
+Follow --> "lastVisibleTarget" Target
+@enduml

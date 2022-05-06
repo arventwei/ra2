@@ -1,0 +1,87 @@
+@startuml
+class MirageTargetInfo {
+}
+class MirageTarget {
+}
+class MirageTooltipInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MirageTooltip {
+    + MirageTooltip(self:Actor, info:MirageTooltipInfo)
+}
+enum MirageRevealType {
+    None= 0,
+    Attack= 1,
+    Move= 2,
+    Unload= 4,
+    Infiltrate= 8,
+    Demolish= 16,
+    Damage= 32,
+    Heal= 64,
+    SelfHeal= 128,
+    Dock= 256,
+}
+class MirageInfo {
+    + <<readonly>> InitialDelay : int = 25
+    + <<readonly>> RevealDelay : int = 25
+    + <<readonly>> EffectiveOwner : string = "Neutral"
+    + <<readonly>> MirageCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Mirage {
+    isDocking : bool
+    lastPos : CPos?
+    wasMirage : bool = false
+    mirageToken : int
+    + Disguised : bool <<get>>
+    + Mirage(init:ActorInitializer, info:MirageInfo)
+    + IsMirage : bool <<get>>
+    + Reveal() : void
+    + Reveal(time:int) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Damaged(self:Actor, e:AttackInfo) : void
+    Tick(self:Actor) : void
+    MovingToResources(self:Actor, targetCell:CPos) : void
+    MovingToRefinery(self:Actor, refineryActor:Actor) : void
+    MovementCancelled(self:Actor) : void
+    Harvested(self:Actor, resource:ResourceType) : void
+    Docked() : void
+    Undocked() : void
+    Unloading(self:Actor) : void
+    Demolishing(self:Actor) : void
+    Infiltrating(self:Actor) : void
+}
+class "TraitInfo`1"<T> {
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+"TraitInfo`1" "<MirageTarget>" <|-- MirageTargetInfo
+TooltipInfo <|-- MirageTooltipInfo
+"Requires`1" "<MirageInfo>" <|-- MirageTooltipInfo
+"ConditionalTrait`1" "<MirageTooltipInfo>" <|-- MirageTooltip
+ITooltip <|-- MirageTooltip
+MirageTooltip --> "self" Actor
+MirageTooltip --> "mirage" Mirage
+MirageTooltip --> "TooltipInfo" ITooltipInfo
+MirageTooltip --> "Owner" Player
+PausableConditionalTraitInfo <|-- MirageInfo
+MirageInfo o-> "RevealOn" MirageRevealType
+"PausableConditionalTrait`1" "<MirageInfo>" <|-- Mirage
+INotifyDamage <|-- Mirage
+IEffectiveOwner <|-- Mirage
+INotifyUnload <|-- Mirage
+INotifyDemolition <|-- Mirage
+INotifyInfiltration <|-- Mirage
+INotifyAttack <|-- Mirage
+ITick <|-- Mirage
+INotifyCreated <|-- Mirage
+INotifyHarvesterAction <|-- Mirage
+Mirage --> "self" Actor
+Mirage --> "ActorType" ActorInfo
+Mirage --> "Owner" Player
+@enduml

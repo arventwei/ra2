@@ -1,0 +1,30 @@
+@startuml
+class TmpTSLoader {
+    {static} UnpackTileData(s:Stream, data:byte[], size:Size, frameBounds:Rectangle) : void
+    IsTmpTS(s:Stream) : bool
+    ParseFrames(s:Stream) : ISpriteFrame[]
+    + TryParseSprite(s:Stream, frames:ISpriteFrame[], metadata:TypeDictionary) : bool
+}
+class TmpTSDepthFrame {
+    + DisableExportPadding : bool <<get>>
+    + TmpTSDepthFrame(parent:TmpTSFrame)
+}
+class TmpTSFrame {
+    + DisableExportPadding : bool <<get>>
+    + TmpTSFrame(s:Stream, size:Size, u:int, v:int)
+}
+ISpriteLoader <|-- TmpTSLoader
+TmpTSLoader +-- TmpTSDepthFrame
+ISpriteFrame <|-- TmpTSDepthFrame
+TmpTSDepthFrame --> "parent" TmpTSFrame
+TmpTSDepthFrame --> "Type" SpriteFrameType
+TmpTSDepthFrame --> "Size" Size
+TmpTSDepthFrame --> "FrameSize" Size
+TmpTSDepthFrame --> "Offset" float2
+TmpTSLoader +-- TmpTSFrame
+ISpriteFrame <|-- TmpTSFrame
+TmpTSFrame --> "Type" SpriteFrameType
+TmpTSFrame --> "Size" Size
+TmpTSFrame --> "FrameSize" Size
+TmpTSFrame --> "Offset" float2
+@enduml

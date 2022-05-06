@@ -1,0 +1,10 @@
+@startuml
+class RemoveYesNo {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+    displayed : bool
+    + <<override>> AfterUpdate(modData:ModData) : IEnumerable<string>
+}
+UpdateRule <|-- RemoveYesNo
+@enduml

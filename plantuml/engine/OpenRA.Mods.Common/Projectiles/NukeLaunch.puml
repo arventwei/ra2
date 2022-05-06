@@ -1,0 +1,35 @@
+@startuml
+class NukeLaunch {
+    <<readonly>> weaponPalette : string
+    <<readonly>> upSequence : string
+    <<readonly>> downSequence : string
+    <<readonly>> removeOnDetonation : bool
+    <<readonly>> impactDelay : int
+    <<readonly>> turn : int
+    <<readonly>> trailImage : string
+    <<readonly>> trailPalette : string
+    <<readonly>> trailInterval : int
+    <<readonly>> trailDelay : int
+    ticks : int
+    trailTicks : int
+    launchDelay : int
+    isLaunched : bool
+    detonated : bool
+    + NukeLaunch(firedBy:Player, name:string, weapon:WeaponInfo, weaponPalette:string, upSequence:string, downSequence:string, launchPos:WPos, targetPos:WPos, detonationAltitude:WDist, removeOnDetonation:bool, velocity:WDist, launchDelay:int, impactDelay:int, skipAscent:bool, trailImage:string, trailSequences:string[], trailPalette:string, trailUsePlayerPalette:bool, trailDelay:int, trailInterval:int)
+    + Tick(world:World) : void
+    Explode(world:World, removeProjectile:bool) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    + FractionComplete : float <<get>>
+}
+IProjectile <|-- NukeLaunch
+ISpatiallyPartitionable <|-- NukeLaunch
+NukeLaunch --> "firedBy" Player
+NukeLaunch --> "anim" Animation
+NukeLaunch --> "weapon" WeaponInfo
+NukeLaunch --> "ascendSource" WPos
+NukeLaunch --> "ascendTarget" WPos
+NukeLaunch --> "descendSource" WPos
+NukeLaunch --> "descendTarget" WPos
+NukeLaunch --> "detonationAltitude" WDist
+NukeLaunch --> "pos" WPos
+@enduml

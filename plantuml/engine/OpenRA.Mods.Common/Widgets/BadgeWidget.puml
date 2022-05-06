@@ -1,0 +1,10 @@
+@startuml
+class BadgeWidget {
+    + BadgeWidget(modData:ModData)
+    + <<override>> Clone() : Widget
+    + <<override>> Draw() : void
+}
+Widget <|-- BadgeWidget
+BadgeWidget --> "Badge" PlayerBadge
+BadgeWidget --> "playerDatabase" PlayerDatabase
+@enduml

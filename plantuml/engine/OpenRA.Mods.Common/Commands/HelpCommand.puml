@@ -1,0 +1,20 @@
+@startuml
+class HelpCommandInfo {
+}
+class HelpCommand {
+    + HelpCommand()
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + InvokeCommand(name:string, arg:string) : void
+    + RegisterHelp(name:string, description:string) : void
+}
+class "TraitInfo`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+"TraitInfo`1" "<HelpCommand>" <|-- HelpCommandInfo
+IChatCommand <|-- HelpCommand
+IWorldLoaded <|-- HelpCommand
+HelpCommand --> "helpDescriptions<string,string>" "Dictionary`2"
+HelpCommand --> "world" World
+HelpCommand --> "console" ChatCommands
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+class ReplayRecorder <<sealed>> {
+    {static} IsGameStart(data:byte[]) : bool
+    + ReplayRecorder(chooseFilename:Func<string>)
+    StartSavingReplay(initialContent:byte[]) : void
+    + Receive(clientID:int, data:byte[]) : void
+    + ReceiveFrame(clientID:int, frame:int, data:byte[]) : void
+    disposed : bool
+    + Dispose() : void
+}
+class "Func`1"<T> {
+}
+ReplayRecorder --> "Metadata" ReplayMetadata
+ReplayRecorder --> "writer" BinaryWriter
+ReplayRecorder --> "chooseFilename<string>" "Func`1"
+ReplayRecorder o-> "preStartBuffer" MemoryStream
+@enduml

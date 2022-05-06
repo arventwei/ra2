@@ -1,0 +1,89 @@
+@startuml
+class HarvesterInfo {
+    + <<readonly>> SearchForDeliveryBuildingDelay : int = 125
+    + <<readonly>> Capacity : int = 28
+    + <<readonly>> BaleLoadDelay : int = 4
+    + <<readonly>> BaleUnloadDelay : int = 4
+    + <<readonly>> BaleUnloadAmount : int = 1
+    + <<readonly>> HarvestFacings : int = 0
+    + <<readonly>> FullyLoadedSpeed : int = 85
+    + <<readonly>> SearchOnCreation : bool = true
+    + <<readonly>> SearchFromProcRadius : int = 24
+    + <<readonly>> SearchFromHarvesterRadius : int = 12
+    + <<readonly>> WaitDuration : int = 25
+    + <<readonly>> MaxUnloadQueue : int = 3
+    + <<readonly>> UnloadQueueCostModifier : int = 12
+    + <<readonly>> ResourceRefineryDirectionPenalty : int = 200
+    + <<readonly>> QueueFullLoad : bool = false
+    + <<readonly>> EmptyCondition : string = null
+    + <<readonly>> HarvestVoice : string = "Action"
+    + <<readonly>> DeliverVoice : string = "Action"
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Harvester {
+    conditionToken : int
+    currentUnloadTicks : int
+    + ContentValue : int <<get>>
+    + Harvester(self:Actor, info:HarvesterInfo)
+    Created(self:Actor) : void
+    + LinkProc(self:Actor, proc:Actor) : void
+    + UnlinkProc(self:Actor, proc:Actor) : void
+    + ChooseNewProc(self:Actor, ignore:Actor) : void
+    IsAcceptableProcType(proc:Actor) : bool
+    + ClosestProc(self:Actor, ignore:Actor) : Actor
+    + IsFull : bool <<get>>
+    + IsEmpty : bool <<get>>
+    + Fullness : int <<get>>
+    UpdateCondition(self:Actor) : void
+    + AcceptResource(self:Actor, type:ResourceType) : void
+    + TickUnload(self:Actor, proc:Actor) : bool
+    + CanHarvestCell(self:Actor, cell:CPos) : bool
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    ResolveOrder(self:Actor, order:Order) : void
+    GetSpeedModifier() : int
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class HarvestOrderTargeter {
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + IsQueued : bool <<get>> <<protected set>>
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+}
+TraitInfo <|-- HarvesterInfo
+"Requires`1" "<MobileInfo>" <|-- HarvesterInfo
+HarvesterInfo o-> "DeliveryBuildings<string>" "HashSet`1"
+HarvesterInfo o-> "UnblockCell" CVec
+HarvesterInfo o-> "Resources<string>" "HashSet`1"
+HarvesterInfo o-> "HarvestLineColor" Color
+HarvesterInfo o-> "DeliverLineColor" Color
+IIssueOrder <|-- Harvester
+IResolveOrder <|-- Harvester
+IOrderVoice <|-- Harvester
+ISpeedModifier <|-- Harvester
+ISync <|-- Harvester
+INotifyCreated <|-- Harvester
+Harvester --> "Info" HarvesterInfo
+Harvester --> "Contents<ResourceTypeInfo,int>" "IReadOnlyDictionary`2"
+Harvester --> "mobile" Mobile
+Harvester --> "resLayer" ResourceLayer
+Harvester --> "claimLayer" ResourceClaimLayer
+Harvester o-> "contents<ResourceTypeInfo,int>" "Dictionary`2"
+Harvester o-> "LastLinkedProc" Actor
+Harvester o-> "LinkedProc" Actor
+Harvester --> "Orders<IOrderTargeter>" "IEnumerable`1"
+Harvester +-- HarvestOrderTargeter
+IOrderTargeter <|-- HarvestOrderTargeter
+@enduml

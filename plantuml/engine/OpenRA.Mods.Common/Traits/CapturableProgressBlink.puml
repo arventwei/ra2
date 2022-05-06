@@ -1,0 +1,27 @@
+@startuml
+class CapturableProgressBlinkInfo {
+    + <<readonly>> Interval : int = 50
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CapturableProgressBlink {
+    tick : int = 0
+    + CapturableProgressBlink(info:CapturableProgressBlinkInfo)
+    Update(self:Actor, captor:Actor, target:Actor, current:int, total:int) : void
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "List`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+ConditionalTraitInfo <|-- CapturableProgressBlinkInfo
+"Requires`1" "<CapturableInfo>" <|-- CapturableProgressBlinkInfo
+"ConditionalTrait`1" "<CapturableProgressBlinkInfo>" <|-- CapturableProgressBlink
+ITick <|-- CapturableProgressBlink
+ICaptureProgressWatcher <|-- CapturableProgressBlink
+CapturableProgressBlink o-> "captorOwners<Player>" "List`1"
+CapturableProgressBlink o-> "captors<Actor>" "HashSet`1"
+@enduml

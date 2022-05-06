@@ -1,0 +1,12 @@
+@startuml
+class DelayedImpact {
+    delay : int
+    + DelayedImpact(delay:int, wh:IWarhead, target:Target, args:WarheadArgs)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- DelayedImpact
+DelayedImpact --> "target" Target
+DelayedImpact --> "wh" IWarhead
+DelayedImpact --> "args" WarheadArgs
+@enduml

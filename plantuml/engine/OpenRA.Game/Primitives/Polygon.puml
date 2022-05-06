@@ -1,0 +1,13 @@
+@startuml
+class Polygon <<struct>> {
+    isRectangle : bool
+    + Polygon(bounds:Rectangle)
+    + Polygon(vertices:int2[])
+    + IsEmpty : bool <<get>>
+    + Contains(xy:int2) : bool
+    + IntersectsWith(rect:Rectangle) : bool
+    + <<override>> GetHashCode() : int
+}
+Polygon o-> "Empty" Polygon
+Polygon --> "BoundingRect" Rectangle
+@enduml

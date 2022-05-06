@@ -1,0 +1,14 @@
+@startuml
+class ReformatChromeProvider {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> AfterUpdate(modData:ModData) : IEnumerable<string>
+    ExtractPanelDefinition(chromeProviderNode:MiniYamlNode, regionsNode:MiniYamlNode) : bool
+    + <<override>> UpdateChromeProviderNode(modData:ModData, chromeProviderNode:MiniYamlNode) : IEnumerable<string>
+}
+class "List`1"<T> {
+}
+UpdateRule <|-- ReformatChromeProvider
+ReformatChromeProvider o-> "overrideLocations<string>" "List`1"
+ReformatChromeProvider o-> "panelLocations<string>" "List`1"
+@enduml

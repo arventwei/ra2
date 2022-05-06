@@ -1,0 +1,17 @@
+@startuml
+enum DamageCalculationType {
+    HitShape,
+    ClosestTargetablePosition,
+    CenterPosition,
+}
+class SpreadDamageWarhead {
+    RulesetLoaded(rules:Ruleset, info:WeaponInfo) : void
+    GetDamageFalloff(distance:int) : int
+}
+class "IRulesetLoaded`1"<T> {
+}
+DamageWarhead <|-- SpreadDamageWarhead
+"IRulesetLoaded`1" "<WeaponInfo>" <|-- SpreadDamageWarhead
+SpreadDamageWarhead o-> "Spread" WDist
+SpreadDamageWarhead o-> "DamageCalculationType" DamageCalculationType
+@enduml

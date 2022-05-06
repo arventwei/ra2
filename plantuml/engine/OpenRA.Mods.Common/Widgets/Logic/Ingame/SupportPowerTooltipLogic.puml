@@ -1,0 +1,6 @@
+@startuml
+class SupportPowerTooltipLogic {
+    + SupportPowerTooltipLogic(widget:Widget, tooltipContainer:TooltipContainerWidget, getTooltipIcon:Func<SupportPowersWidget.SupportPowerIcon>, world:World)
+}
+ChromeLogic <|-- SupportPowerTooltipLogic
+@enduml

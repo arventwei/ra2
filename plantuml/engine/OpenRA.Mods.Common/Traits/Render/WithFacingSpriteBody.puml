@@ -1,0 +1,15 @@
+@startuml
+class WithFacingSpriteBodyInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithFacingSpriteBody {
+    + WithFacingSpriteBody(init:ActorInitializer, info:WithFacingSpriteBodyInfo)
+}
+class "Requires`1"<T> {
+}
+WithSpriteBodyInfo <|-- WithFacingSpriteBodyInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithFacingSpriteBodyInfo
+"Requires`1" "<IFacingInfo>" <|-- WithFacingSpriteBodyInfo
+WithSpriteBody <|-- WithFacingSpriteBody
+@enduml

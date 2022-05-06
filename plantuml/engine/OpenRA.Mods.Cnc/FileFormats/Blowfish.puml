@@ -1,0 +1,14 @@
+@startuml
+class Blowfish {
+    + Blowfish(key:byte[])
+    + Encrypt(data:uint[]) : uint[]
+    + Decrypt(data:uint[]) : uint[]
+    {static} RunCipher(data:uint[], f:CipherFunc) : uint[]
+    Encrypt(a:uint, b:uint) : void
+    Decrypt(a:uint, b:uint) : void
+    S(x:uint, i:int) : uint
+    ConvertBFtoF(x:uint) : uint
+    Round(a:uint, b:uint, n:int) : void
+    {static} SwapBytes(i:uint) : uint
+}
+@enduml

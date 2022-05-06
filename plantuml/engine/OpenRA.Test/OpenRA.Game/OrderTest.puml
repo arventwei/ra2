@@ -1,0 +1,11 @@
+@startuml
+class OrderTest {
+    RoundTripOrder(bytes:byte[]) : byte[]
+    + SerializeEmpty() : void
+    + SerializeUnqueued() : void
+    + SerializeQueued() : void
+    + SerializePos() : void
+    + SerializeInvalid() : void
+    + SerializeExtra() : void
+}
+@enduml

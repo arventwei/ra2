@@ -1,0 +1,21 @@
+@startuml
+class Texture <<sealed>> {
+    texture : uint
+    + ID : uint <<get>>
+    disposed : bool
+    + Texture()
+    PrepareTexture() : void
+    SetData(data:IntPtr, width:int, height:int) : void
+    + SetData(colors:byte[], width:int, height:int) : void
+    + SetData(colors:uint[,]) : void
+    + GetData() : byte[]
+    + SetEmpty(width:int, height:int) : void
+    + Dispose() : void
+    Dispose(disposing:bool) : void
+}
+ThreadAffine <|-- Texture
+ITextureInternal <|-- Texture
+Texture --> "scaleFilter" TextureScaleFilter
+Texture --> "Size" Size
+Texture --> "ScaleFilter" TextureScaleFilter
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+class ConquestVictoryConditionsInfo {
+    + <<readonly>> NotificationDelay : int = 1500
+    + <<readonly>> Objective : string = "Destroy all opposition!"
+    + <<readonly>> SuppressNotifications : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ConquestVictoryConditions {
+    <<readonly>> shortGame : bool
+    objectiveID : int
+    + ConquestVictoryConditions(self:Actor, cvcInfo:ConquestVictoryConditionsInfo)
+    Tick(self:Actor) : void
+    NotifyTimerExpired(self:Actor) : void
+    OnPlayerLost(player:Player) : void
+    OnPlayerWon(player:Player) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- ConquestVictoryConditionsInfo
+"Requires`1" "<MissionObjectivesInfo>" <|-- ConquestVictoryConditionsInfo
+ITick <|-- ConquestVictoryConditions
+INotifyWinStateChanged <|-- ConquestVictoryConditions
+INotifyTimeLimit <|-- ConquestVictoryConditions
+ConquestVictoryConditions --> "info" ConquestVictoryConditionsInfo
+ConquestVictoryConditions --> "mo" MissionObjectives
+@enduml

@@ -1,0 +1,10 @@
+@startuml
+class OrderIO <<static>> {
+    + {static} ToOrderList(bytes:byte[], world:World) : List<Order>
+    + {static} SerializeSync(sync:int, defeatState:ulong) : byte[]
+    + {static} ReadInt2(r:BinaryReader) : int2
+    + {static} Write(w:BinaryWriter, p:int2) : void
+    + {static} Write(w:BinaryWriter, cell:CPos) : void
+    + {static} Write(w:BinaryWriter, pos:WPos) : void
+}
+@enduml

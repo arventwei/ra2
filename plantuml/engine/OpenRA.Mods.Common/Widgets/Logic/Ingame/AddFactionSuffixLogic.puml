@@ -1,0 +1,6 @@
+@startuml
+class AddFactionSuffixLogic {
+    + AddFactionSuffixLogic(widget:Widget, world:World)
+}
+ChromeLogic <|-- AddFactionSuffixLogic
+@enduml

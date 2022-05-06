@@ -1,0 +1,29 @@
+@startuml
+interface "IReadOnlyDictionary`2"<TKey,TValue> {
+    Count : int <<get>>
+    ContainsKey(key:TKey) : bool
+    TryGetValue(key:TKey, value:TValue) : bool
+}
+class ReadOnlyDictionary <<static>> {
+    + {static} AsReadOnly(dict:IDictionary<TKey, TValue>) : IReadOnlyDictionary<TKey, TValue>
+}
+class "ReadOnlyDictionary`2"<TKey,TValue> {
+    + ReadOnlyDictionary()
+    + ReadOnlyDictionary(dict:IDictionary<TKey, TValue>)
+    + ContainsKey(key:TKey) : bool
+    + TryGetValue(key:TKey, value:TValue) : bool
+    + Count : int <<get>>
+    + GetEnumerator() : IEnumerator<KeyValuePair<TKey, TValue>>
+    GetEnumerator() : System.Collections.IEnumerator
+}
+class "IEnumerable`1"<T> {
+}
+class "ICollection`1"<T> {
+}
+"IEnumerable`1" "<KeyValuePair<TKey, TValue>>" <|-- "IReadOnlyDictionary`2"
+"IReadOnlyDictionary`2" --> "Keys<TKey>" "ICollection`1"
+"IReadOnlyDictionary`2" --> "Values<TValue>" "ICollection`1"
+"IReadOnlyDictionary`2" "<TKey,TValue>" <|-- "ReadOnlyDictionary`2"
+"ReadOnlyDictionary`2" --> "Keys<TKey>" "ICollection`1"
+"ReadOnlyDictionary`2" --> "Values<TValue>" "ICollection`1"
+@enduml

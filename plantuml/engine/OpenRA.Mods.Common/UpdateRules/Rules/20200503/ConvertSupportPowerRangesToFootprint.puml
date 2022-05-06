@@ -1,0 +1,13 @@
+@startuml
+class ConvertSupportPowerRangesToFootprint {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+    UpdatePower(power:MiniYamlNode) : void
+    + <<override>> AfterUpdate(modData:ModData) : IEnumerable<string>
+}
+class "List`1"<T> {
+}
+UpdateRule <|-- ConvertSupportPowerRangesToFootprint
+ConvertSupportPowerRangesToFootprint o-> "locations<string>" "List`1"
+@enduml

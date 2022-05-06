@@ -1,0 +1,14 @@
+@startuml
+class ColorPreviewManagerWidget {
+    + <<readonly>> PaletteName : string = "colorpicker"
+    + <<readonly>> Ramp : float = 0.05f
+    + ColorPreviewManagerWidget(worldRenderer:WorldRenderer)
+    + <<override>> Initialize(args:WidgetArgs) : void
+    + <<override>> Tick() : void
+}
+Widget <|-- ColorPreviewManagerWidget
+ColorPreviewManagerWidget --> "Color" Color
+ColorPreviewManagerWidget --> "cachedColor" Color
+ColorPreviewManagerWidget --> "worldRenderer" WorldRenderer
+ColorPreviewManagerWidget --> "preview" IPalette
+@enduml

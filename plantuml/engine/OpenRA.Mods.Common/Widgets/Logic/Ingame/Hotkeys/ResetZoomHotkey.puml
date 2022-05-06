@@ -1,0 +1,7 @@
+@startuml
+class ResetZoomHotkeyLogic {
+    + ResetZoomHotkeyLogic(widget:Widget, modData:ModData, worldRenderer:WorldRenderer, logicArgs:Dictionary<string, MiniYaml>)
+}
+SingleHotkeyBaseLogic <|-- ResetZoomHotkeyLogic
+ResetZoomHotkeyLogic --> "viewport" Viewport
+@enduml

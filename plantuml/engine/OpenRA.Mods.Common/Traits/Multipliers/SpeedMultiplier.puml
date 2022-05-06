@@ -1,0 +1,15 @@
+@startuml
+class SpeedMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SpeedMultiplier {
+    + SpeedMultiplier(info:SpeedMultiplierInfo)
+    GetSpeedModifier() : int
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- SpeedMultiplierInfo
+"ConditionalTrait`1" "<SpeedMultiplierInfo>" <|-- SpeedMultiplier
+ISpeedModifier <|-- SpeedMultiplier
+@enduml

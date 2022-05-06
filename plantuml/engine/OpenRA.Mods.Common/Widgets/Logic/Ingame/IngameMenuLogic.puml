@@ -1,0 +1,36 @@
+@startuml
+class IngameMenuLogic {
+    <<readonly>> isSinglePlayer : bool
+    hasError : bool
+    leaving : bool
+    hideMenu : bool
+    + IngameMenuLogic(widget:Widget, modData:ModData, world:World, onExit:Action, worldRenderer:WorldRenderer, activePanel:IngameInfoPanel, logicArgs:Dictionary<string, MiniYaml>)
+    OnQuit() : void
+    ShowMenu() : void
+    CloseMenu() : void
+    AddButton(id:string, text:string) : ButtonWidget
+    CreateAbortMissionButton() : void
+    CreateRestartButton() : void
+    CreateSurrenderButton() : void
+    CreateLoadGameButton() : void
+    CreateSaveGameButton() : void
+    CreateMusicButton() : void
+    CreateSettingsButton() : void
+    CreateResumeButton() : void
+    CreateSaveMapButton() : void
+    CreateExitEditorButton() : void
+}
+class "List`1"<T> {
+}
+ChromeLogic <|-- IngameMenuLogic
+IngameMenuLogic --> "menu" Widget
+IngameMenuLogic --> "buttonContainer" Widget
+IngameMenuLogic --> "buttonTemplate" ButtonWidget
+IngameMenuLogic --> "buttonStride" int2
+IngameMenuLogic o-> "buttons<ButtonWidget>" "List`1"
+IngameMenuLogic --> "modData" ModData
+IngameMenuLogic --> "onExit" Action
+IngameMenuLogic --> "world" World
+IngameMenuLogic --> "worldRenderer" WorldRenderer
+IngameMenuLogic --> "mpe" MenuPaletteEffect
+@enduml

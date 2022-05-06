@@ -1,0 +1,19 @@
+@startuml
+class HandshakeRequest {
+    + Mod : string
+    + Version : string
+    + AuthToken : string
+    + {static} Deserialize(data:string) : HandshakeRequest
+    + Serialize() : string
+}
+class HandshakeResponse {
+    + Mod : string
+    + Version : string
+    + Password : string
+    + OrdersProtocol : int = 7
+    + Fingerprint : string
+    + AuthSignature : string
+    + {static} Deserialize(data:string) : HandshakeResponse
+    + Serialize() : string
+}
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class TakeOff {
+    + TakeOff(self:Actor)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- TakeOff
+TakeOff --> "aircraft" Aircraft
+TakeOff --> "move" IMove
+@enduml

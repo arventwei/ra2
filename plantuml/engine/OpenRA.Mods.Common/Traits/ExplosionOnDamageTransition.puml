@@ -1,0 +1,22 @@
+@startuml
+class ExplosionOnDamageTransitionInfo {
+    + <<readonly>> Weapon : string = null
+    + <<readonly>> TriggerOnlyOnce : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class ExplosionOnDamageTransition {
+    triggered : bool
+    + ExplosionOnDamageTransition(info:ExplosionOnDamageTransitionInfo, self:Actor)
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- ExplosionOnDamageTransitionInfo
+IRulesetLoaded <|-- ExplosionOnDamageTransitionInfo
+"Requires`1" "<IHealthInfo>" <|-- ExplosionOnDamageTransitionInfo
+ExplosionOnDamageTransitionInfo o-> "DamageState" DamageState
+ExplosionOnDamageTransitionInfo --> "WeaponInfo" WeaponInfo
+INotifyDamageStateChanged <|-- ExplosionOnDamageTransition
+ExplosionOnDamageTransition --> "info" ExplosionOnDamageTransitionInfo
+@enduml

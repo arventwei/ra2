@@ -1,0 +1,19 @@
+@startuml
+class DeathSoundsInfo {
+    + <<readonly>> Voice : string = "Die"
+    + <<readonly>> VolumeMultiplier : float = 1f
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DeathSounds {
+    + DeathSounds(info:DeathSoundsInfo)
+    Killed(self:Actor, e:AttackInfo) : void
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- DeathSoundsInfo
+DeathSoundsInfo o-> "DeathTypes<DamageType>" "BitSet`1"
+"ConditionalTrait`1" "<DeathSoundsInfo>" <|-- DeathSounds
+INotifyKilled <|-- DeathSounds
+@enduml

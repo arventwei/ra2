@@ -1,0 +1,41 @@
+@startuml
+class TriggerGlobal {
+    + TriggerGlobal(context:ScriptContext)
+    + {static} GetScriptTriggers(a:Actor) : ScriptTriggers
+    + AfterDelay(delay:int, func:LuaFunction) : void
+    + OnPassengerEntered(a:Actor, func:LuaFunction) : void
+    + OnPassengerExited(a:Actor, func:LuaFunction) : void
+    + OnIdle(a:Actor, func:LuaFunction) : void
+    + OnDamaged(a:Actor, func:LuaFunction) : void
+    + OnKilled(a:Actor, func:LuaFunction) : void
+    + OnAllKilled(actors:Actor[], func:LuaFunction) : void
+    + OnAnyKilled(actors:Actor[], func:LuaFunction) : void
+    + OnProduction(a:Actor, func:LuaFunction) : void
+    + OnAnyProduction(func:LuaFunction) : void
+    + OnPlayerWon(player:Player, func:LuaFunction) : void
+    + OnPlayerLost(player:Player, func:LuaFunction) : void
+    + OnObjectiveAdded(player:Player, func:LuaFunction) : void
+    + OnObjectiveCompleted(player:Player, func:LuaFunction) : void
+    + OnObjectiveFailed(player:Player, func:LuaFunction) : void
+    + OnAddedToWorld(a:Actor, func:LuaFunction) : void
+    + OnRemovedFromWorld(a:Actor, func:LuaFunction) : void
+    + OnAllRemovedFromWorld(actors:Actor[], func:LuaFunction) : void
+    + OnCapture(a:Actor, func:LuaFunction) : void
+    + OnKilledOrCaptured(a:Actor, func:LuaFunction) : void
+    + OnAllKilledOrCaptured(actors:Actor[], func:LuaFunction) : void
+    + OnEnteredFootprint(cells:CPos[], func:LuaFunction) : int
+    + OnExitedFootprint(cells:CPos[], func:LuaFunction) : int
+    + RemoveFootprintTrigger(id:int) : void
+    + OnEnteredProximityTrigger(pos:WPos, range:WDist, func:LuaFunction) : int
+    + OnExitedProximityTrigger(pos:WPos, range:WDist, func:LuaFunction) : int
+    + RemoveProximityTrigger(id:int) : void
+    + OnInfiltrated(a:Actor, func:LuaFunction) : void
+    + OnDiscovered(a:Actor, func:LuaFunction) : void
+    + OnPlayerDiscovered(discovered:Player, func:LuaFunction) : void
+    + OnSold(a:Actor, func:LuaFunction) : void
+    + OnTimerExpired(func:LuaFunction) : void
+    + ClearAll(a:Actor) : void
+    + Clear(a:Actor, triggerName:string) : void
+}
+ScriptGlobal <|-- TriggerGlobal
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+class DeliversCashProperties {
+    + DeliversCashProperties(context:ScriptContext, self:Actor)
+    + DeliverCash(target:Actor) : void
+}
+class DeliversExperienceProperties {
+    + DeliversExperienceProperties(context:ScriptContext, self:Actor)
+    + DeliverExperience(target:Actor) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- DeliversCashProperties
+"Requires`1" "<IMoveInfo>" <|-- DeliversCashProperties
+"Requires`1" "<DeliversCashInfo>" <|-- DeliversCashProperties
+DeliversCashProperties --> "info" DeliversCashInfo
+ScriptActorProperties <|-- DeliversExperienceProperties
+"Requires`1" "<IMoveInfo>" <|-- DeliversExperienceProperties
+"Requires`1" "<DeliversExperienceInfo>" <|-- DeliversExperienceProperties
+DeliversExperienceProperties --> "deliversExperience" DeliversExperienceInfo
+DeliversExperienceProperties --> "gainsExperience" GainsExperience
+@enduml

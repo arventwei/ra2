@@ -1,0 +1,40 @@
+@startuml
+class ResourceRendererInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ResourceRenderer {
+    + ResourceRenderer(self:Actor, info:ResourceRendererInfo)
+    AddDirtyCell(cell:CPos, resType:ResourceType) : void
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+    Render(wr:WorldRenderer) : void
+    TickRender(wr:WorldRenderer, self:Actor) : void
+    disposed : bool
+    Disposing(self:Actor) : void
+    + GetRenderedResourceType(cell:CPos) : ResourceType
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "Queue`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class RendererCellContents <<struct>> {
+    + <<readonly>> Variant : string
+    + <<readonly>> Density : int
+    + RendererCellContents(variant:string, type:ResourceType, density:int)
+}
+TraitInfo <|-- ResourceRendererInfo
+"Requires`1" "<IResourceLayerInfo>" <|-- ResourceRendererInfo
+IWorldLoaded <|-- ResourceRenderer
+IRenderOverlay <|-- ResourceRenderer
+ITickRender <|-- ResourceRenderer
+INotifyActorDisposing <|-- ResourceRenderer
+ResourceRenderer o-> "dirty<CPos>" "HashSet`1"
+ResourceRenderer o-> "cleanDirty<CPos>" "Queue`1"
+ResourceRenderer o-> "spriteLayers<PaletteReference,TerrainSpriteLayer>" "Dictionary`2"
+ResourceRenderer +-- RendererCellContents
+RendererCellContents --> "Type" ResourceType
+RendererCellContents o-> "Empty" RendererCellContents
+@enduml

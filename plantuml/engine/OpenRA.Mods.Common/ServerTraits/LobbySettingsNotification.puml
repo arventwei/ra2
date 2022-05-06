@@ -1,0 +1,7 @@
+@startuml
+class LobbySettingsNotification {
+    + ClientJoined(server:OpenRA.Server.Server, conn:Connection) : void
+}
+ServerTrait <|-- LobbySettingsNotification
+IClientJoined <|-- LobbySettingsNotification
+@enduml

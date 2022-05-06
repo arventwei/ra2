@@ -1,0 +1,12 @@
+@startuml
+class CallLuaFunc <<sealed>> {
+    + CallLuaFunc(function:LuaFunction, context:ScriptContext)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> Cancel(self:Actor, keepQueue:bool) : void
+    + Dispose() : void
+}
+Activity <|-- CallLuaFunc
+IDisposable <|-- CallLuaFunc
+CallLuaFunc --> "context" ScriptContext
+CallLuaFunc --> "function" LuaFunction
+@enduml

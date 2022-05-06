@@ -1,0 +1,18 @@
+@startuml
+class JamsMissilesInfo {
+    + <<readonly>> Chance : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class JamsMissiles {
+    + Chance : int <<get>>
+    + JamsMissiles(info:JamsMissilesInfo)
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- JamsMissilesInfo
+JamsMissilesInfo o-> "Range" WDist
+JamsMissilesInfo o-> "DeflectionRelationships" PlayerRelationship
+"ConditionalTrait`1" "<JamsMissilesInfo>" <|-- JamsMissiles
+JamsMissiles --> "Range" WDist
+JamsMissiles --> "DeflectionStances" PlayerRelationship
+@enduml

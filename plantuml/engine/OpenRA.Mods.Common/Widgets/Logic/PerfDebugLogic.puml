@@ -1,0 +1,6 @@
+@startuml
+class PerfDebugLogic {
+    + PerfDebugLogic(widget:Widget)
+}
+ChromeLogic <|-- PerfDebugLogic
+@enduml

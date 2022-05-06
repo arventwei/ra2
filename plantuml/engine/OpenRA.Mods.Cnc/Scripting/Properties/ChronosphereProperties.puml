@@ -1,0 +1,10 @@
+@startuml
+class ChronosphereProperties {
+    + ChronosphereProperties(context:ScriptContext, self:Actor)
+    + Chronoshift(unitLocationPairs:LuaTable, duration:int, killCargo:bool) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- ChronosphereProperties
+"Requires`1" "<ChronoshiftPowerInfo>" <|-- ChronosphereProperties
+@enduml

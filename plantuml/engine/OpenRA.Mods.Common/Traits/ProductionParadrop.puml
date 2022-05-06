@@ -1,0 +1,21 @@
+@startuml
+class ProductionParadropInfo {
+    + <<readonly>> ActorType : string = "badr"
+    + <<readonly>> ChuteSound : string = null
+    + <<readonly>> ReadyAudio : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ProductionParadrop {
+    + ProductionParadrop(init:ActorInitializer, info:ProductionParadropInfo)
+    + <<override>> Produce(self:Actor, producee:ActorInfo, productionType:string, inits:TypeDictionary, refundableValue:int) : bool
+    + <<override>> DoProduction(self:Actor, producee:ActorInfo, exitinfo:ExitInfo, productionType:string, inits:TypeDictionary) : void
+}
+class "Requires`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+ProductionInfo <|-- ProductionParadropInfo
+"Requires`1" "<ExitInfo>" <|-- ProductionParadropInfo
+Production <|-- ProductionParadrop
+ProductionParadrop --> "rp<RallyPoint>" "Lazy`1"
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+enum PackageHashType {
+    Classic,
+    CRC32,
+}
+class PackageEntry {
+    + <<const>> Size : int = 12
+    + <<readonly>> Hash : uint
+    + <<readonly>> Offset : uint
+    + <<readonly>> Length : uint
+    + PackageEntry(hash:uint, offset:uint, length:uint)
+    + PackageEntry(s:Stream)
+    + Write(w:BinaryWriter) : void
+    + <<override>> ToString() : string
+    + {static} HashFilename(name:string, type:PackageHashType) : uint
+    + {static} AddStandardName(s:string) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+PackageEntry o-> "names<uint,string>" "Dictionary`2"
+@enduml

@@ -1,0 +1,57 @@
+@startuml
+class EditorActorLayerInfo {
+    + <<readonly>> BinSize : int = 250
+    CreateServerPlayers(map:MapPreview, lobbyInfo:Session, players:List<GameInformation.Player>, playerRandom:MersenneTwister) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class EditorActorLayer {
+    + EditorActorLayer(self:Actor, info:EditorActorLayerInfo)
+    CreatePlayers(w:World, playerRandom:MersenneTwister) : void
+    + WorldLoaded(world:World, wr:WorldRenderer) : void
+    TickRender(wr:WorldRenderer, self:Actor) : void
+    + <<virtual>> Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+    + RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+    + Add(reference:ActorReference) : EditorActorPreview
+    + Add(id:string, reference:ActorReference, initialSetup:bool) : EditorActorPreview
+    + Add(preview:EditorActorPreview, initialSetup:bool) : void
+    + Remove(preview:EditorActorPreview) : void
+    SyncMultiplayerCount() : void
+    UpdateNeighbours(footprint:IReadOnlyDictionary<CPos, SubCell>) : void
+    AddPreviewLocation(preview:EditorActorPreview, location:CPos) : void
+    NeighbouringPreviews(footprint:IReadOnlyDictionary<CPos, SubCell>) : Dictionary<CPos, string[]>
+    + PreviewsInBox(a:int2, b:int2) : IEnumerable<EditorActorPreview>
+    + PreviewsInBox(r:Rectangle) : IEnumerable<EditorActorPreview>
+    + PreviewsAt(cell:CPos) : IEnumerable<EditorActorPreview>
+    + FreeSubCellAt(cell:CPos) : SubCell
+    + PreviewsAt(worldPx:int2) : IEnumerable<EditorActorPreview>
+    NextActorName() : string
+    + Save() : List<MiniYamlNode>
+    + PopulateRadarSignatureCells(self:Actor, destinationBuffer:List<(CPos Cell, Color Color)>) : void
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "SpatiallyPartitioned`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- EditorActorLayerInfo
+ICreatePlayersInfo <|-- EditorActorLayerInfo
+IWorldLoaded <|-- EditorActorLayer
+ITickRender <|-- EditorActorLayer
+IRender <|-- EditorActorLayer
+IRadarSignature <|-- EditorActorLayer
+ICreatePlayers <|-- EditorActorLayer
+IRenderAnnotations <|-- EditorActorLayer
+EditorActorLayer --> "info" EditorActorLayerInfo
+EditorActorLayer o-> "previews<EditorActorPreview>" "List`1"
+EditorActorLayer o-> "cellMap<CPos,List<EditorActorPreview>>" "Dictionary`2"
+EditorActorLayer --> "screenMap<EditorActorPreview>" "SpatiallyPartitioned`1"
+EditorActorLayer --> "worldRenderer" WorldRenderer
+EditorActorLayer --> "Players" MapPlayers
+EditorActorLayer o-> "NoRenderables<IRenderable>" "IEnumerable`1"
+EditorActorLayer o-> "OnPlayerRemoved" Action
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+class Demolish {
+    <<readonly>> delay : int
+    <<readonly>> flashes : int
+    <<readonly>> flashesDelay : int
+    <<readonly>> flashInterval : int
+    + Demolish(self:Actor, target:Target, enterBehaviour:EnterBehaviour, delay:int, flashes:int, flashesDelay:int, flashInterval:int, damageTypes:BitSet<DamageType>, targetLineColor:Color?)
+}
+class "BitSet`1"<T> {
+}
+Enter <|-- Demolish
+Demolish --> "damageTypes<DamageType>" "BitSet`1"
+Demolish --> "enterBehaviour" EnterBehaviour
+Demolish --> "enterActor" Actor
+@enduml

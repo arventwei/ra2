@@ -1,0 +1,27 @@
+@startuml
+class VoxelModelSequenceLoader {
+    + VoxelModelSequenceLoader(modData:ModData)
+    + CacheModels(fileSystem:IReadOnlyFileSystem, modData:ModData, modelSequences:IReadOnlyDictionary<string, MiniYamlNode>) : IModelCache
+}
+class VoxelModelCache {
+    + VoxelModelCache(fileSystem:IReadOnlyFileSystem)
+    + CacheModel(model:string, definition:MiniYaml) : void
+    + LoadComplete() : void
+    LoadVoxel(unit:string, info:MiniYaml) : IModel
+    + GetModelSequence(model:string, sequence:string) : IModel
+    + HasModelSequence(model:string, sequence:string) : bool
+    + Dispose() : void
+}
+class "Action`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IVertexBuffer`1"<T> {
+}
+IModelSequenceLoader <|-- VoxelModelSequenceLoader
+VoxelModelSequenceLoader --> "OnMissingModelError<string>" "Action`1"
+IModelCache <|-- VoxelModelCache
+VoxelModelCache --> "loader" VoxelLoader
+VoxelModelCache o-> "models<string,Dictionary<string, IModel>>" "Dictionary`2"
+VoxelModelCache --> "VertexBuffer<Vertex>" "IVertexBuffer`1"
+@enduml

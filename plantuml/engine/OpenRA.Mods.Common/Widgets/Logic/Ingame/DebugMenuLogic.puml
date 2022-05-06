@@ -1,0 +1,7 @@
+@startuml
+class DebugMenuLogic {
+    + DebugMenuLogic(widget:Widget, world:World)
+    + Order(world:World, order:string) : void
+}
+ChromeLogic <|-- DebugMenuLogic
+@enduml

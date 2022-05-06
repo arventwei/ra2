@@ -1,0 +1,96 @@
+@startuml
+class FieldLoader <<static>> {
+    {static} <<readonly>> TranslationsLock : object
+    + {static} Load(self:object, my:MiniYaml) : void
+    {static} TryGetValueFromYaml(yamlName:string, field:FieldInfo, md:Dictionary<string, MiniYaml>, ret:object) : bool
+    + {static} Load(y:MiniYaml) : T
+    + {static} LoadField(target:object, key:string, value:string) : void
+    + {static} GetValue(field:string, value:string) : T
+    + {static} GetValue(fieldName:string, fieldType:Type, value:string) : object
+    + {static} GetValue(fieldName:string, fieldType:Type, value:string, field:MemberInfo) : object
+    + {static} GetValue(fieldName:string, fieldType:Type, yaml:MiniYaml, field:MemberInfo) : object
+    + {static} GetTypeLoadInfo(type:Type, includePrivateByDefault:bool) : IEnumerable<FieldLoadInfo>
+    {static} BuildTypeLoadInfo(type:Type) : FieldLoadInfo[]
+    + {static} Translate(key:string) : string
+    + {static} SetTranslations(translations:IDictionary<string, string>) : void
+}
+class TranslateAttribute <<sealed>> {
+}
+class FieldFromYamlKeyAttribute <<sealed>> {
+    + FieldFromYamlKeyAttribute()
+}
+class DictionaryFromYamlKeyAttribute <<sealed>> {
+    + DictionaryFromYamlKeyAttribute()
+}
+class DescAttribute <<sealed>> {
+    + DescAttribute(lines:string[])
+}
+class MissingFieldsException {
+    + <<readonly>> Header : string
+    + <<override>> Message : string <<get>>
+    + MissingFieldsException(missing:string[], header:string, headerSingle:string)
+    + <<override>> GetObjectData(info:SerializationInfo, context:StreamingContext) : void
+}
+class "Func`4"<T1,T2,T3,T4> {
+}
+class "Action`2"<T1,T2> {
+}
+class "ConcurrentCache`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class FieldLoadInfo <<sealed>> {
+    + <<readonly>> YamlName : string
+}
+class IgnoreAttribute <<sealed>> {
+    + IgnoreAttribute()
+}
+class RequireAttribute <<sealed>> {
+    + RequireAttribute()
+}
+class AllowEmptyEntriesAttribute <<sealed>> {
+    + AllowEmptyEntriesAttribute()
+}
+class LoadUsingAttribute <<sealed>> {
+    + LoadUsingAttribute(loader:string, required:bool)
+}
+class SerializeAttribute {
+    + IsDefault : bool <<get>>
+    + <<readonly>> Serialize : bool
+    + YamlName : string
+    + Loader : string
+    + FromYamlKey : bool
+    + DictionaryFromYamlKey : bool
+    + Required : bool
+    + AllowEmptyEntries : bool
+    + SerializeAttribute(serialize:bool, required:bool, allowEmptyEntries:bool)
+}
+class "Func`2"<T1,T2> {
+}
+FieldLoader o-> "InvalidValueAction<string,Type,string,object>" "Func`4"
+FieldLoader o-> "UnknownFieldAction<string,Type>" "Action`2"
+FieldLoader o-> "TypeLoadInfo<Type,FieldLoadInfo[]>" "ConcurrentCache`2"
+FieldLoader o-> "MemberHasTranslateAttribute<MemberInfo,bool>" "ConcurrentCache`2"
+FieldLoader o-> "BooleanExpressionCache<string,BooleanExpression>" "ConcurrentCache`2"
+FieldLoader o-> "IntegerExpressionCache<string,IntegerExpression>" "ConcurrentCache`2"
+FieldLoader --> "translations<string,string>" "Dictionary`2"
+Attribute <|-- TranslateAttribute
+Attribute <|-- DescAttribute
+FieldLoader +-- MissingFieldsException
+YamlException <|-- MissingFieldsException
+FieldLoader +-- FieldLoadInfo
+FieldLoadInfo --> "Field" FieldInfo
+FieldLoadInfo --> "Attribute" SerializeAttribute
+FieldLoadInfo --> "Loader<MiniYaml,object>" "Func`2"
+FieldLoader +-- IgnoreAttribute
+SerializeAttribute <|-- IgnoreAttribute
+FieldLoader +-- RequireAttribute
+SerializeAttribute <|-- RequireAttribute
+FieldLoader +-- AllowEmptyEntriesAttribute
+SerializeAttribute <|-- AllowEmptyEntriesAttribute
+FieldLoader +-- LoadUsingAttribute
+SerializeAttribute <|-- LoadUsingAttribute
+FieldLoader +-- SerializeAttribute
+Attribute <|-- SerializeAttribute
+SerializeAttribute o-> "Default" SerializeAttribute
+@enduml

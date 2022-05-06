@@ -1,0 +1,45 @@
+@startuml
+class ColorGlobal {
+    + ColorGlobal(context:ScriptContext)
+    + New(hue:int, saturation:int, luminosity:int) : Color
+    + FromRGB(red:int, green:int, blue:int, alpha:int) : Color
+    + FromHex(value:string) : Color
+}
+ScriptGlobal <|-- ColorGlobal
+ColorGlobal --> "Aqua" Color
+ColorGlobal --> "Black" Color
+ColorGlobal --> "Blue" Color
+ColorGlobal --> "Brown" Color
+ColorGlobal --> "Cyan" Color
+ColorGlobal --> "DarkBlue" Color
+ColorGlobal --> "DarkCyan" Color
+ColorGlobal --> "DarkGray" Color
+ColorGlobal --> "DarkGreen" Color
+ColorGlobal --> "DarkOrange" Color
+ColorGlobal --> "DarkRed" Color
+ColorGlobal --> "Fuchsia" Color
+ColorGlobal --> "Gold" Color
+ColorGlobal --> "Gray" Color
+ColorGlobal --> "Green" Color
+ColorGlobal --> "LawnGreen" Color
+ColorGlobal --> "LightBlue" Color
+ColorGlobal --> "LightCyan" Color
+ColorGlobal --> "LightGray" Color
+ColorGlobal --> "LightGreen" Color
+ColorGlobal --> "LightYellow" Color
+ColorGlobal --> "Lime" Color
+ColorGlobal --> "LimeGreen" Color
+ColorGlobal --> "Magenta" Color
+ColorGlobal --> "Maroon" Color
+ColorGlobal --> "Navy" Color
+ColorGlobal --> "Olive" Color
+ColorGlobal --> "Orange" Color
+ColorGlobal --> "OrangeRed" Color
+ColorGlobal --> "Purple" Color
+ColorGlobal --> "Red" Color
+ColorGlobal --> "Salmon" Color
+ColorGlobal --> "SkyBlue" Color
+ColorGlobal --> "Teal" Color
+ColorGlobal --> "Yellow" Color
+ColorGlobal --> "White" Color
+@enduml

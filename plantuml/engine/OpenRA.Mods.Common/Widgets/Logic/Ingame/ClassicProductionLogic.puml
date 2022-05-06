@@ -1,0 +1,10 @@
+@startuml
+class ClassicProductionLogic {
+    SetupProductionGroupButton(orderManager:OrderManager, button:ProductionTypeButtonWidget) : void
+    + ClassicProductionLogic(widget:Widget, orderManager:OrderManager, world:World)
+    {static} SetMaximumVisibleRows(productionPalette:ProductionPaletteWidget) : void
+}
+ChromeLogic <|-- ClassicProductionLogic
+ClassicProductionLogic --> "palette" ProductionPaletteWidget
+ClassicProductionLogic --> "world" World
+@enduml

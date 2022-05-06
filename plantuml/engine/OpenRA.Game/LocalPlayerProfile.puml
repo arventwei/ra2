@@ -1,0 +1,31 @@
+@startuml
+class LocalPlayerProfile <<sealed>> {
+    <<const>> AuthKeySize : int = 2048
+    + Fingerprint : string <<get>>
+    + PublicKey : string <<get>>
+    <<volatile>> innerFingerprint : string
+    <<volatile>> innerPublicKey : string
+    <<readonly>> filePath : string
+    + LocalPlayerProfile(filePath:string, playerDatabase:PlayerDatabase)
+    + RefreshPlayerData(onComplete:Action) : void
+    + GenerateKeypair() : void
+    + DeleteKeypair() : void
+    + Sign(data:string[]) : string
+    + DecryptString(data:string) : string
+}
+enum LinkState {
+    Uninitialized,
+    GeneratingKeys,
+    Unlinked,
+    CheckingLink,
+    ConnectionFailed,
+    Linked,
+}
+LocalPlayerProfile --> "State" LinkState
+LocalPlayerProfile --> "ProfileData" PlayerProfile
+LocalPlayerProfile --> "innerState" LinkState
+LocalPlayerProfile --> "innerData" PlayerProfile
+LocalPlayerProfile --> "parameters" RSAParameters
+LocalPlayerProfile --> "playerDatabase" PlayerDatabase
+LocalPlayerProfile +-- LinkState
+@enduml

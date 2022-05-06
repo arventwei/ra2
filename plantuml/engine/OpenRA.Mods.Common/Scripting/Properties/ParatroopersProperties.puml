@@ -1,0 +1,12 @@
+@startuml
+class ParatroopersProperties {
+    + ParatroopersProperties(context:ScriptContext, self:Actor)
+    + TargetParatroopers(target:WPos, facing:WAngle?) : Actor[]
+    + ActivateParatroopers(target:WPos, facing:int) : Actor[]
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- ParatroopersProperties
+"Requires`1" "<ParatroopersPowerInfo>" <|-- ParatroopersProperties
+ParatroopersProperties --> "pp" ParatroopersPower
+@enduml

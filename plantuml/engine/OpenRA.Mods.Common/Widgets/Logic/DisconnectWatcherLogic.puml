@@ -1,0 +1,6 @@
+@startuml
+class DisconnectWatcherLogic {
+    + DisconnectWatcherLogic(widget:Widget, orderManager:OrderManager)
+}
+ChromeLogic <|-- DisconnectWatcherLogic
+@enduml

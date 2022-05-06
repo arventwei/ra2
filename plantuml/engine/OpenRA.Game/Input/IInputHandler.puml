@@ -1,0 +1,48 @@
+@startuml
+interface IInputHandler {
+    ModifierKeys(mods:Modifiers) : void
+    OnKeyInput(input:KeyInput) : void
+    OnMouseInput(input:MouseInput) : void
+    OnTextInput(text:string) : void
+}
+enum MouseInputEvent {
+    Down,
+    Move,
+    Up,
+    Scroll,
+}
+class MouseInput <<struct>> {
+    + MultiTapCount : int
+    + MouseInput(ev:MouseInputEvent, button:MouseButton, location:int2, delta:int2, mods:Modifiers, multiTapCount:int)
+}
+enum MouseButton {
+    None= 0,
+    Left= 1,
+    Right= 2,
+    Middle= 4,
+}
+enum Modifiers {
+    None= 0,
+    Shift= 1,
+    Alt= 2,
+    Ctrl= 4,
+    Meta= 8,
+}
+enum KeyInputEvent {
+    Down,
+    Up,
+}
+class KeyInput <<struct>> {
+    + MultiTapCount : int
+    + UnicodeChar : char
+    + IsRepeat : bool
+}
+MouseInput --> "Event" MouseInputEvent
+MouseInput --> "Button" MouseButton
+MouseInput --> "Location" int2
+MouseInput --> "Delta" int2
+MouseInput --> "Modifiers" Modifiers
+KeyInput --> "Event" KeyInputEvent
+KeyInput --> "Key" Keycode
+KeyInput --> "Modifiers" Modifiers
+@enduml

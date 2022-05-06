@@ -1,0 +1,25 @@
+@startuml
+class DamagedByTerrainInfo {
+    + <<readonly>> Damage : int = 0
+    + <<readonly>> DamageInterval : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DamagedByTerrain {
+    damageTicks : int
+    + DamagedByTerrain(info:DamagedByTerrainInfo)
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- DamagedByTerrainInfo
+"Requires`1" "<IHealthInfo>" <|-- DamagedByTerrainInfo
+"Requires`1" "<IOccupySpaceInfo>" <|-- DamagedByTerrainInfo
+DamagedByTerrainInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+"ConditionalTrait`1" "<DamagedByTerrainInfo>" <|-- DamagedByTerrain
+ITick <|-- DamagedByTerrain
+ISync <|-- DamagedByTerrain
+@enduml

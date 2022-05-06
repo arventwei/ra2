@@ -1,0 +1,17 @@
+@startuml
+class LevelUpCrateActionInfo {
+    + <<readonly>> Levels : int = 1
+    + <<readonly>> MaxExtraCollectors : int = 4
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class LevelUpCrateAction {
+    + LevelUpCrateAction(self:Actor, info:LevelUpCrateActionInfo)
+    + <<override>> GetSelectionShares(collector:Actor) : int
+    + <<override>> Activate(collector:Actor) : void
+}
+CrateActionInfo <|-- LevelUpCrateActionInfo
+LevelUpCrateActionInfo o-> "Range" WDist
+CrateAction <|-- LevelUpCrateAction
+LevelUpCrateAction --> "self" Actor
+LevelUpCrateAction --> "info" LevelUpCrateActionInfo
+@enduml

@@ -1,0 +1,43 @@
+@startuml
+class GrantPrerequisiteChargeDrainPowerInfo {
+    + <<readonly>> DischargeModifier : int = 300
+    + <<readonly>> Prerequisite : string = null
+    + <<readonly>> ActiveText : string = "ACTIVE"
+    + <<readonly>> AvailableText : string = "READY"
+    Prerequisites(info:ActorInfo) : IEnumerable<string>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantPrerequisiteChargeDrainPower {
+    active : bool
+    + GrantPrerequisiteChargeDrainPower(self:Actor, info:GrantPrerequisiteChargeDrainPowerInfo)
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    + <<override>> CreateInstance(key:string, manager:SupportPowerManager) : SupportPowerInstance
+    + Activate(self:Actor, instance:SupportPowerInstance) : void
+    + Deactivate(self:Actor, instance:SupportPowerInstance) : void
+}
+class "IEnumerable`1"<T> {
+}
+class DischargeableSupportPowerInstance {
+    available : bool
+    active : bool
+    additionalDischargeSubTicks : int = 0
+    + DischargeableSupportPowerInstance(key:string, info:GrantPrerequisiteChargeDrainPowerInfo, manager:SupportPowerManager)
+    Deactivate() : void
+    + <<override>> Tick() : void
+    + Discharge(subTicks:int) : void
+    + <<override>> Target() : void
+    + <<override>> Activate(order:Order) : void
+    + <<override>> IconOverlayTextOverride() : string
+    + <<override>> TooltipTimeTextOverride() : string
+}
+SupportPowerInfo <|-- GrantPrerequisiteChargeDrainPowerInfo
+ITechTreePrerequisiteInfo <|-- GrantPrerequisiteChargeDrainPowerInfo
+SupportPower <|-- GrantPrerequisiteChargeDrainPower
+ITechTreePrerequisite <|-- GrantPrerequisiteChargeDrainPower
+INotifyOwnerChanged <|-- GrantPrerequisiteChargeDrainPower
+GrantPrerequisiteChargeDrainPower --> "info" GrantPrerequisiteChargeDrainPowerInfo
+GrantPrerequisiteChargeDrainPower --> "techTree" TechTree
+GrantPrerequisiteChargeDrainPower --> "ProvidesPrerequisites<string>" "IEnumerable`1"
+GrantPrerequisiteChargeDrainPower +-- DischargeableSupportPowerInstance
+SupportPowerInstance <|-- DischargeableSupportPowerInstance
+@enduml

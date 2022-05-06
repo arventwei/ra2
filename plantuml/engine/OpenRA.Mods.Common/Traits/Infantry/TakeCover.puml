@@ -1,0 +1,35 @@
+@startuml
+class TakeCoverInfo {
+    + <<readonly>> Duration : int = 100
+    + <<readonly>> SpeedModifier : int = 50
+    + <<readonly>> ProneSequencePrefix : string = "prone-"
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class TakeCover {
+    remainingDuration : int = 0
+    IsProne : bool <<get>>
+    IsModifyingSequence : bool <<get>>
+    SequencePrefix : string <<get>>
+    + TakeCover(init:ActorInitializer, info:TakeCoverInfo)
+    Damaged(self:Actor, e:AttackInfo) : void
+    + <<override>> HasAchievedDesiredFacing : bool <<get>>
+    GetDamageModifier(attacker:Actor, damage:Damage) : int
+    GetSpeedModifier() : int
+}
+class "BitSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+TurretedInfo <|-- TakeCoverInfo
+TakeCoverInfo o-> "DamageTriggers<DamageType>" "BitSet`1"
+TakeCoverInfo o-> "DamageModifiers<string,int>" "Dictionary`2"
+TakeCoverInfo o-> "ProneOffset" WVec
+Turreted <|-- TakeCover
+INotifyDamage <|-- TakeCover
+IDamageModifier <|-- TakeCover
+ISpeedModifier <|-- TakeCover
+ISync <|-- TakeCover
+IRenderInfantrySequenceModifier <|-- TakeCover
+TakeCover --> "info" TakeCoverInfo
+@enduml

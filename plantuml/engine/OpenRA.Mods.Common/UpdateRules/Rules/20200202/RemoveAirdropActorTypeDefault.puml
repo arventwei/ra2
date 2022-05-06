@@ -1,0 +1,12 @@
+@startuml
+class RemoveAirdropActorTypeDefault {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> AfterUpdate(modData:ModData) : IEnumerable<string>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+}
+class "List`1"<T> {
+}
+UpdateRule <|-- RemoveAirdropActorTypeDefault
+RemoveAirdropActorTypeDefault o-> "missingActorTypes<Tuple<string, string>>" "List`1"
+@enduml

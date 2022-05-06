@@ -1,0 +1,27 @@
+@startuml
+class HardwarePalette <<sealed>> {
+    + Height : int <<get>>
+    + HardwarePalette()
+    + Contains(name:string) : bool
+    + GetPalette(name:string) : IPalette
+    + GetPaletteIndex(name:string) : int
+    + AddPalette(name:string, p:ImmutablePalette, allowModifiers:bool) : void
+    + ReplacePalette(name:string, p:IPalette) : void
+    + Initialize() : void
+    CopyPaletteToBuffer(index:int, p:IPalette) : void
+    CopyModifiablePalettesToBuffer() : void
+    CopyBufferToTexture() : void
+    + ApplyModifiers(paletteMods:IEnumerable<IPaletteModifier>) : void
+    + Dispose() : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+IDisposable <|-- HardwarePalette
+HardwarePalette --> "Texture" ITexture
+HardwarePalette o-> "palettes<string,ImmutablePalette>" "Dictionary`2"
+HardwarePalette o-> "modifiablePalettes<string,MutablePalette>" "Dictionary`2"
+HardwarePalette --> "readOnlyModifiablePalettes<string,MutablePalette>" "IReadOnlyDictionary`2"
+HardwarePalette o-> "indices<string,int>" "Dictionary`2"
+@enduml

@@ -1,0 +1,73 @@
+@startuml
+enum AttackSource {
+    Default,
+    AutoTarget,
+    AttackMove,
+}
+abstract class AttackBaseInfo {
+    + <<readonly>> Cursor : string = null
+    + <<readonly>> OutsideRangeCursor : string = null
+    + <<readonly>> AttackRequiresEnteringCell : bool = false
+    + <<readonly>> TargetFrozenActors : bool = false
+    + <<readonly>> ForceFireIgnoresActors : bool = false
+    + <<readonly>> OutsideRangeRequiresForceFire : bool = false
+    + <<readonly>> Voice : string = "Action"
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+    + <<override>> {abstract} Create(init:ActorInitializer) : object
+}
+abstract class AttackBase {
+    <<readonly>> attackOrderName : string = "Attack"
+    <<readonly>> forceAttackOrderName : string = "ForceAttack"
+    + IsAiming : bool <<get>> <<set>>
+    wasAiming : bool
+    + AttackBase(self:Actor, info:AttackBaseInfo)
+    Tick(self:Actor) : void
+    + TargetInFiringArc(self:Actor, target:Target, facingTolerance:WAngle) : bool
+    + <<virtual>> DoAttack(self:Actor, target:Target) : void
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    ResolveOrder(self:Actor, order:Order) : void
+    + <<virtual>> OnStopOrder(self:Actor) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    + {abstract} GetAttackActivity(self:Actor, source:AttackSource, newTarget:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : Activity
+    + HasAnyValidWeapons(t:Target, checkForCenterTargetingWeapons:bool) : bool
+    + <<virtual>> GetTargetPosition(pos:WPos, target:Target) : WPos
+    + GetMinimumRange() : WDist
+    + GetMaximumRange() : WDist
+    + GetMinimumRangeVersusTarget(target:Target) : WDist
+    + GetMaximumRangeVersusTarget(target:Target) : WDist
+    + ChooseArmamentsForTarget(t:Target, forceAttack:bool) : IEnumerable<Armament>
+    + AttackTarget(target:Target, source:AttackSource, queued:bool, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : void
+    + <<virtual>> OnResolveAttackOrder(self:Actor, activity:Activity, target:Target, queued:bool, forceAttack:bool) : void
+    + IsReachableTarget(target:Target, allowMove:bool) : bool
+    + UnforcedAttackTargetStances() : PlayerRelationship
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class AttackOrderTargeter {
+    + AttackOrderTargeter(ab:AttackBase, priority:int)
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    CanTargetActor(self:Actor, target:Target, modifiers:TargetModifiers, cursor:string) : bool
+    CanTargetLocation(self:Actor, location:CPos, actorsAtLocation:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+    + IsQueued : bool <<get>> <<protected set>>
+}
+PausableConditionalTraitInfo <|-- AttackBaseInfo
+AttackBaseInfo o-> "TargetLineColor" Color
+AttackBaseInfo o-> "FacingTolerance" WAngle
+"PausableConditionalTrait`1" "<AttackBaseInfo>" <|-- AttackBase
+ITick <|-- AttackBase
+IIssueOrder <|-- AttackBase
+IResolveOrder <|-- AttackBase
+IOrderVoice <|-- AttackBase
+ISync <|-- AttackBase
+AttackBase --> "Armaments<Armament>" "IEnumerable`1"
+AttackBase --> "self" Actor
+AttackBase --> "Orders<IOrderTargeter>" "IEnumerable`1"
+AttackBase +-- AttackOrderTargeter
+IOrderTargeter <|-- AttackOrderTargeter
+AttackOrderTargeter --> "ab" AttackBase
+@enduml

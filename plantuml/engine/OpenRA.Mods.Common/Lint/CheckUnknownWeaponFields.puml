@@ -1,0 +1,10 @@
+@startuml
+class CheckUnknownWeaponFields {
+    NormalizeName(key:string) : string
+    CheckWeapons(weapons:IEnumerable<MiniYamlNode>, emitError:Action<string>, emitWarning:Action<string>, modData:ModData) : void
+    Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData) : void
+    Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, map:Map) : void
+}
+ILintPass <|-- CheckUnknownWeaponFields
+ILintMapPass <|-- CheckUnknownWeaponFields
+@enduml

@@ -1,0 +1,116 @@
+@startuml
+class Ui <<static>> {
+    + {static} LastTickTime : long
+    + {static} CloseWindow() : void
+    + {static} OpenWindow(id:string) : Widget
+    + {static} OpenWindow(id:string, args:WidgetArgs) : Widget
+    + {static} CurrentWindow() : Widget
+    + {static} LoadWidget(id:string, parent:Widget, args:WidgetArgs) : T
+    + {static} LoadWidget(id:string, parent:Widget, args:WidgetArgs) : Widget
+    + {static} Tick() : void
+    + {static} PrepareRenderables() : void
+    + {static} Draw() : void
+    + {static} HandleInput(mi:MouseInput) : bool
+    + {static} HandleKeyPress(e:KeyInput) : bool
+    + {static} HandleTextInput(text:string) : bool
+    + {static} ResetAll() : void
+    + {static} ResetTooltips() : void
+}
+class ChromeLogic {
+    + Dispose() : void
+    + <<virtual>> Tick() : void
+    + <<virtual>> BecameHidden() : void
+    + <<virtual>> BecameVisible() : void
+}
+abstract class Widget {
+    + Id : string = null
+    + X : string = "0"
+    + Y : string = "0"
+    + Width : string = "0"
+    + Height : string = "0"
+    + Visible : bool = true
+    + IgnoreMouseOver : bool
+    + IgnoreChildMouseOver : bool
+    + Widget()
+    + Widget(widget:Widget)
+    + <<virtual>> Clone() : Widget
+    + <<virtual>> Initialize(args:WidgetArgs) : void
+    + PostInit(args:WidgetArgs) : void
+    + <<virtual>> EventBoundsContains(location:int2) : bool
+    + HasMouseFocus : bool <<get>>
+    + HasKeyboardFocus : bool <<get>>
+    + <<virtual>> TakeMouseFocus(mi:MouseInput) : bool
+    + <<virtual>> YieldMouseFocus(mi:MouseInput) : bool
+    ForceYieldMouseFocus() : void
+    + <<virtual>> TakeKeyboardFocus() : bool
+    + <<virtual>> YieldKeyboardFocus() : bool
+    ForceYieldKeyboardFocus() : void
+    + <<virtual>> GetCursor(pos:int2) : string
+    + GetCursorOuter(pos:int2) : string
+    + <<virtual>> MouseEntered() : void
+    + <<virtual>> MouseExited() : void
+    + <<virtual>> HandleMouseInput(mi:MouseInput) : bool
+    + HandleMouseInputOuter(mi:MouseInput) : bool
+    + <<virtual>> HandleKeyPress(e:KeyInput) : bool
+    + <<virtual>> HandleKeyPressOuter(e:KeyInput) : bool
+    + <<virtual>> HandleTextInput(text:string) : bool
+    + <<virtual>> HandleTextInputOuter(text:string) : bool
+    + <<virtual>> PrepareRenderables() : void
+    + <<virtual>> PrepareRenderablesOuter() : void
+    + <<virtual>> Draw() : void
+    + <<virtual>> DrawOuter() : void
+    + <<virtual>> Tick() : void
+    + <<virtual>> TickOuter() : void
+    + <<virtual>> AddChild(child:Widget) : void
+    + <<virtual>> RemoveChild(child:Widget) : void
+    + <<virtual>> HideChild(child:Widget) : void
+    + <<virtual>> RemoveChildren() : void
+    + <<virtual>> Hidden() : void
+    + <<virtual>> Removed() : void
+    + GetOrNull(id:string) : Widget
+    + GetOrNull(id:string) : T
+    + Get(id:string) : T
+    + Get(id:string) : Widget
+}
+class ContainerWidget {
+    + <<readonly>> ClickThrough : bool = true
+    + ContainerWidget()
+    + ContainerWidget(other:ContainerWidget)
+    + <<override>> GetCursor(pos:int2) : string
+    + <<override>> Clone() : Widget
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+}
+class WidgetArgs {
+    + WidgetArgs()
+    + WidgetArgs(args:Dictionary<string, object>)
+    + Add(key:string, val:Action) : void
+}
+class "Stack`1"<T> {
+}
+class "List`1"<T> {
+}
+class "Func`1"<T> {
+}
+class "Func`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+Ui o-> "Root" Widget
+Ui o-> "WindowList<Widget>" "Stack`1"
+Ui --> "MouseFocusWidget" Widget
+Ui --> "KeyboardFocusWidget" Widget
+Ui --> "MouseOverWidget" Widget
+IDisposable <|-- ChromeLogic
+Widget o-> "Children<Widget>" "List`1"
+Widget --> "Bounds" Rectangle
+Widget o-> "Parent" Widget
+Widget --> "IsVisible<bool>" "Func`1"
+Widget --> "RenderOrigin" int2
+Widget --> "ChildOrigin" int2
+Widget --> "RenderBounds" Rectangle
+Widget --> "EventBounds" Rectangle
+Widget <|-- ContainerWidget
+ContainerWidget o-> "OnKeyPress<KeyInput,bool>" "Func`2"
+"Dictionary`2" "<string,object>" <|-- WidgetArgs
+@enduml

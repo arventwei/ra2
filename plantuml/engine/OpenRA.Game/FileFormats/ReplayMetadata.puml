@@ -1,0 +1,14 @@
+@startuml
+class ReplayMetadata {
+    + <<const>> MetaStartMarker : int
+    + <<const>> MetaEndMarker : int
+    + <<const>> MetaVersion : int = 0x00000001
+    + FilePath : string <<get>>
+    + ReplayMetadata(info:GameInformation)
+    ReplayMetadata(fs:FileStream, path:string)
+    + Write(writer:BinaryWriter) : void
+    + RenameFile(newFilenameWithoutExtension:string) : void
+    + {static} Read(path:string) : ReplayMetadata
+}
+ReplayMetadata --> "GameInfo" GameInformation
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+class PowerMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PowerMultiplier {
+    + PowerMultiplier(self:Actor, info:PowerMultiplierInfo)
+    GetPowerModifier() : int
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- PowerMultiplierInfo
+"ConditionalTrait`1" "<PowerMultiplierInfo>" <|-- PowerMultiplier
+IPowerModifier <|-- PowerMultiplier
+INotifyOwnerChanged <|-- PowerMultiplier
+PowerMultiplier --> "power" PowerManager
+@enduml

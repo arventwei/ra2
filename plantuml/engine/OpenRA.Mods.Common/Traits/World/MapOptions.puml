@@ -1,0 +1,37 @@
+@startuml
+class MapOptionsInfo {
+    + <<readonly>> ShortGameCheckboxLabel : string = "Short Game"
+    + <<readonly>> ShortGameCheckboxDescription : string = "Players are defeated when their bases are destroyed"
+    + <<readonly>> ShortGameCheckboxEnabled : bool = true
+    + <<readonly>> ShortGameCheckboxLocked : bool = false
+    + <<readonly>> ShortGameCheckboxVisible : bool = true
+    + <<readonly>> ShortGameCheckboxDisplayOrder : int = 0
+    + <<readonly>> TechLevelDropdownLabel : string = "Tech Level"
+    + <<readonly>> TechLevelDropdownDescription : string = "Change the units and abilities at your disposal"
+    + <<readonly>> TechLevel : string = "unrestricted"
+    + <<readonly>> TechLevelDropdownLocked : bool = false
+    + <<readonly>> TechLevelDropdownVisible : bool = true
+    + <<readonly>> TechLevelDropdownDisplayOrder : int = 0
+    + <<readonly>> GameSpeedDropdownLabel : string = "Game Speed"
+    + <<readonly>> GameSpeedDropdownDescription : string = "Change the rate at which time passes"
+    + <<readonly>> GameSpeed : string = "default"
+    + <<readonly>> GameSpeedDropdownLocked : bool = false
+    + <<readonly>> GameSpeedDropdownVisible : bool = true
+    + <<readonly>> GameSpeedDropdownDisplayOrder : int = 0
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    RulesetLoaded(rules:Ruleset, info:ActorInfo) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MapOptions {
+    + ShortGame : bool <<get>>
+    + TechLevel : string <<get>>
+    + MapOptions(info:MapOptionsInfo)
+    Created(self:Actor) : void
+}
+TraitInfo <|-- MapOptionsInfo
+ILobbyOptions <|-- MapOptionsInfo
+IRulesetLoaded <|-- MapOptionsInfo
+INotifyCreated <|-- MapOptions
+MapOptions --> "info" MapOptionsInfo
+MapOptions --> "GameSpeed" GameSpeed
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+class WithLandingCraftAnimationInfo {
+    + <<readonly>> OpenSequence : string = "open"
+    + <<readonly>> CloseSequence : string = "close"
+    + <<readonly>> UnloadSequence : string = "unload"
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithLandingCraftAnimation {
+    open : bool
+    + WithLandingCraftAnimation(init:ActorInitializer, info:WithLandingCraftAnimationInfo)
+    + ShouldBeOpen() : bool
+    Open() : void
+    Close() : void
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- WithLandingCraftAnimationInfo
+"Requires`1" "<IMoveInfo>" <|-- WithLandingCraftAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithLandingCraftAnimationInfo
+"Requires`1" "<CargoInfo>" <|-- WithLandingCraftAnimationInfo
+WithLandingCraftAnimationInfo o-> "OpenTerrainTypes<string>" "HashSet`1"
+ITick <|-- WithLandingCraftAnimation
+WithLandingCraftAnimation --> "info" WithLandingCraftAnimationInfo
+WithLandingCraftAnimation --> "self" Actor
+WithLandingCraftAnimation --> "cargo" Cargo
+WithLandingCraftAnimation --> "move" IMove
+WithLandingCraftAnimation --> "wsb" WithSpriteBody
+@enduml

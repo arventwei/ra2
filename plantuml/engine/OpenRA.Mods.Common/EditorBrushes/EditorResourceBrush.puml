@@ -1,0 +1,40 @@
+@startuml
+class EditorResourceBrush <<sealed>> {
+    <<readonly>> cursorToken : int
+    resourceAdded : bool
+    + EditorResourceBrush(editorWidget:EditorViewportControllerWidget, resource:ResourceTypeInfo, wr:WorldRenderer)
+    + HandleMouseInput(mi:MouseInput) : bool
+    + AllowResourceAt(cell:CPos) : bool
+    + Tick() : void
+    + Dispose() : void
+}
+class CellResource <<struct>> {
+    + CellResource(cell:CPos, resourceTile:ResourceTile, newResourceTile:ResourceTile)
+}
+class AddResourcesEditorAction {
+    + Text : string <<get>>
+    + AddResourcesEditorAction(map:Map, resourceType:ResourceTypeInfo)
+    + Execute() : void
+    + Do() : void
+    SetTile(cell:CPos, tile:ResourceTile) : void
+    + Undo() : void
+    + Add(cellResource:CellResource) : void
+}
+class "List`1"<T> {
+}
+IEditorBrush <|-- EditorResourceBrush
+EditorResourceBrush --> "ResourceType" ResourceTypeInfo
+EditorResourceBrush --> "worldRenderer" WorldRenderer
+EditorResourceBrush --> "world" World
+EditorResourceBrush --> "editorWidget" EditorViewportControllerWidget
+EditorResourceBrush --> "editorActionManager" EditorActionManager
+EditorResourceBrush --> "editorCursor" EditorCursorLayer
+EditorResourceBrush --> "action" AddResourcesEditorAction
+CellResource --> "Cell" CPos
+CellResource --> "ResourceTile" ResourceTile
+CellResource --> "NewResourceTile" ResourceTile
+IEditorAction <|-- AddResourcesEditorAction
+AddResourcesEditorAction --> "map" Map
+AddResourcesEditorAction --> "resourceType" ResourceTypeInfo
+AddResourcesEditorAction o-> "cellResources<CellResource>" "List`1"
+@enduml

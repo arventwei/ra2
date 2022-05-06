@@ -1,0 +1,44 @@
+@startuml
+enum ExplosionType {
+    Footprint,
+    CenterPosition,
+}
+enum DamageSource {
+    Self,
+    Killer,
+}
+class ExplodesInfo {
+    + <<readonly>> Weapon : string = null
+    + <<readonly>> EmptyWeapon : string = "UnitExplode"
+    + <<readonly>> LoadedChance : int = 100
+    + <<readonly>> Chance : int = 100
+    + <<readonly>> DamageThreshold : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class Explodes {
+    + Explodes(info:ExplodesInfo, self:Actor)
+    Killed(self:Actor, e:AttackInfo) : void
+    ChooseWeaponForExplosion(self:Actor) : WeaponInfo
+    Damaged(self:Actor, e:AttackInfo) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ExplodesInfo
+"Requires`1" "<IHealthInfo>" <|-- ExplodesInfo
+ExplodesInfo o-> "DeathTypes<DamageType>" "BitSet`1"
+ExplodesInfo o-> "DamageSource" DamageSource
+ExplodesInfo o-> "Type" ExplosionType
+ExplodesInfo o-> "Offset" WVec
+ExplodesInfo --> "WeaponInfo" WeaponInfo
+ExplodesInfo --> "EmptyWeaponInfo" WeaponInfo
+"ConditionalTrait`1" "<ExplodesInfo>" <|-- Explodes
+INotifyKilled <|-- Explodes
+INotifyDamage <|-- Explodes
+Explodes --> "health" IHealth
+Explodes --> "buildingInfo" BuildingInfo
+@enduml

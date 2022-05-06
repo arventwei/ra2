@@ -1,0 +1,15 @@
+@startuml
+class ProductionAirdropInfo {
+    + <<readonly>> ReadyAudio : string = "Reinforce"
+    + <<readonly>> ActorType : string = null
+    + <<readonly>> BaselineSpawn : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ProductionAirdrop {
+    + ProductionAirdrop(init:ActorInitializer, info:ProductionAirdropInfo)
+    + <<override>> Produce(self:Actor, producee:ActorInfo, productionType:string, inits:TypeDictionary, refundableValue:int) : bool
+}
+ProductionInfo <|-- ProductionAirdropInfo
+ProductionAirdropInfo o-> "Facing" WAngle
+Production <|-- ProductionAirdrop
+@enduml

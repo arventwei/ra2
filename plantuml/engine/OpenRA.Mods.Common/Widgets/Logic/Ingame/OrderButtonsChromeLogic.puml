@@ -1,0 +1,21 @@
+@startuml
+class SellOrderButtonLogic {
+    + SellOrderButtonLogic(widget:Widget, world:World)
+}
+class RepairOrderButtonLogic {
+    + RepairOrderButtonLogic(widget:Widget, world:World)
+}
+class PowerdownOrderButtonLogic {
+    + PowerdownOrderButtonLogic(widget:Widget, world:World)
+}
+class BeaconOrderButtonLogic {
+    + BeaconOrderButtonLogic(widget:Widget, world:World)
+}
+class OrderButtonsChromeUtils {
+    + {static} BindOrderButton(world:World, w:ButtonWidget, icon:string) : void
+}
+ChromeLogic <|-- SellOrderButtonLogic
+ChromeLogic <|-- RepairOrderButtonLogic
+ChromeLogic <|-- PowerdownOrderButtonLogic
+ChromeLogic <|-- BeaconOrderButtonLogic
+@enduml

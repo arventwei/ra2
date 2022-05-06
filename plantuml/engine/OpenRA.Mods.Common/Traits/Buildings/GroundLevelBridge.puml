@@ -1,0 +1,42 @@
+@startuml
+class GroundLevelBridgeInfo {
+    + <<readonly>> TerrainType : string = "Bridge"
+    + <<readonly>> Type : string = "GroundLevelBridge"
+    + <<readonly>> DemolishWeapon : string = "Demolish"
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GroundLevelBridge {
+    + GroundLevelBridge(self:Actor, info:GroundLevelBridgeInfo)
+    UpdateTerrain(self:Actor, terrainIndex:byte) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    KillInvalidActorsInFootprint(self:Actor) : void
+    Repair(repairer:Actor) : void
+    Demolish(saboteur:Actor, damageTypes:BitSet<DamageType>) : void
+    Type : string <<get>>
+    Valid : bool <<get>>
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- GroundLevelBridgeInfo
+IRulesetLoaded <|-- GroundLevelBridgeInfo
+"Requires`1" "<BuildingInfo>" <|-- GroundLevelBridgeInfo
+"Requires`1" "<IHealthInfo>" <|-- GroundLevelBridgeInfo
+GroundLevelBridgeInfo --> "DemolishWeaponInfo" WeaponInfo
+GroundLevelBridgeInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+IBridgeSegment <|-- GroundLevelBridge
+INotifyAddedToWorld <|-- GroundLevelBridge
+INotifyRemovedFromWorld <|-- GroundLevelBridge
+GroundLevelBridge --> "Info" GroundLevelBridgeInfo
+GroundLevelBridge --> "self" Actor
+GroundLevelBridge --> "bridgeLayer" BridgeLayer
+GroundLevelBridge --> "cells<CPos>" "IEnumerable`1"
+GroundLevelBridge --> "health" IHealth
+GroundLevelBridge --> "DamageState" DamageState
+GroundLevelBridge --> "Location" CPos
+@enduml

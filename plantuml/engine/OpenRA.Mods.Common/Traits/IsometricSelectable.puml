@@ -1,0 +1,35 @@
+@startuml
+class IsometricSelectableInfo {
+    + <<readonly>> Height : int = 24
+    + <<readonly>> DecorationHeight : int
+    + <<readonly>> Priority : int = 10
+    + <<readonly>> Class : string = null
+    + <<readonly>> Voice : string = "Select"
+    + <<override>> Create(init:ActorInitializer) : object
+    Priority : int <<get>>
+    Voice : string <<get>>
+    + <<virtual>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class IsometricSelectable {
+    <<readonly>> selectionClass : string = null
+    + IsometricSelectable(self:Actor, info:IsometricSelectableInfo)
+    Bounds(self:Actor, wr:WorldRenderer, bounds:int[], height:int) : Polygon
+    + Bounds(self:Actor, wr:WorldRenderer) : Polygon
+    + DecorationBounds(self:Actor, wr:WorldRenderer) : Polygon
+    MouseoverBounds(self:Actor, wr:WorldRenderer) : Polygon
+    Class : string <<get>>
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- IsometricSelectableInfo
+IMouseBoundsInfo <|-- IsometricSelectableInfo
+ISelectableInfo <|-- IsometricSelectableInfo
+IRulesetLoaded <|-- IsometricSelectableInfo
+"Requires`1" "<BuildingInfo>" <|-- IsometricSelectableInfo
+IsometricSelectableInfo o-> "PriorityModifiers" SelectionPriorityModifiers
+IsometricSelectableInfo --> "PriorityModifiers" SelectionPriorityModifiers
+IMouseBounds <|-- IsometricSelectable
+ISelectable <|-- IsometricSelectable
+IsometricSelectable --> "info" IsometricSelectableInfo
+IsometricSelectable --> "buildingInfo" BuildingInfo
+@enduml

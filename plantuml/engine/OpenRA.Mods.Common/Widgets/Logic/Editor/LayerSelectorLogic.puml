@@ -1,0 +1,12 @@
+@startuml
+class LayerSelectorLogic {
+    + LayerSelectorLogic(widget:Widget, worldRenderer:WorldRenderer)
+    IntializeLayerPreview(widget:Widget) : void
+}
+ChromeLogic <|-- LayerSelectorLogic
+LayerSelectorLogic --> "editor" EditorViewportControllerWidget
+LayerSelectorLogic --> "worldRenderer" WorldRenderer
+LayerSelectorLogic --> "editorCursor" EditorCursorLayer
+LayerSelectorLogic --> "layerTemplateList" ScrollPanelWidget
+LayerSelectorLogic --> "layerPreviewTemplate" ScrollItemWidget
+@enduml

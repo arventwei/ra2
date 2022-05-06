@@ -1,0 +1,60 @@
+@startuml
+class CrateInfo {
+    + <<readonly>> Lifetime : int = 0
+    + <<readonly>> CrushClass : string = "crate"
+    + <<override>> Create(init:ActorInitializer) : object
+    + OccupiedCells(info:ActorInfo, location:CPos, subCell:SubCell) : IReadOnlyDictionary<CPos, SubCell>
+    SharesCell : bool <<get>>
+    + CanEnterCell(world:World, self:Actor, cell:CPos, subCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : bool
+    + CanExistInCell(world:World, cell:CPos) : bool
+    + GetAvailableSubCell(world:World, cell:CPos, ignoreActor:Actor, check:BlockedByActor) : SubCell
+}
+class Crate {
+    collected : bool
+    ticks : int
+    + Crate(init:ActorInitializer, info:CrateInfo)
+    Created(self:Actor) : void
+    WarnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+    OnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+    OnParachute(self:Actor) : void
+    OnLanded(self:Actor) : void
+    OnCrushInner(crusher:Actor) : void
+    Tick(self:Actor) : void
+    + OccupiedCells() : (CPos, SubCell)[]
+    + SetPosition(self:Actor, pos:WPos) : void
+    + SetPosition(self:Actor, cell:CPos, subCell:SubCell) : void
+    + SetVisualPosition(self:Actor, pos:WPos) : void
+    SetLocation(self:Actor, cell:CPos, subCell:SubCell) : void
+    + IsLeavingCell(location:CPos, subCell:SubCell) : bool
+    + GetValidSubCell(preferred:SubCell) : SubCell
+    + GetAvailableSubCell(cell:CPos, preferredSubCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : SubCell
+    + CanExistInCell(cell:CPos) : bool
+    + CanEnterCell(a:CPos, ignoreActor:Actor, check:BlockedByActor) : bool
+    CrushableBy(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : bool
+    CrushableBy(self:Actor, crushClasses:BitSet<CrushClass>) : LongBitSet<PlayerBitMask>
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- CrateInfo
+IPositionableInfo <|-- CrateInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- CrateInfo
+CrateInfo o-> "TerrainTypes<string>" "HashSet`1"
+ITick <|-- Crate
+IPositionable <|-- Crate
+ICrushable <|-- Crate
+ISync <|-- Crate
+INotifyCreated <|-- Crate
+INotifyParachute <|-- Crate
+INotifyAddedToWorld <|-- Crate
+INotifyRemovedFromWorld <|-- Crate
+INotifyCrushed <|-- Crate
+Crate --> "self" Actor
+Crate --> "info" CrateInfo
+Crate --> "Location" CPos
+Crate --> "TopLeft" CPos
+Crate --> "CenterPosition" WPos
+@enduml

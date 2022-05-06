@@ -1,0 +1,15 @@
+@startuml
+class GrantConditionWhileAimingInfo {
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionWhileAiming {
+    conditionToken : int
+    + GrantConditionWhileAiming(info:GrantConditionWhileAimingInfo)
+    StartedAiming(self:Actor, attack:AttackBase) : void
+    StoppedAiming(self:Actor, attack:AttackBase) : void
+}
+TraitInfo <|-- GrantConditionWhileAimingInfo
+INotifyAiming <|-- GrantConditionWhileAiming
+GrantConditionWhileAiming --> "info" GrantConditionWhileAimingInfo
+@enduml

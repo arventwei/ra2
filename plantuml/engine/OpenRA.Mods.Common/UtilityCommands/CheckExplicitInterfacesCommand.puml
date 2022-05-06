@@ -1,0 +1,11 @@
+@startuml
+class CheckExplicitInterfacesCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    violationCount : int
+    Run(utility:Utility, args:string[]) : void
+    {static} IsExplicitInterfaceProperty(pi:PropertyInfo) : bool
+    OnViolation(implementor:Type, interfaceType:Type, violator:MemberInfo) : void
+}
+IUtilityCommand <|-- CheckExplicitInterfacesCommand
+@enduml

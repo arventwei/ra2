@@ -1,0 +1,9 @@
+@startuml
+class PlayerConditionProperties {
+    + PlayerConditionProperties(context:ScriptContext, player:Player)
+    + GrantCondition(condition:string, duration:int) : int
+    + RevokeCondition(token:int) : void
+    + AcceptsCondition(condition:string) : bool
+}
+ScriptPlayerProperties <|-- PlayerConditionProperties
+@enduml

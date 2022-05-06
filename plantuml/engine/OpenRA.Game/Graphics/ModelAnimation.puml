@@ -1,0 +1,15 @@
+@startuml
+class ModelAnimation <<struct>> {
+    + <<readonly>> ShowShadow : bool
+    + ModelAnimation(model:IModel, offset:Func<WVec>, rotation:Func<WRot>, disable:Func<bool>, frame:Func<uint>, showshadow:bool)
+    + ScreenBounds(pos:WPos, wr:WorldRenderer, scale:float) : Rectangle
+    + IsVisible : bool <<get>>
+}
+class "Func`1"<T> {
+}
+ModelAnimation --> "Model" IModel
+ModelAnimation --> "OffsetFunc<WVec>" "Func`1"
+ModelAnimation --> "RotationFunc<WRot>" "Func`1"
+ModelAnimation --> "DisableFunc<bool>" "Func`1"
+ModelAnimation --> "FrameFunc<uint>" "Func`1"
+@enduml

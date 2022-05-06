@@ -1,0 +1,44 @@
+@startuml
+interface IPathSearch {
+    MaxCost : int <<get>>
+    Reverse() : IPathSearch
+    WithCustomBlocker(customBlock:Func<CPos, bool>) : IPathSearch
+    WithIgnoredActor(b:Actor) : IPathSearch
+    WithHeuristic(h:Func<CPos, int>) : IPathSearch
+    WithHeuristicWeight(percentage:int) : IPathSearch
+    WithCustomCost(w:Func<CPos, int>) : IPathSearch
+    WithoutLaneBias() : IPathSearch
+    FromPoint(from:CPos) : IPathSearch
+    IsTarget(location:CPos) : bool
+    CanExpand : bool <<get>>
+    Expand() : CPos
+}
+abstract class BasePathSearch {
+    + MaxCost : int <<get>> <<protected set>>
+    + Debug : bool <<get>> <<set>>
+    + Reverse() : IPathSearch
+    + WithCustomBlocker(customBlock:Func<CPos, bool>) : IPathSearch
+    + WithIgnoredActor(b:Actor) : IPathSearch
+    + WithHeuristic(h:Func<CPos, int>) : IPathSearch
+    + WithHeuristicWeight(percentage:int) : IPathSearch
+    + WithCustomCost(w:Func<CPos, int>) : IPathSearch
+    + WithoutLaneBias() : IPathSearch
+    + FromPoint(from:CPos) : IPathSearch
+    + IsTarget(location:CPos) : bool
+    + CanExpand : bool <<get>>
+    + {abstract} Expand() : CPos
+    + Dispose() : void
+}
+class "IGraph`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+IDisposable <|-- IPathSearch
+IPathSearch --> "Graph<CellInfo>" "IGraph`1"
+IPathSearch --> "Considered<(CPos Cell, int Cost)>" "IEnumerable`1"
+IPathSearch --> "Owner" Player
+IPathSearch <|-- BasePathSearch
+BasePathSearch --> "Graph<CellInfo>" "IGraph`1"
+BasePathSearch --> "Considered<(CPos Cell, int Cost)>" "IEnumerable`1"
+BasePathSearch --> "Owner" Player
+@enduml

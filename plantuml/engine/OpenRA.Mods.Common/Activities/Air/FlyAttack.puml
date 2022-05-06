@@ -1,0 +1,44 @@
+@startuml
+class FlyAttack {
+    <<readonly>> forceAttack : bool
+    <<readonly>> targetLineColor : Color?
+    useLastVisibleTarget : bool
+    hasTicked : bool
+    returnToBase : bool
+    + FlyAttack(self:Actor, source:AttackSource, target:Target, forceAttack:bool, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    StanceChanged(self:Actor, autoTarget:AutoTarget, oldStance:UnitStance, newStance:UnitStance) : void
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+class FlyAttackRun {
+    targetIsVisibleActor : bool
+    + FlyAttackRun(self:Actor, t:Target, exitRange:WDist)
+    + <<override>> Tick(self:Actor) : bool
+}
+class StrafeAttackRun {
+    + StrafeAttackRun(self:Actor, attackAircraft:AttackAircraft, aircraft:Aircraft, t:Target, exitRange:WDist)
+    + <<override>> Tick(self:Actor) : bool
+}
+class "BitSet`1"<T> {
+}
+Activity <|-- FlyAttack
+IActivityNotifyStanceChanged <|-- FlyAttack
+FlyAttack --> "aircraft" Aircraft
+FlyAttack --> "attackAircraft" AttackAircraft
+FlyAttack --> "rearmable" Rearmable
+FlyAttack --> "source" AttackSource
+FlyAttack --> "strafeDistance" WDist
+FlyAttack --> "target" Target
+FlyAttack --> "lastVisibleTarget" Target
+FlyAttack --> "lastVisibleMaximumRange" WDist
+FlyAttack --> "lastVisibleTargetTypes<TargetableType>" "BitSet`1"
+FlyAttack --> "lastVisibleOwner" Player
+Activity <|-- FlyAttackRun
+FlyAttackRun --> "exitRange" WDist
+FlyAttackRun --> "target" Target
+Activity <|-- StrafeAttackRun
+StrafeAttackRun --> "attackAircraft" AttackAircraft
+StrafeAttackRun --> "aircraft" Aircraft
+StrafeAttackRun --> "exitRange" WDist
+StrafeAttackRun --> "target" Target
+@enduml

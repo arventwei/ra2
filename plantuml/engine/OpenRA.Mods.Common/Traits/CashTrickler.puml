@@ -1,0 +1,31 @@
+@startuml
+class CashTricklerInfo {
+    + <<readonly>> Interval : int = 50
+    + <<readonly>> InitialDelay : int = 0
+    + <<readonly>> Amount : int = 15
+    + <<readonly>> ShowTicks : bool = true
+    + <<readonly>> DisplayDuration : int = 30
+    + <<readonly>> UseResourceStorage : bool = false
+    RulesetLoaded(rules:Ruleset, info:ActorInfo) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CashTrickler {
+    + Ticks : int <<get>>
+    + CashTrickler(info:CashTricklerInfo)
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    Tick(self:Actor) : void
+    AddCashTick(self:Actor, amount:int) : void
+    ModifyCash(self:Actor, amount:int) : void
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- CashTricklerInfo
+IRulesetLoaded <|-- CashTricklerInfo
+"PausableConditionalTrait`1" "<CashTricklerInfo>" <|-- CashTrickler
+ITick <|-- CashTrickler
+ISync <|-- CashTrickler
+INotifyCreated <|-- CashTrickler
+INotifyOwnerChanged <|-- CashTrickler
+CashTrickler --> "info" CashTricklerInfo
+CashTrickler --> "resources" PlayerResources
+@enduml

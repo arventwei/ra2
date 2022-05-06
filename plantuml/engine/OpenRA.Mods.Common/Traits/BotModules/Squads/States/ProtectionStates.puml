@@ -1,0 +1,24 @@
+@startuml
+class UnitsForProtectionIdleState {
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class UnitsForProtectionAttackState {
+    + <<const>> BackoffTicks : int = 4
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class UnitsForProtectionFleeState {
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+GroundStateBase <|-- UnitsForProtectionIdleState
+IState <|-- UnitsForProtectionIdleState
+GroundStateBase <|-- UnitsForProtectionAttackState
+IState <|-- UnitsForProtectionAttackState
+GroundStateBase <|-- UnitsForProtectionFleeState
+IState <|-- UnitsForProtectionFleeState
+@enduml

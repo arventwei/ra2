@@ -1,0 +1,29 @@
+@startuml
+class MineInfo {
+    + <<readonly>> AvoidFriendly : bool = true
+    + <<readonly>> BlockFriendly : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Mine {
+    + Mine(info:MineInfo)
+    WarnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+    OnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+    CrushableBy(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : bool
+    CrushableBy(self:Actor, crushClasses:BitSet<CrushClass>) : LongBitSet<PlayerBitMask>
+}
+class MineImmuneInfo {
+}
+class MineImmune {
+}
+class "BitSet`1"<T> {
+}
+class "TraitInfo`1"<T> {
+}
+TraitInfo <|-- MineInfo
+MineInfo o-> "CrushClasses<CrushClass>" "BitSet`1"
+MineInfo o-> "DetonateClasses<CrushClass>" "BitSet`1"
+ICrushable <|-- Mine
+INotifyCrushed <|-- Mine
+Mine --> "info" MineInfo
+"TraitInfo`1" "<MineImmune>" <|-- MineImmuneInfo
+@enduml

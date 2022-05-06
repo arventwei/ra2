@@ -1,0 +1,19 @@
+@startuml
+class ActorPreviewPlaceBuildingPreviewInfo {
+    + <<readonly>> Animated : bool = true
+    + <<readonly>> OverridePalette : string = null
+    + <<readonly>> OverridePaletteIsPlayerPalette : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ActorPreviewPlaceBuildingPreview {
+}
+class ActorPreviewPlaceBuildingPreviewPreview {
+    + ActorPreviewPlaceBuildingPreviewPreview(wr:WorldRenderer, ai:ActorInfo, info:ActorPreviewPlaceBuildingPreviewInfo, init:TypeDictionary)
+}
+FootprintPlaceBuildingPreviewInfo <|-- ActorPreviewPlaceBuildingPreviewInfo
+ActorPreviewPlaceBuildingPreviewInfo o-> "FootprintUnderPreview" PlaceBuildingCellType
+ActorPreviewPlaceBuildingPreviewInfo o-> "FootprintOverPreview" PlaceBuildingCellType
+FootprintPlaceBuildingPreviewPreview <|-- ActorPreviewPlaceBuildingPreviewPreview
+ActorPreviewPlaceBuildingPreviewPreview --> "info" ActorPreviewPlaceBuildingPreviewInfo
+ActorPreviewPlaceBuildingPreviewPreview --> "palette" PaletteReference
+@enduml

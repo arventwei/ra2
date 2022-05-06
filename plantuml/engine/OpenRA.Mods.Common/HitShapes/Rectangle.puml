@@ -1,0 +1,19 @@
+@startuml
+class RectangleShape {
+    + <<readonly>> VerticalTopOffset : int = 0
+    + <<readonly>> VerticalBottomOffset : int = 0
+    + RectangleShape()
+    + RectangleShape(tl:int2, br:int2)
+    + Initialize() : void
+    + DistanceFromEdge(v:WVec) : WDist
+    + DistanceFromEdge(pos:WPos, origin:WPos, orientation:WRot) : WDist
+    RenderDebugOverlay(wr:WorldRenderer, origin:WPos, orientation:WRot) : IEnumerable<IRenderable>
+}
+IHitShape <|-- RectangleShape
+RectangleShape --> "OuterRadius" WDist
+RectangleShape --> "TopLeft" int2
+RectangleShape --> "BottomRight" int2
+RectangleShape o-> "LocalYaw" WAngle
+RectangleShape --> "quadrantSize" int2
+RectangleShape --> "center" int2
+@enduml

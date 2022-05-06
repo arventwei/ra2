@@ -1,0 +1,57 @@
+@startuml
+class CaptureType <<sealed>> {
+    CaptureType()
+}
+interface ICaptureProgressWatcher {
+    Update(self:Actor, captor:Actor, target:Actor, progress:int, total:int) : void
+}
+class CaptureManagerInfo {
+    + <<readonly>> CapturingCondition : string = null
+    + <<readonly>> BeingCapturedCondition : string = null
+    + <<readonly>> PreventsAutoTarget : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + CanBeTargetedBy(frozenActor:FrozenActor, captor:Actor, captures:Captures) : bool
+}
+class CaptureManager {
+    currentTargetDelay : int
+    currentTargetTotal : int
+    capturingToken : int
+    beingCapturedToken : int
+    enteringCurrentTarget : bool
+    + BeingCaptured : bool <<get>>
+    + CaptureManager(info:CaptureManagerInfo)
+    Created(self:Actor) : void
+    + RefreshCapturable(self:Actor) : void
+    + RefreshCaptures(self:Actor) : void
+    + CanBeTargetedBy(self:Actor, captor:Actor, captorManager:CaptureManager) : bool
+    + CanBeTargetedBy(self:Actor, captor:Actor, captures:Captures) : bool
+    + ValidCapturesWithLowestSabotageThreshold(self:Actor, captee:Actor, capteeManager:CaptureManager) : Captures
+    OnCapture(self:Actor, captor:Actor, oldOwner:Player, newOwner:Player, captureTypes:BitSet<CaptureType>) : void
+    + StartCapture(self:Actor, target:Actor, targetManager:CaptureManager, captures:Captures) : bool
+    + CancelCapture(self:Actor, target:Actor, targetManager:CaptureManager) : void
+    Tick(self:Actor) : void
+    DisableEnemyAutoTarget(self:Actor, attacker:Actor) : bool
+}
+class "BitSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- CaptureManagerInfo
+INotifyCreated <|-- CaptureManager
+INotifyCapture <|-- CaptureManager
+ITick <|-- CaptureManager
+IDisableEnemyAutoTarget <|-- CaptureManager
+CaptureManager --> "info" CaptureManagerInfo
+CaptureManager --> "move" IMove
+CaptureManager --> "allyCapturableTypes<CaptureType>" "BitSet`1"
+CaptureManager --> "neutralCapturableTypes<CaptureType>" "BitSet`1"
+CaptureManager --> "enemyCapturableTypes<CaptureType>" "BitSet`1"
+CaptureManager --> "capturesTypes<CaptureType>" "BitSet`1"
+CaptureManager --> "enabledCapturable<Capturable>" "IEnumerable`1"
+CaptureManager --> "enabledCaptures<Captures>" "IEnumerable`1"
+CaptureManager --> "currentTarget" Actor
+CaptureManager --> "currentTargetManager" CaptureManager
+CaptureManager o-> "currentCaptors<Actor>" "HashSet`1"
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+enum ModVersionStatus {
+    NotChecked,
+    Latest,
+    Outdated,
+    Unknown,
+    PlaytestAvailable,
+}
+class WebServices {
+    + <<readonly>> ServerList : string = "https://master.openra.net/games"
+    + <<readonly>> ServerAdvertise : string = "https://master.openra.net/ping"
+    + <<readonly>> MapRepository : string = "https://resource.openra.net/map/"
+    + <<readonly>> GameNews : string = "https://master.openra.net/gamenews"
+    + <<readonly>> GameNewsFileName : string = "news.yaml"
+    + <<readonly>> VersionCheck : string = "https://master.openra.net/versioncheck"
+    <<const>> VersionCheckProtocol : int = 1
+    + CheckModVersion() : void
+}
+IGlobalModData <|-- WebServices
+WebServices --> "ModVersionStatus" ModVersionStatus
+@enduml

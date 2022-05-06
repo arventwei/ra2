@@ -1,0 +1,19 @@
+@startuml
+class WithEmbeddedTurretSpriteBodyInfo {
+    + <<readonly>> QuantizedFacings : int
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithEmbeddedTurretSpriteBody {
+    {static} MakeTurretFacingFunc(self:Actor) : Func<WAngle>
+    + WithEmbeddedTurretSpriteBody(init:ActorInitializer, info:WithEmbeddedTurretSpriteBodyInfo)
+}
+class "Requires`1"<T> {
+}
+WithSpriteBodyInfo <|-- WithEmbeddedTurretSpriteBodyInfo
+"Requires`1" "<TurretedInfo>" <|-- WithEmbeddedTurretSpriteBodyInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithEmbeddedTurretSpriteBodyInfo
+WithSpriteBody <|-- WithEmbeddedTurretSpriteBody
+WithEmbeddedTurretSpriteBody --> "info" WithEmbeddedTurretSpriteBodyInfo
+WithEmbeddedTurretSpriteBody --> "turreted" Turreted
+@enduml

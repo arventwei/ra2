@@ -1,0 +1,42 @@
+@startuml
+class ModData <<sealed>> {
+    + ModData(mod:Manifest, mods:InstalledMods, useLoadScreen:bool)
+    initialThreadId : int
+    + InitializeLoaders(fileSystem:IReadOnlyFileSystem) : void
+    LoadTranslations(map:Map) : void
+    + PrepareMap(uid:string) : Map
+    + Dispose() : void
+}
+interface ILoadScreen {
+    Init(m:ModData, info:Dictionary<string, string>) : void
+    Display() : void
+    BeforeLoad() : bool
+    StartGame(args:Arguments) : void
+}
+class "Lazy`1"<T> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+IDisposable <|-- ModData
+ModData --> "Manifest" Manifest
+ModData --> "ObjectCreator" ObjectCreator
+ModData --> "WidgetLoader" WidgetLoader
+ModData --> "MapCache" MapCache
+ModData --> "SpriteSequenceLoader" ISpriteSequenceLoader
+ModData --> "ModelSequenceLoader" IModelSequenceLoader
+ModData --> "Hotkeys" HotkeyManager
+ModData --> "LoadScreen" ILoadScreen
+ModData --> "CursorProvider" CursorProvider
+ModData --> "ModFiles" FS
+ModData --> "DefaultFileSystem" IReadOnlyFileSystem
+ModData --> "defaultRules<Ruleset>" "Lazy`1"
+ModData --> "DefaultRules" Ruleset
+ModData --> "defaultTileSets<IReadOnlyDictionary<string, TileSet>>" "Lazy`1"
+ModData --> "DefaultTileSets<string,TileSet>" "IReadOnlyDictionary`2"
+ModData --> "defaultSequences<IReadOnlyDictionary<string, SequenceProvider>>" "Lazy`1"
+ModData --> "DefaultSequences<string,SequenceProvider>" "IReadOnlyDictionary`2"
+ModData --> "Languages<string>" "IEnumerable`1"
+IDisposable <|-- ILoadScreen
+@enduml

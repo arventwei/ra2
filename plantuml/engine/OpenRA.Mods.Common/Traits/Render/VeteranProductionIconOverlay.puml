@@ -1,0 +1,34 @@
+@startuml
+class VeteranProductionIconOverlayInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> Sequence : string = null
+    + <<readonly>> Palette : string = "chrome"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class VeteranProductionIconOverlay {
+    <<const>> Prefix : string = "ProductionIconOverlay."
+    + VeteranProductionIconOverlay(init:ActorInitializer, info:VeteranProductionIconOverlayInfo)
+    Palette : string <<get>>
+    Offset(iconSize:float2) : float2
+    IsOverlayActive(ai:ActorInfo) : bool
+    {static} MakeKey(name:string) : string
+    {static} GetName(key:string) : string
+    + PrerequisitesAvailable(key:string) : void
+    + PrerequisitesUnavailable(key:string) : void
+    + PrerequisitesItemHidden(key:string) : void
+    + PrerequisitesItemVisible(key:string) : void
+}
+class "Requires`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- VeteranProductionIconOverlayInfo
+"Requires`1" "<TechTreeInfo>" <|-- VeteranProductionIconOverlayInfo
+ITechTreeElement <|-- VeteranProductionIconOverlay
+IProductionIconOverlay <|-- VeteranProductionIconOverlay
+VeteranProductionIconOverlay --> "self" Actor
+VeteranProductionIconOverlay --> "sprite" Sprite
+VeteranProductionIconOverlay --> "info" VeteranProductionIconOverlayInfo
+VeteranProductionIconOverlay o-> "overlayActive<ActorInfo,bool>" "Dictionary`2"
+VeteranProductionIconOverlay --> "Sprite" Sprite
+@enduml

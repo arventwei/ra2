@@ -1,0 +1,49 @@
+@startuml
+class ModContent {
+    + <<readonly>> InstallPromptMessage : string
+    + <<readonly>> QuickDownload : string
+    + <<readonly>> HeaderMessage : string
+    + <<readonly>> ContentInstallerMod : string = "modcontent"
+    {static} LoadPackages(yaml:MiniYaml) : object
+    {static} LoadDownloads(yaml:MiniYaml) : object
+    {static} LoadSources(yaml:MiniYaml) : object
+}
+enum SourceType {
+    Disc,
+    Install,
+}
+class ModPackage {
+    + <<readonly>> Title : string
+    + <<readonly>> Required : bool
+    + <<readonly>> Download : string
+    + ModPackage(yaml:MiniYaml)
+    + IsInstalled() : bool
+}
+class ModSource {
+    + <<readonly>> RegistryKey : string
+    + <<readonly>> RegistryValue : string
+    + <<readonly>> Title : string
+    + ModSource(yaml:MiniYaml)
+}
+class ModDownload {
+    + <<readonly>> Title : string
+    + <<readonly>> URL : string
+    + <<readonly>> MirrorList : string
+    + <<readonly>> SHA1 : string
+    + ModDownload(yaml:MiniYaml)
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+IGlobalModData <|-- ModContent
+ModContent o-> "Packages<string,ModPackage>" "Dictionary`2"
+ModContent +-- SourceType
+ModContent +-- ModPackage
+ModContent +-- ModSource
+ModSource o-> "Type" SourceType
+ModSource --> "IDFiles" MiniYaml
+ModSource --> "Install<MiniYamlNode>" "List`1"
+ModContent +-- ModDownload
+ModDownload --> "Extract<string,string>" "Dictionary`2"
+@enduml

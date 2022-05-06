@@ -1,0 +1,28 @@
+@startuml
+class TerrainSpriteLayer <<sealed>> {
+    <<readonly>> rowStride : int
+    <<readonly>> restrictToBounds : bool
+    + TerrainSpriteLayer(world:World, wr:WorldRenderer, sheet:Sheet, blendMode:BlendMode, palette:PaletteReference, restrictToBounds:bool)
+    UpdatePaletteIndices() : void
+    + Clear(cell:CPos) : void
+    + Update(cell:CPos, sequence:ISpriteSequence, frame:int) : void
+    + Update(cell:CPos, sprite:Sprite, ignoreTint:bool) : void
+    UpdateTint(uv:MPos) : void
+    + Update(uv:MPos, sprite:Sprite, pos:float3, ignoreTint:bool) : void
+    + Draw(viewport:Viewport) : void
+    + Dispose() : void
+}
+class "IVertexBuffer`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+IDisposable <|-- TerrainSpriteLayer
+TerrainSpriteLayer --> "Sheet" Sheet
+TerrainSpriteLayer --> "BlendMode" BlendMode
+TerrainSpriteLayer --> "emptySprite" Sprite
+TerrainSpriteLayer --> "vertexBuffer<Vertex>" "IVertexBuffer`1"
+TerrainSpriteLayer o-> "dirtyRows<int>" "HashSet`1"
+TerrainSpriteLayer --> "worldRenderer" WorldRenderer
+TerrainSpriteLayer --> "map" Map
+TerrainSpriteLayer --> "palette" PaletteReference
+@enduml

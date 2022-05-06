@@ -1,0 +1,17 @@
+@startuml
+class RangeMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+    GetRangeModifierDefault() : int
+}
+class RangeMultiplier {
+    + RangeMultiplier(info:RangeMultiplierInfo)
+    GetRangeModifier() : int
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- RangeMultiplierInfo
+IRangeModifierInfo <|-- RangeMultiplierInfo
+"ConditionalTrait`1" "<RangeMultiplierInfo>" <|-- RangeMultiplier
+IRangeModifier <|-- RangeMultiplier
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+enum ModRegistration {
+    User= 1,
+    System= 2,
+}
+class ExternalMod {
+    + <<readonly>> Id : string
+    + <<readonly>> Version : string
+    + <<readonly>> Title : string
+    + <<readonly>> LaunchPath : string
+    + {static} MakeKey(mod:Manifest) : string
+    + {static} MakeKey(mod:ExternalMod) : string
+    + {static} MakeKey(modId:string, modVersion:string) : string
+}
+class ExternalMods {
+    CreateSheet() : Sheet
+    + ExternalMods()
+    LoadMod(yaml:MiniYaml, path:string, forceRegistration:bool) : void
+    + Count : int <<get>>
+    + ContainsKey(key:string) : bool
+    + GetEnumerator() : IEnumerator<KeyValuePair<string, ExternalMod>>
+    + TryGetValue(key:string, value:ExternalMod) : bool
+    GetEnumerator() : IEnumerator
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "ICollection`1"<T> {
+}
+ExternalMod --> "Icon" Sprite
+ExternalMod --> "Icon2x" Sprite
+ExternalMod --> "Icon3x" Sprite
+"IReadOnlyDictionary`2" "<string,ExternalMod>" <|-- ExternalMods
+ExternalMods o-> "mods<string,ExternalMod>" "Dictionary`2"
+ExternalMods --> "sheetBuilder" SheetBuilder
+ExternalMods --> "Keys<string>" "ICollection`1"
+ExternalMods --> "Values<ExternalMod>" "ICollection`1"
+@enduml

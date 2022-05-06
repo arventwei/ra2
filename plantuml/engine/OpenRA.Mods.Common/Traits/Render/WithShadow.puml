@@ -1,0 +1,19 @@
+@startuml
+class WithShadowInfo {
+    + <<readonly>> Palette : string = "shadow"
+    + <<readonly>> ZOffset : int
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithShadow {
+    + WithShadow(info:WithShadowInfo)
+    ModifyRender(self:Actor, wr:WorldRenderer, r:IEnumerable<IRenderable>) : IEnumerable<IRenderable>
+    ModifyScreenBounds(self:Actor, wr:WorldRenderer, bounds:IEnumerable<Rectangle>) : IEnumerable<Rectangle>
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithShadowInfo
+WithShadowInfo o-> "Offset" WVec
+"ConditionalTrait`1" "<WithShadowInfo>" <|-- WithShadow
+IRenderModifier <|-- WithShadow
+WithShadow --> "info" WithShadowInfo
+@enduml

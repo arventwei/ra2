@@ -1,0 +1,9 @@
+@startuml
+class GrantExternalConditionWarhead {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> Duration : int = 0
+    + <<override>> DoImpact(target:Target, args:WarheadArgs) : void
+}
+Warhead <|-- GrantExternalConditionWarhead
+GrantExternalConditionWarhead o-> "Range" WDist
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+class TeslaZapInfo {
+    + <<readonly>> Image : string = "litning"
+    + <<readonly>> BrightSequence : string = "bright"
+    + <<readonly>> DimSequence : string = "dim"
+    + <<readonly>> Palette : string = "effect"
+    + <<readonly>> BrightZaps : int = 1
+    + <<readonly>> DimZaps : int = 2
+    + <<readonly>> Duration : int = 2
+    + <<readonly>> DamageDuration : int = 1
+    + <<readonly>> TrackTarget : bool = true
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class TeslaZap {
+    ticksUntilRemove : int
+    damageDuration : int
+    + TeslaZap(info:TeslaZapInfo, args:ProjectileArgs)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IProjectileInfo <|-- TeslaZapInfo
+IProjectile <|-- TeslaZap
+ISync <|-- TeslaZap
+TeslaZap --> "args" ProjectileArgs
+TeslaZap --> "info" TeslaZapInfo
+TeslaZap --> "zap" TeslaZapRenderable
+TeslaZap --> "target" WPos
+@enduml

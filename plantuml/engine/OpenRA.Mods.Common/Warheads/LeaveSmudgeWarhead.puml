@@ -1,0 +1,10 @@
+@startuml
+class LeaveSmudgeWarhead {
+    + <<readonly>> Chance : int = 100
+    + <<override>> DoImpact(target:Target, args:WarheadArgs) : void
+}
+class "HashSet`1"<T> {
+}
+Warhead <|-- LeaveSmudgeWarhead
+LeaveSmudgeWarhead o-> "SmudgeType<string>" "HashSet`1"
+@enduml

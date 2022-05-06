@@ -1,0 +1,33 @@
+@startuml
+class WithCargoInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithCargo {
+    + WithCargo(self:Actor, info:WithCargoInfo)
+    Tick(self:Actor) : void
+    Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+    OnPassengerEntered(self:Actor, passenger:Actor) : void
+    OnPassengerExited(self:Actor, passenger:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- WithCargoInfo
+"Requires`1" "<CargoInfo>" <|-- WithCargoInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithCargoInfo
+WithCargoInfo o-> "DisplayTypes<string>" "HashSet`1"
+ITick <|-- WithCargo
+IRender <|-- WithCargo
+INotifyPassengerEntered <|-- WithCargo
+INotifyPassengerExited <|-- WithCargo
+WithCargo --> "info" WithCargoInfo
+WithCargo --> "cargo" Cargo
+WithCargo --> "body" BodyOrientation
+WithCargo --> "facing" IFacing
+WithCargo --> "cachedFacing" WAngle
+WithCargo o-> "previews<Actor,IActorPreview[]>" "Dictionary`2"
+@enduml

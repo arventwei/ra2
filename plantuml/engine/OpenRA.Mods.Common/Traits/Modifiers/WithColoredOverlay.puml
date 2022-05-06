@@ -1,0 +1,17 @@
+@startuml
+class WithColoredOverlayInfo {
+    + <<readonly>> Palette : string = "invuln"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithColoredOverlay {
+    + WithColoredOverlay(info:WithColoredOverlayInfo)
+    ModifyRender(self:Actor, wr:WorldRenderer, r:IEnumerable<IRenderable>) : IEnumerable<IRenderable>
+    ModifiedRender(self:Actor, wr:WorldRenderer, r:IEnumerable<IRenderable>) : IEnumerable<IRenderable>
+    ModifyScreenBounds(self:Actor, wr:WorldRenderer, bounds:IEnumerable<Rectangle>) : IEnumerable<Rectangle>
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithColoredOverlayInfo
+"ConditionalTrait`1" "<WithColoredOverlayInfo>" <|-- WithColoredOverlay
+IRenderModifier <|-- WithColoredOverlay
+@enduml

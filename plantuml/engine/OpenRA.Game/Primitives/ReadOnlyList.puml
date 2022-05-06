@@ -1,0 +1,19 @@
+@startuml
+interface "IReadOnlyList`1"<out T> {
+    Count : int <<get>>
+}
+class ReadOnlyList <<static>> {
+    + {static} AsReadOnly(list:IList<T>) : IReadOnlyList<T>
+}
+class "ReadOnlyList`1"<T> {
+    + ReadOnlyList()
+    + ReadOnlyList(list:IList<T>)
+    + GetEnumerator() : IEnumerator<T>
+    GetEnumerator() : System.Collections.IEnumerator
+    + Count : int <<get>>
+}
+class "IEnumerable`1"<T> {
+}
+"IEnumerable`1" "<T>" <|-- "IReadOnlyList`1"
+"IReadOnlyList`1" "<T>" <|-- "ReadOnlyList`1"
+@enduml

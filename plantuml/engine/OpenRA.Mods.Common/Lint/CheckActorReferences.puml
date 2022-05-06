@@ -1,0 +1,13 @@
+@startuml
+class CheckActorReferences {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, rules:Ruleset) : void
+    CheckTrait(actorInfo:ActorInfo, traitInfo:TraitInfo, rules:Ruleset) : void
+    CheckActorReference(actorInfo:ActorInfo, traitInfo:TraitInfo, fieldInfo:FieldInfo, dict:IReadOnlyDictionary<string, ActorInfo>, attribute:ActorReferenceAttribute) : void
+    CheckWeaponReference(actorInfo:ActorInfo, traitInfo:TraitInfo, fieldInfo:FieldInfo, dict:IReadOnlyDictionary<string, WeaponInfo>, attribute:WeaponReferenceAttribute) : void
+    CheckVoiceReference(actorInfo:ActorInfo, traitInfo:TraitInfo, fieldInfo:FieldInfo, dict:IReadOnlyDictionary<string, SoundInfo>, attribute:VoiceSetReferenceAttribute) : void
+}
+class "Action`1"<T> {
+}
+ILintRulesPass <|-- CheckActorReferences
+CheckActorReferences --> "emitError<string>" "Action`1"
+@enduml

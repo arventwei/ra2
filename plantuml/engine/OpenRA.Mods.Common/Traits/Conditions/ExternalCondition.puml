@@ -1,0 +1,40 @@
+@startuml
+interface IConditionTimerWatcher {
+    Condition : string <<get>>
+    Update(duration:int, remaining:int) : void
+}
+class ExternalConditionInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> SourceCap : int = 0
+    + <<readonly>> TotalCap : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ExternalCondition {
+    duration : int
+    expires : int
+    + ExternalCondition(self:Actor, info:ExternalConditionInfo)
+    + CanGrantCondition(self:Actor, source:object) : bool
+    + GrantCondition(self:Actor, source:object, duration:int, remaining:int) : int
+    + TryRevokeCondition(self:Actor, source:object, token:int) : bool
+    Tick(self:Actor) : void
+    Notifies(watcher:IConditionTimerWatcher) : bool
+    Created(self:Actor) : void
+}
+class TimedToken <<struct>> {
+    + <<readonly>> Expires : int
+    + <<readonly>> Token : int
+    + <<readonly>> Source : object
+    + TimedToken(token:int, self:Actor, source:object, duration:int)
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+TraitInfo <|-- ExternalConditionInfo
+ITick <|-- ExternalCondition
+INotifyCreated <|-- ExternalCondition
+ExternalCondition --> "Info" ExternalConditionInfo
+ExternalCondition o-> "permanentTokens<object,HashSet<int>>" "Dictionary`2"
+ExternalCondition o-> "timedTokens<TimedToken>" "List`1"
+ExternalCondition +-- TimedToken
+@enduml

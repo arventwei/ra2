@@ -1,0 +1,36 @@
+@startuml
+class AttackOrderPowerInfo {
+    + <<readonly>> CircleWidth : float = 1
+    + <<readonly>> CircleBorderWidth : float = 3
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackOrderPower {
+    + AttackOrderPower(self:Actor, info:AttackOrderPowerInfo)
+    + <<override>> SelectTarget(self:Actor, order:string, manager:SupportPowerManager) : void
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    FiredBurst(self:Actor, target:Target, a:Armament) : void
+}
+class SelectAttackPowerTarget {
+    <<readonly>> order : string
+    <<readonly>> cursor : string
+    <<readonly>> cursorBlocked : string
+    + SelectAttackPowerTarget(self:Actor, order:string, manager:SupportPowerManager, cursor:string, button:MouseButton, attack:AttackBase)
+    IsValidTarget(world:World, cell:CPos) : bool
+}
+class "Requires`1"<T> {
+}
+SupportPowerInfo <|-- AttackOrderPowerInfo
+"Requires`1" "<AttackBaseInfo>" <|-- AttackOrderPowerInfo
+AttackOrderPowerInfo o-> "CircleColor" Color
+AttackOrderPowerInfo o-> "CircleBorderColor" Color
+SupportPower <|-- AttackOrderPower
+INotifyCreated <|-- AttackOrderPower
+INotifyBurstComplete <|-- AttackOrderPower
+AttackOrderPower --> "info" AttackOrderPowerInfo
+AttackOrderPower --> "attack" AttackBase
+OrderGenerator <|-- SelectAttackPowerTarget
+SelectAttackPowerTarget --> "manager" SupportPowerManager
+SelectAttackPowerTarget --> "instance" SupportPowerInstance
+SelectAttackPowerTarget --> "expectedButton" MouseButton
+SelectAttackPowerTarget --> "attack" AttackBase
+@enduml

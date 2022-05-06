@@ -1,0 +1,35 @@
+@startuml
+class WithDeathAnimationInfo {
+    + <<readonly>> DeathSequence : string = "die"
+    + <<readonly>> DeathSequencePalette : string = "player"
+    + <<readonly>> DeathPaletteIsPlayerPalette : bool = true
+    + <<readonly>> UseDeathTypeSuffix : bool = true
+    + <<readonly>> CrushedSequence : string = null
+    + <<readonly>> CrushedSequencePalette : string = "effect"
+    + <<readonly>> CrushedPaletteIsPlayerPalette : bool = false
+    + <<readonly>> FallbackSequence : string = null
+    + <<readonly>> Delay : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithDeathAnimation {
+    crushed : bool
+    + WithDeathAnimation(self:Actor, info:WithDeathAnimationInfo)
+    Killed(self:Actor, e:AttackInfo) : void
+    + SpawnDeathAnimation(self:Actor, pos:WPos, image:string, sequence:string, palette:string, delay:int) : void
+    OnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+    WarnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+}
+class "Requires`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithDeathAnimationInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithDeathAnimationInfo
+WithDeathAnimationInfo o-> "DeathTypes<string,string[]>" "Dictionary`2"
+"ConditionalTrait`1" "<WithDeathAnimationInfo>" <|-- WithDeathAnimation
+INotifyKilled <|-- WithDeathAnimation
+INotifyCrushed <|-- WithDeathAnimation
+WithDeathAnimation --> "rs" RenderSprites
+@enduml

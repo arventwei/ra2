@@ -1,0 +1,20 @@
+@startuml
+class AttackLeapInfo {
+    + <<readonly>> LeapCondition : string = "attacking"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackLeap {
+    leapToken : int
+    + AttackLeap(self:Actor, info:AttackLeapInfo)
+    + GrantLeapCondition(self:Actor) : void
+    + RevokeLeapCondition(self:Actor) : void
+    + <<override>> GetAttackActivity(self:Actor, source:AttackSource, newTarget:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : Activity
+}
+class "Requires`1"<T> {
+}
+AttackFrontalInfo <|-- AttackLeapInfo
+"Requires`1" "<MobileInfo>" <|-- AttackLeapInfo
+AttackLeapInfo o-> "Speed" WDist
+AttackFrontal <|-- AttackLeap
+AttackLeap --> "info" AttackLeapInfo
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+class CaptureActor {
+    + CaptureActor(self:Actor, target:Target, targetLineColor:Color?)
+    DoCapture(self:Actor, captures:Captures) : void
+    + <<override>> Cancel(self:Actor, keepQueue:bool) : void
+    CancelCapture(self:Actor) : void
+}
+Enter <|-- CaptureActor
+CaptureActor --> "manager" CaptureManager
+CaptureActor --> "enterActor" Actor
+CaptureActor --> "enterCaptureManager" CaptureManager
+@enduml

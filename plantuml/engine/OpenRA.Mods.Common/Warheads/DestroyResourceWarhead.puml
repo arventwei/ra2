@@ -1,0 +1,6 @@
+@startuml
+class DestroyResourceWarhead {
+    + <<override>> DoImpact(target:Target, args:WarheadArgs) : void
+}
+Warhead <|-- DestroyResourceWarhead
+@enduml

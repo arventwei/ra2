@@ -1,0 +1,19 @@
+@startuml
+class WithTeslaChargeAnimationInfo {
+    + <<readonly>> ChargeSequence : string = "active"
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithTeslaChargeAnimation {
+    + WithTeslaChargeAnimation(init:ActorInitializer, info:WithTeslaChargeAnimationInfo)
+    Charging(self:Actor, target:Target) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- WithTeslaChargeAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithTeslaChargeAnimationInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithTeslaChargeAnimationInfo
+INotifyTeslaCharging <|-- WithTeslaChargeAnimation
+WithTeslaChargeAnimation --> "info" WithTeslaChargeAnimationInfo
+WithTeslaChargeAnimation --> "wsb" WithSpriteBody
+@enduml

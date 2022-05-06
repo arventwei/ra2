@@ -1,0 +1,50 @@
+@startuml
+class SpawnOccupant {
+    + <<readonly>> PlayerName : string
+    + <<readonly>> Team : int
+    + <<readonly>> Faction : string
+    + <<readonly>> SpawnPoint : int
+    + SpawnOccupant(client:Session.Client)
+    + SpawnOccupant(player:GameInformation.Player)
+    + SpawnOccupant(player:GameClient, suppressFaction:bool)
+}
+class MapPreviewWidget {
+    + <<readonly>> IgnoreMouseInput : bool = false
+    + <<readonly>> ShowSpawnPoints : bool = true
+    + <<readonly>> TooltipContainer : string
+    + <<readonly>> TooltipTemplate : string = "SPAWN_TOOLTIP"
+    + TooltipSpawnIndex : int
+    + ShowUnoccupiedSpawnpoints : bool = true
+    previewScale : float = 0
+    + MapPreviewWidget()
+    + <<override>> Clone() : Widget
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> MouseEntered() : void
+    + <<override>> MouseExited() : void
+    + ConvertToPreview(cell:CPos, gridType:MapGridType) : int2
+    + <<override>> Draw() : void
+    + Loaded : bool <<get>>
+}
+class "Lazy`1"<T> {
+}
+class "Func`1"<T> {
+}
+class "Action`1"<T> {
+}
+SpawnOccupant --> "Color" Color
+Widget <|-- MapPreviewWidget
+MapPreviewWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+MapPreviewWidget --> "spawnClaimed" Sprite
+MapPreviewWidget --> "spawnUnclaimed" Sprite
+MapPreviewWidget --> "spawnDisabled" Sprite
+MapPreviewWidget --> "spawnFont" SpriteFont
+MapPreviewWidget --> "spawnColor" Color
+MapPreviewWidget --> "spawnContrastColor" Color
+MapPreviewWidget --> "spawnLabelOffset" int2
+MapPreviewWidget o-> "Preview<MapPreview>" "Func`1"
+MapPreviewWidget o-> "SpawnOccupants<Dictionary<int, SpawnOccupant>>" "Func`1"
+MapPreviewWidget o-> "DisabledSpawnPoints<IEnumerable<int>>" "Func`1"
+MapPreviewWidget o-> "OnMouseDown<MouseInput>" "Action`1"
+MapPreviewWidget --> "mapRect" Rectangle
+MapPreviewWidget --> "minimap" Sprite
+@enduml

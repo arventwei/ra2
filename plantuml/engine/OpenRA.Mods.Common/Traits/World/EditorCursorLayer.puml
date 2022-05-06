@@ -1,0 +1,51 @@
+@startuml
+enum EditorCursorType {
+    None,
+    Actor,
+    TerrainTemplate,
+    Resource,
+}
+class EditorCursorLayerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class EditorCursorLayer {
+    + CurrentToken : int <<get>>
+    actorSharesCell : bool
+    terrainOrResourceDirty : bool
+    + EditorCursorLayer(self:Actor, info:EditorCursorLayerInfo)
+    TickRender(wr:WorldRenderer, self:Actor) : void
+    RenderAboveShroud(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+    + RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+    + SetActor(wr:WorldRenderer, actor:ActorInfo, owner:PlayerReference) : int
+    + SetTerrainTemplate(wr:WorldRenderer, template:TerrainTemplateInfo) : int
+    + SetResource(wr:WorldRenderer, resource:ResourceTypeInfo) : int
+    + Clear(token:int) : void
+}
+class "Requires`1"<T> {
+}
+class "List`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- EditorCursorLayerInfo
+"Requires`1" "<EditorActorLayerInfo>" <|-- EditorCursorLayerInfo
+EditorCursorLayerInfo o-> "PreviewFacing" WAngle
+ITickRender <|-- EditorCursorLayer
+IRenderAboveShroud <|-- EditorCursorLayer
+IRenderAnnotations <|-- EditorCursorLayer
+EditorCursorLayer --> "info" EditorCursorLayerInfo
+EditorCursorLayer --> "editorLayer" EditorActorLayer
+EditorCursorLayer --> "world" World
+EditorCursorLayer --> "Type" EditorCursorType
+EditorCursorLayer --> "Actor" EditorActorPreview
+EditorCursorLayer --> "actorLocation" CPos
+EditorCursorLayer --> "actorSubCell" SubCell
+EditorCursorLayer --> "actorCenterOffset" WVec
+EditorCursorLayer --> "TerrainTemplate" TerrainTemplateInfo
+EditorCursorLayer --> "Resource" ResourceTypeInfo
+EditorCursorLayer --> "terrainOrResourceCell" CPos
+EditorCursorLayer o-> "terrainOrResourcePreview<IRenderable>" "List`1"
+EditorCursorLayer o-> "NoRenderables<IRenderable>" "IEnumerable`1"
+@enduml

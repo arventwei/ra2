@@ -1,0 +1,31 @@
+@startuml
+class TintedCell {
+    + Ticks : int = 0
+    + Level : int <<get>>
+    + ZOffset : int <<get>>
+    + TintedCell(layer:TintedCellsLayer, location:CPos, centeredLocation:WPos)
+    + TintedCell(src:TintedCell)
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + IsDecoration : bool <<get>>
+    PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    firstTime : bool = true
+    alpha : int
+    + Render(wr:WorldRenderer) : void
+    + SetLevel(value:int) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+    + Tick(world:World) : void
+    Render(r:WorldRenderer) : IEnumerable<IRenderable>
+}
+IRenderable <|-- TintedCell
+IFinalizedRenderable <|-- TintedCell
+IEffect <|-- TintedCell
+TintedCell --> "layer" TintedCellsLayer
+TintedCell --> "location" CPos
+TintedCell --> "centeredLocation" WPos
+TintedCell --> "Palette" PaletteReference
+TintedCell --> "Pos" WPos
+@enduml

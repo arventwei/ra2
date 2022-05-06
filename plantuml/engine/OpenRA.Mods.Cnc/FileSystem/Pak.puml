@@ -1,0 +1,29 @@
+@startuml
+class PakFileLoader {
+    TryParsePackage(s:Stream, filename:string, context:FS, package:IReadOnlyPackage) : bool
+}
+class Entry <<struct>> {
+    + Offset : uint
+    + Length : uint
+    + Filename : string
+}
+class PakFile <<sealed>> {
+    + Name : string <<get>>
+    + PakFile(stream:Stream, filename:string)
+    + GetStream(filename:string) : Stream
+    + Contains(filename:string) : bool
+    + OpenPackage(filename:string, context:FS) : IReadOnlyPackage
+    + Dispose() : void
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+IPackageLoader <|-- PakFileLoader
+PakFileLoader +-- Entry
+PakFileLoader +-- PakFile
+IReadOnlyPackage <|-- PakFile
+PakFile --> "Contents<string>" "IEnumerable`1"
+PakFile o-> "index<string,Entry>" "Dictionary`2"
+PakFile --> "stream" Stream
+@enduml

@@ -1,0 +1,40 @@
+@startuml
+class InfiltratesInfo {
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> Notification : string = null
+    + <<readonly>> PlayerExperience : int = 0
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Infiltrates {
+    + Infiltrates(info:InfiltratesInfo)
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    IsValidOrder(self:Actor, order:Order) : bool
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    + CanInfiltrateTarget(self:Actor, target:Target) : bool
+    + ResolveOrder(self:Actor, order:Order) : void
+}
+class InfiltrationOrderTargeter {
+    + InfiltrationOrderTargeter(info:InfiltratesInfo)
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+ConditionalTraitInfo <|-- InfiltratesInfo
+InfiltratesInfo o-> "Types<TargetableType>" "BitSet`1"
+InfiltratesInfo o-> "TargetLineColor" Color
+InfiltratesInfo o-> "ValidRelationships" PlayerRelationship
+InfiltratesInfo o-> "EnterBehaviour" EnterBehaviour
+"ConditionalTrait`1" "<InfiltratesInfo>" <|-- Infiltrates
+IIssueOrder <|-- Infiltrates
+IResolveOrder <|-- Infiltrates
+IOrderVoice <|-- Infiltrates
+Infiltrates --> "Orders<IOrderTargeter>" "IEnumerable`1"
+UnitOrderTargeter <|-- InfiltrationOrderTargeter
+InfiltrationOrderTargeter --> "info" InfiltratesInfo
+@enduml

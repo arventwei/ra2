@@ -1,0 +1,51 @@
+@startuml
+enum TextFieldType {
+    General,
+    Filename,
+    Integer,
+}
+class TextFieldWidget {
+    text : string = ""
+    + Text : string <<get>> <<set>>
+    + MaxLength : int = 0
+    + VisualHeight : int = 1
+    + LeftMargin : int = 5
+    + RightMargin : int = 5
+    + Disabled : bool = false
+    + CursorPosition : int <<get>> <<set>>
+    + Font : string
+    + TextFieldWidget()
+    + <<override>> YieldKeyboardFocus() : bool
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    ClosestCursorPosition(x:int) : int
+    GetPrevWhitespaceIndex() : int
+    GetNextWhitespaceIndex() : int
+    RemoveInvalidCharacters(input:string) : string
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+    + <<override>> HandleTextInput(input:string) : bool
+    HandleSelectionUpdate(prevCursorPos:int, newCursorPos:int) : void
+    ClearSelection() : void
+    RemoveSelectedText() : void
+    wasDisabled : bool
+    + <<override>> Tick() : void
+    + <<override>> Draw() : void
+    + <<override>> Clone() : Widget
+}
+class "Func`1"<T> {
+}
+Widget <|-- TextFieldWidget
+TextFieldWidget o-> "type" TextFieldType
+TextFieldWidget --> "Type" TextFieldType
+TextFieldWidget o-> "OnEnterKey<bool>" "Func`1"
+TextFieldWidget o-> "OnTabKey<bool>" "Func`1"
+TextFieldWidget o-> "OnEscKey<bool>" "Func`1"
+TextFieldWidget o-> "OnAltKey<bool>" "Func`1"
+TextFieldWidget o-> "OnLoseFocus" Action
+TextFieldWidget o-> "OnTextEdited" Action
+TextFieldWidget --> "IsDisabled<bool>" "Func`1"
+TextFieldWidget o-> "IsValid<bool>" "Func`1"
+TextFieldWidget o-> "TextColor" Color
+TextFieldWidget o-> "TextColorDisabled" Color
+TextFieldWidget o-> "TextColorInvalid" Color
+TextFieldWidget o-> "TextColorHighlight" Color
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+class ParatroopersPowerInfo {
+    + <<readonly>> UnitType : string = "badr"
+    + <<readonly>> SquadSize : int = 1
+    + <<readonly>> ReinforcementsArrivedSpeechNotification : string = null
+    + <<readonly>> QuantizedFacings : int = 32
+    + <<readonly>> AllowImpassableCells : bool = false
+    + <<readonly>> CameraActor : string = null
+    + <<readonly>> CameraRemoveDelay : int = 85
+    + <<readonly>> UseDirectionalTarget : bool = false
+    + <<readonly>> DirectionArrowAnimation : string = null
+    + <<readonly>> DirectionArrowPalette : string = "chrome"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ParatroopersPower {
+    + ParatroopersPower(self:Actor, info:ParatroopersPowerInfo)
+    + <<override>> SelectTarget(self:Actor, order:string, manager:SupportPowerManager) : void
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    + SendParatroopers(self:Actor, target:WPos, facing:WAngle?) : (Actor[] Aircraft, Actor[] Units)
+    RemoveCamera(camera:Actor) : void
+    RemoveBeacon(beacon:Beacon) : void
+}
+SupportPowerInfo <|-- ParatroopersPowerInfo
+ParatroopersPowerInfo o-> "SquadOffset" WVec
+ParatroopersPowerInfo o-> "Cordon" WDist
+ParatroopersPowerInfo o-> "BeaconDistanceOffset" WDist
+SupportPower <|-- ParatroopersPower
+ParatroopersPower --> "info" ParatroopersPowerInfo
+@enduml

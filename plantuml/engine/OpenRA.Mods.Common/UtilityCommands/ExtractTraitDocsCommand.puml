@@ -1,0 +1,9 @@
+@startuml
+class ExtractTraitDocsCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+    {static} RequiredTraitTypes(t:Type) : Type[]
+}
+IUtilityCommand <|-- ExtractTraitDocsCommand
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+class PolygonShape {
+    + <<readonly>> VerticalTopOffset : int = 0
+    + <<readonly>> VerticalBottomOffset : int = 0
+    + PolygonShape()
+    + PolygonShape(points:int2[])
+    + Initialize() : void
+    {static} DistanceSquaredFromLineSegment(c:int2, a:int2, b:int2, ab2:int) : int
+    + DistanceFromEdge(v:WVec) : WDist
+    + DistanceFromEdge(pos:WPos, origin:WPos, orientation:WRot) : WDist
+    RenderDebugOverlay(wr:WorldRenderer, actorPos:WPos, orientation:WRot) : IEnumerable<IRenderable>
+}
+IHitShape <|-- PolygonShape
+PolygonShape --> "OuterRadius" WDist
+PolygonShape o-> "LocalYaw" WAngle
+@enduml

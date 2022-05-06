@@ -1,0 +1,25 @@
+@startuml
+class DuplicateUnitCrateActionInfo {
+    + <<readonly>> MaxAmount : int = 2
+    + <<readonly>> MinAmount : int = 1
+    + <<readonly>> MaxDuplicateValue : int
+    + <<readonly>> MaxRadius : int = 4
+    + <<readonly>> Owner : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DuplicateUnitCrateAction {
+    + DuplicateUnitCrateAction(self:Actor, info:DuplicateUnitCrateActionInfo)
+    + CanGiveTo(collector:Actor) : bool
+    + <<override>> GetSelectionShares(collector:Actor) : int
+    + <<override>> Activate(collector:Actor) : void
+}
+class "BitSet`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+CrateActionInfo <|-- DuplicateUnitCrateActionInfo
+DuplicateUnitCrateActionInfo o-> "ValidTargets<TargetableType>" "BitSet`1"
+DuplicateUnitCrateActionInfo o-> "ValidFactions<string>" "HashSet`1"
+CrateAction <|-- DuplicateUnitCrateAction
+DuplicateUnitCrateAction --> "info" DuplicateUnitCrateActionInfo
+@enduml

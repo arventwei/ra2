@@ -1,0 +1,16 @@
+@startuml
+class "EnterAlliedActorTargeter`1"<T> {
+    <<readonly>> enterCursor : string
+    <<readonly>> enterBlockedCursor : string
+    + EnterAlliedActorTargeter(order:string, priority:int, enterCursor:string, enterBlockedCursor:string, canTarget:Func<Actor, TargetModifiers, bool>, useEnterCursor:Func<Actor, bool>)
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+class "Func`3"<T1,T2,T3> {
+}
+class "Func`2"<T1,T2> {
+}
+UnitOrderTargeter <|-- "EnterAlliedActorTargeter`1"
+"EnterAlliedActorTargeter`1" --> "canTarget<Actor,TargetModifiers,bool>" "Func`3"
+"EnterAlliedActorTargeter`1" --> "useEnterCursor<Actor,bool>" "Func`2"
+@enduml

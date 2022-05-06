@@ -1,0 +1,38 @@
+@startuml
+abstract class TooltipInfoBase {
+    + <<readonly>> Name : string = ""
+}
+class EditorOnlyTooltipInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TooltipInfo {
+    + <<readonly>> GenericName : string = null
+    + <<readonly>> GenericStancePrefix : bool = true
+    + <<readonly>> AllyPrefix : string = "Allied"
+    + <<readonly>> NeutralPrefix : string = null
+    + <<readonly>> EnemyPrefix : string = "Enemy"
+    + <<readonly>> ShowOwnerRow : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + TooltipForPlayerStance(stance:PlayerRelationship) : string
+    + IsOwnerRowVisible : bool <<get>>
+}
+class Tooltip {
+    + Tooltip(self:Actor, info:TooltipInfo)
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- TooltipInfoBase
+"Requires`1" "<IMouseBoundsInfo>" <|-- TooltipInfoBase
+TooltipInfoBase <|-- EditorOnlyTooltipInfo
+TooltipInfoBase <|-- TooltipInfo
+ITooltipInfo <|-- TooltipInfo
+TooltipInfo o-> "GenericVisibility" PlayerRelationship
+"ConditionalTrait`1" "<TooltipInfo>" <|-- Tooltip
+ITooltip <|-- Tooltip
+Tooltip --> "self" Actor
+Tooltip --> "info" TooltipInfo
+Tooltip --> "TooltipInfo" ITooltipInfo
+Tooltip --> "Owner" Player
+@enduml

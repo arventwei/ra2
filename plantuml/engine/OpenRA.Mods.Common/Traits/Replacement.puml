@@ -1,0 +1,12 @@
+@startuml
+class ReplacementInfo {
+}
+class Replacement {
+}
+class "TraitInfo`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"TraitInfo`1" "<Replacement>" <|-- ReplacementInfo
+ReplacementInfo o-> "ReplaceableTypes<string>" "HashSet`1"
+@enduml

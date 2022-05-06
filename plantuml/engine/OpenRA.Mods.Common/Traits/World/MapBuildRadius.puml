@@ -1,0 +1,28 @@
+@startuml
+class MapBuildRadiusInfo {
+    + <<readonly>> AllyBuildRadiusCheckboxLabel : string = "Build off Allies"
+    + <<readonly>> AllyBuildRadiusCheckboxDescription : string = "Allow allies to place structures inside your build area"
+    + <<readonly>> AllyBuildRadiusCheckboxEnabled : bool = true
+    + <<readonly>> AllyBuildRadiusCheckboxLocked : bool = false
+    + <<readonly>> AllyBuildRadiusCheckboxVisible : bool = true
+    + <<readonly>> AllyBuildRadiusCheckboxDisplayOrder : int = 0
+    + <<readonly>> BuildRadiusCheckboxLabel : string = "Limit Build Area"
+    + <<readonly>> BuildRadiusCheckboxDescription : string = "Limits structure placement to areas around Construction Yards"
+    + <<readonly>> BuildRadiusCheckboxEnabled : bool = true
+    + <<readonly>> BuildRadiusCheckboxLocked : bool = false
+    + <<readonly>> BuildRadiusCheckboxVisible : bool = true
+    + <<readonly>> BuildRadiusCheckboxDisplayOrder : int = 0
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MapBuildRadius {
+    + AllyBuildRadiusEnabled : bool <<get>>
+    + BuildRadiusEnabled : bool <<get>>
+    + MapBuildRadius(info:MapBuildRadiusInfo)
+    Created(self:Actor) : void
+}
+TraitInfo <|-- MapBuildRadiusInfo
+ILobbyOptions <|-- MapBuildRadiusInfo
+INotifyCreated <|-- MapBuildRadius
+MapBuildRadius --> "info" MapBuildRadiusInfo
+@enduml

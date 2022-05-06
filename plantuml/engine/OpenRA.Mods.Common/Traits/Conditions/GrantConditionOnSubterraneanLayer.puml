@@ -1,0 +1,21 @@
+@startuml
+class GrantConditionOnSubterraneanLayerInfo {
+    + <<readonly>> SubterraneanTransitionImage : string = null
+    + <<readonly>> SubterraneanTransitionSequence : string = null
+    + <<readonly>> SubterraneanTransitionPalette : string = "effect"
+    + <<readonly>> SubterraneanTransitionSound : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class GrantConditionOnSubterraneanLayer {
+    + GrantConditionOnSubterraneanLayer(self:Actor, info:GrantConditionOnSubterraneanLayerInfo)
+    PlayTransitionAudioVisuals(self:Actor, fromCell:CPos) : void
+    VisualPositionChanged(self:Actor, oldLayer:byte, newLayer:byte) : void
+}
+class "GrantConditionOnLayer`1"<T> {
+}
+GrantConditionOnLayerInfo <|-- GrantConditionOnSubterraneanLayerInfo
+"GrantConditionOnLayer`1" "<GrantConditionOnSubterraneanLayerInfo>" <|-- GrantConditionOnSubterraneanLayer
+INotifyVisualPositionChanged <|-- GrantConditionOnSubterraneanLayer
+GrantConditionOnSubterraneanLayer --> "transitionDepth" WDist
+@enduml

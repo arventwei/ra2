@@ -1,0 +1,22 @@
+@startuml
+class Sheet <<sealed>> {
+    dirty : bool
+    releaseBufferOnCommit : bool
+    + GetData() : byte[]
+    + Buffered : bool <<get>>
+    + Sheet(type:SheetType, size:Size)
+    + Sheet(type:SheetType, texture:ITexture)
+    + Sheet(type:SheetType, stream:Stream)
+    + GetTexture() : ITexture
+    + AsPng() : Png
+    + AsPng(channel:TextureChannel, pal:IPalette) : Png
+    + CreateBuffer() : void
+    + CommitBufferedData() : void
+    + ReleaseBuffer() : void
+    + Dispose() : void
+}
+IDisposable <|-- Sheet
+Sheet --> "texture" ITexture
+Sheet --> "Size" Size
+Sheet --> "Type" SheetType
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+class LuaScriptInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class LuaScript {
+    disposed : bool
+    + LuaScript(info:LuaScriptInfo)
+    WorldLoaded(world:World, worldRenderer:WorldRenderer) : void
+    Tick(self:Actor) : void
+    Disposing(self:Actor) : void
+    + FatalErrorOccurred : bool <<get>>
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- LuaScriptInfo
+"Requires`1" "<SpawnMapActorsInfo>" <|-- LuaScriptInfo
+LuaScriptInfo o-> "Scripts<string>" "HashSet`1"
+ITick <|-- LuaScript
+IWorldLoaded <|-- LuaScript
+INotifyActorDisposing <|-- LuaScript
+LuaScript --> "info" LuaScriptInfo
+LuaScript --> "context" ScriptContext
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class ProductionTypeButtonWidget {
+    + <<readonly>> ProductionGroup : string
+    + ProductionTypeButtonWidget(modData:ModData, world:World)
+}
+WorldButtonWidget <|-- ProductionTypeButtonWidget
+@enduml

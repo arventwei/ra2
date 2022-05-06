@@ -1,0 +1,21 @@
+@startuml
+class CustomTerrainDebugOverlayInfo {
+    + <<readonly>> Font : string = "TinyBold"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CustomTerrainDebugOverlay {
+    <<const>> CommandName : string = "debugcustomterrain"
+    <<const>> CommandDesc : string = "toggles the custom terrain debug overlay."
+    + Enabled : bool
+    + CustomTerrainDebugOverlay(self:Actor, info:CustomTerrainDebugOverlayInfo)
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+    InvokeCommand(name:string, arg:string) : void
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+TraitInfo <|-- CustomTerrainDebugOverlayInfo
+IWorldLoaded <|-- CustomTerrainDebugOverlay
+IChatCommand <|-- CustomTerrainDebugOverlay
+IRenderAnnotations <|-- CustomTerrainDebugOverlay
+CustomTerrainDebugOverlay --> "font" SpriteFont
+@enduml

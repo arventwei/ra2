@@ -1,0 +1,9 @@
+@startuml
+class MoveWithinRange {
+    + MoveWithinRange(self:Actor, target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?)
+    AtCorrectRange(origin:WPos) : bool
+}
+MoveAdjacentTo <|-- MoveWithinRange
+MoveWithinRange --> "maxRange" WDist
+MoveWithinRange --> "minRange" WDist
+@enduml

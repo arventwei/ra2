@@ -1,0 +1,24 @@
+@startuml
+class ExperienceTricklerInfo {
+    + <<readonly>> Interval : int = 50
+    + <<readonly>> InitialDelay : int = 0
+    + <<readonly>> Amount : int = 15
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ExperienceTrickler {
+    ticks : int
+    + ExperienceTrickler(self:Actor, info:ExperienceTricklerInfo)
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- ExperienceTricklerInfo
+"Requires`1" "<GainsExperienceInfo>" <|-- ExperienceTricklerInfo
+"PausableConditionalTrait`1" "<ExperienceTricklerInfo>" <|-- ExperienceTrickler
+ITick <|-- ExperienceTrickler
+ISync <|-- ExperienceTrickler
+ExperienceTrickler --> "info" ExperienceTricklerInfo
+ExperienceTrickler --> "gainsExperience" GainsExperience
+@enduml

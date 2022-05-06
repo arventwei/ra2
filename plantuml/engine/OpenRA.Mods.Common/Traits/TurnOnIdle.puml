@@ -1,0 +1,22 @@
+@startuml
+class TurnOnIdleInfo {
+    + <<readonly>> MinDelay : int = 400
+    + <<readonly>> MaxDelay : int = 800
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TurnOnIdle {
+    currentDelay : int
+    + TurnOnIdle(init:ActorInitializer, info:TurnOnIdleInfo)
+    TickIdle(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- TurnOnIdleInfo
+"Requires`1" "<MobileInfo>" <|-- TurnOnIdleInfo
+"ConditionalTrait`1" "<TurnOnIdleInfo>" <|-- TurnOnIdle
+INotifyIdle <|-- TurnOnIdle
+TurnOnIdle --> "targetFacing" WAngle
+TurnOnIdle --> "mobile" Mobile
+@enduml

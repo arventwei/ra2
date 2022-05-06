@@ -1,0 +1,10 @@
+@startuml
+class CloakProperties {
+    + CloakProperties(context:ScriptContext, self:Actor)
+    + IsCloaked : bool <<get>>
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- CloakProperties
+"Requires`1" "<CloakInfo>" <|-- CloakProperties
+@enduml

@@ -1,0 +1,83 @@
+@startuml
+class PlayerStatisticsInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PlayerStatistics {
+    + OrderCount : int
+    + Experience : int <<get>>
+    + Income : int
+    + DisplayIncome : int
+    + KillsCost : int
+    + DeathsCost : int
+    + UnitsKilled : int
+    + UnitsDead : int
+    + BuildingsKilled : int
+    + BuildingsDead : int
+    + ArmyValue : int
+    + AssetsValue : int
+    lastIncome : int
+    lastIncomeTick : int
+    ticks : int
+    replayTimestep : int
+    armyGraphDisabled : bool
+    incomeGraphDisabled : bool
+    + PlayerStatistics(self:Actor)
+    Created(self:Actor) : void
+    Tick(self:Actor) : void
+    + ResolveOrder(self:Actor, order:Order) : void
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+}
+class ArmyUnit {
+    + <<readonly>> IconPalette : string
+    + <<readonly>> IconPaletteIsPlayerPalette : bool
+    + <<readonly>> ProductionQueueOrder : int
+    + <<readonly>> BuildPaletteOrder : int
+    + Count : int <<get>> <<set>>
+    + ArmyUnit(actorInfo:ActorInfo, owner:Player)
+}
+class UpdatesPlayerStatisticsInfo {
+    + AddToArmyValue : bool = false
+    + AddToAssetsValue : bool = true
+    + OverrideActor : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class UpdatesPlayerStatistics {
+    <<readonly>> actorName : string
+    <<readonly>> cost : int = 0
+    includedInArmyValue : bool = false
+    includedInAssetsValue : bool = false
+    + UpdatesPlayerStatistics(info:UpdatesPlayerStatisticsInfo, self:Actor)
+    Killed(self:Actor, e:AttackInfo) : void
+    Created(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    Disposing(self:Actor) : void
+}
+class "List`1"<T> {
+}
+class "Queue`1"<T> {
+}
+class "Cache`2"<T1,T2> {
+}
+TraitInfo <|-- PlayerStatisticsInfo
+ITick <|-- PlayerStatistics
+IResolveOrder <|-- PlayerStatistics
+INotifyCreated <|-- PlayerStatistics
+IWorldLoaded <|-- PlayerStatistics
+PlayerStatistics --> "resources" PlayerResources
+PlayerStatistics --> "experience" PlayerExperience
+PlayerStatistics o-> "IncomeSamples<int>" "List`1"
+PlayerStatistics o-> "ArmySamples<int>" "List`1"
+PlayerStatistics o-> "earnedSeconds<int>" "Queue`1"
+PlayerStatistics --> "Units<string,ArmyUnit>" "Cache`2"
+ArmyUnit --> "ActorInfo" ActorInfo
+ArmyUnit --> "Icon" Animation
+ArmyUnit --> "TooltipInfo" TooltipInfo
+ArmyUnit --> "BuildableInfo" BuildableInfo
+TraitInfo <|-- UpdatesPlayerStatisticsInfo
+INotifyKilled <|-- UpdatesPlayerStatistics
+INotifyCreated <|-- UpdatesPlayerStatistics
+INotifyOwnerChanged <|-- UpdatesPlayerStatistics
+INotifyActorDisposing <|-- UpdatesPlayerStatistics
+UpdatesPlayerStatistics --> "info" UpdatesPlayerStatisticsInfo
+UpdatesPlayerStatistics --> "playerStats" PlayerStatistics
+@enduml

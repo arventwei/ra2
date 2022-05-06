@@ -1,0 +1,8 @@
+@startuml
+class DonateCash {
+    <<readonly>> payload : int
+    <<readonly>> playerExperience : int
+    + DonateCash(self:Actor, target:Target, payload:int, playerExperience:int, targetLineColor:Color?)
+}
+Enter <|-- DonateCash
+@enduml

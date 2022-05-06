@@ -1,0 +1,10 @@
+@startuml
+class HiddenUnderFogInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HiddenUnderFog {
+    + HiddenUnderFog(info:HiddenUnderFogInfo)
+}
+HiddenUnderShroudInfo <|-- HiddenUnderFogInfo
+HiddenUnderShroud <|-- HiddenUnderFog
+@enduml

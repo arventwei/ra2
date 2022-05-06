@@ -1,0 +1,17 @@
+@startuml
+class ChronoshiftPaletteEffectInfo {
+    + <<readonly>> ChronoEffectLength : int = 60
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ChronoshiftPaletteEffect {
+    remainingFrames : int
+    + ChronoshiftPaletteEffect(info:ChronoshiftPaletteEffectInfo)
+    + Enable() : void
+    Tick(self:Actor) : void
+    AdjustPalette(palettes:IReadOnlyDictionary<string, MutablePalette>) : void
+}
+TraitInfo <|-- ChronoshiftPaletteEffectInfo
+IPaletteModifier <|-- ChronoshiftPaletteEffect
+ITick <|-- ChronoshiftPaletteEffect
+ChronoshiftPaletteEffect --> "info" ChronoshiftPaletteEffectInfo
+@enduml

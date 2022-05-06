@@ -1,0 +1,46 @@
+@startuml
+interface IInterpretCommand {
+    InterpretCommand(server:Server, conn:Connection, client:Session.Client, cmd:string) : bool
+}
+interface INotifySyncLobbyInfo {
+    LobbyInfoSynced(server:Server) : void
+}
+interface INotifyServerStart {
+    ServerStarted(server:Server) : void
+}
+interface INotifyServerEmpty {
+    ServerEmpty(server:Server) : void
+}
+interface INotifyServerShutdown {
+    ServerShutdown(server:Server) : void
+}
+interface IStartGame {
+    GameStarted(server:Server) : void
+}
+interface IClientJoined {
+    ClientJoined(server:Server, conn:Connection) : void
+}
+interface IEndGame {
+    GameEnded(server:Server) : void
+}
+interface ITick {
+    Tick(server:Server) : void
+}
+abstract class ServerTrait {
+}
+class DebugServerTrait {
+    + InterpretCommand(server:Server, conn:Connection, client:Session.Client, cmd:string) : bool
+    + GameStarted(server:Server) : void
+    + LobbyInfoSynced(server:Server) : void
+    + ServerStarted(server:Server) : void
+    + ServerShutdown(server:Server) : void
+    + GameEnded(server:Server) : void
+}
+ServerTrait <|-- DebugServerTrait
+IInterpretCommand <|-- DebugServerTrait
+IStartGame <|-- DebugServerTrait
+INotifySyncLobbyInfo <|-- DebugServerTrait
+INotifyServerStart <|-- DebugServerTrait
+INotifyServerShutdown <|-- DebugServerTrait
+IEndGame <|-- DebugServerTrait
+@enduml

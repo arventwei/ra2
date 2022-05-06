@@ -1,0 +1,13 @@
+@startuml
+class ExplodeCrateActionInfo {
+    + Weapon : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ExplodeCrateAction {
+    + ExplodeCrateAction(self:Actor, info:ExplodeCrateActionInfo)
+    + <<override>> Activate(collector:Actor) : void
+}
+CrateActionInfo <|-- ExplodeCrateActionInfo
+CrateAction <|-- ExplodeCrateAction
+ExplodeCrateAction --> "info" ExplodeCrateActionInfo
+@enduml

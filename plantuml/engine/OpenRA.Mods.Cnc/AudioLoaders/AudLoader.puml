@@ -1,0 +1,22 @@
+@startuml
+class AudLoader {
+    IsAud(s:Stream) : bool
+    TryParseSound(stream:Stream, sound:ISoundFormat) : bool
+}
+class AudFormat <<sealed>> {
+    + Channels : int <<get>>
+    + SampleBits : int <<get>>
+    + SampleRate : int <<get>>
+    + LengthInSeconds : float <<get>>
+    + GetPCMInputStream() : Stream
+    + Dispose() : void
+    <<readonly>> sampleRate : int
+    + AudFormat(stream:Stream)
+}
+class "Func`1"<T> {
+}
+ISoundLoader <|-- AudLoader
+ISoundFormat <|-- AudFormat
+AudFormat --> "sourceStream" Stream
+AudFormat --> "audStreamFactory<Stream>" "Func`1"
+@enduml

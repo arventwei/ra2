@@ -1,0 +1,10 @@
+@startuml
+class ValuedInfo {
+    + <<readonly>> Cost : int = 0
+}
+class Valued {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<Valued>" <|-- ValuedInfo
+@enduml

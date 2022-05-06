@@ -1,0 +1,21 @@
+@startuml
+class RevealOnFireInfo {
+    + <<readonly>> Duration : int = 25
+    + <<readonly>> RevealGeneratedShroud : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RevealOnFire {
+    + RevealOnFire(self:Actor, info:RevealOnFireInfo)
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    GetTargetPlayer(target:Target) : Player
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- RevealOnFireInfo
+RevealOnFireInfo o-> "RevealForRelationships" PlayerRelationship
+RevealOnFireInfo o-> "Radius" WDist
+"ConditionalTrait`1" "<RevealOnFireInfo>" <|-- RevealOnFire
+INotifyAttack <|-- RevealOnFire
+RevealOnFire --> "info" RevealOnFireInfo
+@enduml

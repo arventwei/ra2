@@ -1,0 +1,10 @@
+@startuml
+class MapPreviewLogic {
+    <<readonly>> blinkTickLength : int = 10
+    installHighlighted : bool
+    blinkTick : int
+    + <<override>> Tick() : void
+    SetupWidgets(parent:Widget, getMap:Func<MapPreview>, onMouseDown:Action<MapPreviewWidget, MapPreview, MouseInput>, getSpawnOccupants:Func<Dictionary<int, SpawnOccupant>>, getDisabledSpawnPoints:Func<HashSet<int>>, showUnoccupiedSpawnpoints:bool) : void
+}
+ChromeLogic <|-- MapPreviewLogic
+@enduml

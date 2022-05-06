@@ -1,0 +1,15 @@
+@startuml
+class TransportProperties {
+    + TransportProperties(context:ScriptContext, self:Actor)
+    + HasPassengers : bool <<get>>
+    + PassengerCount : int <<get>>
+    + LoadPassenger(a:Actor) : void
+    + UnloadPassenger(a:Actor) : Actor
+    + UnloadPassengers(cell:CPos?, unloadRange:int) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- TransportProperties
+"Requires`1" "<CargoInfo>" <|-- TransportProperties
+TransportProperties --> "cargo" Cargo
+@enduml

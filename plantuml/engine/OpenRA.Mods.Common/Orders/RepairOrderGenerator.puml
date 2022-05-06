@@ -1,0 +1,6 @@
+@startuml
+class RepairOrderGenerator {
+    {static} OrderInner(world:World, mi:MouseInput) : IEnumerable<Order>
+}
+OrderGenerator <|-- RepairOrderGenerator
+@enduml

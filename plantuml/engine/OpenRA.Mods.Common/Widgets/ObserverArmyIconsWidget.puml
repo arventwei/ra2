@@ -1,0 +1,39 @@
+@startuml
+class ObserverArmyIconsWidget {
+    + IconWidth : int = 32
+    + IconHeight : int = 24
+    + IconSpacing : int = 1
+    + MinWidth : int = 240
+    + <<readonly>> TooltipTemplate : string = "ARMY_TOOLTIP"
+    + <<readonly>> TooltipContainer : string
+    lastIconIdx : int
+    currentTooltipToken : int
+    + ObserverArmyIconsWidget(world:World, worldRenderer:WorldRenderer)
+    + <<override>> Draw() : void
+    + <<override>> Clone() : Widget
+    + <<override>> Tick() : void
+}
+class "Func`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+class "List`1"<T> {
+}
+class "CachedTransform`2"<T1,T2> {
+}
+class ArmyIcon {
+}
+Widget <|-- ObserverArmyIconsWidget
+ObserverArmyIconsWidget --> "GetPlayer<Player>" "Func`1"
+ObserverArmyIconsWidget --> "world" World
+ObserverArmyIconsWidget --> "worldRenderer" WorldRenderer
+ObserverArmyIconsWidget --> "iconSize" float2
+ObserverArmyIconsWidget --> "TooltipUnit" ArmyUnit
+ObserverArmyIconsWidget --> "GetTooltipUnit<ArmyUnit>" "Func`1"
+ObserverArmyIconsWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+ObserverArmyIconsWidget o-> "armyIcons<ArmyIcon>" "List`1"
+ObserverArmyIconsWidget o-> "stats<Player,PlayerStatistics>" "CachedTransform`2"
+ObserverArmyIconsWidget +-- ArmyIcon
+ArmyIcon --> "Bounds" Rectangle
+ArmyIcon --> "Unit" ArmyUnit
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class BlankLoadScreen {
+    + <<virtual>> Init(modData:ModData, info:Dictionary<string, string>) : void
+    + <<virtual>> Display() : void
+    + <<virtual>> StartGame(args:Arguments) : void
+    + Dispose() : void
+    + <<virtual>> BeforeLoad() : bool
+}
+ILoadScreen <|-- BlankLoadScreen
+BlankLoadScreen --> "Launch" LaunchArguments
+@enduml

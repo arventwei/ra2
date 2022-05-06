@@ -1,0 +1,13 @@
+@startuml
+class AttackTurretedInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackTurreted {
+    + AttackTurreted(self:Actor, info:AttackTurretedInfo)
+}
+class "Requires`1"<T> {
+}
+AttackFollowInfo <|-- AttackTurretedInfo
+"Requires`1" "<TurretedInfo>" <|-- AttackTurretedInfo
+AttackFollow <|-- AttackTurreted
+@enduml

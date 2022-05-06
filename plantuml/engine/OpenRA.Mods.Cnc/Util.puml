@@ -1,0 +1,6 @@
+@startuml
+class Util <<static>> {
+    + {static} ClassicIndexFacing(facing:WAngle, numFrames:int) : int
+    + {static} ClassicQuantizeFacing(facing:WAngle, steps:int) : WAngle
+}
+@enduml

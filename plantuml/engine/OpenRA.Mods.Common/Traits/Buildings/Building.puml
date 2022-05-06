@@ -1,0 +1,69 @@
+@startuml
+enum FootprintCellType {
+    Empty= '_',
+    OccupiedPassable= '=',
+    Occupied= 'x',
+    OccupiedUntargetable= 'X',
+    OccupiedPassableTransitOnly= '+',
+}
+class BuildingInfo {
+    + <<readonly>> RequiresBaseProvider : bool = false
+    + <<readonly>> AllowInvalidPlacement : bool = false
+    + <<readonly>> AllowPlacementOnResources : bool = false
+    + <<readonly>> RemoveSmudgesOnBuild : bool = true
+    + <<readonly>> RemoveSmudgesOnSell : bool = true
+    + <<readonly>> RemoveSmudgesOnTransform : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + FootprintTiles(location:CPos, type:FootprintCellType) : IEnumerable<CPos>
+    + Tiles(location:CPos) : IEnumerable<CPos>
+    + FrozenUnderFogTiles(location:CPos) : IEnumerable<CPos>
+    + OccupiedTiles(location:CPos) : IEnumerable<CPos>
+    + PathableTiles(location:CPos) : IEnumerable<CPos>
+    + TransitOnlyTiles(location:CPos) : IEnumerable<CPos>
+    + CenterOffset(w:World) : WVec
+    + FindBaseProvider(world:World, p:Player, topLeft:CPos) : BaseProvider
+    ActorGrantsValidArea(a:Actor, rba:RequiresBuildableAreaInfo) : bool
+    + <<virtual>> IsCloseEnoughToBase(world:World, p:Player, ai:ActorInfo, topLeft:CPos) : bool
+    + OccupiedCells(info:ActorInfo, topLeft:CPos, subCell:SubCell) : IReadOnlyDictionary<CPos, SubCell>
+    SharesCell : bool <<get>>
+    + RenderAnnotations(wr:WorldRenderer, w:World, ai:ActorInfo, centerPosition:WPos) : IEnumerable<IRenderable>
+}
+class Building {
+    + Building(init:ActorInitializer, info:BuildingInfo)
+    + OccupiedCells() : (CPos, SubCell)[]
+    + TransitOnlyCells() : CPos[]
+    TargetableCells() : (CPos, SubCell)[]
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    Selling(self:Actor) : void
+    Sold(self:Actor) : void
+    BeforeTransform(self:Actor) : void
+    OnTransform(self:Actor) : void
+    AfterTransform(self:Actor) : void
+    + RemoveSmudges() : void
+}
+class "HashSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- BuildingInfo
+IOccupySpaceInfo <|-- BuildingInfo
+IPlaceBuildingDecorationInfo <|-- BuildingInfo
+BuildingInfo o-> "TerrainTypes<string>" "HashSet`1"
+BuildingInfo --> "Footprint<CVec,FootprintCellType>" "Dictionary`2"
+BuildingInfo o-> "Dimensions" CVec
+BuildingInfo o-> "LocalCenterOffset" WVec
+IOccupySpace <|-- Building
+ITargetableCells <|-- Building
+INotifySold <|-- Building
+INotifyTransform <|-- Building
+ISync <|-- Building
+INotifyAddedToWorld <|-- Building
+INotifyRemovedFromWorld <|-- Building
+Building --> "Info" BuildingInfo
+Building --> "topLeft" CPos
+Building --> "self" Actor
+Building --> "influence" BuildingInfluence
+Building --> "TopLeft" CPos
+Building --> "CenterPosition" WPos
+@enduml

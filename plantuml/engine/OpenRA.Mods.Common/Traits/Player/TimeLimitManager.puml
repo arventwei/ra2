@@ -1,0 +1,42 @@
+@startuml
+class TimeLimitManagerInfo {
+    + <<readonly>> TimeLimitLabel : string = "Time Limit"
+    + <<readonly>> TimeLimitDescription : string = "Player or team with the highest score after this time wins"
+    + <<readonly>> TimeLimitDefault : int = 0
+    + <<readonly>> TimeLimitLocked : bool = false
+    + <<readonly>> TimeLimitDropdownVisible : bool = true
+    + <<readonly>> TimeLimitDisplayOrder : int = 0
+    + <<readonly>> Notification : string = "{0&#125; minute{1&#125; remaining."
+    + <<readonly>> CountdownLabel : string = null
+    + <<readonly>> CountdownText : string = null
+    + <<readonly>> SkipTimeRemainingNotifications : bool = false
+    + <<readonly>> SkipTimerExpiredNotification : bool = false
+    RulesetLoaded(rules:Ruleset, info:ActorInfo) : void
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TimeLimitManager {
+    ticksRemaining : int
+    + TimeLimit : int
+    + Notification : string
+    + TimeLimitManager(self:Actor, info:TimeLimitManagerInfo)
+    WorldLoaded(w:World, wr:OpenRA.Graphics.WorldRenderer) : void
+    Tick(self:Actor) : void
+    NotifyTimerExpired(self:Actor) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "CachedTransform`2"<T1,T2> {
+}
+TraitInfo <|-- TimeLimitManagerInfo
+ILobbyOptions <|-- TimeLimitManagerInfo
+IRulesetLoaded <|-- TimeLimitManagerInfo
+TimeLimitManagerInfo o-> "TimeLimitWarnings<int,string>" "Dictionary`2"
+INotifyTimeLimit <|-- TimeLimitManager
+ITick <|-- TimeLimitManager
+IWorldLoaded <|-- TimeLimitManager
+TimeLimitManager --> "info" TimeLimitManagerInfo
+TimeLimitManager --> "mapOptions" MapOptions
+TimeLimitManager --> "countdownLabel" LabelWidget
+TimeLimitManager --> "countdown<int,string>" "CachedTransform`2"
+@enduml

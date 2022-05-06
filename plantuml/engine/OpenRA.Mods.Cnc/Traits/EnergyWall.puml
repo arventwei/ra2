@@ -1,0 +1,30 @@
+@startuml
+class EnergyWallInfo {
+    + <<readonly>> Weapon : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class EnergyWall {
+    active : bool = true
+    + EnergyWall(init:ActorInitializer, info:EnergyWallInfo)
+    + <<virtual>> GetVariableObservers() : IEnumerable<VariableObserver>
+    ActiveConditionChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+    Tick(self:Actor) : void
+    IsBlocking(self:Actor, cell:CPos) : bool
+    CanRemoveBlockage(self:Actor, blocking:Actor) : bool
+}
+class "IEnumerable`1"<T> {
+}
+BuildingInfo <|-- EnergyWallInfo
+ITemporaryBlockerInfo <|-- EnergyWallInfo
+IObservesVariablesInfo <|-- EnergyWallInfo
+IRulesetLoaded <|-- EnergyWallInfo
+EnergyWallInfo o-> "ActiveCondition" BooleanExpression
+EnergyWallInfo --> "WeaponInfo" WeaponInfo
+Building <|-- EnergyWall
+IObservesVariables <|-- EnergyWall
+ITick <|-- EnergyWall
+ITemporaryBlocker <|-- EnergyWall
+EnergyWall --> "info" EnergyWallInfo
+EnergyWall --> "blockedPositions<CPos>" "IEnumerable`1"
+@enduml

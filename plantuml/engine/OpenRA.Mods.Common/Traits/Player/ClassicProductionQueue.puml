@@ -1,0 +1,21 @@
+@startuml
+class ClassicProductionQueueInfo {
+    + <<readonly>> SpeedUp : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ClassicProductionQueue {
+    + ClassicProductionQueue(init:ActorInitializer, info:ClassicProductionQueueInfo)
+    + <<override>> AllItems() : IEnumerable<ActorInfo>
+    + <<override>> BuildableItems() : IEnumerable<ActorInfo>
+    + <<override>> MostLikelyProducer() : TraitPair<Production>
+    + <<override>> GetBuildTime(unit:ActorInfo, bi:BuildableInfo) : int
+}
+class "Requires`1"<T> {
+}
+ProductionQueueInfo <|-- ClassicProductionQueueInfo
+"Requires`1" "<TechTreeInfo>" <|-- ClassicProductionQueueInfo
+"Requires`1" "<PlayerResourcesInfo>" <|-- ClassicProductionQueueInfo
+ProductionQueue <|-- ClassicProductionQueue
+ClassicProductionQueue --> "self" Actor
+ClassicProductionQueue --> "info" ClassicProductionQueueInfo
+@enduml

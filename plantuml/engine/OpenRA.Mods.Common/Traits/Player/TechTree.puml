@@ -1,0 +1,35 @@
+@startuml
+class TechTreeInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TechTree {
+    + TechTree(init:ActorInitializer)
+    + ActorChanged(a:Actor) : void
+    + Update() : void
+    + Add(key:string, prerequisites:string[], limit:int, tte:ITechTreeElement) : void
+    + Remove(key:string) : void
+    + Remove(tte:ITechTreeElement) : void
+    + HasPrerequisites(prerequisites:IEnumerable<string>) : bool
+    {static} GatherOwnedPrerequisites(player:Player) : Cache<string, List<Actor>>
+}
+class "List`1"<T> {
+}
+class Watcher {
+    + <<readonly>> Key : string
+    hasPrerequisites : bool
+    limit : int
+    hidden : bool
+    initialized : bool = false
+    + Watcher(key:string, prerequisites:string[], limit:int, watcher:ITechTreeElement)
+    HasPrerequisites(ownedPrerequisites:Cache<string, List<Actor>>) : bool
+    IsHidden(ownedPrerequisites:Cache<string, List<Actor>>) : bool
+    + Update(ownedPrerequisites:Cache<string, List<Actor>>) : void
+}
+TraitInfo <|-- TechTreeInfo
+TechTree o-> "watchers<Watcher>" "List`1"
+TechTree --> "player" Player
+TechTree --> "Owner" Player
+TechTree +-- Watcher
+Watcher --> "RegisteredBy" ITechTreeElement
+Watcher --> "watcher" ITechTreeElement
+@enduml

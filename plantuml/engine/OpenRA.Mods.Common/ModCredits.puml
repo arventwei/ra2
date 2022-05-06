@@ -1,0 +1,7 @@
+@startuml
+class ModCredits {
+    + <<readonly>> ModTabTitle : string = "Game"
+    + <<readonly>> ModCreditsFile : string = null
+}
+IGlobalModData <|-- ModCredits
+@enduml

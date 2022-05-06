@@ -1,0 +1,22 @@
+@startuml
+class WavReader <<static>> {
+    + {static} LoadSound(s:Stream, result:Func<Stream>, channels:short, sampleBits:int, sampleRate:int) : bool
+    + {static} WaveLength(s:Stream) : float
+}
+enum WaveType {
+    Pcm= 0x1,
+    ImaAdpcm= 0x11,
+}
+class WavStream <<sealed>> {
+    <<readonly>> channels : short
+    <<readonly>> numBlocks : int
+    <<readonly>> blockDataSize : int
+    <<readonly>> outputSize : int
+    outOffset : int
+    currentBlock : int
+    + WavStream(stream:Stream, dataSize:int, blockAlign:short, channels:short, uncompressedSize:int)
+}
+WavReader +-- WaveType
+WavReader +-- WavStream
+ReadOnlyAdapterStream <|-- WavStream
+@enduml

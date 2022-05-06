@@ -1,0 +1,12 @@
+@startuml
+class ClassicSpriteSequenceLoader {
+    + ClassicSpriteSequenceLoader(modData:ModData)
+    + <<override>> CreateSequence(modData:ModData, tileSet:string, cache:SpriteCache, sequence:string, animation:string, info:MiniYaml) : ISpriteSequence
+}
+class ClassicSpriteSequence {
+    <<readonly>> useClassicFacings : bool
+    + ClassicSpriteSequence(modData:ModData, tileSet:string, cache:SpriteCache, loader:ISpriteSequenceLoader, sequence:string, animation:string, info:MiniYaml)
+}
+DefaultSpriteSequenceLoader <|-- ClassicSpriteSequenceLoader
+DefaultSpriteSequence <|-- ClassicSpriteSequence
+@enduml

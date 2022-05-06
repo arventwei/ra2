@@ -1,0 +1,23 @@
+@startuml
+class PngSheetMetadata {
+    + PngSheetMetadata(metadata:Dictionary<string, string>)
+}
+class PngSheetLoader {
+    + TryParseSprite(s:Stream, frames:ISpriteFrame[], metadata:TypeDictionary) : bool
+    RegionsFromFrames(png:Png, regions:List<Rectangle>, offsets:List<float2>) : void
+    RegionsFromSlices(png:Png, regions:List<Rectangle>, offsets:List<float2>) : void
+}
+class "ReadOnlyDictionary`2"<T1,T2> {
+}
+class PngSheetFrame {
+    + DisableExportPadding : bool <<get>>
+}
+PngSheetMetadata --> "Metadata<string,string>" "ReadOnlyDictionary`2"
+ISpriteLoader <|-- PngSheetLoader
+PngSheetLoader +-- PngSheetFrame
+ISpriteFrame <|-- PngSheetFrame
+PngSheetFrame --> "Type" SpriteFrameType
+PngSheetFrame --> "Size" Size
+PngSheetFrame --> "FrameSize" Size
+PngSheetFrame --> "Offset" float2
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+enum PanelSides {
+    Left= 1,
+    Top= 2,
+    Right= 4,
+    Bottom= 8,
+    Center= 16,
+    Edges= Left | Top | Right | Bottom,
+    All= Edges | Center,
+}
+class PanelSidesExts <<static>> {
+    + {static} HasSide(self:PanelSides, m:PanelSides) : bool
+}
+class ChromeProvider <<static>> {
+    {static} dpiScale : float = 1
+    + {static} Initialize(modData:ModData) : void
+    + {static} Deinitialize() : void
+    {static} LoadCollection(name:string, yaml:MiniYaml) : void
+    {static} SheetForCollection(c:Collection) : (Sheet Sheet, int Density)
+    + {static} GetImage(collectionName:string, imageName:string) : Sprite
+    + {static} GetPanelImages(collectionName:string) : Sprite[]
+    + {static} GetMinimumPanelSize(collectionName:string) : Size
+    + {static} SetDPIScale(scale:float) : void
+}
+class Collection {
+    + <<readonly>> Image : string = null
+    + <<readonly>> Image2x : string = null
+    + <<readonly>> Image3x : string = null
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ChromeProvider --> "Collections<string,Collection>" "IReadOnlyDictionary`2"
+ChromeProvider --> "collections<string,Collection>" "Dictionary`2"
+ChromeProvider --> "cachedSheets<string,(Sheet Sheet, int Density)>" "Dictionary`2"
+ChromeProvider --> "cachedSprites<string,Dictionary<string, Sprite>>" "Dictionary`2"
+ChromeProvider --> "cachedPanelSprites<string,Sprite[]>" "Dictionary`2"
+ChromeProvider --> "cachedCollectionSheets<Collection,(Sheet Sheet, int)>" "Dictionary`2"
+ChromeProvider --> "fileSystem" IReadOnlyFileSystem
+ChromeProvider +-- Collection
+Collection o-> "PanelSides" PanelSides
+Collection o-> "Regions<string,Rectangle>" "Dictionary`2"
+@enduml

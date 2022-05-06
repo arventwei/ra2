@@ -1,0 +1,18 @@
+@startuml
+class ActorPreviewWidget {
+    + Animate : bool = false
+    + ActorPreviewWidget(worldRenderer:WorldRenderer)
+    + <<override>> Clone() : Widget
+    + SetPreview(actor:ActorInfo, td:TypeDictionary) : void
+    + <<override>> PrepareRenderables() : void
+    + <<override>> Draw() : void
+    + <<override>> Tick() : void
+}
+class "Func`1"<T> {
+}
+Widget <|-- ActorPreviewWidget
+ActorPreviewWidget o-> "GetScale<float>" "Func`1"
+ActorPreviewWidget --> "worldRenderer" WorldRenderer
+ActorPreviewWidget --> "PreviewOffset" int2
+ActorPreviewWidget --> "IdealPreviewSize" int2
+@enduml

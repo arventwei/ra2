@@ -1,0 +1,14 @@
+@startuml
+class PlayerHighlightPaletteInfo {
+    + <<readonly>> BaseName : string = "highlight"
+    + <<readonly>> TransparentIndex : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PlayerHighlightPalette {
+    + PlayerHighlightPalette(info:PlayerHighlightPaletteInfo)
+    + LoadPlayerPalettes(wr:WorldRenderer, playerName:string, color:Color, replaceExisting:bool) : void
+}
+TraitInfo <|-- PlayerHighlightPaletteInfo
+ILoadsPlayerPalettes <|-- PlayerHighlightPalette
+PlayerHighlightPalette --> "info" PlayerHighlightPaletteInfo
+@enduml

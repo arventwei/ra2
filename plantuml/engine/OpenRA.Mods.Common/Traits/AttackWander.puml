@@ -1,0 +1,15 @@
+@startuml
+class AttackWanderInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackWander {
+    + AttackWander(self:Actor, info:AttackWanderInfo)
+    + <<override>> DoAction(self:Actor, targetCell:CPos) : void
+}
+class "Requires`1"<T> {
+}
+WandersInfo <|-- AttackWanderInfo
+"Requires`1" "<AttackMoveInfo>" <|-- AttackWanderInfo
+Wanders <|-- AttackWander
+AttackWander --> "attackMove" AttackMove
+@enduml

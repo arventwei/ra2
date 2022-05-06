@@ -1,0 +1,38 @@
+@startuml
+class float2 <<struct>> {
+    + <<readonly>> X : float
+    + <<readonly>> Y : float
+    + float2(x:float, y:float)
+    + float2(p:Size)
+    + float2(p:int2)
+    + {static} Lerp(a:float, b:float, t:float) : float
+    + {static} Lerp(a:float2, b:float2, t:float) : float2
+    + {static} Lerp(a:float2, b:float2, t:float2) : float2
+    + {static} FromAngle(a:float) : float2
+    {static} Constrain(x:float, a:float, b:float) : float
+    + Constrain(min:float2, max:float2) : float2
+    + <<override>> GetHashCode() : int
+    + Equals(other:float2) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+    + {static} WithinEpsilon(a:float2, b:float2, e:float) : bool
+    + Sign() : float2
+    + {static} Dot(a:float2, b:float2) : float
+    + Round() : float2
+    + ToInt2() : int2
+    + {static} Max(a:float2, b:float2) : float2
+    + {static} Min(a:float2, b:float2) : float2
+    + LengthSquared : float <<get>>
+    + Length : float <<get>>
+}
+class EWMA {
+    <<readonly>> animRate : float
+    value : float?
+    + EWMA(animRate:float)
+    + Update(newValue:float) : float
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<float2>" <|-- float2
+float2 o-> "Zero" float2
+@enduml

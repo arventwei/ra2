@@ -1,0 +1,40 @@
+@startuml
+class DemolitionInfo {
+    + <<readonly>> DetonationDelay : int = 45
+    + <<readonly>> Flashes : int = 3
+    + <<readonly>> FlashesDelay : int = 4
+    + <<readonly>> FlashInterval : int = 4
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> Cursor : string = "c4"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Demolition {
+    + Demolition(info:DemolitionInfo)
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    + ResolveOrder(self:Actor, order:Order) : void
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+}
+class "BitSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class DemolitionOrderTargeter {
+    + DemolitionOrderTargeter(info:DemolitionInfo)
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+TraitInfo <|-- DemolitionInfo
+DemolitionInfo o-> "EnterBehaviour" EnterBehaviour
+DemolitionInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+DemolitionInfo o-> "TargetLineColor" Color
+DemolitionInfo o-> "TargetRelationships" PlayerRelationship
+DemolitionInfo o-> "ForceTargetRelationships" PlayerRelationship
+IIssueOrder <|-- Demolition
+IResolveOrder <|-- Demolition
+IOrderVoice <|-- Demolition
+Demolition --> "info" DemolitionInfo
+Demolition --> "Orders<IOrderTargeter>" "IEnumerable`1"
+Demolition +-- DemolitionOrderTargeter
+UnitOrderTargeter <|-- DemolitionOrderTargeter
+DemolitionOrderTargeter --> "info" DemolitionInfo
+@enduml

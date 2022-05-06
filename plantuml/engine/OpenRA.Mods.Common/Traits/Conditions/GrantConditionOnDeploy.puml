@@ -1,0 +1,78 @@
+@startuml
+class GrantConditionOnDeployInfo {
+    + <<readonly>> UndeployedCondition : string = null
+    + <<readonly>> DeployedCondition : string = null
+    + <<readonly>> CanDeployOnRamps : bool = false
+    + <<readonly>> DeployCursor : string = "deploy"
+    + <<readonly>> DeployBlockedCursor : string = "deploy-blocked"
+    + <<readonly>> Facing : WAngle? = null
+    + <<readonly>> SkipMakeAnimation : bool = false
+    + <<readonly>> UndeployOnMove : bool = false
+    + <<readonly>> UndeployOnPickup : bool = false
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> EditorDeployedDisplayOrder : int = 4
+    ActorOptions(ai:ActorInfo, world:World) : IEnumerable<EditorActorOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+enum DeployState {
+    Undeployed,
+    Deploying,
+    Deployed,
+    Undeploying,
+}
+class GrantConditionOnDeploy {
+    <<readonly>> checkTerrainType : bool
+    deployedToken : int
+    undeployedToken : int
+    + GrantConditionOnDeploy(init:ActorInitializer, info:GrantConditionOnDeployInfo)
+    WrapMove(moveInner:Activity) : Activity
+    TryLockForPickup(self:Actor, carrier:Actor) : bool
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    IssueDeployOrder(self:Actor, queued:bool) : Order
+    CanIssueDeployOrder(self:Actor, queued:bool) : bool
+    + ResolveOrder(self:Actor, order:Order) : void
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    CanDeploy() : bool
+    + IsValidTerrain(location:CPos) : bool
+    IsValidTerrainType(location:CPos) : bool
+    IsValidRampType(location:CPos) : bool
+    FinishedDeploy(self:Actor) : void
+    FinishedUndeploy(self:Actor) : void
+    + Deploy() : void
+    Deploy(init:bool) : void
+    + Undeploy() : void
+    Undeploy(init:bool) : void
+    OnDeployStarted() : void
+    OnDeployCompleted() : void
+    OnUndeployStarted() : void
+    OnUndeployCompleted() : void
+}
+class DeployStateInit {
+    + DeployStateInit(value:DeployState)
+}
+class "HashSet`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class "ValueActorInit`1"<T> {
+}
+PausableConditionalTraitInfo <|-- GrantConditionOnDeployInfo
+IEditorActorOptions <|-- GrantConditionOnDeployInfo
+GrantConditionOnDeployInfo o-> "AllowedTerrainTypes<string>" "HashSet`1"
+"PausableConditionalTrait`1" "<GrantConditionOnDeployInfo>" <|-- GrantConditionOnDeploy
+IResolveOrder <|-- GrantConditionOnDeploy
+IIssueOrder <|-- GrantConditionOnDeploy
+INotifyDeployComplete <|-- GrantConditionOnDeploy
+IIssueDeployOrder <|-- GrantConditionOnDeploy
+IOrderVoice <|-- GrantConditionOnDeploy
+IWrapMove <|-- GrantConditionOnDeploy
+IDelayCarryallPickup <|-- GrantConditionOnDeploy
+GrantConditionOnDeploy --> "self" Actor
+GrantConditionOnDeploy --> "deployState" DeployState
+GrantConditionOnDeploy --> "DeployState" DeployState
+GrantConditionOnDeploy --> "Orders<IOrderTargeter>" "IEnumerable`1"
+"ValueActorInit`1" "<DeployState>" <|-- DeployStateInit
+ISingleInstanceInit <|-- DeployStateInit
+@enduml

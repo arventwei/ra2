@@ -1,0 +1,25 @@
+@startuml
+enum EnterBehaviour {
+    Exit,
+    Suicide,
+    Dispose,
+}
+abstract class Enter {
+    <<readonly>> targetLineColor : Color?
+    useLastVisibleTarget : bool
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+enum EnterState {
+    Approaching,
+    Entering,
+    Exiting,
+    Finished,
+}
+Activity <|-- Enter
+Enter --> "move" IMove
+Enter --> "target" Target
+Enter --> "lastVisibleTarget" Target
+Enter o-> "lastState" EnterState
+Enter +-- EnterState
+@enduml

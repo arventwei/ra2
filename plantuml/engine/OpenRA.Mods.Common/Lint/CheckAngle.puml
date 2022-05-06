@@ -1,0 +1,8 @@
+@startuml
+class CheckAngle {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, rules:Ruleset) : void
+    {static} InvalidAngle(value:int) : bool
+    {static} CheckLaunchAngles(weaponInfo:string, minAngle:int, testMaxAngle:bool, maxAngle:int, emitError:Action<string>) : void
+}
+ILintRulesPass <|-- CheckAngle
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class RenderSpritesEditorOnlyInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RenderSpritesEditorOnly {
+    + RenderSpritesEditorOnly(init:ActorInitializer, info:RenderSpritesEditorOnlyInfo)
+    + <<override>> Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+RenderSpritesInfo <|-- RenderSpritesEditorOnlyInfo
+RenderSprites <|-- RenderSpritesEditorOnly
+@enduml

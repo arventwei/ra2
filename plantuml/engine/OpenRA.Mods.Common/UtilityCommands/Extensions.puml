@@ -1,0 +1,5 @@
+@startuml
+class Extensions <<static>> {
+    + {static} DistinctBy(source:IEnumerable<TSource>, keySelector:Func<TSource, TKey>) : IEnumerable<TSource>
+}
+@enduml

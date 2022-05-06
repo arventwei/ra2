@@ -1,0 +1,22 @@
+@startuml
+class SelectableInfo {
+    + <<readonly>> Priority : int = 10
+    + <<readonly>> Class : string = null
+    + <<readonly>> Voice : string = "Select"
+    + <<override>> Create(init:ActorInitializer) : object
+    Priority : int <<get>>
+    Voice : string <<get>>
+}
+class Selectable {
+    <<readonly>> selectionClass : string = null
+    + Selectable(self:Actor, info:SelectableInfo)
+    Class : string <<get>>
+}
+InteractableInfo <|-- SelectableInfo
+ISelectableInfo <|-- SelectableInfo
+SelectableInfo o-> "PriorityModifiers" SelectionPriorityModifiers
+SelectableInfo --> "PriorityModifiers" SelectionPriorityModifiers
+Interactable <|-- Selectable
+ISelectable <|-- Selectable
+Selectable --> "Info" SelectableInfo
+@enduml

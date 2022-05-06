@@ -1,0 +1,17 @@
+@startuml
+class UtilsGlobal {
+    + UtilsGlobal(context:ScriptContext)
+    + Do(collection:LuaValue[], func:LuaFunction) : void
+    + Any(collection:LuaValue[], func:LuaFunction) : bool
+    + All(collection:LuaValue[], func:LuaFunction) : bool
+    + Where(collection:LuaValue[], func:LuaFunction) : LuaTable
+    + Take(n:int, source:LuaValue[]) : LuaValue[]
+    + Skip(table:LuaTable, numElements:int) : LuaTable
+    + Random(collection:LuaValue[]) : LuaValue
+    + Shuffle(collection:LuaValue[]) : LuaValue[]
+    + ExpandFootprint(footprint:CPos[], allowDiagonal:bool) : CPos[]
+    + RandomInteger(low:int, high:int) : int
+    + FormatTime(ticks:int, leadingMinuteZero:bool) : string
+}
+ScriptGlobal <|-- UtilsGlobal
+@enduml

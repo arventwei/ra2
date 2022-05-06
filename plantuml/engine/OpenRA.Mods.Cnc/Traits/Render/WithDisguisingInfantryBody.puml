@@ -1,0 +1,19 @@
+@startuml
+class WithDisguisingInfantryBodyInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithDisguisingInfantryBody {
+    disguiseImage : string
+    + WithDisguisingInfantryBody(init:ActorInitializer, info:WithDisguisingInfantryBodyInfo)
+}
+class "Requires`1"<T> {
+}
+WithInfantryBodyInfo <|-- WithDisguisingInfantryBodyInfo
+"Requires`1" "<DisguiseInfo>" <|-- WithDisguisingInfantryBodyInfo
+WithInfantryBody <|-- WithDisguisingInfantryBody
+WithDisguisingInfantryBody --> "disguise" Disguise
+WithDisguisingInfantryBody --> "rs" RenderSprites
+WithDisguisingInfantryBody --> "disguiseActor" ActorInfo
+WithDisguisingInfantryBody --> "disguisePlayer" Player
+WithDisguisingInfantryBody --> "disguiseInfantryBody" WithInfantryBodyInfo
+@enduml

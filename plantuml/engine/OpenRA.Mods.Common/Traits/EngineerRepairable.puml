@@ -1,0 +1,17 @@
+@startuml
+class EngineerRepairType {
+}
+class EngineerRepairableInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class EngineerRepairable {
+    + EngineerRepairable(init:ActorInitializer, info:EngineerRepairableInfo)
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- EngineerRepairableInfo
+EngineerRepairableInfo o-> "Types<EngineerRepairType>" "BitSet`1"
+"ConditionalTrait`1" "<EngineerRepairableInfo>" <|-- EngineerRepairable
+@enduml

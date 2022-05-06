@@ -1,0 +1,17 @@
+@startuml
+class InfiltrateForSupportPowerResetInfo {
+    + <<readonly>> InfiltratedNotification : string = null
+    + <<readonly>> InfiltrationNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class InfiltrateForSupportPowerReset {
+    + InfiltrateForSupportPowerReset(info:InfiltrateForSupportPowerResetInfo)
+    Infiltrated(self:Actor, infiltrator:Actor, types:BitSet<TargetableType>) : void
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- InfiltrateForSupportPowerResetInfo
+InfiltrateForSupportPowerResetInfo o-> "Types<TargetableType>" "BitSet`1"
+INotifyInfiltrated <|-- InfiltrateForSupportPowerReset
+InfiltrateForSupportPowerReset --> "info" InfiltrateForSupportPowerResetInfo
+@enduml

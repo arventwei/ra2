@@ -1,0 +1,10 @@
+@startuml
+class PerfHistory <<static>> {
+    {static} nextColor : int
+    + {static} Increment(item:string, x:double) : void
+    + {static} Tick() : void
+}
+class "Cache`2"<T1,T2> {
+}
+PerfHistory o-> "Items<string,PerfItem>" "Cache`2"
+@enduml

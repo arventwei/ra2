@@ -1,0 +1,37 @@
+@startuml
+class IsometricSelectionBarsAnnotationRenderable <<struct>> {
+    <<const>> BarWidth : int = 3
+    <<const>> BarHeight : int = 4
+    <<const>> BarStride : int = 5
+    <<readonly>> displayHealth : bool
+    <<readonly>> displayExtra : bool
+    + IsometricSelectionBarsAnnotationRenderable(actor:Actor, bounds:Polygon, displayHealth:bool, displayExtra:bool)
+    + IsometricSelectionBarsAnnotationRenderable(pos:WPos, actor:Actor, bounds:Polygon)
+    + DisplayHealth : bool <<get>>
+    + DisplayExtra : bool <<get>>
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    DrawExtraBars(wr:WorldRenderer) : void
+    DrawBar(wr:WorldRenderer, value:float, barColor:Color, barNum:int, secondValue:float?, secondColor:Color?) : void
+    GetHealthColor(health:IHealth) : Color
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- IsometricSelectionBarsAnnotationRenderable
+IFinalizedRenderable <|-- IsometricSelectionBarsAnnotationRenderable
+IsometricSelectionBarsAnnotationRenderable o-> "EmptyColor" Color
+IsometricSelectionBarsAnnotationRenderable o-> "DarkEmptyColor" Color
+IsometricSelectionBarsAnnotationRenderable o-> "DarkenColor" Color
+IsometricSelectionBarsAnnotationRenderable o-> "LightenColor" Color
+IsometricSelectionBarsAnnotationRenderable --> "pos" WPos
+IsometricSelectionBarsAnnotationRenderable --> "actor" Actor
+IsometricSelectionBarsAnnotationRenderable --> "bounds" Polygon
+IsometricSelectionBarsAnnotationRenderable --> "Pos" WPos
+IsometricSelectionBarsAnnotationRenderable --> "Palette" PaletteReference
+@enduml

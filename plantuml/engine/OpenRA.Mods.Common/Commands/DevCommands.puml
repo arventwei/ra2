@@ -1,0 +1,21 @@
+@startuml
+class DevCommandsInfo {
+}
+class DevCommands {
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + InvokeCommand(name:string, arg:string) : void
+    IssueGiveCashDevCommand(toAll:bool, arg:string) : void
+    {static} IssueDevCommand(world:World, command:string) : void
+}
+class "TraitInfo`1"<T> {
+}
+class DevException {
+}
+"TraitInfo`1" "<DevCommands>" <|-- DevCommandsInfo
+IChatCommand <|-- DevCommands
+IWorldLoaded <|-- DevCommands
+DevCommands --> "world" World
+DevCommands --> "developerMode" DeveloperMode
+DevCommands +-- DevException
+Exception <|-- DevException
+@enduml

@@ -1,0 +1,43 @@
+@startuml
+class SelectionInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Selection {
+    + Hash : int <<get>>
+    + Selection(info:SelectionInfo)
+    Created(self:Actor) : void
+    UpdateHash() : void
+    + <<virtual>> Add(a:Actor) : void
+    + <<virtual>> Remove(a:Actor) : void
+    OnOwnerChanged(a:Actor, oldOwner:Player, newOwner:Player) : void
+    + Contains(a:Actor) : bool
+    + <<virtual>> Combine(world:World, newSelection:IEnumerable<Actor>, isCombine:bool, isClick:bool) : void
+    + Clear() : void
+    + SetRollover(rollover:IEnumerable<Actor>) : void
+    + RolloverContains(a:Actor) : bool
+    Tick(self:Actor) : void
+    + DoControlGroup(world:World, worldRenderer:WorldRenderer, group:int, mods:Modifiers, multiTapCount:int) : void
+    + AddToControlGroup(a:Actor, group:int) : void
+    + RemoveFromControlGroup(a:Actor) : void
+    + GetControlGroupForActor(a:Actor) : int?
+    IssueTraitData(self:Actor) : List<MiniYamlNode>
+    ResolveTraitData(self:Actor, data:List<MiniYamlNode>) : void
+}
+class "IEnumerable`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "Cache`2"<T1,T2> {
+}
+TraitInfo <|-- SelectionInfo
+ISelection <|-- Selection
+INotifyCreated <|-- Selection
+INotifyOwnerChanged <|-- Selection
+ITick <|-- Selection
+IGameSaveTraitData <|-- Selection
+Selection --> "Actors<Actor>" "IEnumerable`1"
+Selection o-> "actors<Actor>" "HashSet`1"
+Selection --> "world" World
+Selection --> "rolloverActors<Actor>" "IEnumerable`1"
+Selection o-> "controlGroups<int,List<Actor>>" "Cache`2"
+@enduml

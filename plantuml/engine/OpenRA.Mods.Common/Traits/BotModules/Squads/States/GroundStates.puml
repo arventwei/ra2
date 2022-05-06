@@ -1,0 +1,39 @@
+@startuml
+abstract class GroundStateBase {
+}
+class GroundUnitsIdleState {
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class GroundUnitsAttackMoveState {
+    lastUpdatedTick : int
+    lastLeaderLocation : CPos?
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class GroundUnitsAttackState {
+    lastUpdatedTick : int
+    lastLeaderLocation : CPos?
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class GroundUnitsFleeState {
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+StateBase <|-- GroundStateBase
+GroundStateBase <|-- GroundUnitsIdleState
+IState <|-- GroundUnitsIdleState
+GroundStateBase <|-- GroundUnitsAttackMoveState
+IState <|-- GroundUnitsAttackMoveState
+GroundUnitsAttackMoveState --> "lastTarget" Actor
+GroundStateBase <|-- GroundUnitsAttackState
+IState <|-- GroundUnitsAttackState
+GroundUnitsAttackState --> "lastTarget" Actor
+GroundStateBase <|-- GroundUnitsFleeState
+IState <|-- GroundUnitsFleeState
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+class TilesetSpecificSpriteSequenceLoader {
+    + <<readonly>> DefaultSpriteExtension : string = ".shp"
+    + TilesetSpecificSpriteSequenceLoader(modData:ModData)
+    + <<override>> CreateSequence(modData:ModData, tileSet:string, cache:SpriteCache, sequence:string, animation:string, info:MiniYaml) : ISpriteSequence
+}
+class TilesetSpecificSpriteSequence {
+    + TilesetSpecificSpriteSequence(modData:ModData, tileSet:string, cache:SpriteCache, loader:ISpriteSequenceLoader, sequence:string, animation:string, info:MiniYaml)
+    ResolveTilesetId(tileSet:string, d:Dictionary<string, MiniYaml>) : string
+}
+class "Dictionary`2"<T1,T2> {
+}
+DefaultSpriteSequenceLoader <|-- TilesetSpecificSpriteSequenceLoader
+TilesetSpecificSpriteSequenceLoader o-> "TilesetExtensions<string,string>" "Dictionary`2"
+TilesetSpecificSpriteSequenceLoader o-> "TilesetCodes<string,string>" "Dictionary`2"
+DefaultSpriteSequence <|-- TilesetSpecificSpriteSequence
+@enduml

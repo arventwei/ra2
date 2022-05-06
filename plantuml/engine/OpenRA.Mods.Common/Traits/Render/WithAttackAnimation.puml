@@ -1,0 +1,32 @@
+@startuml
+class WithAttackAnimationInfo {
+    + <<readonly>> Armament : string = "primary"
+    + <<readonly>> Sequence : string = null
+    + <<readonly>> Delay : int = 0
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class WithAttackAnimation {
+    tick : int
+    + WithAttackAnimation(init:ActorInitializer, info:WithAttackAnimationInfo)
+    PlayAttackAnimation(self:Actor) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithAttackAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithAttackAnimationInfo
+"Requires`1" "<ArmamentInfo>" <|-- WithAttackAnimationInfo
+"Requires`1" "<AttackBaseInfo>" <|-- WithAttackAnimationInfo
+WithAttackAnimationInfo o-> "DelayRelativeTo" AttackDelayType
+"ConditionalTrait`1" "<WithAttackAnimationInfo>" <|-- WithAttackAnimation
+ITick <|-- WithAttackAnimation
+INotifyAttack <|-- WithAttackAnimation
+WithAttackAnimation --> "armament" Armament
+WithAttackAnimation --> "wsb" WithSpriteBody
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class BaseBuildingInfo {
+}
+class BaseBuilding {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<BaseBuilding>" <|-- BaseBuildingInfo
+@enduml

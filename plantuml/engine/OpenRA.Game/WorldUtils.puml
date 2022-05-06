@@ -1,0 +1,10 @@
+@startuml
+class WorldUtils <<static>> {
+    + {static} ClosestTo(actors:IEnumerable<Actor>, a:Actor) : Actor
+    + {static} ClosestTo(actors:IEnumerable<Actor>, pos:WPos) : Actor
+    + {static} PositionClosestTo(positions:IEnumerable<WPos>, pos:WPos) : WPos
+    + {static} FindActorsInCircle(world:World, origin:WPos, r:WDist) : IEnumerable<Actor>
+    + {static} ContainsTemporaryBlocker(world:World, cell:CPos, ignoreActor:Actor) : bool
+    + {static} DoTimed(e:IEnumerable<T>, a:Action<T>, text:string) : void
+}
+@enduml

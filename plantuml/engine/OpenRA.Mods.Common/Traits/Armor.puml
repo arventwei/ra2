@@ -1,0 +1,15 @@
+@startuml
+class ArmorType {
+}
+class ArmorInfo {
+    + <<readonly>> Type : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Armor {
+    + Armor(self:Actor, info:ArmorInfo)
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ArmorInfo
+"ConditionalTrait`1" "<ArmorInfo>" <|-- Armor
+@enduml

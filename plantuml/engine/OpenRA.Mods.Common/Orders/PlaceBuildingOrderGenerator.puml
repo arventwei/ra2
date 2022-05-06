@@ -1,0 +1,51 @@
+@startuml
+enum PlaceBuildingCellType {
+    None= 0,
+    Valid= 1,
+    Invalid= 2,
+    LineBuild= 4,
+}
+interface IPlaceBuildingPreviewGeneratorInfo {
+    CreatePreview(wr:WorldRenderer, ai:ActorInfo, init:TypeDictionary) : IPlaceBuildingPreview
+}
+interface IPlaceBuildingPreview {
+    Tick() : void
+    Render(wr:WorldRenderer, topLeft:CPos, footprint:Dictionary<CPos, PlaceBuildingCellType>) : IEnumerable<IRenderable>
+    RenderAnnotations(wr:WorldRenderer, topLeft:CPos) : IEnumerable<IRenderable>
+}
+class PlaceBuildingOrderGenerator {
+    variant : int
+    + PlaceBuildingOrderGenerator(queue:ProductionQueue, name:string, worldRenderer:WorldRenderer)
+    MakeCellType(valid:bool, lineBuild:bool) : PlaceBuildingCellType
+    + Order(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : IEnumerable<Order>
+    InnerOrder(world:World, cell:CPos, mi:MouseInput) : IEnumerable<Order>
+    Tick(world:World) : void
+    SelectionChanged(world:World, selected:IEnumerable<Actor>) : void
+    AcceptsPlug(cell:CPos, plug:PlugInfo) : bool
+    Render(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    RenderAboveShroud(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    RenderAnnotations(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    GetCursor(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : string
+    HandleKeyPress(e:KeyInput) : bool
+    Deactivate() : void
+    ClearBlockersOrders(world:World, topLeft:CPos) : IEnumerable<Order>
+}
+class VariantWrapper {
+    + VariantWrapper(wr:WorldRenderer, queue:ProductionQueue, ai:ActorInfo)
+}
+ITraitInfoInterface <|-- IPlaceBuildingPreviewGeneratorInfo
+IPlaceBuildingPreview --> "TopLeftScreenOffset" int2
+IOrderGenerator <|-- PlaceBuildingOrderGenerator
+PlaceBuildingOrderGenerator --> "world" World
+PlaceBuildingOrderGenerator --> "queue" ProductionQueue
+PlaceBuildingOrderGenerator --> "placeBuildingInfo" PlaceBuildingInfo
+PlaceBuildingOrderGenerator --> "resourceLayer" ResourceLayer
+PlaceBuildingOrderGenerator --> "viewport" Viewport
+PlaceBuildingOrderGenerator --> "TopLeft" CPos
+PlaceBuildingOrderGenerator +-- VariantWrapper
+VariantWrapper --> "ActorInfo" ActorInfo
+VariantWrapper --> "BuildingInfo" BuildingInfo
+VariantWrapper --> "PlugInfo" PlugInfo
+VariantWrapper --> "LineBuildInfo" LineBuildInfo
+VariantWrapper --> "Preview" IPlaceBuildingPreview
+@enduml

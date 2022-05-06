@@ -1,0 +1,74 @@
+@startuml
+class SquadManagerBotModuleInfo {
+    + <<readonly>> SquadSize : int = 8
+    + <<readonly>> SquadSizeRandomBonus : int = 30
+    + <<readonly>> AssignRolesInterval : int = 50
+    + <<readonly>> RushInterval : int = 600
+    + <<readonly>> AttackForceInterval : int = 75
+    + <<readonly>> MinimumAttackForceDelay : int = 0
+    + <<readonly>> RushAttackScanRadius : int = 15
+    + <<readonly>> ProtectUnitScanRadius : int = 15
+    + <<readonly>> MaxBaseRadius : int = 20
+    + <<readonly>> IdleScanRadius : int = 10
+    + <<readonly>> DangerScanRadius : int = 10
+    + <<readonly>> AttackScanRadius : int = 12
+    + <<readonly>> ProtectionScanRadius : int = 8
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SquadManagerBotModule {
+    + GetRandomBaseCenter() : CPos
+    rushTicks : int
+    assignRolesTicks : int
+    attackForceTicks : int
+    minAttackForceDelayTicks : int
+    + SquadManagerBotModule(self:Actor, info:SquadManagerBotModuleInfo)
+    + IsPreferredEnemyUnit(a:Actor) : bool
+    + IsNotHiddenUnit(a:Actor) : bool
+    BotEnabled(bot:IBot) : void
+    BotTick(bot:IBot) : void
+    CleanSquads() : void
+    GetSquadOfType(type:SquadType) : Squad
+    RegisterNewSquad(bot:IBot, type:SquadType, target:Actor) : Squad
+    AssignRolesToIdleUnits(bot:IBot) : void
+    FindNewUnits(bot:IBot) : void
+    CreateAttackForce(bot:IBot) : void
+    TryToRushAttack(bot:IBot) : void
+    ProtectOwn(bot:IBot, attacker:Actor) : void
+    UpdatedBaseCenter(newLocation:CPos) : void
+    UpdatedDefenseCenter(newLocation:CPos) : void
+    RespondToAttack(bot:IBot, self:Actor, e:AttackInfo) : void
+    IssueTraitData(self:Actor) : List<MiniYamlNode>
+    ResolveTraitData(self:Actor, data:List<MiniYamlNode>) : void
+}
+class "HashSet`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Predicate`1"<T> {
+}
+class "List`1"<T> {
+}
+ConditionalTraitInfo <|-- SquadManagerBotModuleInfo
+SquadManagerBotModuleInfo o-> "NavalUnitsTypes<string>" "HashSet`1"
+SquadManagerBotModuleInfo o-> "ExcludeFromSquadsTypes<string>" "HashSet`1"
+SquadManagerBotModuleInfo o-> "ConstructionYardTypes<string>" "HashSet`1"
+SquadManagerBotModuleInfo o-> "NavalProductionTypes<string>" "HashSet`1"
+SquadManagerBotModuleInfo o-> "IgnoredEnemyTargetTypes<TargetableType>" "BitSet`1"
+"ConditionalTrait`1" "<SquadManagerBotModuleInfo>" <|-- SquadManagerBotModule
+IBotEnabled <|-- SquadManagerBotModule
+IBotTick <|-- SquadManagerBotModule
+IBotRespondToAttack <|-- SquadManagerBotModule
+IBotPositionsUpdated <|-- SquadManagerBotModule
+IGameSaveTraitData <|-- SquadManagerBotModule
+SquadManagerBotModule --> "World" World
+SquadManagerBotModule --> "Player" Player
+SquadManagerBotModule --> "unitCannotBeOrdered<Actor>" "Predicate`1"
+SquadManagerBotModule o-> "unitsHangingAroundTheBase<Actor>" "List`1"
+SquadManagerBotModule o-> "activeUnits<Actor>" "List`1"
+SquadManagerBotModule o-> "Squads<Squad>" "List`1"
+SquadManagerBotModule --> "bot" IBot
+SquadManagerBotModule --> "initialBaseCenter" CPos
+@enduml

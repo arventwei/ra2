@@ -1,0 +1,23 @@
+@startuml
+class RenderShroudCircleInfo {
+    + <<readonly>> Width : float = 1
+    + <<readonly>> BorderWidth : float = 3
+    + RenderAnnotations(wr:WorldRenderer, w:World, ai:ActorInfo, centerPosition:WPos) : IEnumerable<IRenderable>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RenderShroudCircle {
+    + RenderShroudCircle(self:Actor, info:RenderShroudCircleInfo)
+    Created(self:Actor) : void
+    + RangeCircleRenderables(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+TraitInfo <|-- RenderShroudCircleInfo
+IPlaceBuildingDecorationInfo <|-- RenderShroudCircleInfo
+RenderShroudCircleInfo o-> "Color" Color
+RenderShroudCircleInfo o-> "BorderColor" Color
+INotifyCreated <|-- RenderShroudCircle
+IRenderAnnotationsWhenSelected <|-- RenderShroudCircle
+RenderShroudCircle --> "info" RenderShroudCircleInfo
+RenderShroudCircle --> "range" WDist
+@enduml

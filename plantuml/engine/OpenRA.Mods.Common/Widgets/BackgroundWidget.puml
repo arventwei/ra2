@@ -1,0 +1,14 @@
+@startuml
+class BackgroundWidget {
+    + <<readonly>> ClickThrough : bool = false
+    + <<readonly>> Draggable : bool = false
+    + Background : string = "dialog"
+    + <<override>> Draw() : void
+    + BackgroundWidget()
+    moving : bool
+    prevMouseLocation : int2?
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> Clone() : Widget
+}
+Widget <|-- BackgroundWidget
+@enduml

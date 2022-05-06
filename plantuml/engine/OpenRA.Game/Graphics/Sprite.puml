@@ -1,0 +1,36 @@
+@startuml
+class Sprite {
+    + <<readonly>> ZRamp : float
+    + <<readonly>> Top : float
+    + <<readonly>> Left : float
+    + <<readonly>> Bottom : float
+    + <<readonly>> Right : float
+    + Sprite(sheet:Sheet, bounds:Rectangle, channel:TextureChannel, scale:float)
+    + Sprite(sheet:Sheet, bounds:Rectangle, zRamp:float, offset:float3, channel:TextureChannel, blendMode:BlendMode, scale:float)
+}
+class SpriteWithSecondaryData {
+    + <<readonly>> SecondaryTop : float
+    + <<readonly>> SecondaryLeft : float
+    + <<readonly>> SecondaryBottom : float
+    + <<readonly>> SecondaryRight : float
+    + SpriteWithSecondaryData(s:Sprite, secondarySheet:Sheet, secondaryBounds:Rectangle, secondaryChannel:TextureChannel)
+}
+enum TextureChannel {
+    Red= 0,
+    Green= 1,
+    Blue= 2,
+    Alpha= 3,
+    RGBA= 4,
+}
+Sprite --> "Bounds" Rectangle
+Sprite --> "Sheet" Sheet
+Sprite --> "BlendMode" BlendMode
+Sprite --> "Channel" TextureChannel
+Sprite --> "Size" float3
+Sprite --> "Offset" float3
+Sprite --> "FractionalOffset" float3
+Sprite <|-- SpriteWithSecondaryData
+SpriteWithSecondaryData --> "SecondarySheet" Sheet
+SpriteWithSecondaryData --> "SecondaryBounds" Rectangle
+SpriteWithSecondaryData --> "SecondaryChannel" TextureChannel
+@enduml

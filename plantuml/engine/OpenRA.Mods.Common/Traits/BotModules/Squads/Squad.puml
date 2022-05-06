@@ -1,0 +1,25 @@
+@startuml
+enum SquadType {
+    Assault,
+    Air,
+    Rush,
+    Protection,
+    Naval,
+}
+class Squad {
+    + Squad(bot:IBot, squadManager:SquadManagerBotModule, type:SquadType)
+    + Squad(bot:IBot, squadManager:SquadManagerBotModule, type:SquadType, target:Actor)
+    + Update() : void
+    + IsValid : bool <<get>>
+    + IsTargetValid : bool <<get>>
+    + IsTargetVisible : bool <<get>>
+    + Serialize() : MiniYaml
+    + {static} Deserialize(bot:IBot, squadManager:SquadManagerBotModule, yaml:MiniYaml) : Squad
+}
+class "List`1"<T> {
+}
+Squad o-> "Units<Actor>" "List`1"
+Squad --> "Type" SquadType
+Squad --> "TargetActor" Actor
+Squad --> "CenterPosition" WPos
+@enduml

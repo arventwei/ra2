@@ -1,0 +1,103 @@
+@startuml
+class ListExts <<static>> {
+    + {static} BinarySearchMany(list:List<Actor>, searchFor:uint) : int
+}
+class TraitDictionary {
+    InnerGet(t:Type) : ITraitContainer
+    InnerGet() : TraitContainer<T>
+    + PrintReport() : void
+    + AddTrait(actor:Actor, val:object) : void
+    InnerAdd(actor:Actor, t:Type, val:object) : void
+    {static} CheckDestroyed(actor:Actor) : void
+    + Get(actor:Actor) : T
+    + GetOrDefault(actor:Actor) : T
+    + WithInterface(actor:Actor) : IEnumerable<T>
+    + ActorsWithTrait() : IEnumerable<TraitPair<T>>
+    + ActorsHavingTrait() : IEnumerable<Actor>
+    + ActorsHavingTrait(predicate:Func<T, bool>) : IEnumerable<Actor>
+    + RemoveActor(a:Actor) : void
+    + ApplyToActorsWithTrait(action:Action<Actor, T>) : void
+    + ApplyToActorsWithTraitTimed(action:Action<Actor, T>, text:string) : void
+}
+class "Func`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+interface ITraitContainer {
+    Add(actor:Actor, trait:object) : void
+    RemoveActor(actor:uint) : void
+    Queries : int <<get>>
+}
+class "TraitContainer`1"<T> {
+    + Queries : int <<get>>
+    + Add(actor:Actor, trait:object) : void
+    + Get(actor:Actor) : T
+    + GetOrDefault(actor:Actor) : T
+    + GetMultiple(actor:uint) : IEnumerable<T>
+    + All() : IEnumerable<TraitPair<T>>
+    + Actors() : IEnumerable<Actor>
+    + Actors(predicate:Func<T, bool>) : IEnumerable<Actor>
+    + RemoveActor(actor:uint) : void
+    + ApplyToAll(action:Action<Actor, T>) : void
+    + ApplyToAllTimed(action:Action<Actor, T>, text:string) : void
+}
+class "List`1"<T> {
+}
+class MultipleEnumerable {
+    <<readonly>> actor : uint
+    + MultipleEnumerable(container:TraitContainer<T>, actor:uint)
+    + GetEnumerator() : IEnumerator<T>
+    GetEnumerator() : System.Collections.IEnumerator
+}
+class MultipleEnumerator <<struct>> {
+    <<readonly>> actor : uint
+    index : int
+    + MultipleEnumerator(container:TraitContainer<T>, actor:uint)
+    + Reset() : void
+    + MoveNext() : bool
+    Current : object <<get>>
+    + Dispose() : void
+}
+class AllEnumerable <<struct>> {
+    + AllEnumerable(container:TraitContainer<T>)
+    + GetEnumerator() : IEnumerator<TraitPair<T>>
+    GetEnumerator() : System.Collections.IEnumerator
+}
+class AllEnumerator <<struct>> {
+    index : int
+    + AllEnumerator(container:TraitContainer<T>)
+    + Reset() : void
+    + MoveNext() : bool
+    Current : object <<get>>
+    + Dispose() : void
+}
+class "IEnumerable`1"<T> {
+}
+class "IEnumerator`1"<T> {
+}
+class "TraitPair`1"<T> {
+}
+TraitDictionary o-> "CreateTraitContainer<Type,ITraitContainer>" "Func`2"
+TraitDictionary o-> "traits<Type,ITraitContainer>" "Dictionary`2"
+TraitDictionary +-- ITraitContainer
+TraitDictionary +-- "TraitContainer`1"
+ITraitContainer <|-- "TraitContainer`1"
+"TraitContainer`1" o-> "actors<Actor>" "List`1"
+"TraitContainer`1" o-> "traits<T>" "List`1"
+"TraitContainer`1" +-- MultipleEnumerable
+"IEnumerable`1" "<T>" <|-- MultipleEnumerable
+MultipleEnumerable --> "container<T>" "TraitContainer`1"
+"TraitContainer`1" +-- MultipleEnumerator
+"IEnumerator`1" "<T>" <|-- MultipleEnumerator
+MultipleEnumerator --> "actors<Actor>" "List`1"
+MultipleEnumerator --> "traits<T>" "List`1"
+MultipleEnumerator --> "Current" T
+"TraitContainer`1" +-- AllEnumerable
+"IEnumerable`1" "<TraitPair<T>>" <|-- AllEnumerable
+AllEnumerable --> "container<T>" "TraitContainer`1"
+"TraitContainer`1" +-- AllEnumerator
+"IEnumerator`1" "<TraitPair<T>>" <|-- AllEnumerator
+AllEnumerator --> "actors<Actor>" "List`1"
+AllEnumerator --> "traits<T>" "List`1"
+AllEnumerator --> "Current<T>" "TraitPair`1"
+@enduml

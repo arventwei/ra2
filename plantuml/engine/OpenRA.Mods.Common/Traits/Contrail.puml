@@ -1,0 +1,29 @@
+@startuml
+class ContrailInfo {
+    + <<readonly>> ZOffset : int = 0
+    + <<readonly>> TrailLength : int = 25
+    + <<readonly>> UsePlayerColor : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Contrail {
+    + Contrail(self:Actor, info:ContrailInfo)
+    Tick(self:Actor) : void
+    Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+    AddedToWorld(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- ContrailInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- ContrailInfo
+ContrailInfo o-> "Offset" WVec
+ContrailInfo o-> "TrailWidth" WDist
+ContrailInfo o-> "Color" Color
+ITick <|-- Contrail
+IRender <|-- Contrail
+INotifyAddedToWorld <|-- Contrail
+Contrail --> "info" ContrailInfo
+Contrail --> "body" BodyOrientation
+Contrail --> "color" Color
+Contrail --> "trail" ContrailRenderable
+@enduml

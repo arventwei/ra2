@@ -1,0 +1,180 @@
+@startuml
+abstract class VariableExpression {
+    + <<readonly>> Expression : string
+    {static} CharClassOf(c:char) : CharClass
+    {static} CreateTokenTypeInfoEnumeration() : IEnumerable<TokenTypeInfo>
+    {static} HasRightOperand(type:TokenType) : bool
+    {static} IsLeftOperandOrNone(type:TokenType) : bool
+    {static} RequiresWhitespaceAfter(type:TokenType) : bool
+    {static} RequiresWhitespaceBefore(type:TokenType) : bool
+    {static} GetTokenSymbol(type:TokenType) : string
+    + VariableExpression(expression:string)
+    Build(resultType:ExpressionType) : Expression
+    {static} ParseSymbol(symbol:string, symbols:IReadOnlyDictionary<string, int>) : int
+    {static} ToPostfix(tokens:IEnumerable<Token>) : IEnumerable<Token>
+    {static} AsBool(expression:Expression) : Expression
+    {static} IfThenElse(test:Expression, ifTrue:Expression, ifFalse:Expression) : Expression
+}
+class BooleanExpression {
+    + BooleanExpression(expression:string)
+    + Evaluate(symbols:IReadOnlyDictionary<string, int>) : bool
+}
+class IntegerExpression {
+    + IntegerExpression(expression:string)
+    + Evaluate(symbols:IReadOnlyDictionary<string, int>) : int
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "HashSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+enum CharClass {
+    Whitespace,
+    Operator,
+    Mixed,
+    Id,
+    Digit,
+}
+enum Associativity {
+    Left,
+    Right,
+}
+enum Sides {
+    None= 0,
+    Left= 1,
+    Right= 2,
+    Both= Left | Right,
+}
+enum Grouping {
+    None,
+    Parens,
+}
+enum TokenType {
+    False,
+    True,
+    Number,
+    Variable,
+    OpenParen,
+    CloseParen,
+    Not,
+    Negate,
+    OnesComplement,
+    And,
+    Or,
+    Equals,
+    NotEquals,
+    LessThan,
+    LessThanOrEqual,
+    GreaterThan,
+    GreaterThanOrEqual,
+    Add,
+    Subtract,
+    Multiply,
+    Divide,
+    Modulo,
+    Invalid,
+}
+enum Precedence {
+    Unary= 16,
+    Multiplication= 12,
+    Addition= 11,
+    Relation= 9,
+    Equality= 8,
+    And= 4,
+    Or= 3,
+    Binary= 0,
+    Value= 0,
+    Parens= -1,
+    Invalid= ~0,
+}
+class TokenTypeInfo <<struct>> {
+    + <<readonly>> Symbol : string
+    + TokenTypeInfo(symbol:string, precedence:Precedence, operandSides:Sides, associativity:Associativity, opens:Grouping, closes:Grouping)
+    + TokenTypeInfo(symbol:string, precedence:Precedence, operandSides:Sides, whitespaceSides:Sides, associativity:Associativity, opens:Grouping, closes:Grouping)
+    + TokenTypeInfo(symbol:string, precedence:Precedence, opens:Grouping, closes:Grouping, associativity:Associativity)
+}
+class Token {
+    + <<readonly>> Index : int
+    + <<virtual>> Symbol : string <<get>>
+    + Precedence : int <<get>>
+    + LeftOperand : bool <<get>>
+    + RightOperand : bool <<get>>
+    + Token(type:TokenType, index:int)
+    {static} ScanIsNumber(expression:string, start:int, i:int) : bool
+    {static} VariableOrKeyword(expression:string, start:int, i:int) : TokenType
+    {static} VariableOrKeyword(expression:string, start:int, length:int) : TokenType
+    + {static} GetNextType(expression:string, i:int, lastType:TokenType) : TokenType
+    + {static} GetNext(expression:string, i:int, lastType:TokenType) : Token
+}
+class VariableToken {
+    + <<readonly>> Name : string
+    + <<override>> Symbol : string <<get>>
+    + VariableToken(index:int, symbol:string)
+}
+class NumberToken {
+    + <<readonly>> Value : int
+    <<readonly>> symbol : string
+    + <<override>> Symbol : string <<get>>
+    + NumberToken(index:int, symbol:string)
+}
+enum ExpressionType {
+    Int,
+    Bool,
+}
+class AstStack {
+    + PeekType() : ExpressionType
+    + Peek(toType:ExpressionType) : Expression
+    + Pop(type:ExpressionType) : Expression
+    + Push(expression:Expression, type:ExpressionType) : void
+    + Push(expression:Expression) : void
+}
+class Compiler {
+    + Build(postfix:Token[], resultType:ExpressionType) : Expression
+}
+class "Func`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+VariableExpression o-> "NoVariables<string,int>" "IReadOnlyDictionary`2"
+VariableExpression o-> "variables<string>" "HashSet`1"
+VariableExpression --> "Variables<string>" "IEnumerable`1"
+VariableExpression o-> "SymbolsParam" ParameterExpression
+VariableExpression o-> "Zero" ConstantExpression
+VariableExpression o-> "One" ConstantExpression
+VariableExpression o-> "False" ConstantExpression
+VariableExpression o-> "True" ConstantExpression
+VariableExpression <|-- BooleanExpression
+BooleanExpression --> "asFunction<IReadOnlyDictionary<string, int>,bool>" "Func`2"
+VariableExpression <|-- IntegerExpression
+IntegerExpression --> "asFunction<IReadOnlyDictionary<string, int>,int>" "Func`2"
+VariableExpression +-- CharClass
+VariableExpression +-- Associativity
+VariableExpression +-- Sides
+VariableExpression +-- Grouping
+VariableExpression +-- TokenType
+VariableExpression +-- Precedence
+VariableExpression +-- TokenTypeInfo
+TokenTypeInfo --> "Precedence" Precedence
+TokenTypeInfo --> "OperandSides" Sides
+TokenTypeInfo --> "WhitespaceSides" Sides
+TokenTypeInfo --> "Associativity" Associativity
+TokenTypeInfo --> "Opens" Grouping
+TokenTypeInfo --> "Closes" Grouping
+VariableExpression +-- Token
+Token --> "Type" TokenType
+Token --> "OperandSides" Sides
+Token --> "Associativity" Associativity
+Token --> "Opens" Grouping
+Token --> "Closes" Grouping
+VariableExpression +-- VariableToken
+Token <|-- VariableToken
+VariableExpression +-- NumberToken
+Token <|-- NumberToken
+VariableExpression +-- ExpressionType
+VariableExpression +-- AstStack
+AstStack o-> "expressions<Expression>" "List`1"
+AstStack o-> "types<ExpressionType>" "List`1"
+VariableExpression +-- Compiler
+Compiler o-> "ast" AstStack
+@enduml

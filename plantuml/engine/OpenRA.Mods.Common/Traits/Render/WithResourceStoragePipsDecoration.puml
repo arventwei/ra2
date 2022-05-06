@@ -1,0 +1,22 @@
+@startuml
+class WithResourceStoragePipsDecorationInfo {
+    + <<readonly>> PipCount : int = 0
+    + <<readonly>> Image : string = "pips"
+    + <<readonly>> EmptySequence : string = "pip-empty"
+    + <<readonly>> FullSequence : string = "pip-green"
+    + <<readonly>> Palette : string = "chrome"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithResourceStoragePipsDecoration {
+    + WithResourceStoragePipsDecoration(self:Actor, info:WithResourceStoragePipsDecorationInfo)
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "WithDecorationBase`1"<T> {
+}
+WithDecorationBaseInfo <|-- WithResourceStoragePipsDecorationInfo
+WithResourceStoragePipsDecorationInfo o-> "PipStride" int2
+"WithDecorationBase`1" "<WithResourceStoragePipsDecorationInfo>" <|-- WithResourceStoragePipsDecoration
+INotifyOwnerChanged <|-- WithResourceStoragePipsDecoration
+WithResourceStoragePipsDecoration --> "pips" Animation
+WithResourceStoragePipsDecoration --> "player" PlayerResources
+@enduml

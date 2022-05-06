@@ -1,0 +1,6 @@
+@startuml
+class ProtocolVersion <<static>> {
+    + <<const>> Handshake : int = 7
+    + <<const>> Orders : int = 11
+}
+@enduml

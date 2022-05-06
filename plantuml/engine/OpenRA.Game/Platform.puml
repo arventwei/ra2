@@ -1,0 +1,38 @@
+@startuml
+enum PlatformType {
+    Unknown,
+    Windows,
+    OSX,
+    Linux,
+}
+enum SupportDirType {
+    System,
+    ModernUser,
+    LegacyUser,
+    User,
+}
+class Platform <<static>> {
+    {static} engineDirAccessed : bool
+    {static} engineDir : string
+    {static} supportDirInitialized : bool
+    {static} systemSupportPath : string
+    {static} legacyUserSupportPath : string
+    {static} modernUserSupportPath : string
+    {static} userSupportPath : string
+    {static} GetCurrentPlatform() : PlatformType
+    + {static} RuntimeVersion : string <<get>>
+    + {static} SupportDir : string <<get>>
+    + {static} GetSupportDir(type:SupportDirType) : string
+    {static} InitializeSupportDir() : void
+    + {static} OverrideSupportDir(path:string) : void
+    + {static} EngineDir : string <<get>>
+    + {static} OverrideEngineDir(path:string) : void
+    + {static} BinDir : string <<get>>
+    + {static} ResolvePath(path:string) : string
+}
+class "Lazy`1"<T> {
+}
+Platform --> "CurrentPlatform" PlatformType
+Platform o-> "SessionGUID" Guid
+Platform o-> "currentPlatform<PlatformType>" "Lazy`1"
+@enduml

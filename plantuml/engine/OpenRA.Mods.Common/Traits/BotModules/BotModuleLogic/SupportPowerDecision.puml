@@ -1,0 +1,38 @@
+@startuml
+class SupportPowerDecision {
+    + <<readonly>> MinimumAttractiveness : int = 1
+    + <<readonly>> OrderName : string = "AirstrikePowerInfoOrder"
+    + <<readonly>> CoarseScanRadius : int = 20
+    + <<readonly>> FineScanRadius : int = 2
+    + <<readonly>> MinimumScanTimeInterval : int = 250
+    + <<readonly>> MaximumScanTimeInterval : int = 262
+    + SupportPowerDecision(yaml:MiniYaml)
+    {static} LoadConsiderations(yaml:MiniYaml) : object
+    + GetAttractiveness(pos:WPos, firedBy:Player) : int
+    + GetAttractiveness(actors:IEnumerable<Actor>, firedBy:Player) : int
+    + GetAttractiveness(frozenActors:IEnumerable<FrozenActor>, firedBy:Player) : int
+    + GetNextScanTime(world:World) : int
+}
+class "List`1"<T> {
+}
+class Consideration {
+    + <<readonly>> Attractiveness : int = 100
+    + Consideration(yaml:MiniYaml)
+    + GetAttractiveness(a:Actor, stance:PlayerRelationship, firedBy:Player) : int
+    + GetAttractiveness(fa:FrozenActor, stance:PlayerRelationship, firedBy:Player) : int
+}
+enum DecisionMetric {
+    Health,
+    Value,
+    None,
+}
+class "BitSet`1"<T> {
+}
+SupportPowerDecision o-> "Considerations<Consideration>" "List`1"
+SupportPowerDecision +-- Consideration
+Consideration o-> "Against" PlayerRelationship
+Consideration o-> "Types<TargetableType>" "BitSet`1"
+Consideration o-> "TargetMetric" DecisionMetric
+Consideration o-> "CheckRadius" WDist
+Consideration +-- DecisionMetric
+@enduml

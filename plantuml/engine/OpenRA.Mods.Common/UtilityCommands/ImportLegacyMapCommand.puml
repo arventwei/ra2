@@ -1,0 +1,36 @@
+@startuml
+abstract class ImportLegacyMapCommand {
+    + <<readonly>> MapSize : int
+    + ImportLegacyMapCommand(mapSize:int)
+    singlePlayer : bool
+    spawnCount : int
+    {static} GetMapFormatVersion(basicSection:IniSection) : int
+    + {abstract} ValidateMapFormat(format:int) : void
+    LoadBriefing(file:IniFile) : void
+    {static} SetBounds(map:Map, mapSection:IniSection) : void
+    + {abstract} ReadPacks(file:IniFile, filename:string) : void
+    LoadVideos(file:IniFile, section:string) : void
+    + <<virtual>> ReadActors(file:IniFile) : void
+    + {abstract} LoadPlayer(file:IniFile, section:string) : void
+    {static} Truncate(s:string, maxLength:int) : string
+    {static} GetTileset(mapSection:IniSection) : string
+    {static} LocationFromMapOffset(offset:int, mapSize:int) : int2
+    LoadWaypoints(waypointSection:IniSection) : void
+    + <<virtual>> SaveWaypoint(waypointNumber:int, waypointReference:ActorReference) : void
+    LoadSmudges(file:IniFile, section:string) : void
+    + {static} SetMapPlayers(section:string, faction:string, color:string, file:IniFile, players:List<string>, mapPlayers:MapPlayers) : void
+    + <<virtual>> ParseActorLocation(input:string, loc:int) : CPos
+    + LoadActors(file:IniFile, section:string, players:List<string>, mapSize:int, map:Map) : void
+    + {abstract} ParseTreeActor(input:string) : string
+    ReadTrees(file:IniFile) : void
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ImportLegacyMapCommand --> "ModData" ModData
+ImportLegacyMapCommand --> "Map" Map
+ImportLegacyMapCommand o-> "Players<string>" "List`1"
+ImportLegacyMapCommand --> "MapPlayers" MapPlayers
+ImportLegacyMapCommand o-> "namedColorMapping<string,Color>" "Dictionary`2"
+@enduml

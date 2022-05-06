@@ -1,0 +1,10 @@
+@startuml
+class RepairBuilding {
+    + RepairBuilding(self:Actor, target:Target, info:EngineerRepairInfo)
+}
+Enter <|-- RepairBuilding
+RepairBuilding --> "info" EngineerRepairInfo
+RepairBuilding --> "enterActor" Actor
+RepairBuilding --> "enterHealth" IHealth
+RepairBuilding --> "enterEngineerRepariable" EngineerRepairable
+@enduml

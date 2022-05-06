@@ -1,0 +1,49 @@
+@startuml
+interface IEditorBrush {
+    HandleMouseInput(mi:MouseInput) : bool
+    Tick() : void
+}
+class EditorDefaultBrush <<sealed>> {
+    + EditorDefaultBrush(editorWidget:EditorViewportControllerWidget, wr:WorldRenderer)
+    CalculateActorSelectionPriority(actor:EditorActorPreview) : long
+    + HandleMouseInput(mi:MouseInput) : bool
+    + Tick() : void
+    + Dispose() : void
+}
+class RemoveActorAction {
+    + Text : string <<get>>
+    + RemoveActorAction(editorActorLayer:EditorActorLayer, actor:EditorActorPreview)
+    + Execute() : void
+    + Do() : void
+    + Undo() : void
+}
+class RemoveResourceAction {
+    + Text : string <<get>>
+    + RemoveResourceAction(mapResources:CellLayer<ResourceTile>, cell:CPos, type:ResourceType)
+    + Execute() : void
+    + Do() : void
+    + Undo() : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "CellLayer`1"<T> {
+}
+IDisposable <|-- IEditorBrush
+IEditorBrush <|-- EditorDefaultBrush
+EditorDefaultBrush --> "Actor" ActorInfo
+EditorDefaultBrush --> "worldRenderer" WorldRenderer
+EditorDefaultBrush --> "world" World
+EditorDefaultBrush --> "editorWidget" EditorViewportControllerWidget
+EditorDefaultBrush --> "editorLayer" EditorActorLayer
+EditorDefaultBrush --> "resources<int,ResourceType>" "Dictionary`2"
+EditorDefaultBrush --> "editorActionManager" EditorActionManager
+EditorDefaultBrush --> "SelectedActor" EditorActorPreview
+EditorDefaultBrush --> "worldPixel" int2
+IEditorAction <|-- RemoveActorAction
+RemoveActorAction --> "editorActorLayer" EditorActorLayer
+RemoveActorAction --> "actor" EditorActorPreview
+IEditorAction <|-- RemoveResourceAction
+RemoveResourceAction --> "mapResources<ResourceTile>" "CellLayer`1"
+RemoveResourceAction --> "cell" CPos
+RemoveResourceAction --> "resourceTile" ResourceTile
+@enduml

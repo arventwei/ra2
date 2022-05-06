@@ -1,0 +1,54 @@
+@startuml
+class Move {
+    <<readonly>> targetLineColor : Color?
+    destination : CPos?
+    hasWaited : bool
+    waitTicksRemaining : int
+    evaluateNearestMovableCell : bool
+    + Move(self:Actor, destination:CPos, targetLineColor:Color?)
+    + Move(self:Actor, destination:CPos, nearEnough:WDist, ignoreActor:Actor, evaluateNearestMovableCell:bool, targetLineColor:Color?)
+    + Move(self:Actor, destination:CPos, subCell:SubCell, nearEnough:WDist, targetLineColor:Color?)
+    + Move(self:Actor, target:Target, range:WDist, targetLineColor:Color?)
+    + Move(self:Actor, getPath:Func<BlockedByActor, List<CPos>>, targetLineColor:Color?)
+    {static} HashList(xs:List<T>) : int
+    EvalPath(check:BlockedByActor) : List<CPos>
+    + <<override>> Tick(self:Actor) : bool
+    PopPath(self:Actor) : (CPos Cell, SubCell SubCell)?
+    CellIsEvacuating(self:Actor, cell:CPos) : bool
+    + <<override>> Cancel(self:Actor, keepQueue:bool) : void
+    + Cancel(self:Actor, keepQueue:bool, forceClearPath:bool) : void
+    + <<override>> GetTargets(self:Actor) : IEnumerable<Target>
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+class "List`1"<T> {
+}
+class "Func`2"<T1,T2> {
+}
+abstract class MovePart {
+    + MovePart(move:Move, from:WPos, to:WPos, fromFacing:WAngle, toFacing:WAngle, startingFraction:int)
+    + <<override>> Tick(self:Actor) : bool
+    InnerTick(self:Actor, mobile:Mobile) : Activity
+    UpdateCenterLocation(self:Actor, mobile:Mobile) : void
+    + <<override>> GetTargets(self:Actor) : IEnumerable<Target>
+}
+class MoveFirstHalf {
+    + MoveFirstHalf(move:Move, from:WPos, to:WPos, fromFacing:WAngle, toFacing:WAngle, startingFraction:int)
+    {static} IsTurn(mobile:Mobile, nextCell:CPos, map:Map) : bool
+}
+class MoveSecondHalf {
+    + MoveSecondHalf(move:Move, from:WPos, to:WPos, fromFacing:WAngle, toFacing:WAngle, startingFraction:int)
+}
+Activity <|-- Move
+Move o-> "NoPath<CPos>" "List`1"
+Move --> "mobile" Mobile
+Move --> "nearEnough" WDist
+Move --> "getPath<BlockedByActor,List<CPos>>" "Func`2"
+Move --> "ignoreActor" Actor
+Move --> "path<CPos>" "List`1"
+Move +-- MovePart
+Activity <|-- MovePart
+Move +-- MoveFirstHalf
+MovePart <|-- MoveFirstHalf
+Move +-- MoveSecondHalf
+MovePart <|-- MoveSecondHalf
+@enduml

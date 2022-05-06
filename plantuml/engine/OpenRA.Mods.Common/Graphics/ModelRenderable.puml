@@ -1,0 +1,42 @@
+@startuml
+class ModelRenderable <<struct>> {
+    <<readonly>> zOffset : int
+    <<readonly>> scale : float
+    + ModelRenderable(models:IEnumerable<ModelAnimation>, pos:WPos, zOffset:int, camera:WRot, scale:float, lightSource:WRot, lightAmbientColor:float[], lightDiffuseColor:float[], color:PaletteReference, normals:PaletteReference, shadow:PaletteReference)
+    + ModelRenderable(models:IEnumerable<ModelAnimation>, pos:WPos, zOffset:int, camera:WRot, scale:float, lightSource:WRot, lightAmbientColor:float[], lightDiffuseColor:float[], color:PaletteReference, normals:PaletteReference, shadow:PaletteReference, tint:float3)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + WithTint(newTint:float3) : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+}
+class "IEnumerable`1"<T> {
+}
+class FinalizedModelRenderable <<struct>> {
+    + FinalizedModelRenderable(wr:WorldRenderer, model:ModelRenderable)
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    {static} DrawBoundsBox(wr:WorldRenderer, pxPos:float3, transform:float[], bounds:float[], width:float, c:Color) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+    Screen3DBounds(wr:WorldRenderer) : (Rectangle Bounds, float2 Z)
+}
+IRenderable <|-- ModelRenderable
+ITintableRenderable <|-- ModelRenderable
+ModelRenderable --> "models<ModelAnimation>" "IEnumerable`1"
+ModelRenderable --> "pos" WPos
+ModelRenderable --> "camera" WRot
+ModelRenderable --> "lightSource" WRot
+ModelRenderable --> "palette" PaletteReference
+ModelRenderable --> "normalsPalette" PaletteReference
+ModelRenderable --> "shadowPalette" PaletteReference
+ModelRenderable --> "tint" float3
+ModelRenderable --> "Pos" WPos
+ModelRenderable --> "Palette" PaletteReference
+ModelRenderable +-- FinalizedModelRenderable
+IFinalizedRenderable <|-- FinalizedModelRenderable
+FinalizedModelRenderable --> "model" ModelRenderable
+FinalizedModelRenderable --> "renderProxy" ModelRenderProxy
+@enduml

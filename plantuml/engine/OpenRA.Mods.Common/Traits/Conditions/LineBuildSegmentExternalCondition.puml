@@ -1,0 +1,27 @@
+@startuml
+class LineBuildSegmentExternalConditionInfo {
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class LineBuildSegmentExternalCondition {
+    + LineBuildSegmentExternalCondition(self:Actor, info:LineBuildSegmentExternalConditionInfo)
+    GrantCondition(self:Actor, segment:Actor) : void
+    RevokeCondition(self:Actor, segment:Actor) : void
+    SegmentAdded(self:Actor, segment:Actor) : void
+    SegmentRemoved(self:Actor, segment:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ConditionalTraitInfo <|-- LineBuildSegmentExternalConditionInfo
+"Requires`1" "<LineBuildInfo>" <|-- LineBuildSegmentExternalConditionInfo
+"ConditionalTrait`1" "<LineBuildSegmentExternalConditionInfo>" <|-- LineBuildSegmentExternalCondition
+INotifyLineBuildSegmentsChanged <|-- LineBuildSegmentExternalCondition
+LineBuildSegmentExternalCondition o-> "segments<Actor>" "HashSet`1"
+LineBuildSegmentExternalCondition o-> "tokens<Actor,int>" "Dictionary`2"
+@enduml

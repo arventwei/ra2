@@ -1,0 +1,22 @@
+@startuml
+class TooltipContainerWidget {
+    + BottomEdgeYOffset : int
+    + TooltipDelayMilliseconds : int = 200
+    nextToken : int = 1
+    currentToken : int
+    + TooltipContainerWidget()
+    + SetTooltip(id:string, args:WidgetArgs) : int
+    + RemoveTooltip(token:int) : void
+    + RemoveTooltip() : void
+    + <<override>> Draw() : void
+    + <<override>> EventBoundsContains(location:int2) : bool
+    + <<override>> GetCursor(pos:int2) : string
+}
+Widget <|-- TooltipContainerWidget
+TooltipContainerWidget o-> "Nothing" Action
+TooltipContainerWidget --> "graphicSettings" GraphicSettings
+TooltipContainerWidget o-> "CursorOffset" int2
+TooltipContainerWidget o-> "BeforeRender" Action
+TooltipContainerWidget --> "tooltip" Widget
+TooltipContainerWidget --> "ChildOrigin" int2
+@enduml

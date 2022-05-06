@@ -1,0 +1,40 @@
+@startuml
+class RadarPingsInfo {
+    + <<readonly>> FromRadius : int = 200
+    + <<readonly>> ToRadius : int = 15
+    + <<readonly>> ShrinkSpeed : int = 4
+    + <<readonly>> RotationSpeed : float = 0.12f
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RadarPings {
+    + LastPingPosition : WPos?
+    + RadarPings(info:RadarPingsInfo)
+    Tick(self:Actor) : void
+    + Add(isVisible:Func<bool>, position:WPos, color:Color, duration:int) : RadarPing
+    + Remove(ping:RadarPing) : void
+}
+class RadarPing {
+    + Duration : int
+    + FromRadius : int
+    + ToRadius : int
+    + ShrinkSpeed : int
+    + RotationSpeed : float
+    radius : int
+    angle : float
+    tick : int
+    + RadarPing(isVisible:Func<bool>, position:WPos, color:Color, duration:int, fromRadius:int, toRadius:int, shrinkSpeed:int, rotationSpeed:float)
+    + Tick() : bool
+    + Points(center:float2) : IEnumerable<float2>
+}
+class "List`1"<T> {
+}
+class "Func`1"<T> {
+}
+TraitInfo <|-- RadarPingsInfo
+ITick <|-- RadarPings
+RadarPings o-> "Pings<RadarPing>" "List`1"
+RadarPings --> "info" RadarPingsInfo
+RadarPing --> "IsVisible<bool>" "Func`1"
+RadarPing --> "Position" WPos
+RadarPing --> "Color" Color
+@enduml

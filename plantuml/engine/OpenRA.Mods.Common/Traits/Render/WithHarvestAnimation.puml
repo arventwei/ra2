@@ -1,0 +1,24 @@
+@startuml
+class WithHarvestAnimationInfo {
+    + <<readonly>> HarvestSequence : string = "harvest"
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithHarvestAnimation {
+    + WithHarvestAnimation(init:ActorInitializer, info:WithHarvestAnimationInfo)
+    Harvested(self:Actor, resource:ResourceType) : void
+    Docked() : void
+    Undocked() : void
+    MovingToResources(self:Actor, targetCell:CPos) : void
+    MovingToRefinery(self:Actor, refineryActor:Actor) : void
+    MovementCancelled(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- WithHarvestAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithHarvestAnimationInfo
+"Requires`1" "<HarvesterInfo>" <|-- WithHarvestAnimationInfo
+INotifyHarvesterAction <|-- WithHarvestAnimation
+WithHarvestAnimation --> "Info" WithHarvestAnimationInfo
+WithHarvestAnimation --> "wsb" WithSpriteBody
+@enduml

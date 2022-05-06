@@ -1,0 +1,33 @@
+@startuml
+class ProjectedCellRegion {
+    + ProjectedCellRegion(map:Map, topLeft:PPos, bottomRight:PPos)
+    + Contains(puv:PPos) : bool
+    + GetEnumerator() : ProjectedCellRegionEnumerator
+    GetEnumerator() : IEnumerator<PPos>
+    GetEnumerator() : IEnumerator
+}
+class "IEnumerable`1"<T> {
+}
+class ProjectedCellRegionEnumerator <<struct>> {
+    u : int
+    v : int
+    + ProjectedCellRegionEnumerator(region:ProjectedCellRegion)
+    + MoveNext() : bool
+    + Reset() : void
+    Current : object <<get>>
+    + Dispose() : void
+}
+class "IEnumerator`1"<T> {
+}
+"IEnumerable`1" "<PPos>" <|-- ProjectedCellRegion
+ProjectedCellRegion --> "TopLeft" PPos
+ProjectedCellRegion --> "BottomRight" PPos
+ProjectedCellRegion --> "mapTopLeft" MPos
+ProjectedCellRegion --> "mapBottomRight" MPos
+ProjectedCellRegion --> "CandidateMapCoords" MapCoordsRegion
+ProjectedCellRegion +-- ProjectedCellRegionEnumerator
+"IEnumerator`1" "<PPos>" <|-- ProjectedCellRegionEnumerator
+ProjectedCellRegionEnumerator --> "r" ProjectedCellRegion
+ProjectedCellRegionEnumerator --> "current" PPos
+ProjectedCellRegionEnumerator --> "Current" PPos
+@enduml

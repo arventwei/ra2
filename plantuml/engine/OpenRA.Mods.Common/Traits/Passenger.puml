@@ -1,0 +1,55 @@
+@startuml
+class PassengerInfo {
+    + <<readonly>> CargoType : string = null
+    + <<readonly>> CustomPipType : string = null
+    + <<readonly>> Weight : int = 1
+    + <<readonly>> CargoCondition : string = null
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Passenger {
+    requireForceMove : bool
+    anyCargoToken : int
+    specificCargoToken : int
+    + Passenger(info:PassengerInfo)
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    IsCorrectCargoType(target:Actor, modifiers:TargetModifiers) : bool
+    IsCorrectCargoType(target:Actor) : bool
+    CanEnter(cargo:Cargo) : bool
+    CanEnter(target:Actor) : bool
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    OnEnteredCargo(self:Actor, cargo:Actor) : void
+    OnExitedCargo(self:Actor, cargo:Actor) : void
+    ResolveOrder(self:Actor, order:Order) : void
+    + Reserve(self:Actor, cargo:Cargo) : bool
+    RemovedFromWorld(self:Actor) : void
+    + Unreserve(self:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+    GetVariableObservers() : IEnumerable<VariableObserver>
+    RequireForceMoveConditionChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- PassengerInfo
+IObservesVariablesInfo <|-- PassengerInfo
+PassengerInfo o-> "CargoConditions<string,string>" "Dictionary`2"
+PassengerInfo --> "LinterCargoConditions<string>" "IEnumerable`1"
+PassengerInfo o-> "TargetLineColor" Color
+PassengerInfo o-> "RequireForceMoveCondition" BooleanExpression
+IIssueOrder <|-- Passenger
+IResolveOrder <|-- Passenger
+IOrderVoice <|-- Passenger
+INotifyRemovedFromWorld <|-- Passenger
+INotifyEnteredCargo <|-- Passenger
+INotifyExitedCargo <|-- Passenger
+INotifyKilled <|-- Passenger
+IObservesVariables <|-- Passenger
+Passenger --> "Info" PassengerInfo
+Passenger --> "Transport" Actor
+Passenger --> "ReservedCargo" Cargo
+Passenger --> "Orders<IOrderTargeter>" "IEnumerable`1"
+@enduml

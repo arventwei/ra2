@@ -1,0 +1,27 @@
+@startuml
+class MapChooserLogic {
+    selectedUid : string
+    category : string
+    mapFilter : string
+    SwitchTab(tab:MapClassification, itemTemplate:ScrollItemWidget) : void
+    RefreshMaps(tab:MapClassification, filter:MapVisibility) : void
+    SetupMapTab(tab:MapClassification, filter:MapVisibility, tabButtonName:string, tabContainerName:string, itemTemplate:ScrollItemWidget) : void
+    SetupGameModeDropdown(tab:MapClassification, gameModeDropdown:DropDownButtonWidget, itemTemplate:ScrollItemWidget) : void
+    EnumerateMaps(tab:MapClassification, template:ScrollItemWidget) : void
+    DeleteMap(map:string) : string
+    DeleteOneMap(map:string, after:Action<string>) : void
+    DeleteAllMaps(maps:string[], after:Action<string>) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Action`1"<T> {
+}
+ChromeLogic <|-- MapChooserLogic
+MapChooserLogic --> "widget" Widget
+MapChooserLogic --> "gameModeDropdown" DropDownButtonWidget
+MapChooserLogic --> "modData" ModData
+MapChooserLogic --> "currentTab" MapClassification
+MapChooserLogic o-> "scrollpanels<MapClassification,ScrollPanelWidget>" "Dictionary`2"
+MapChooserLogic o-> "tabMaps<MapClassification,MapPreview[]>" "Dictionary`2"
+MapChooserLogic --> "onSelect<string>" "Action`1"
+@enduml

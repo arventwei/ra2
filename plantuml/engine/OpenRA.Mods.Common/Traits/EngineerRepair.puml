@@ -1,0 +1,40 @@
+@startuml
+class EngineerRepairInfo {
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> RepairSound : string = null
+    + <<readonly>> Cursor : string = "goldwrench"
+    + <<readonly>> RepairBlockedCursor : string = "goldwrench-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class EngineerRepair {
+    + EngineerRepair(init:ActorInitializer, info:EngineerRepairInfo)
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    {static} IsValidOrder(self:Actor, order:Order) : bool
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    + ResolveOrder(self:Actor, order:Order) : void
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class EngineerRepairOrderTargeter {
+    + EngineerRepairOrderTargeter(info:EngineerRepairInfo)
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+ConditionalTraitInfo <|-- EngineerRepairInfo
+EngineerRepairInfo o-> "Types<EngineerRepairType>" "BitSet`1"
+EngineerRepairInfo o-> "TargetLineColor" Color
+EngineerRepairInfo o-> "EnterBehaviour" EnterBehaviour
+EngineerRepairInfo o-> "ValidRelationships" PlayerRelationship
+"ConditionalTrait`1" "<EngineerRepairInfo>" <|-- EngineerRepair
+IIssueOrder <|-- EngineerRepair
+IResolveOrder <|-- EngineerRepair
+IOrderVoice <|-- EngineerRepair
+EngineerRepair --> "Orders<IOrderTargeter>" "IEnumerable`1"
+EngineerRepair +-- EngineerRepairOrderTargeter
+UnitOrderTargeter <|-- EngineerRepairOrderTargeter
+EngineerRepairOrderTargeter --> "info" EngineerRepairInfo
+@enduml

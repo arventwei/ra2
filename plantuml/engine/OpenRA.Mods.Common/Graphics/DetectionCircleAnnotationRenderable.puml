@@ -1,0 +1,29 @@
+@startuml
+class DetectionCircleAnnotationRenderable <<struct>> {
+    <<readonly>> zOffset : int
+    <<readonly>> trailCount : int
+    <<readonly>> width : float
+    <<readonly>> borderWidth : float
+    + DetectionCircleAnnotationRenderable(centerPosition:WPos, radius:WDist, zOffset:int, lineTrails:int, trailSeparation:WAngle, trailAngle:WAngle, color:Color, width:float, borderColor:Color, borderWidth:float)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- DetectionCircleAnnotationRenderable
+IFinalizedRenderable <|-- DetectionCircleAnnotationRenderable
+DetectionCircleAnnotationRenderable --> "centerPosition" WPos
+DetectionCircleAnnotationRenderable --> "radius" WDist
+DetectionCircleAnnotationRenderable --> "trailSeparation" WAngle
+DetectionCircleAnnotationRenderable --> "trailAngle" WAngle
+DetectionCircleAnnotationRenderable --> "color" Color
+DetectionCircleAnnotationRenderable --> "borderColor" Color
+DetectionCircleAnnotationRenderable --> "Pos" WPos
+DetectionCircleAnnotationRenderable --> "Palette" PaletteReference
+@enduml

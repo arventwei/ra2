@@ -1,0 +1,11 @@
+@startuml
+class StrategicProgressWidget {
+    initialised : bool = false
+    + StrategicProgressWidget(world:World)
+    + <<override>> Draw() : void
+    + FindFirstWinningPlayer(world:World) : Player
+    Init() : void
+}
+Widget <|-- StrategicProgressWidget
+StrategicProgressWidget --> "world" World
+@enduml

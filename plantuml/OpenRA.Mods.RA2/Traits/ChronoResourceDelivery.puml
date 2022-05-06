@@ -1,0 +1,34 @@
+@startuml
+class ChronoResourceDeliveryInfo {
+    + <<readonly>> CheckTeleportDelay : int = 10
+    + <<readonly>> Image : string = null
+    + <<readonly>> WarpInSequence : string = null
+    + <<readonly>> WarpOutSequence : string = null
+    + <<readonly>> Palette : string = "effect"
+    + <<readonly>> WarpInSound : string = null
+    + <<readonly>> WarpOutSound : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ChronoResourceDelivery {
+    destination : CPos?
+    ticksTillCheck : int
+    + ChronoResourceDelivery(self:Actor, info:ChronoResourceDeliveryInfo)
+    Tick(self:Actor) : void
+    MovingToResources(self:Actor, targetCell:CPos) : void
+    MovingToRefinery(self:Actor, refineryActor:Actor) : void
+    + MovementCancelled(self:Actor) : void
+    + Harvested(self:Actor, resource:ResourceType) : void
+    + Docked() : void
+    + Undocked() : void
+    TeleportIfPossible(self:Actor) : void
+    Reset() : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- ChronoResourceDeliveryInfo
+"Requires`1" "<HarvesterInfo>" <|-- ChronoResourceDeliveryInfo
+INotifyHarvesterAction <|-- ChronoResourceDelivery
+ITick <|-- ChronoResourceDelivery
+ChronoResourceDelivery --> "info" ChronoResourceDeliveryInfo
+ChronoResourceDelivery --> "refinery" Actor
+@enduml

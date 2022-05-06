@@ -1,0 +1,21 @@
+@startuml
+class RepairsUnitsInfo {
+    + <<readonly>> ValuePercentage : int = 20
+    + <<readonly>> HpPerStep : int = 10
+    + <<readonly>> Interval : int = 24
+    + <<readonly>> StartRepairingNotification : string = null
+    + <<readonly>> FinishRepairingNotification : string = null
+    + <<readonly>> PlayerExperience : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RepairsUnits {
+    + RepairsUnits(info:RepairsUnitsInfo)
+}
+class "BitSet`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- RepairsUnitsInfo
+RepairsUnitsInfo o-> "RepairDamageTypes<DamageType>" "BitSet`1"
+"PausableConditionalTrait`1" "<RepairsUnitsInfo>" <|-- RepairsUnits
+@enduml

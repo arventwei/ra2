@@ -1,0 +1,24 @@
+@startuml
+class InstalledMods {
+    + InstalledMods(searchPaths:IEnumerable<string>, explicitPaths:IEnumerable<string>)
+    {static} GetCandidateMods(searchPaths:IEnumerable<string>) : IEnumerable<(string Id, string Path)>
+    LoadMod(id:string, path:string) : Manifest
+    GetInstalledMods(searchPaths:IEnumerable<string>, explicitPaths:IEnumerable<string>) : Dictionary<string, Manifest>
+    + Count : int <<get>>
+    + ContainsKey(key:string) : bool
+    + GetEnumerator() : IEnumerator<KeyValuePair<string, Manifest>>
+    + TryGetValue(key:string, value:Manifest) : bool
+    GetEnumerator() : IEnumerator
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "ICollection`1"<T> {
+}
+"IReadOnlyDictionary`2" "<string,Manifest>" <|-- InstalledMods
+InstalledMods --> "mods<string,Manifest>" "Dictionary`2"
+InstalledMods --> "sheetBuilder" SheetBuilder
+InstalledMods --> "Keys<string>" "ICollection`1"
+InstalledMods --> "Values<Manifest>" "ICollection`1"
+@enduml

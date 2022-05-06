@@ -1,0 +1,36 @@
+@startuml
+class WidgetUtils <<static>> {
+    + {static} GetChromeImage(world:World, name:string) : Sprite
+    + {static} GetStatefulImageName(baseName:string, disabled:bool, pressed:bool, hover:bool, focused:bool) : string
+    + {static} DrawRGBA(s:Sprite, pos:float2) : void
+    + {static} DrawSHPCentered(s:Sprite, pos:float2, p:PaletteReference) : void
+    + {static} DrawSHPCentered(s:Sprite, pos:float2, p:PaletteReference, scale:float) : void
+    + {static} DrawPanel(collection:string, bounds:Rectangle) : void
+    + {static} FillRectWithSprite(r:Rectangle, s:Sprite) : void
+    + {static} FillRectWithColor(r:Rectangle, c:Color) : void
+    + {static} FillRectWithColor(r:Rectangle, topLeftColor:Color, topRightColor:Color, bottomRightColor:Color, bottomLeftColor:Color) : void
+    + {static} FillEllipseWithColor(r:Rectangle, c:Color) : void
+    + {static} InflateBy(rect:Rectangle, l:int, t:int, r:int, b:int) : Rectangle
+    + {static} DrawPanel(bounds:Rectangle, sprites:Sprite[]) : void
+    + {static} FormatTime(ticks:int, timestep:int) : string
+    + {static} FormatTime(ticks:int, leadingMinuteZero:bool, timestep:int) : string
+    + {static} FormatTimeSeconds(seconds:int) : string
+    + {static} FormatTimeSeconds(seconds:int, leadingMinuteZero:bool) : string
+    + {static} WrapText(text:string, width:int, font:SpriteFont) : string
+    + {static} TruncateText(text:string, width:int, font:SpriteFont) : string
+    + {static} TruncateLabelToTooltip(label:LabelWithTooltipWidget, text:string) : void
+    + {static} TruncateButtonToTooltip(button:ButtonWidget, text:string) : void
+    + {static} BindButtonIcon(button:ButtonWidget) : void
+    + {static} BindPlayerNameAndStatus(label:LabelWidget, p:Player) : void
+}
+class "CachedTransform`2"<T,U> {
+    initialized : bool
+    lastInput : T
+    lastOutput : U
+    + CachedTransform(transform:Func<T, U>)
+    + Update(input:T) : U
+}
+class "Func`2"<T1,T2> {
+}
+"CachedTransform`2" --> "transform<T,U>" "Func`2"
+@enduml

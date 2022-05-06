@@ -1,0 +1,25 @@
+@startuml
+class AttackOmniInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackOmni {
+    + AttackOmni(self:Actor, info:AttackOmniInfo)
+    + <<override>> GetAttackActivity(self:Actor, source:AttackSource, newTarget:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : Activity
+}
+class SetTarget {
+    <<readonly>> allowMove : bool
+    <<readonly>> forceAttack : bool
+    <<readonly>> targetLineColor : Color?
+    + SetTarget(attack:AttackOmni, target:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    StanceChanged(self:Actor, autoTarget:AutoTarget, oldStance:UnitStance, newStance:UnitStance) : void
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+AttackBaseInfo <|-- AttackOmniInfo
+AttackBase <|-- AttackOmni
+AttackOmni +-- SetTarget
+Activity <|-- SetTarget
+IActivityNotifyStanceChanged <|-- SetTarget
+SetTarget --> "attack" AttackOmni
+SetTarget --> "target" Target
+@enduml

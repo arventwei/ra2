@@ -1,0 +1,27 @@
+@startuml
+class TerrainLightSourceInfo {
+    + <<readonly>> Intensity : float = 0
+    + <<readonly>> RedTint : float = 0
+    + <<readonly>> GreenTint : float = 0
+    + <<readonly>> BlueTint : float = 0
+    AddedToEditor(preview:EditorActorPreview, editorWorld:World) : object
+    RemovedFromEditor(preview:EditorActorPreview, editorWorld:World, data:object) : void
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TerrainLightSource <<sealed>> {
+    lightingToken : int
+    + TerrainLightSource(self:Actor, info:TerrainLightSourceInfo)
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+}
+TraitInfo <|-- TerrainLightSourceInfo
+INotifyEditorPlacementInfo <|-- TerrainLightSourceInfo
+IRulesetLoaded <|-- TerrainLightSourceInfo
+ILobbyCustomRulesIgnore <|-- TerrainLightSourceInfo
+TerrainLightSourceInfo o-> "Range" WDist
+INotifyAddedToWorld <|-- TerrainLightSource
+INotifyRemovedFromWorld <|-- TerrainLightSource
+TerrainLightSource --> "info" TerrainLightSourceInfo
+TerrainLightSource --> "terrainLighting" TerrainLighting
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class IntroductionPromptLogic {
+    <<const>> IntroductionVersion : int = 1
+    + {static} ShouldShowPrompt() : bool
+    + IntroductionPromptLogic(widget:Widget, modData:ModData, worldRenderer:WorldRenderer, onComplete:Action)
+}
+ChromeLogic <|-- IntroductionPromptLogic
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+class SpawnMPUnitsInfo {
+    + <<readonly>> StartingUnitsClass : string = "none"
+    + <<readonly>> DropdownLabel : string = "Starting Units"
+    + <<readonly>> DropdownDescription : string = "Change the units that you start the game with"
+    + <<readonly>> DropdownLocked : bool = false
+    + <<readonly>> DropdownVisible : bool = true
+    + <<readonly>> DropdownDisplayOrder : int = 0
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SpawnMPUnits {
+    + SpawnMPUnits(info:SpawnMPUnitsInfo)
+    + WorldLoaded(world:World, wr:WorldRenderer) : void
+    SpawnUnitsForPlayer(w:World, p:Player) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- SpawnMPUnitsInfo
+"Requires`1" "<MPStartUnitsInfo>" <|-- SpawnMPUnitsInfo
+ILobbyOptions <|-- SpawnMPUnitsInfo
+IWorldLoaded <|-- SpawnMPUnits
+SpawnMPUnits --> "info" SpawnMPUnitsInfo
+@enduml

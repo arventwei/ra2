@@ -1,0 +1,20 @@
+@startuml
+class WithSpriteControlGroupDecorationInfo {
+    + <<readonly>> Palette : string = "chrome"
+    + <<readonly>> Image : string = "pips"
+    + <<readonly>> GroupSequence : string = "groups"
+    + <<readonly>> Position : string = "TopLeft"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithSpriteControlGroupDecoration {
+    + WithSpriteControlGroupDecoration(self:Actor, info:WithSpriteControlGroupDecorationInfo)
+    RequiresSelection : bool <<get>>
+    RenderDecoration(self:Actor, wr:WorldRenderer, container:ISelectionDecorations) : IEnumerable<IRenderable>
+}
+TraitInfo <|-- WithSpriteControlGroupDecorationInfo
+WithSpriteControlGroupDecorationInfo o-> "Margin" int2
+IDecoration <|-- WithSpriteControlGroupDecoration
+WithSpriteControlGroupDecoration --> "Info" WithSpriteControlGroupDecorationInfo
+WithSpriteControlGroupDecoration --> "self" Actor
+WithSpriteControlGroupDecoration --> "anim" Animation
+@enduml

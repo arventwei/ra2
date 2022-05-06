@@ -1,0 +1,16 @@
+@startuml
+class CaptureNotificationInfo {
+    + <<readonly>> Notification : string = "BuildingCaptured"
+    + <<readonly>> NewOwnerVoice : bool = true
+    + <<readonly>> LoseNotification : string = null
+    + <<readonly>> LoseNewOwnerVoice : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CaptureNotification {
+    + CaptureNotification(info:CaptureNotificationInfo)
+    OnCapture(self:Actor, captor:Actor, oldOwner:Player, newOwner:Player, captureTypes:BitSet<CaptureType>) : void
+}
+TraitInfo <|-- CaptureNotificationInfo
+INotifyCapture <|-- CaptureNotification
+CaptureNotification --> "info" CaptureNotificationInfo
+@enduml

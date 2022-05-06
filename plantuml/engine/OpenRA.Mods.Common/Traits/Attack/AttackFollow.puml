@@ -1,0 +1,57 @@
+@startuml
+class AttackFollowInfo {
+    + <<readonly>> OpportunityFire : bool = true
+    + <<readonly>> PersistentTargeting : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackFollow {
+    requestedForceAttack : bool
+    opportunityForceAttack : bool
+    opportunityTargetIsPersistentTarget : bool
+    + SetRequestedTarget(self:Actor, target:Target, isForceAttack:bool) : void
+    + ClearRequestedTarget() : void
+    + AttackFollow(self:Actor, info:AttackFollowInfo)
+    + <<override>> GetAttackActivity(self:Actor, source:AttackSource, newTarget:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : Activity
+    + <<override>> OnResolveAttackOrder(self:Actor, activity:Activity, target:Target, queued:bool, forceAttack:bool) : void
+    + <<override>> OnStopOrder(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    DisableAutoTarget(self:Actor) : bool
+    StanceChanged(self:Actor, autoTarget:AutoTarget, oldStance:UnitStance, newStance:UnitStance) : void
+}
+class AttackActivity {
+    <<readonly>> forceAttack : bool
+    <<readonly>> targetLineColor : Color?
+    useLastVisibleTarget : bool
+    wasMovingWithinRange : bool
+    hasTicked : bool
+    + AttackActivity(self:Actor, target:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    StanceChanged(self:Actor, autoTarget:AutoTarget, oldStance:UnitStance, newStance:UnitStance) : void
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+class "BitSet`1"<T> {
+}
+AttackBaseInfo <|-- AttackFollowInfo
+AttackFollowInfo o-> "RangeMargin" WDist
+AttackBase <|-- AttackFollow
+INotifyOwnerChanged <|-- AttackFollow
+IDisableAutoTarget <|-- AttackFollow
+INotifyStanceChanged <|-- AttackFollow
+AttackFollow --> "Info" AttackFollowInfo
+AttackFollow --> "RequestedTarget" Target
+AttackFollow --> "OpportunityTarget" Target
+AttackFollow --> "mobile" Mobile
+AttackFollow --> "autoTarget" AutoTarget
+AttackFollow --> "requestedTargetPresetForActivity" Activity
+AttackFollow +-- AttackActivity
+Activity <|-- AttackActivity
+IActivityNotifyStanceChanged <|-- AttackActivity
+AttackActivity --> "attack" AttackFollow
+AttackActivity --> "move" IMove
+AttackActivity --> "target" Target
+AttackActivity --> "lastVisibleTarget" Target
+AttackActivity --> "lastVisibleMaximumRange" WDist
+AttackActivity --> "lastVisibleMinimumRange" WDist
+AttackActivity --> "lastVisibleTargetTypes<TargetableType>" "BitSet`1"
+AttackActivity --> "lastVisibleOwner" Player
+@enduml

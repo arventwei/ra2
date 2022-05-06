@@ -1,0 +1,17 @@
+@startuml
+class VoiceAnnouncementInfo {
+    + <<readonly>> Voice : string = null
+    + <<readonly>> PlayToOwner : bool = true
+    + <<readonly>> OneShot : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class VoiceAnnouncement {
+    triggered : bool
+    + VoiceAnnouncement(info:VoiceAnnouncementInfo)
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- VoiceAnnouncementInfo
+VoiceAnnouncementInfo o-> "ValidRelationships" PlayerRelationship
+"ConditionalTrait`1" "<VoiceAnnouncementInfo>" <|-- VoiceAnnouncement
+@enduml

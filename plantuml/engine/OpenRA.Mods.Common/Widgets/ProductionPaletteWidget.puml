@@ -1,0 +1,112 @@
+@startuml
+class ProductionIcon {
+    + Name : string
+}
+class ProductionPaletteWidget {
+    + <<readonly>> Columns : int = 3
+    + <<readonly>> ClickSound : string
+    + <<readonly>> ClickDisabledSound : string
+    + <<readonly>> TooltipContainer : string
+    + <<readonly>> TooltipTemplate : string = "PRODUCTION_TOOLTIP"
+    + <<readonly>> HotkeyPrefix : string = null
+    + <<readonly>> HotkeyCount : int = 0
+    + <<readonly>> ClockAnimation : string = "clock"
+    + <<readonly>> ClockSequence : string = "idle"
+    + <<readonly>> ClockPalette : string = "chrome"
+    + <<readonly>> NotBuildableAnimation : string = "clock"
+    + <<readonly>> NotBuildableSequence : string = "idle"
+    + <<readonly>> NotBuildablePalette : string = "chrome"
+    + <<readonly>> OverlayFont : string = "TinyBold"
+    + <<readonly>> SymbolsFont : string = "Symbols"
+    + <<readonly>> DrawTime : bool = true
+    + <<readonly>> ReadyText : string = ""
+    + <<readonly>> HoldText : string = ""
+    + <<readonly>> InfiniteSymbol : string = "\u221E"
+    + DisplayedIconCount : int <<get>>
+    + TotalIconCount : int <<get>>
+    +  <<event>> OnIconCountChanged : Action<int, int> 
+    + MinimumRows : int = 4
+    + MaximumRows : int
+    + IconRowOffset : int = 0
+    + MaxIconRowOffset : int
+    + {static} LinterHotkeyNames(widgetNode:MiniYamlNode, emitError:Action<string>, emitWarning:Action<string>) : IEnumerable<string>
+    + ProductionPaletteWidget(modData:ModData, orderManager:OrderManager, world:World, worldRenderer:WorldRenderer)
+    + <<override>> Initialize(args:WidgetArgs) : void
+    + ScrollDown() : void
+    + CanScrollDown : bool <<get>>
+    + ScrollUp() : void
+    + CanScrollUp : bool <<get>>
+    + ScrollToTop() : void
+    + <<override>> Tick() : void
+    + <<override>> MouseEntered() : void
+    + <<override>> MouseExited() : void
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + PickUpCompletedBuilding() : void
+    HandleLeftClick(item:ProductionItem, icon:ProductionIcon, handleCount:int, modifiers:Modifiers) : bool
+    HandleRightClick(item:ProductionItem, icon:ProductionIcon, handleCount:int) : bool
+    HandleMiddleClick(item:ProductionItem, icon:ProductionIcon, handleCount:int) : bool
+    HandleEvent(icon:ProductionIcon, btn:MouseButton, modifiers:Modifiers) : bool
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+    SelectProductionBuilding() : bool
+    UpdateCachedProductionIconOverlays() : void
+    + RefreshIcons() : void
+    + <<override>> Draw() : void
+    + <<override>> GetCursor(pos:int2) : string
+}
+class "List`1"<T> {
+}
+enum ReadyTextStyleOptions {
+    Solid,
+    AlternatingColor,
+    Blinking,
+}
+class "Func`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+ProductionIcon --> "Actor" ActorInfo
+ProductionIcon --> "Hotkey" HotkeyReference
+ProductionIcon --> "Sprite" Sprite
+ProductionIcon --> "Palette" PaletteReference
+ProductionIcon --> "IconClockPalette" PaletteReference
+ProductionIcon --> "IconDarkenPalette" PaletteReference
+ProductionIcon --> "Pos" float2
+ProductionIcon --> "Queued<ProductionItem>" "List`1"
+ProductionIcon --> "ProductionQueue" ProductionQueue
+Widget <|-- ProductionPaletteWidget
+ProductionPaletteWidget o-> "ReadyTextStyle" ReadyTextStyleOptions
+ProductionPaletteWidget o-> "ReadyTextAltColor" Color
+ProductionPaletteWidget o-> "IconSize" int2
+ProductionPaletteWidget o-> "IconMargin" int2
+ProductionPaletteWidget o-> "IconSpriteOffset" int2
+ProductionPaletteWidget o-> "SelectProductionBuildingHotkey" HotkeyReference
+ProductionPaletteWidget --> "TooltipIcon" ProductionIcon
+ProductionPaletteWidget --> "GetTooltipIcon<ProductionIcon>" "Func`1"
+ProductionPaletteWidget --> "World" World
+ProductionPaletteWidget --> "modData" ModData
+ProductionPaletteWidget --> "orderManager" OrderManager
+ProductionPaletteWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+ProductionPaletteWidget --> "currentQueue" ProductionQueue
+ProductionPaletteWidget --> "CurrentQueue" ProductionQueue
+ProductionPaletteWidget --> "EventBounds" Rectangle
+ProductionPaletteWidget o-> "icons<Rectangle,ProductionIcon>" "Dictionary`2"
+ProductionPaletteWidget --> "cantBuild" Animation
+ProductionPaletteWidget --> "clock" Animation
+ProductionPaletteWidget o-> "eventBounds" Rectangle
+ProductionPaletteWidget --> "worldRenderer" WorldRenderer
+ProductionPaletteWidget --> "overlayFont" SpriteFont
+ProductionPaletteWidget --> "symbolFont" SpriteFont
+ProductionPaletteWidget --> "iconOffset" float2
+ProductionPaletteWidget --> "holdOffset" float2
+ProductionPaletteWidget --> "readyOffset" float2
+ProductionPaletteWidget --> "timeOffset" float2
+ProductionPaletteWidget --> "queuedOffset" float2
+ProductionPaletteWidget --> "infiniteOffset" float2
+ProductionPaletteWidget --> "cachedQueueOwner" Player
+ProductionPaletteWidget --> "AllBuildables<ActorInfo>" "IEnumerable`1"
+ProductionPaletteWidget +-- ReadyTextStyleOptions
+@enduml

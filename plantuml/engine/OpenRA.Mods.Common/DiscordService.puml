@@ -1,0 +1,31 @@
+@startuml
+enum DiscordState {
+    Unknown,
+    InMenu,
+    InMapEditor,
+    InSkirmishLobby,
+    InMultiplayerLobby,
+    PlayingMultiplayer,
+    WatchingReplay,
+    PlayingCampaign,
+    PlayingSkirmish,
+}
+class DiscordService <<sealed>> {
+    + <<readonly>> ApplicationId : string = null
+    + DiscordService(yaml:MiniYaml)
+    OnJoinRequested(sender:object, args:JoinRequestMessage) : void
+    OnJoin(sender:object, args:JoinMessage) : void
+    SetStatus(state:DiscordState, details:string, secret:string, players:int?, slots:int?) : void
+    UpdateParty(players:int, slots:int) : void
+    + Dispose() : void
+    + {static} UpdateStatus(state:DiscordState, details:string, secret:string, players:int?, slots:int?) : void
+    + {static} UpdatePlayers(players:int, slots:int) : void
+    + {static} UpdateDetails(details:string) : void
+}
+IGlobalModData <|-- DiscordService
+IDisposable <|-- DiscordService
+DiscordService --> "client" DiscordRpcClient
+DiscordService --> "currentState" DiscordState
+DiscordService --> "instance" DiscordService
+DiscordService --> "Service" DiscordService
+@enduml

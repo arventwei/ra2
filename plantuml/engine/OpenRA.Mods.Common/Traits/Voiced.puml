@@ -1,0 +1,17 @@
+@startuml
+class VoicedInfo {
+    + <<readonly>> VoiceSet : string = null
+    + <<readonly>> Volume : float = 1f
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Voiced {
+    + Voiced(self:Actor, info:VoicedInfo)
+    VoiceSet : string <<get>>
+    PlayVoice(self:Actor, phrase:string, variant:string) : bool
+    PlayVoiceLocal(self:Actor, phrase:string, variant:string, volume:float) : bool
+    HasVoice(self:Actor, voice:string) : bool
+}
+TraitInfo <|-- VoicedInfo
+IVoiced <|-- Voiced
+Voiced --> "Info" VoicedInfo
+@enduml

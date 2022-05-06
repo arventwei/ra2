@@ -1,0 +1,31 @@
+@startuml
+class SelectionBarsAnnotationRenderable <<struct>> {
+    <<readonly>> displayHealth : bool
+    <<readonly>> displayExtra : bool
+    + SelectionBarsAnnotationRenderable(actor:Actor, decorationBounds:Rectangle, displayHealth:bool, displayExtra:bool)
+    + SelectionBarsAnnotationRenderable(pos:WPos, actor:Actor, decorationBounds:Rectangle)
+    + DisplayHealth : bool <<get>>
+    + DisplayExtra : bool <<get>>
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    DrawExtraBars(wr:WorldRenderer, start:float2, end:float2) : void
+    DrawSelectionBar(wr:WorldRenderer, start:float2, end:float2, value:float, barColor:Color) : void
+    GetHealthColor(health:IHealth) : Color
+    DrawHealthBar(wr:WorldRenderer, health:IHealth, start:float2, end:float2) : void
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- SelectionBarsAnnotationRenderable
+IFinalizedRenderable <|-- SelectionBarsAnnotationRenderable
+SelectionBarsAnnotationRenderable --> "pos" WPos
+SelectionBarsAnnotationRenderable --> "actor" Actor
+SelectionBarsAnnotationRenderable --> "decorationBounds" Rectangle
+SelectionBarsAnnotationRenderable --> "Pos" WPos
+SelectionBarsAnnotationRenderable --> "Palette" PaletteReference
+@enduml

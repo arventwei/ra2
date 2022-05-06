@@ -1,0 +1,58 @@
+@startuml
+class FacingInit {
+    + FacingInit(value:WAngle)
+}
+class CreationActivityDelayInit {
+    + CreationActivityDelayInit(value:int)
+}
+class DynamicFacingInit {
+    + DynamicFacingInit(value:Func<WAngle>)
+}
+class SubCellInit {
+    <<readonly>> value : int
+    + SubCellInit(value:SubCell)
+    + Initialize(yaml:MiniYaml) : void
+    + Initialize(value:int) : void
+    + <<override>> Save() : MiniYaml
+}
+class CenterPositionInit {
+    + CenterPositionInit(value:WPos)
+}
+class FactionInit {
+    + FactionInit(value:string)
+}
+class EffectiveOwnerInit {
+    + EffectiveOwnerInit(value:Player)
+}
+class ActorInitLoader {
+    + <<override>> CanConvertFrom(context:ITypeDescriptorContext, sourceType:Type) : bool
+    + <<override>> ConvertFrom(context:ITypeDescriptorContext, culture:System.Globalization.CultureInfo, value:object) : object
+    + <<override>> CanConvertTo(context:ITypeDescriptorContext, destinationType:Type) : bool
+    + <<override>> ConvertTo(context:ITypeDescriptorContext, culture:System.Globalization.CultureInfo, value:object, destinationType:Type) : object
+}
+class ActorInitActorReference {
+    + <<readonly>> InternalName : string
+    + ActorInitActorReference(actor:Actor)
+    + ActorInitActorReference(internalName:string)
+    InnerValue(world:World) : Actor
+    + Actor(world:World) : Lazy<Actor>
+}
+class "ValueActorInit`1"<T> {
+}
+"ValueActorInit`1" "<WAngle>" <|-- FacingInit
+ISingleInstanceInit <|-- FacingInit
+"ValueActorInit`1" "<int>" <|-- CreationActivityDelayInit
+ISingleInstanceInit <|-- CreationActivityDelayInit
+"ValueActorInit`1" "<Func<WAngle>>" <|-- DynamicFacingInit
+ISingleInstanceInit <|-- DynamicFacingInit
+ActorInit <|-- SubCellInit
+ISingleInstanceInit <|-- SubCellInit
+SubCellInit --> "Value" SubCell
+"ValueActorInit`1" "<WPos>" <|-- CenterPositionInit
+ISingleInstanceInit <|-- CenterPositionInit
+"ValueActorInit`1" "<string>" <|-- FactionInit
+ISingleInstanceInit <|-- FactionInit
+"ValueActorInit`1" "<Player>" <|-- EffectiveOwnerInit
+TypeConverter <|-- ActorInitLoader
+ActorInitActorReference --> "actor" Actor
+@enduml

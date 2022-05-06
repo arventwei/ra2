@@ -1,0 +1,59 @@
+@startuml
+interface IScriptBindable {
+}
+interface IScriptNotifyBind {
+    OnScriptBind(context:ScriptContext) : void
+}
+class ScriptPropertyGroupAttribute <<sealed>> {
+    + <<readonly>> Category : string
+    + ScriptPropertyGroupAttribute(category:string)
+}
+class ExposedForDestroyedActors <<sealed>> {
+}
+class ScriptActorPropertyActivityAttribute <<sealed>> {
+}
+abstract class ScriptActorProperties {
+    + ScriptActorProperties(context:ScriptContext, self:Actor)
+}
+abstract class ScriptPlayerProperties {
+    + ScriptPlayerProperties(context:ScriptContext, player:Player)
+}
+abstract class ScriptGlobal {
+    + <<readonly>> Name : string
+    + ScriptGlobal(context:ScriptContext)
+}
+class ScriptGlobalAttribute <<sealed>> {
+    + <<readonly>> Name : string
+    + ScriptGlobalAttribute(name:string)
+}
+class ScriptContext <<sealed>> {
+    <<const>> MaxUserScriptMemory : int
+    <<const>> MaxUserScriptInstructions : int = 1000000
+    disposed : bool
+    + ScriptContext(world:World, worldRenderer:WorldRenderer, scripts:IEnumerable<string>)
+    LogDebugMessage(message:string) : void
+    + FatalErrorOccurred : bool <<get>>
+    + FatalError(message:string) : void
+    + RegisterMapActor(name:string, a:Actor) : void
+    + WorldLoaded() : void
+    + Tick(self:Actor) : void
+    + Dispose() : void
+    {static} ExtractRequiredTypes(t:Type) : IEnumerable<Type>
+    FilterActorCommands(ai:ActorInfo) : Type[]
+    FilterCommands(ai:ActorInfo, knownCommands:Type[]) : Type[]
+    + CreateTable() : LuaTable
+}
+class "Cache`2"<T1,T2> {
+}
+Attribute <|-- ScriptPropertyGroupAttribute
+Attribute <|-- ExposedForDestroyedActors
+Attribute <|-- ScriptActorPropertyActivityAttribute
+ScriptObjectWrapper <|-- ScriptGlobal
+Attribute <|-- ScriptGlobalAttribute
+IDisposable <|-- ScriptContext
+ScriptContext --> "World" World
+ScriptContext --> "WorldRenderer" WorldRenderer
+ScriptContext --> "runtime" MemoryConstrainedLuaRuntime
+ScriptContext --> "tick" LuaFunction
+ScriptContext --> "ActorCommands<ActorInfo,Type[]>" "Cache`2"
+@enduml

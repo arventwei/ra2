@@ -1,0 +1,24 @@
+@startuml
+class CaptureProgressBarInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CaptureProgressBar {
+    current : int
+    total : int
+    + CaptureProgressBar(self:Actor, info:CaptureProgressBarInfo)
+    Update(self:Actor, captor:Actor, target:Actor, current:int, total:int) : void
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- CaptureProgressBarInfo
+"Requires`1" "<CapturesInfo>" <|-- CaptureProgressBarInfo
+CaptureProgressBarInfo o-> "Color" Color
+"ConditionalTrait`1" "<CaptureProgressBarInfo>" <|-- CaptureProgressBar
+ISelectionBar <|-- CaptureProgressBar
+ICaptureProgressWatcher <|-- CaptureProgressBar
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+class Sdl2GraphicsContext <<sealed>> {
+    disposed : bool
+    + Sdl2GraphicsContext(window:Sdl2PlatformWindow)
+    + CreateVertexBuffer(size:int) : IVertexBuffer<Vertex>
+    + CreateTexture() : ITexture
+    + CreateFrameBuffer(s:Size) : IFrameBuffer
+    + CreateFrameBuffer(s:Size, clearColor:Color) : IFrameBuffer
+    + CreateFrameBuffer(s:Size, texture:ITextureInternal, clearColor:Color) : IFrameBuffer
+    + CreateShader(name:string) : IShader
+    + EnableScissor(x:int, y:int, width:int, height:int) : void
+    + DisableScissor() : void
+    + Present() : void
+    {static} ModeFromPrimitiveType(pt:PrimitiveType) : int
+    + DrawPrimitives(pt:PrimitiveType, firstVertex:int, numVertices:int) : void
+    + Clear() : void
+    + EnableDepthBuffer() : void
+    + DisableDepthBuffer() : void
+    + ClearDepthBuffer() : void
+    + SetBlendMode(mode:BlendMode) : void
+    + SetVSyncEnabled(enabled:bool) : void
+    + Dispose() : void
+    + GLVersion : string <<get>>
+}
+ThreadAffine <|-- Sdl2GraphicsContext
+IGraphicsContext <|-- Sdl2GraphicsContext
+Sdl2GraphicsContext --> "window" Sdl2PlatformWindow
+Sdl2GraphicsContext --> "context" IntPtr
+@enduml

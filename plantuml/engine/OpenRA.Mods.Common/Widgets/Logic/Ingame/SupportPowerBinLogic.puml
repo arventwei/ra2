@@ -1,0 +1,6 @@
+@startuml
+class SupportPowerBinLogic {
+    + SupportPowerBinLogic(widget:Widget, world:World)
+}
+ChromeLogic <|-- SupportPowerBinLogic
+@enduml

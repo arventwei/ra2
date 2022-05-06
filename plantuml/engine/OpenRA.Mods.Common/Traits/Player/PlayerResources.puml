@@ -1,0 +1,38 @@
+@startuml
+class PlayerResourcesInfo {
+    + <<readonly>> DefaultCashDropdownLabel : string = "Starting Cash"
+    + <<readonly>> DefaultCashDropdownDescription : string = "Change the amount of cash that players start with"
+    + <<readonly>> DefaultCash : int = 5000
+    + <<readonly>> DefaultCashDropdownLocked : bool = false
+    + <<readonly>> DefaultCashDropdownVisible : bool = true
+    + <<readonly>> DefaultCashDropdownDisplayOrder : int = 0
+    + <<readonly>> InsufficientFundsNotification : string = null
+    + <<readonly>> InsufficientFundsNotificationDelay : int = 750
+    + <<readonly>> CashTickUpNotification : string = null
+    + <<readonly>> CashTickDownNotification : string = null
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PlayerResources {
+    + PlayerResources(self:Actor, info:PlayerResourcesInfo)
+    + Cash : int
+    + Resources : int
+    + ResourceCapacity : int
+    + Earned : int
+    + Spent : int
+    lastNotificationTick : int
+    + ChangeCash(amount:int) : int
+    + CanGiveResources(amount:int) : bool
+    + GiveResources(num:int) : void
+    + TakeResources(num:int) : bool
+    + GiveCash(num:int) : void
+    + TakeCash(num:int, notifyLowFunds:bool) : bool
+    + AddStorage(capacity:int) : void
+    + RemoveStorage(capacity:int) : void
+}
+TraitInfo <|-- PlayerResourcesInfo
+ILobbyOptions <|-- PlayerResourcesInfo
+ISync <|-- PlayerResources
+PlayerResources --> "Info" PlayerResourcesInfo
+PlayerResources --> "owner" Player
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+class FallsToEarthInfo {
+    + <<readonly>> Explosion : string = "UnitExplode"
+    + <<readonly>> MaximumSpinSpeed : WAngle? = null
+    + <<readonly>> Moves : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class FallsToEarth {
+    + FallsToEarth(init:ActorInitializer, info:FallsToEarthInfo)
+    Disguised : bool <<get>>
+    Created(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- FallsToEarthInfo
+IRulesetLoaded <|-- FallsToEarthInfo
+"Requires`1" "<AircraftInfo>" <|-- FallsToEarthInfo
+FallsToEarthInfo o-> "Velocity" WDist
+FallsToEarthInfo --> "ExplosionWeapon" WeaponInfo
+IEffectiveOwner <|-- FallsToEarth
+INotifyCreated <|-- FallsToEarth
+FallsToEarth --> "info" FallsToEarthInfo
+FallsToEarth --> "effectiveOwner" Player
+FallsToEarth --> "Owner" Player
+@enduml

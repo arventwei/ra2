@@ -1,0 +1,58 @@
+@startuml
+class RefineryInfo {
+    + <<readonly>> IsDragRequired : bool = false
+    + <<readonly>> DragLength : int = 0
+    + <<readonly>> UseStorage : bool = true
+    + <<readonly>> DiscardExcessResources : bool = false
+    + <<readonly>> ShowTicks : bool = true
+    + <<readonly>> TickLifetime : int = 30
+    + <<readonly>> TickVelocity : int = 2
+    + <<readonly>> TickRate : int = 10
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Refinery {
+    currentDisplayTick : int = 0
+    currentDisplayValue : int = 0
+    preventDock : bool = false
+    + AllowDocking : bool <<get>>
+    + IsDragRequired : bool <<get>>
+    + DragLength : int <<get>>
+    + Refinery(self:Actor, info:RefineryInfo)
+    Created(self:Actor) : void
+    + <<virtual>> DockSequence(harv:Actor, self:Actor) : Activity
+    + GetLinkedHarvesters() : IEnumerable<TraitPair<Harvester>>
+    + CanGiveResource(amount:int) : bool
+    + GiveResource(amount:int) : void
+    CancelDock(self:Actor) : void
+    Tick(self:Actor) : void
+    Disposing(self:Actor) : void
+    + OnDock(harv:Actor, dockOrder:DeliverResources) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    OnCapture(self:Actor, captor:Actor, oldOwner:Player, newOwner:Player, captureTypes:BitSet<CaptureType>) : void
+    Selling(self:Actor) : void
+    Sold(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- RefineryInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- RefineryInfo
+IAcceptResourcesInfo <|-- RefineryInfo
+RefineryInfo o-> "DockAngle" WAngle
+RefineryInfo o-> "DockOffset" CVec
+RefineryInfo o-> "DragOffset" WVec
+INotifyCreated <|-- Refinery
+ITick <|-- Refinery
+IAcceptResources <|-- Refinery
+INotifySold <|-- Refinery
+INotifyCapture <|-- Refinery
+INotifyOwnerChanged <|-- Refinery
+ISync <|-- Refinery
+INotifyActorDisposing <|-- Refinery
+Refinery --> "self" Actor
+Refinery --> "info" RefineryInfo
+Refinery --> "playerResources" PlayerResources
+Refinery o-> "dockedHarv" Actor
+Refinery --> "DeliveryOffset" CVec
+Refinery --> "DeliveryAngle" WAngle
+Refinery --> "DragOffset" WVec
+@enduml

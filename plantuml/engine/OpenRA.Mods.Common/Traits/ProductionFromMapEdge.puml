@@ -1,0 +1,20 @@
+@startuml
+class ProductionFromMapEdgeInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ProductionFromMapEdge {
+    <<readonly>> spawnLocation : CPos?
+    + ProductionFromMapEdge(init:ActorInitializer, info:ProductionInfo)
+    + <<override>> Produce(self:Actor, producee:ActorInfo, productionType:string, inits:TypeDictionary, refundableValue:int) : bool
+}
+class ProductionSpawnLocationInit {
+    + ProductionSpawnLocationInit(info:TraitInfo, value:CPos)
+}
+class "ValueActorInit`1"<T> {
+}
+ProductionInfo <|-- ProductionFromMapEdgeInfo
+Production <|-- ProductionFromMapEdge
+ProductionFromMapEdge --> "domainIndex" DomainIndex
+ProductionFromMapEdge --> "rp" RallyPoint
+"ValueActorInit`1" "<CPos>" <|-- ProductionSpawnLocationInit
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+class D2kMapImporter {
+    <<const>> MapCordonWidth : int = 2
+    <<readonly>> tilesetName : string
+    playerCount : int
+    D2kMapImporter(filename:string, tileset:string, rules:Ruleset)
+    + {static} Import(filename:string, mod:string, tileset:string, rules:Ruleset) : Map
+    Initialize(mapFile:string) : void
+    FillMap() : void
+    GetCurrentTilePositionOnMap() : CPos
+    GetTile(tileIndex:int) : TerrainTile
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+D2kMapImporter o-> "ActorDataByActorCode<int,(string Actor, string Owner)>" "Dictionary`2"
+D2kMapImporter --> "rules" Ruleset
+D2kMapImporter --> "stream" FileStream
+D2kMapImporter --> "clearTile" TerrainTile
+D2kMapImporter --> "map" Map
+D2kMapImporter --> "mapSize" Size
+D2kMapImporter --> "tileSet" TileSet
+D2kMapImporter --> "tileSetsFromYaml<TerrainTemplateInfo>" "List`1"
+@enduml

@@ -1,0 +1,58 @@
+@startuml
+class ServerListLogic {
+    <<readonly>> joinButtonY : int
+    showNotices : bool
+    playerCount : int
+    + ProgressLabelText() : string
+    + ServerListLogic(widget:Widget, modData:ModData, onJoin:Action<GameServer>)
+    PlayersLabel(game:GameServer) : string
+    + RefreshServerList() : void
+    GroupSortOrder(testEntry:GameServer) : int
+    SelectServer(server:GameServer) : void
+    RefreshServerListInner(games:List<GameServer>) : void
+    LoadGameRows(games:List<GameServer>, nextServerRow:ScrollItemWidget) : List<Widget>
+    {static} GetStateLabel(game:GameServer) : string
+    GetStateColor(game:GameServer, label:LabelWidget, darkened:bool) : Color
+    Filtered(game:GameServer) : bool
+    disposed : bool
+}
+class "Action`1"<T> {
+}
+enum SearchStatus {
+    Fetching,
+    Failed,
+    NoGames,
+    Hidden,
+}
+class "IEnumerable`1"<T> {
+}
+ChromeLogic <|-- ServerListLogic
+ServerListLogic --> "incompatibleVersionColor" Color
+ServerListLogic --> "incompatibleProtectedGameColor" Color
+ServerListLogic --> "protectedGameColor" Color
+ServerListLogic --> "incompatibleWaitingGameColor" Color
+ServerListLogic --> "waitingGameColor" Color
+ServerListLogic --> "incompatibleGameStartedColor" Color
+ServerListLogic --> "gameStartedColor" Color
+ServerListLogic --> "incompatibleGameColor" Color
+ServerListLogic --> "modData" ModData
+ServerListLogic --> "services" WebServices
+ServerListLogic --> "lanGameProbe" Probe
+ServerListLogic --> "serverList" Widget
+ServerListLogic --> "serverTemplate" ScrollItemWidget
+ServerListLogic --> "headerTemplate" ScrollItemWidget
+ServerListLogic --> "noticeContainer" Widget
+ServerListLogic --> "clientContainer" Widget
+ServerListLogic --> "clientList" ScrollPanelWidget
+ServerListLogic --> "clientTemplate" ScrollItemWidget
+ServerListLogic --> "clientHeader" ScrollItemWidget
+ServerListLogic --> "mapPreview" MapPreviewWidget
+ServerListLogic --> "joinButton" ButtonWidget
+ServerListLogic --> "onJoin<GameServer>" "Action`1"
+ServerListLogic --> "currentServer" GameServer
+ServerListLogic --> "currentMap" MapPreview
+ServerListLogic o-> "searchStatus" SearchStatus
+ServerListLogic --> "currentQuery" Download
+ServerListLogic --> "lanGameLocations<BeaconLocation>" "IEnumerable`1"
+ServerListLogic +-- SearchStatus
+@enduml

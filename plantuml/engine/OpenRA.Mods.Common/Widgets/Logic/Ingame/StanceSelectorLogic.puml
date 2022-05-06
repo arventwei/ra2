@@ -1,0 +1,11 @@
+@startuml
+class StanceSelectorLogic {
+    selectionHash : int
+    + StanceSelectorLogic(widget:Widget, world:World)
+    BindStanceButton(button:ButtonWidget, stance:UnitStance) : void
+    UpdateStateIfNecessary() : void
+    SetSelectionStance(stance:UnitStance) : void
+}
+ChromeLogic <|-- StanceSelectorLogic
+StanceSelectorLogic --> "world" World
+@enduml

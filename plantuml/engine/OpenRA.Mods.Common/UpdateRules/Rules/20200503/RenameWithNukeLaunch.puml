@@ -1,0 +1,8 @@
+@startuml
+class RenameWithNukeLaunch {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+}
+UpdateRule <|-- RenameWithNukeLaunch
+@enduml

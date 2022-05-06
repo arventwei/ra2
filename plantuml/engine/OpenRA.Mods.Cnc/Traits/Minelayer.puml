@@ -1,0 +1,70 @@
+@startuml
+class MinelayerInfo {
+    + <<readonly>> Mine : string = "minv"
+    + <<readonly>> AmmoPoolName : string = "primary"
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> TileValidName : string = "build-valid"
+    + <<readonly>> TileInvalidName : string = "build-invalid"
+    + <<readonly>> TileUnknownName : string = "build-unknown"
+    + <<readonly>> DeployCursor : string = "deploy"
+    + <<readonly>> DeployBlockedCursor : string = "deploy-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Minelayer {
+    + Minelayer(self:Actor, info:MinelayerInfo)
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    IssueDeployOrder(self:Actor, queued:bool) : Order
+    CanIssueDeployOrder(self:Actor, queued:bool) : bool
+    ResolveOrder(self:Actor, order:Order) : void
+    Tick(self:Actor) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    {static} GetMinefieldCells(start:CPos, end:CPos, depth:WDist) : IEnumerable<CPos>
+    + IsCellAcceptable(self:Actor, cell:CPos) : bool
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class MinefieldOrderGenerator {
+    <<readonly>> queued : bool
+    + MinefieldOrderGenerator(a:Actor, xy:CPos, queued:bool)
+    + AddMinelayer(a:Actor, xy:CPos) : void
+}
+class BeginMinefieldOrderTargeter {
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+    + IsQueued : bool <<get>> <<protected set>>
+}
+class "List`1"<T> {
+}
+TraitInfo <|-- MinelayerInfo
+"Requires`1" "<RearmableInfo>" <|-- MinelayerInfo
+MinelayerInfo o-> "MinefieldDepth" WDist
+MinelayerInfo o-> "TargetLineColor" Color
+MinelayerInfo o-> "TerrainTypes<string>" "HashSet`1"
+IIssueOrder <|-- Minelayer
+IResolveOrder <|-- Minelayer
+ISync <|-- Minelayer
+IIssueDeployOrder <|-- Minelayer
+IOrderVoice <|-- Minelayer
+ITick <|-- Minelayer
+Minelayer --> "Info" MinelayerInfo
+Minelayer --> "Tile" Sprite
+Minelayer --> "self" Actor
+Minelayer --> "minefieldStart" CPos
+Minelayer --> "Orders<IOrderTargeter>" "IEnumerable`1"
+Minelayer +-- MinefieldOrderGenerator
+OrderGenerator <|-- MinefieldOrderGenerator
+MinefieldOrderGenerator --> "minelayers<Actor>" "List`1"
+MinefieldOrderGenerator --> "minelayer" Minelayer
+MinefieldOrderGenerator --> "tileOk" Sprite
+MinefieldOrderGenerator --> "tileUnknown" Sprite
+MinefieldOrderGenerator --> "tileBlocked" Sprite
+MinefieldOrderGenerator --> "minefieldStart" CPos
+Minelayer +-- BeginMinefieldOrderTargeter
+IOrderTargeter <|-- BeginMinefieldOrderTargeter
+@enduml

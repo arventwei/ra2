@@ -1,0 +1,11 @@
+@startuml
+class TiberianSunRefineryInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TiberianSunRefinery {
+    + TiberianSunRefinery(self:Actor, info:RefineryInfo)
+    + <<override>> DockSequence(harv:Actor, self:Actor) : Activity
+}
+RefineryInfo <|-- TiberianSunRefineryInfo
+Refinery <|-- TiberianSunRefinery
+@enduml

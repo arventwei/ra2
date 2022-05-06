@@ -1,0 +1,62 @@
+@startuml
+class HuskInfo {
+    ActorPreviewInits(ai:ActorInfo, type:ActorPreviewType) : IEnumerable<ActorInit>
+    + <<override>> Create(init:ActorInitializer) : object
+    + GetInitialFacing() : WAngle
+    + OccupiedCells(info:ActorInfo, location:CPos, subCell:SubCell) : IReadOnlyDictionary<CPos, SubCell>
+    SharesCell : bool <<get>>
+    + CanEnterCell(world:World, self:Actor, cell:CPos, subCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : bool
+}
+class Husk {
+    <<readonly>> dragSpeed : int
+    + Husk(init:ActorInitializer, info:HuskInfo)
+    Created(self:Actor) : void
+    + CanExistInCell(cell:CPos) : bool
+    + OccupiedCells() : (CPos, SubCell)[]
+    + IsLeavingCell(location:CPos, subCell:SubCell) : bool
+    + GetValidSubCell(preferred:SubCell) : SubCell
+    + GetAvailableSubCell(cell:CPos, preferredSubCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : SubCell
+    + CanEnterCell(a:CPos, ignoreActor:Actor, check:BlockedByActor) : bool
+    + SetPosition(self:Actor, cell:CPos, subCell:SubCell) : void
+    + SetVisualPosition(self:Actor, pos:WPos) : void
+    + SetPosition(self:Actor, pos:WPos) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    ModifyDeathActorInit(self:Actor, init:TypeDictionary) : void
+    Disguised : bool <<get>>
+}
+class HuskSpeedInit {
+    + HuskSpeedInit(value:int)
+}
+class "HashSet`1"<T> {
+}
+class "ValueActorInit`1"<T> {
+}
+TraitInfo <|-- HuskInfo
+IPositionableInfo <|-- HuskInfo
+IFacingInfo <|-- HuskInfo
+IActorPreviewInitInfo <|-- HuskInfo
+HuskInfo o-> "AllowedTerrain<string>" "HashSet`1"
+HuskInfo o-> "PreviewFacing" WAngle
+IPositionable <|-- Husk
+IFacing <|-- Husk
+ISync <|-- Husk
+INotifyCreated <|-- Husk
+INotifyAddedToWorld <|-- Husk
+INotifyRemovedFromWorld <|-- Husk
+IDeathActorInitModifier <|-- Husk
+IEffectiveOwner <|-- Husk
+Husk --> "self" Actor
+Husk --> "info" HuskInfo
+Husk --> "effectiveOwner" Player
+Husk --> "finalPosition" WPos
+Husk --> "TopLeft" CPos
+Husk --> "CenterPosition" WPos
+Husk --> "orientation" WRot
+Husk --> "Facing" WAngle
+Husk --> "Orientation" WRot
+Husk --> "TurnSpeed" WAngle
+Husk --> "Owner" Player
+"ValueActorInit`1" "<int>" <|-- HuskSpeedInit
+ISingleInstanceInit <|-- HuskSpeedInit
+@enduml

@@ -1,0 +1,58 @@
+@startuml
+class OrderManager <<sealed>> {
+    + <<readonly>> Password : string = ""
+    + ServerError : string = null
+    + AuthenticationFailed : bool = false
+    + NetFrameNumber : int <<get>>
+    + LocalFrameNumber : int
+    + FramesAhead : int = 0
+    + LastTickTime : long
+    + GameStarted : bool <<get>>
+    disposed : bool
+    generateSyncReport : bool = false
+    OutOfSync(frame:int) : void
+    + StartGame() : void
+    + OrderManager(endpoint:ConnectionTarget, password:string, conn:IConnection)
+    + IssueOrders(orders:Order[]) : void
+    + IssueOrder(order:Order) : void
+    CacheChatLine(name:string, nameColor:Color, text:string, textColor:Color) : void
+    + TickImmediate() : void
+    CheckSync(packet:byte[]) : void
+    + IsReadyForNextFrame : bool <<get>>
+    + Tick() : void
+    + Dispose() : void
+}
+class ChatLine {
+    + <<readonly>> Name : string
+    + <<readonly>> Text : string
+    + ChatLine(name:string, nameColor:Color, text:string, textColor:Color)
+}
+class "IEnumerable`1"<T> {
+}
+class "List`1"<T> {
+}
+class "ReadOnlyList`1"<T> {
+}
+class "Action`4"<T1,T2,T3,T4> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+IDisposable <|-- OrderManager
+OrderManager o-> "NoClients<Session.Client>" "IEnumerable`1"
+OrderManager --> "syncReport" SyncReport
+OrderManager o-> "frameData" FrameData
+OrderManager o-> "LobbyInfo" Session
+OrderManager --> "World" World
+OrderManager --> "Endpoint" ConnectionTarget
+OrderManager o-> "ServerExternalMod" ExternalMod
+OrderManager --> "Connection" IConnection
+OrderManager o-> "localOrders<Order>" "List`1"
+OrderManager o-> "localImmediateOrders<Order>" "List`1"
+OrderManager o-> "chatCache<ChatLine>" "List`1"
+OrderManager --> "ChatCache<ChatLine>" "ReadOnlyList`1"
+OrderManager o-> "AddChatLine<string,Color,string,Color>" "Action`4"
+OrderManager o-> "syncForFrame<int,byte[]>" "Dictionary`2"
+OrderManager --> "GetClientsNotReadyForNextFrame<Session.Client>" "IEnumerable`1"
+ChatLine --> "Color" Color
+ChatLine --> "TextColor" Color
+@enduml

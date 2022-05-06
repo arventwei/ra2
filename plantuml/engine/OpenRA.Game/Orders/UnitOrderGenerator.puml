@@ -1,0 +1,28 @@
+@startuml
+class UnitOrderGenerator {
+    {static} TargetForInput(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : Target
+    + <<virtual>> Order(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : IEnumerable<Order>
+    + <<virtual>> Tick(world:World) : void
+    + <<virtual>> Render(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    + <<virtual>> RenderAboveShroud(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    + <<virtual>> RenderAnnotations(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    + <<virtual>> GetCursor(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : string
+    + Deactivate() : void
+    HandleKeyPress(e:KeyInput) : bool
+    + <<virtual>> InputOverridesSelection(world:World, xy:int2, mi:MouseInput) : bool
+    + <<virtual>> SelectionChanged(world:World, selected:IEnumerable<Actor>) : void
+    {static} OrderForUnit(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, mi:MouseInput) : UnitOrderResult
+    {static} CheckSameOrder(iot:IOrderTargeter, order:Order) : Order
+    + <<virtual>> ClearSelectionOnLeftClick : bool <<get>>
+}
+class UnitOrderResult {
+    + <<readonly>> Cursor : string
+    + UnitOrderResult(actor:Actor, order:IOrderTargeter, trait:IIssueOrder, cursor:string, target:Target)
+}
+IOrderGenerator <|-- UnitOrderGenerator
+UnitOrderGenerator +-- UnitOrderResult
+UnitOrderResult --> "Actor" Actor
+UnitOrderResult --> "Order" IOrderTargeter
+UnitOrderResult --> "Trait" IIssueOrder
+UnitOrderResult --> "target" Target
+@enduml

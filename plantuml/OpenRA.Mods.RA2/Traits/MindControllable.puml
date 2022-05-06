@@ -1,0 +1,28 @@
+@startuml
+class MindControllableInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> FallbackOwner : string = "Creeps"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MindControllable {
+    controlChanging : bool
+    token : int
+    + MindControllable(self:Actor, info:MindControllableInfo)
+    + LinkMaster(self:Actor, master:Actor) : void
+    + UnlinkMaster(self:Actor, master:Actor) : void
+    + RevokeMindControl(self:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+    Disposing(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- MindControllableInfo
+"PausableConditionalTrait`1" "<MindControllableInfo>" <|-- MindControllable
+INotifyKilled <|-- MindControllable
+INotifyActorDisposing <|-- MindControllable
+INotifyOwnerChanged <|-- MindControllable
+MindControllable --> "info" MindControllableInfo
+MindControllable --> "creatorOwner" Player
+MindControllable --> "Master" Actor
+@enduml

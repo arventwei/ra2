@@ -1,0 +1,80 @@
+@startuml
+class BaseBuilderBotModuleInfo {
+    + <<readonly>> MinBaseRadius : int = 2
+    + <<readonly>> MaxBaseRadius : int = 20
+    + <<readonly>> MinimumExcessPower : int = 0
+    + <<readonly>> MaximumExcessPower : int = 0
+    + <<readonly>> ExcessPowerIncrement : int = 0
+    + <<readonly>> ExcessPowerIncreaseThreshold : int = 1
+    + <<readonly>> InititalMinimumRefineryCount : int = 1
+    + <<readonly>> AdditionalMinimumRefineryCount : int = 1
+    + <<readonly>> StructureProductionInactiveDelay : int = 125
+    + <<readonly>> StructureProductionActiveDelay : int = 0
+    + <<readonly>> StructureProductionRandomBonusDelay : int = 10
+    + <<readonly>> StructureProductionResumeDelay : int = 1500
+    + <<readonly>> MaximumFailedPlacementAttempts : int = 3
+    + <<readonly>> MaxResourceCellsToCheck : int = 3
+    + <<readonly>> CheckForNewBasesDelay : int = 1500
+    + <<readonly>> PlaceDefenseTowardsEnemyChance : int = 100
+    + <<readonly>> MinimumDefenseRadius : int = 5
+    + <<readonly>> MaximumDefenseRadius : int = 20
+    + <<readonly>> NewProductionCashThreshold : int = 5000
+    + <<readonly>> RallyPointScanRadius : int = 8
+    + <<readonly>> CheckForWaterRadius : int = 8
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BaseBuilderBotModule {
+    + GetRandomBaseCenter() : CPos
+    + BaseBuilderBotModule(self:Actor, info:BaseBuilderBotModuleInfo)
+    UpdatedBaseCenter(newLocation:CPos) : void
+    UpdatedDefenseCenter(newLocation:CPos) : void
+    PauseUnitProduction : bool <<get>>
+    BotTick(bot:IBot) : void
+    RespondToAttack(bot:IBot, self:Actor, e:AttackInfo) : void
+    SetRallyPointsForNewProductionBuildings(bot:IBot) : void
+    ChooseRallyLocationNear(producer:Actor) : CPos
+    IsRallyPointValid(x:CPos, info:BuildingInfo) : bool
+    + HasAdequateRefineryCount : bool <<get>>
+    MinimumRefineryCount : int <<get>>
+    IssueTraitData(self:Actor) : List<MiniYamlNode>
+    ResolveTraitData(self:Actor, data:List<MiniYamlNode>) : void
+}
+class "HashSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "List`1"<T> {
+}
+ConditionalTraitInfo <|-- BaseBuilderBotModuleInfo
+BaseBuilderBotModuleInfo o-> "ConstructionYardTypes<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "VehiclesFactoryTypes<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "RefineryTypes<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "PowerTypes<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "BarracksTypes<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "ProductionTypes<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "NavalProductionTypes<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "SiloTypes<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "BuildingQueues<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "DefenseQueues<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "WaterTerrainTypes<string>" "HashSet`1"
+BaseBuilderBotModuleInfo o-> "BuildingFractions<string,int>" "Dictionary`2"
+BaseBuilderBotModuleInfo o-> "BuildingLimits<string,int>" "Dictionary`2"
+BaseBuilderBotModuleInfo o-> "BuildingDelays<string,int>" "Dictionary`2"
+"ConditionalTrait`1" "<BaseBuilderBotModuleInfo>" <|-- BaseBuilderBotModule
+IGameSaveTraitData <|-- BaseBuilderBotModule
+IBotTick <|-- BaseBuilderBotModule
+IBotPositionsUpdated <|-- BaseBuilderBotModule
+IBotRespondToAttack <|-- BaseBuilderBotModule
+IBotRequestPauseUnitProduction <|-- BaseBuilderBotModule
+BaseBuilderBotModule --> "DefenseCenter" CPos
+BaseBuilderBotModule --> "world" World
+BaseBuilderBotModule --> "player" Player
+BaseBuilderBotModule --> "playerPower" PowerManager
+BaseBuilderBotModule --> "playerResources" PlayerResources
+BaseBuilderBotModule --> "resourceTypeIndices" BitArray
+BaseBuilderBotModule --> "initialBaseCenter" CPos
+BaseBuilderBotModule --> "defenseCenter" CPos
+BaseBuilderBotModule o-> "builders<BaseBuilderQueueManager>" "List`1"
+@enduml

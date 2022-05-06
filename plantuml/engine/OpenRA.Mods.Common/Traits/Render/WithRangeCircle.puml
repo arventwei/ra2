@@ -1,0 +1,36 @@
+@startuml
+enum RangeCircleVisibility {
+    Always,
+    WhenSelected,
+}
+class WithRangeCircleInfo {
+    + <<readonly>> Type : string = null
+    + <<readonly>> Width : float = 1
+    + <<readonly>> BorderWidth : float = 3
+    + <<readonly>> UsePlayerColor : bool = false
+    + RenderAnnotations(wr:WorldRenderer, w:World, ai:ActorInfo, centerPosition:WPos) : IEnumerable<IRenderable>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithRangeCircle {
+    + WithRangeCircle(self:Actor, info:WithRangeCircleInfo)
+    Visible : bool <<get>>
+    + RenderRangeCircle(self:Actor, wr:WorldRenderer, visibility:RangeCircleVisibility) : IEnumerable<IRenderable>
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithRangeCircleInfo
+IPlaceBuildingDecorationInfo <|-- WithRangeCircleInfo
+WithRangeCircleInfo o-> "Color" Color
+WithRangeCircleInfo o-> "BorderColor" Color
+WithRangeCircleInfo o-> "ValidRelationships" PlayerRelationship
+WithRangeCircleInfo o-> "Visible" RangeCircleVisibility
+WithRangeCircleInfo o-> "Range" WDist
+"ConditionalTrait`1" "<WithRangeCircleInfo>" <|-- WithRangeCircle
+IRenderAnnotationsWhenSelected <|-- WithRangeCircle
+IRenderAnnotations <|-- WithRangeCircle
+WithRangeCircle --> "self" Actor
+@enduml

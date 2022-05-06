@@ -1,0 +1,8 @@
+@startuml
+class ChangeOwnerWarhead {
+    + <<readonly>> Duration : int = 0
+    + <<override>> DoImpact(target:Target, args:WarheadArgs) : void
+}
+Warhead <|-- ChangeOwnerWarhead
+ChangeOwnerWarhead o-> "Range" WDist
+@enduml

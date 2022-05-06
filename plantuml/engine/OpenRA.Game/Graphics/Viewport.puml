@@ -1,0 +1,66 @@
+@startuml
+enum ScrollDirection {
+    None= 0,
+    Up= 1,
+    Left= 2,
+    Down= 4,
+    Right= 8,
+}
+interface INotifyViewportZoomExtentsChanged {
+    ViewportZoomExtentsChanged(minZoom:float, maxZoom:float) : void
+}
+class ViewportExts <<static>> {
+    + {static} Includes(d:ScrollDirection, s:ScrollDirection) : bool
+    + {static} Set(d:ScrollDirection, s:ScrollDirection, val:bool) : ScrollDirection
+}
+class Viewport {
+    cellsDirty : bool = true
+    allCellsDirty : bool = true
+    zoom : float = 1f
+    minZoom : float = 1f
+    maxZoom : float = 2f
+    unlockMinZoom : bool
+    unlockedMinZoomScale : float
+    unlockedMinZoom : float = 1f
+    + Zoom : float <<get>>
+    + MinZoom : float <<get>>
+    + AdjustZoom(dz:float) : void
+    + AdjustZoom(dz:float, center:int2) : void
+    + ToggleZoom() : void
+    + UnlockMinimumZoom(scale:float) : void
+    + {static} LastMoveRunTime : long = 0
+    ClosestTo(collection:float[], target:float) : float
+    + GetBlockedDirections() : ScrollDirection
+    + Viewport(wr:WorldRenderer, map:Map)
+    + Tick() : void
+    CalculateMinimumZoom(minHeight:float, maxHeight:float) : float
+    UpdateViewportZooms(resetCurrentZoom:bool) : void
+    + ViewToWorld(view:int2) : CPos
+    CandidateMouseoverCells(world:int2) : IEnumerable<MPos>
+    + ViewToWorldPx(view:int2) : int2
+    + WorldToViewPx(world:int2) : int2
+    + WorldToViewPx(world:float3) : int2
+    + Center(actors:IEnumerable<Actor>) : void
+    + Center(pos:WPos) : void
+    + Scroll(delta:float2, ignoreBorders:bool) : void
+    + GetScissorBounds(insideBounds:bool) : Rectangle
+    CalculateVisibleCells(insideBounds:bool) : ProjectedCellRegion
+}
+Viewport --> "worldRenderer" WorldRenderer
+Viewport --> "viewportSizes" WorldViewportSizes
+Viewport --> "graphicSettings" GraphicSettings
+Viewport --> "mapBounds" Rectangle
+Viewport --> "tileSize" Size
+Viewport --> "CenterLocation" int2
+Viewport --> "CenterPosition" WPos
+Viewport --> "Rectangle" Rectangle
+Viewport --> "TopLeft" int2
+Viewport --> "BottomRight" int2
+Viewport --> "viewportSize" int2
+Viewport --> "cells" ProjectedCellRegion
+Viewport --> "allCells" ProjectedCellRegion
+Viewport --> "lastViewportDistance" WorldViewport
+Viewport --> "LastMousePos" int2
+Viewport --> "VisibleCellsInsideBounds" ProjectedCellRegion
+Viewport --> "AllVisibleCells" ProjectedCellRegion
+@enduml

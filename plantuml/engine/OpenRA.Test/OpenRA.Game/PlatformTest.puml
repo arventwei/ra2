@@ -1,0 +1,8 @@
+@startuml
+class PlatformTest {
+    supportDir : string
+    engineDir : string
+    + SetUp() : void
+    + ResolvePath() : void
+}
+@enduml

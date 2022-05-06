@@ -1,0 +1,36 @@
+@startuml
+class WAngle <<struct>> {
+    + <<readonly>> Angle : int
+    + AngleSquared : int <<get>>
+    + WAngle(a:int)
+    + {static} FromFacing(facing:int) : WAngle
+    + {static} FromDegrees(degrees:int) : WAngle
+    + <<override>> GetHashCode() : int
+    + Equals(other:WAngle) : bool
+    + <<override>> Equals(obj:object) : bool
+    + Facing : int <<get>>
+    + Sin() : int
+    + Cos() : int
+    + Tan() : int
+    + {static} Lerp(a:WAngle, b:WAngle, mul:int, div:int) : WAngle
+    + {static} ArcSin(d:int) : WAngle
+    + {static} ArcCos(d:int) : WAngle
+    {static} ClosestCosineIndex(value:int) : int
+    + {static} ArcTan(y:int, x:int) : WAngle
+    + {static} ArcTan(y:int, x:int, stride:int) : WAngle
+    + RendererRadians() : float
+    + RendererDegrees() : float
+    + <<override>> ToString() : string
+    + Add(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Subtract(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Equals(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+}
+class "IEquatable`1"<T> {
+}
+IScriptBindable <|-- WAngle
+ILuaAdditionBinding <|-- WAngle
+ILuaSubtractionBinding <|-- WAngle
+ILuaEqualityBinding <|-- WAngle
+"IEquatable`1" "<WAngle>" <|-- WAngle
+WAngle o-> "Zero" WAngle
+@enduml

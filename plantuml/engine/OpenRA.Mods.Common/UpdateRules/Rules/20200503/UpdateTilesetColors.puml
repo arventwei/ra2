@@ -1,0 +1,8 @@
+@startuml
+class UpdateTilesetColors {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> UpdateTilesetNode(modData:ModData, tilesetNode:MiniYamlNode) : IEnumerable<string>
+}
+UpdateRule <|-- UpdateTilesetColors
+@enduml

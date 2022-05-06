@@ -1,0 +1,42 @@
+@startuml
+class RepairableBuildingInfo {
+    + <<readonly>> RepairPercent : int = 20
+    + <<readonly>> RepairInterval : int = 24
+    + <<readonly>> RepairStep : int = 7
+    + <<readonly>> CancelWhenDisabled : bool = false
+    + <<readonly>> PlayerExperience : int = 0
+    + <<readonly>> RepairCondition : string = null
+    + <<readonly>> RepairingNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RepairableBuilding {
+    remainingTicks : int
+    + RepairActive : bool <<get>>
+    + RepairableBuilding(self:Actor, info:RepairableBuildingInfo)
+    + RepairersHash : int <<get>>
+    UpdateCondition(self:Actor) : void
+    + RepairBuilding(self:Actor, player:Player) : void
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Predicate`1"<T> {
+}
+class "Stack`1"<T> {
+}
+class "List`1"<T> {
+}
+ConditionalTraitInfo <|-- RepairableBuildingInfo
+"Requires`1" "<IHealthInfo>" <|-- RepairableBuildingInfo
+RepairableBuildingInfo o-> "RepairDamageTypes<DamageType>" "BitSet`1"
+"ConditionalTrait`1" "<RepairableBuildingInfo>" <|-- RepairableBuilding
+ITick <|-- RepairableBuilding
+RepairableBuilding --> "health" IHealth
+RepairableBuilding --> "isNotActiveAlly<Player>" "Predicate`1"
+RepairableBuilding o-> "repairTokens<int>" "Stack`1"
+RepairableBuilding o-> "Repairers<Player>" "List`1"
+@enduml

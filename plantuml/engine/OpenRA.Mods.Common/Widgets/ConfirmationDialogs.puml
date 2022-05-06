@@ -1,0 +1,6 @@
+@startuml
+class ConfirmationDialogs <<static>> {
+    + {static} ButtonPrompt(title:string, text:string, onConfirm:Action, onCancel:Action, onOther:Action, confirmText:string, cancelText:string, otherText:string) : void
+    + {static} TextInputPrompt(title:string, prompt:string, initialText:string, onAccept:Action<string>, onCancel:Action, acceptText:string, cancelText:string, inputValidator:Func<string, bool>) : void
+}
+@enduml

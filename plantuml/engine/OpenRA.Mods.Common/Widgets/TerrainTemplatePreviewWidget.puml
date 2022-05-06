@@ -1,0 +1,16 @@
+@startuml
+class TerrainTemplatePreviewWidget {
+    + TerrainTemplatePreviewWidget(worldRenderer:WorldRenderer, world:World)
+    + <<override>> Clone() : Widget
+    + <<override>> Draw() : void
+}
+class "Func`1"<T> {
+}
+Widget <|-- TerrainTemplatePreviewWidget
+TerrainTemplatePreviewWidget o-> "GetScale<float>" "Func`1"
+TerrainTemplatePreviewWidget --> "worldRenderer" WorldRenderer
+TerrainTemplatePreviewWidget --> "tileset" TileSet
+TerrainTemplatePreviewWidget --> "template" TerrainTemplateInfo
+TerrainTemplatePreviewWidget --> "bounds" Rectangle
+TerrainTemplatePreviewWidget --> "Template" TerrainTemplateInfo
+@enduml

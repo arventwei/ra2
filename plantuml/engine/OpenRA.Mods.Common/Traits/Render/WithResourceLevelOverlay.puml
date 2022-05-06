@@ -1,0 +1,27 @@
+@startuml
+class WithResourceLevelOverlayInfo {
+    + <<readonly>> Sequence : string = "resources"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithResourceLevelOverlay {
+    + WithResourceLevelOverlay(self:Actor, info:WithResourceLevelOverlayInfo)
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithResourceLevelOverlayInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithResourceLevelOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithResourceLevelOverlayInfo
+"ConditionalTrait`1" "<WithResourceLevelOverlayInfo>" <|-- WithResourceLevelOverlay
+INotifyOwnerChanged <|-- WithResourceLevelOverlay
+INotifyDamageStateChanged <|-- WithResourceLevelOverlay
+WithResourceLevelOverlay --> "anim" AnimationWithOffset
+WithResourceLevelOverlay --> "rs" RenderSprites
+WithResourceLevelOverlay --> "wsb" WithSpriteBody
+WithResourceLevelOverlay --> "playerResources" PlayerResources
+@enduml

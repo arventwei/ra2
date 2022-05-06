@@ -1,0 +1,10 @@
+@startuml
+class DonateExperience {
+    <<readonly>> level : int
+    <<readonly>> playerExperience : int
+    + DonateExperience(self:Actor, target:Target, level:int, playerExperience:int, targetLineColor:Color?)
+}
+Enter <|-- DonateExperience
+DonateExperience --> "enterActor" Actor
+DonateExperience --> "enterGainsExperience" GainsExperience
+@enduml

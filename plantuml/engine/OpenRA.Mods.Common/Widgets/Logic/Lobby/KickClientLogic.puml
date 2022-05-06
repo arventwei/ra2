@@ -1,0 +1,6 @@
+@startuml
+class KickClientLogic {
+    + KickClientLogic(widget:Widget, clientName:string, okPressed:Action<bool>, cancelPressed:Action)
+}
+ChromeLogic <|-- KickClientLogic
+@enduml

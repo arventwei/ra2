@@ -1,0 +1,30 @@
+@startuml
+class WithVoxelBarrelInfo {
+    + <<readonly>> Sequence : string = "barrel"
+    + <<readonly>> Armament : string = "primary"
+    + <<readonly>> ShowShadow : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewVoxels(init:ActorPreviewInitializer, rv:RenderVoxelsInfo, image:string, orientation:Func<WRot>, facings:int, p:PaletteReference) : IEnumerable<ModelAnimation>
+}
+class WithVoxelBarrel {
+    + WithVoxelBarrel(self:Actor, info:WithVoxelBarrelInfo)
+    BarrelOffset() : WVec
+    BarrelRotation() : WRot
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithVoxelBarrelInfo
+IRenderActorPreviewVoxelsInfo <|-- WithVoxelBarrelInfo
+"Requires`1" "<RenderVoxelsInfo>" <|-- WithVoxelBarrelInfo
+"Requires`1" "<ArmamentInfo>" <|-- WithVoxelBarrelInfo
+"Requires`1" "<TurretedInfo>" <|-- WithVoxelBarrelInfo
+WithVoxelBarrelInfo o-> "LocalOffset" WVec
+WithVoxelBarrelInfo o-> "LocalOrientation" WRot
+"ConditionalTrait`1" "<WithVoxelBarrelInfo>" <|-- WithVoxelBarrel
+WithVoxelBarrel --> "self" Actor
+WithVoxelBarrel --> "armament" Armament
+WithVoxelBarrel --> "turreted" Turreted
+WithVoxelBarrel --> "body" BodyOrientation
+@enduml

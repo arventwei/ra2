@@ -1,0 +1,11 @@
+@startuml
+class HandicapProductionTimeMultiplierInfo {
+    GetProductionTimeModifier(techTree:TechTree, queue:string) : int
+}
+class HandicapProductionTimeMultiplier {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<HandicapProductionTimeMultiplier>" <|-- HandicapProductionTimeMultiplierInfo
+IProductionTimeModifierInfo <|-- HandicapProductionTimeMultiplierInfo
+@enduml

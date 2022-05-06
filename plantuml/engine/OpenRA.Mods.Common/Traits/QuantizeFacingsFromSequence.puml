@@ -1,0 +1,18 @@
+@startuml
+class QuantizeFacingsFromSequenceInfo {
+    + <<readonly>> Sequence : string = "idle"
+    + QuantizedBodyFacings(ai:ActorInfo, sequenceProvider:SequenceProvider, race:string) : int
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class QuantizeFacingsFromSequence {
+    + QuantizeFacingsFromSequence(info:QuantizeFacingsFromSequenceInfo)
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- QuantizeFacingsFromSequenceInfo
+IQuantizeBodyOrientationInfo <|-- QuantizeFacingsFromSequenceInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- QuantizeFacingsFromSequenceInfo
+"ConditionalTrait`1" "<QuantizeFacingsFromSequenceInfo>" <|-- QuantizeFacingsFromSequence
+@enduml

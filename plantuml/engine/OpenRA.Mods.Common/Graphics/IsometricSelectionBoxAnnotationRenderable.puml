@@ -1,0 +1,26 @@
+@startuml
+class IsometricSelectionBoxAnnotationRenderable <<struct>> {
+    + IsometricSelectionBoxAnnotationRenderable(actor:Actor, bounds:Polygon, color:Color)
+    + IsometricSelectionBoxAnnotationRenderable(pos:WPos, bounds:Polygon, color:Color)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- IsometricSelectionBoxAnnotationRenderable
+IFinalizedRenderable <|-- IsometricSelectionBoxAnnotationRenderable
+IsometricSelectionBoxAnnotationRenderable o-> "TLOffset" float2
+IsometricSelectionBoxAnnotationRenderable o-> "TROffset" float2
+IsometricSelectionBoxAnnotationRenderable o-> "TOffset" float2
+IsometricSelectionBoxAnnotationRenderable --> "pos" WPos
+IsometricSelectionBoxAnnotationRenderable --> "bounds" Polygon
+IsometricSelectionBoxAnnotationRenderable --> "color" Color
+IsometricSelectionBoxAnnotationRenderable --> "Pos" WPos
+IsometricSelectionBoxAnnotationRenderable --> "Palette" PaletteReference
+@enduml

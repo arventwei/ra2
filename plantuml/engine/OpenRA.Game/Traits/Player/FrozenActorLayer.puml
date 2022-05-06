@@ -1,0 +1,84 @@
+@startuml
+interface ICreatesFrozenActors {
+    OnVisibilityChanged(frozen:FrozenActor) : void
+}
+class FrozenActorLayerInfo {
+    + <<readonly>> BinSize : int = 10
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class FrozenActor {
+    + HP : int <<get>>
+    + Visible : bool = true
+    + Hidden : bool = false
+    + Shrouded : bool <<get>>
+    + NeedRenderables : bool <<get>> <<set>>
+    flashTicks : int
+    + FrozenActor(actor:Actor, frozenTrait:ICreatesFrozenActors, footprint:PPos[], viewer:Player, startsRevealed:bool)
+    + ID : uint <<get>>
+    + IsValid : bool <<get>>
+    + RefreshState() : void
+    + Tick() : void
+    + UpdateVisibility() : void
+    + Invalidate() : void
+    + Flash() : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    + HasRenderables : bool <<get>>
+    + <<override>> ToString() : string
+}
+class FrozenActorLayer {
+    + VisibilityHash : int
+    + FrozenHash : int
+    <<readonly>> binSize : int
+    + FrozenActorLayer(self:Actor, info:FrozenActorLayerInfo)
+    + Add(fa:FrozenActor) : void
+    + Remove(fa:FrozenActor) : void
+    FootprintBounds(fa:FrozenActor) : Rectangle
+    Tick(self:Actor) : void
+    + <<virtual>> Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    + ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+    + FromID(id:uint) : FrozenActor
+    + FrozenActorsInRegion(region:CellRegion, onlyVisible:bool) : IEnumerable<FrozenActor>
+    + FrozenActorsInCircle(world:World, origin:WPos, r:WDist, onlyVisible:bool) : IEnumerable<FrozenActor>
+}
+class "Requires`1"<T> {
+}
+class "List`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "SpatiallyPartitioned`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- FrozenActorLayerInfo
+"Requires`1" "<ShroudInfo>" <|-- FrozenActorLayerInfo
+FrozenActor --> "CenterPosition" WPos
+FrozenActor --> "actor" Actor
+FrozenActor --> "frozenTrait" ICreatesFrozenActors
+FrozenActor --> "viewer" Player
+FrozenActor --> "shroud" Shroud
+FrozenActor o-> "targetablePositions<WPos>" "List`1"
+FrozenActor --> "Owner" Player
+FrozenActor --> "TargetTypes<TargetableType>" "BitSet`1"
+FrozenActor --> "TargetablePositions<WPos>" "IEnumerable`1"
+FrozenActor --> "TooltipInfo" ITooltipInfo
+FrozenActor --> "TooltipOwner" Player
+FrozenActor --> "DamageState" DamageState
+FrozenActor --> "health" IHealth
+FrozenActor o-> "MouseBounds" Polygon
+FrozenActor --> "Info" ActorInfo
+FrozenActor --> "Actor" Actor
+FrozenActor --> "Viewer" Player
+IRender <|-- FrozenActorLayer
+ITick <|-- FrozenActorLayer
+ISync <|-- FrozenActorLayer
+FrozenActorLayer --> "world" World
+FrozenActorLayer --> "owner" Player
+FrozenActorLayer --> "frozenActorsById<uint,FrozenActor>" "Dictionary`2"
+FrozenActorLayer --> "partitionedFrozenActorIds<uint>" "SpatiallyPartitioned`1"
+FrozenActorLayer o-> "dirtyFrozenActorIds<uint>" "HashSet`1"
+@enduml

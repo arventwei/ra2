@@ -1,0 +1,16 @@
+@startuml
+class GainsExperienceProperties {
+    + GainsExperienceProperties(context:ScriptContext, self:Actor)
+    + Experience : int <<get>>
+    + Level : int <<get>>
+    + MaxLevel : int <<get>>
+    + CanGainLevel : bool <<get>>
+    + GiveExperience(amount:int, silent:bool) : void
+    + GiveLevels(numLevels:int, silent:bool) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- GainsExperienceProperties
+"Requires`1" "<GainsExperienceInfo>" <|-- GainsExperienceProperties
+GainsExperienceProperties --> "exp" GainsExperience
+@enduml

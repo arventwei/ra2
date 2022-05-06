@@ -1,0 +1,16 @@
+@startuml
+class ModContentLogic {
+    discAvailable : bool
+    + ModContentLogic(widget:Widget, modData:ModData, mod:Manifest, content:ModContent, onCancel:Action)
+    + <<override>> BecameVisible() : void
+    PopulateContentList() : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+ChromeLogic <|-- ModContentLogic
+ModContentLogic --> "content" ModContent
+ModContentLogic --> "scrollPanel" ScrollPanelWidget
+ModContentLogic --> "template" Widget
+ModContentLogic o-> "sources<string,ModContent.ModSource>" "Dictionary`2"
+ModContentLogic o-> "downloads<string,ModContent.ModDownload>" "Dictionary`2"
+@enduml

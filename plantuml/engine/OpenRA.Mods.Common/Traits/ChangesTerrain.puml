@@ -1,0 +1,19 @@
+@startuml
+class ChangesTerrainInfo {
+    + <<readonly>> TerrainType : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ChangesTerrain {
+    previousTerrain : byte
+    + ChangesTerrain(info:ChangesTerrainInfo)
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- ChangesTerrainInfo
+"Requires`1" "<ImmobileInfo>" <|-- ChangesTerrainInfo
+INotifyAddedToWorld <|-- ChangesTerrain
+INotifyRemovedFromWorld <|-- ChangesTerrain
+ChangesTerrain --> "info" ChangesTerrainInfo
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+class AutoCarryallInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AutoCarryall {
+    busy : bool
+    + AutoCarryall(self:Actor, info:AutoCarryallInfo)
+    OnBecomingIdle(self:Actor) : void
+    + <<override>> RequestTransportNotify(self:Actor, carryable:Actor, destination:CPos) : bool
+    IsBestAutoCarryallForCargo(self:Actor, candidateCargo:Actor) : bool
+    FindCarryableForTransport(self:Actor) : void
+}
+class FerryUnit {
+    + FerryUnit(self:Actor, cargo:Actor)
+    + <<override>> Tick(self:Actor) : bool
+}
+CarryallInfo <|-- AutoCarryallInfo
+Carryall <|-- AutoCarryall
+INotifyBecomingIdle <|-- AutoCarryall
+AutoCarryall +-- FerryUnit
+Activity <|-- FerryUnit
+FerryUnit --> "cargo" Actor
+@enduml

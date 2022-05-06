@@ -1,0 +1,72 @@
+@startuml
+class ShroudRendererInfo {
+    + <<readonly>> Sequence : string = "shroud"
+    + <<readonly>> ShroudPalette : string = "shroud"
+    + <<readonly>> FogPalette : string = "fog"
+    + <<readonly>> UseExtendedIndex : bool = false
+    + <<readonly>> OverrideFullShroud : string = null
+    + <<readonly>> OverrideShroudIndex : int = 15
+    + <<readonly>> OverrideFullFog : string = null
+    + <<readonly>> OverrideFogIndex : int = 15
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ShroudRenderer <<sealed>> {
+    <<readonly>> variantStride : byte
+    anyCellDirty : bool
+    disposed : bool
+    + ShroudRenderer(world:World, info:ShroudRendererInfo)
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+    GetEdges(puv:PPos, isVisible:Func<PPos, bool>) : Edges
+    WorldOnRenderPlayerChanged(player:Player) : void
+    UpdateShroud(region:IEnumerable<PPos>) : void
+    RenderShroud(wr:WorldRenderer) : void
+    UpdateShroudCell(puv:PPos) : void
+    GetSprite(sprites:Sprite[], edges:Edges, variant:int) : Sprite
+    Disposing(self:Actor) : void
+}
+enum Edges {
+    None= 0,
+    TopLeft= 0x01,
+    TopRight= 0x02,
+    BottomRight= 0x04,
+    BottomLeft= 0x08,
+    AllCorners= TopLeft | TopRight | BottomRight | BottomLeft,
+    TopSide= 0x10,
+    RightSide= 0x20,
+    BottomSide= 0x40,
+    LeftSide= 0x80,
+    AllSides= TopSide | RightSide | BottomSide | LeftSide,
+    Top= TopSide | TopLeft | TopRight,
+    Right= RightSide | TopRight | BottomRight,
+    Bottom= BottomSide | BottomRight | BottomLeft,
+    Left= LeftSide | TopLeft | BottomLeft,
+    All= Top | Right | Bottom | Left,
+}
+class TileInfo <<struct>> {
+    + <<readonly>> Variant : byte
+    + TileInfo(screenPosition:float3, variant:byte)
+}
+class "CellLayer`1"<T> {
+}
+class "Func`2"<T1,T2> {
+}
+TraitInfo <|-- ShroudRendererInfo
+ShroudRendererInfo o-> "ShroudBlend" BlendMode
+IRenderShroud <|-- ShroudRenderer
+IWorldLoaded <|-- ShroudRenderer
+INotifyActorDisposing <|-- ShroudRenderer
+ShroudRenderer --> "info" ShroudRendererInfo
+ShroudRenderer --> "world" World
+ShroudRenderer --> "map" Map
+ShroudRenderer --> "notVisibleEdges" Edges
+ShroudRenderer --> "tileInfos<TileInfo>" "CellLayer`1"
+ShroudRenderer --> "cellsDirty<bool>" "CellLayer`1"
+ShroudRenderer --> "shroud" Shroud
+ShroudRenderer --> "visibleUnderShroud<PPos,bool>" "Func`2"
+ShroudRenderer --> "visibleUnderFog<PPos,bool>" "Func`2"
+ShroudRenderer --> "shroudLayer" TerrainSpriteLayer
+ShroudRenderer --> "fogLayer" TerrainSpriteLayer
+ShroudRenderer +-- Edges
+ShroudRenderer +-- TileInfo
+TileInfo --> "ScreenPosition" float3
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class ShroudExts <<static>> {
+    + {static} AnyExplored(shroud:Shroud, cells:(CPos Cell, SubCell SubCell)[]) : bool
+    + {static} AnyExplored(shroud:Shroud, puvs:PPos[]) : bool
+    + {static} AnyVisible(shroud:Shroud, cells:(CPos Cell, SubCell SubCell)[]) : bool
+}
+@enduml

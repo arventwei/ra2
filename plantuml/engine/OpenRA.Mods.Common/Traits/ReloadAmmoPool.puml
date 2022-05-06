@@ -1,0 +1,26 @@
+@startuml
+class ReloadAmmoPoolInfo {
+    + <<readonly>> AmmoPool : string = "primary"
+    + <<readonly>> Delay : int = 50
+    + <<readonly>> Count : int = 1
+    + <<readonly>> ResetOnFire : bool = false
+    + <<readonly>> Sound : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class ReloadAmmoPool {
+    remainingTicks : int
+    + ReloadAmmoPool(info:ReloadAmmoPoolInfo)
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Tick(self:Actor) : void
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- ReloadAmmoPoolInfo
+"PausableConditionalTrait`1" "<ReloadAmmoPoolInfo>" <|-- ReloadAmmoPool
+ITick <|-- ReloadAmmoPool
+INotifyAttack <|-- ReloadAmmoPool
+ISync <|-- ReloadAmmoPool
+ReloadAmmoPool --> "ammoPool" AmmoPool
+@enduml

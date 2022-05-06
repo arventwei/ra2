@@ -1,0 +1,23 @@
+@startuml
+class GuardInfo {
+    + <<readonly>> Voice : string = "Action"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Guard {
+    + Guard(info:GuardInfo)
+    Created(self:Actor) : void
+    + ResolveOrder(self:Actor, order:Order) : void
+    + GuardTarget(self:Actor, target:Target, queued:bool) : void
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- GuardInfo
+"Requires`1" "<IMoveInfo>" <|-- GuardInfo
+GuardInfo o-> "TargetLineColor" Color
+IResolveOrder <|-- Guard
+IOrderVoice <|-- Guard
+INotifyCreated <|-- Guard
+Guard --> "info" GuardInfo
+Guard --> "move" IMove
+@enduml

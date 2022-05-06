@@ -1,0 +1,29 @@
+@startuml
+class GameSaveBrowserLogic {
+    <<readonly>> isSavePanel : bool
+    <<readonly>> baseSavePath : string
+    <<readonly>> defaultSaveFilename : string
+    selectedSave : string
+    + GameSaveBrowserLogic(widget:Widget, modData:ModData, onExit:Action, onStart:Action, isSavePanel:bool, world:World)
+    LoadGames(gameTemplate:ScrollItemWidget, newTemplate:ScrollItemWidget, world:World) : void
+    Rename(oldName:string, newName:string) : void
+    Delete(savePath:string) : void
+    SelectFirstVisible() : void
+    Select(savePath:string) : void
+    Load() : void
+    Save(world:World) : void
+    OnGameStart() : void
+    disposed : bool
+    + {static} IsLoadPanelEnabled(mod:Manifest) : bool
+}
+class "List`1"<T> {
+}
+ChromeLogic <|-- GameSaveBrowserLogic
+GameSaveBrowserLogic --> "panel" Widget
+GameSaveBrowserLogic --> "gameList" ScrollPanelWidget
+GameSaveBrowserLogic --> "saveTextField" TextFieldWidget
+GameSaveBrowserLogic o-> "games<string>" "List`1"
+GameSaveBrowserLogic --> "onStart" Action
+GameSaveBrowserLogic --> "onExit" Action
+GameSaveBrowserLogic --> "modData" ModData
+@enduml

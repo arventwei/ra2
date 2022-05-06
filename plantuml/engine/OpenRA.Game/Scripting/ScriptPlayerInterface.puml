@@ -1,0 +1,7 @@
+@startuml
+class ScriptPlayerInterface {
+    + ScriptPlayerInterface(context:ScriptContext, player:Player)
+}
+ScriptObjectWrapper <|-- ScriptPlayerInterface
+ScriptPlayerInterface --> "player" Player
+@enduml

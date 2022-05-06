@@ -1,0 +1,6 @@
+@startuml
+class ArmyTooltipLogic {
+    + ArmyTooltipLogic(widget:Widget, tooltipContainer:TooltipContainerWidget, getTooltipUnit:Func<ArmyUnit>)
+}
+ChromeLogic <|-- ArmyTooltipLogic
+@enduml

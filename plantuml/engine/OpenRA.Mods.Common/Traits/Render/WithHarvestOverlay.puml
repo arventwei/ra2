@@ -1,0 +1,27 @@
+@startuml
+class WithHarvestOverlayInfo {
+    + <<readonly>> Sequence : string = "harvest"
+    + <<readonly>> Palette : string = "effect"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithHarvestOverlay {
+    visible : bool
+    + WithHarvestOverlay(self:Actor, info:WithHarvestOverlayInfo)
+    Harvested(self:Actor, resource:ResourceType) : void
+    MovingToResources(self:Actor, targetCell:CPos) : void
+    MovingToRefinery(self:Actor, targetRefinery:Actor) : void
+    MovementCancelled(self:Actor) : void
+    Docked() : void
+    Undocked() : void
+    + {static} ZOffsetFromCenter(self:Actor, pos:WPos, offset:int) : int
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- WithHarvestOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithHarvestOverlayInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithHarvestOverlayInfo
+WithHarvestOverlayInfo o-> "LocalOffset" WVec
+INotifyHarvesterAction <|-- WithHarvestOverlay
+WithHarvestOverlay --> "info" WithHarvestOverlayInfo
+WithHarvestOverlay --> "anim" Animation
+@enduml

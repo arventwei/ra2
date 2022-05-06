@@ -1,0 +1,26 @@
+@startuml
+class CrushableInfo {
+    + <<readonly>> CrushSound : string = null
+    + <<readonly>> WarnProbability : int = 75
+    + <<readonly>> CrushedByFriendlies : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Crushable {
+    + Crushable(self:Actor, info:CrushableInfo)
+    WarnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+    OnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+    CrushableBy(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : bool
+    CrushableBy(self:Actor, crushClasses:BitSet<CrushClass>) : LongBitSet<PlayerBitMask>
+    CrushableInner(crushClasses:BitSet<CrushClass>, crushOwner:Player) : bool
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- CrushableInfo
+CrushableInfo o-> "CrushClasses<CrushClass>" "BitSet`1"
+"ConditionalTrait`1" "<CrushableInfo>" <|-- Crushable
+ICrushable <|-- Crushable
+INotifyCrushed <|-- Crushable
+Crushable --> "self" Actor
+@enduml

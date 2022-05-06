@@ -1,0 +1,15 @@
+@startuml
+class ProductionTimeMultiplierInfo {
+    + <<readonly>> Multiplier : int = 100
+    GetProductionTimeModifier(techTree:TechTree, queue:string) : int
+}
+class ProductionTimeMultiplier {
+}
+class "TraitInfo`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"TraitInfo`1" "<ProductionTimeMultiplier>" <|-- ProductionTimeMultiplierInfo
+IProductionTimeModifierInfo <|-- ProductionTimeMultiplierInfo
+ProductionTimeMultiplierInfo o-> "Queue<string>" "HashSet`1"
+@enduml

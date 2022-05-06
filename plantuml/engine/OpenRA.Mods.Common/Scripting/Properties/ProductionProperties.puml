@@ -1,0 +1,47 @@
+@startuml
+class ProductionProperties {
+    + ProductionProperties(context:ScriptContext, self:Actor)
+    + Produce(actorType:string, factionVariant:string, productionType:string) : void
+}
+class RallyPointProperties {
+    + RallyPointProperties(context:ScriptContext, self:Actor)
+}
+class PrimaryBuildingProperties {
+    + PrimaryBuildingProperties(context:ScriptContext, self:Actor)
+    + IsPrimaryBuilding : bool <<get>> <<set>>
+}
+class ProductionQueueProperties {
+    + ProductionQueueProperties(context:ScriptContext, self:Actor)
+    + Build(actorTypes:string[], actionFunc:LuaFunction) : bool
+    + IsProducing(actorType:string) : bool
+    GetBuildableInfo(actorType:string) : BuildableInfo
+}
+class ClassicProductionQueueProperties {
+    + ClassicProductionQueueProperties(context:ScriptContext, player:Player)
+    + Build(actorTypes:string[], actionFunc:LuaFunction) : bool
+    + IsProducing(actorType:string) : bool
+    GetBuildableInfo(actorType:string) : BuildableInfo
+}
+class "Requires`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ScriptActorProperties <|-- ProductionProperties
+"Requires`1" "<ProductionInfo>" <|-- ProductionProperties
+ScriptActorProperties <|-- RallyPointProperties
+"Requires`1" "<RallyPointInfo>" <|-- RallyPointProperties
+RallyPointProperties --> "rp" RallyPoint
+RallyPointProperties --> "RallyPoint" CPos
+ScriptActorProperties <|-- PrimaryBuildingProperties
+"Requires`1" "<PrimaryBuildingInfo>" <|-- PrimaryBuildingProperties
+PrimaryBuildingProperties --> "pb" PrimaryBuilding
+ScriptActorProperties <|-- ProductionQueueProperties
+"Requires`1" "<ProductionQueueInfo>" <|-- ProductionQueueProperties
+"Requires`1" "<ScriptTriggersInfo>" <|-- ProductionQueueProperties
+ProductionQueueProperties --> "triggers" ScriptTriggers
+ScriptPlayerProperties <|-- ClassicProductionQueueProperties
+"Requires`1" "<ClassicProductionQueueInfo>" <|-- ClassicProductionQueueProperties
+"Requires`1" "<ScriptTriggersInfo>" <|-- ClassicProductionQueueProperties
+ClassicProductionQueueProperties --> "productionHandlers<string,Action<Actor, Actor>>" "Dictionary`2"
+ClassicProductionQueueProperties --> "queues<string,ClassicProductionQueue>" "Dictionary`2"
+@enduml

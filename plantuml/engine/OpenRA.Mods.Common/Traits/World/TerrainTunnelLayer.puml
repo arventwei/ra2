@@ -1,0 +1,34 @@
+@startuml
+class TerrainTunnelLayerInfo {
+    + <<readonly>> ImpassableTerrainType : string = "Impassable"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TerrainTunnelLayer {
+    enabled : bool
+    + TerrainTunnelLayer(self:Actor, info:TerrainTunnelLayerInfo)
+    + WorldLoaded(world:World, wr:WorldRenderer) : void
+    EnabledForActor(a:ActorInfo, li:LocomotorInfo) : bool
+    Index : byte <<get>>
+    InteractsWithDefaultLayer : bool <<get>>
+    ReturnToGroundLayerOnIdle : bool <<get>>
+    CenterOfCell(cell:CPos) : WPos
+    EntryMovementCost(a:ActorInfo, li:LocomotorInfo, cell:CPos) : int
+    ExitMovementCost(a:ActorInfo, li:LocomotorInfo, cell:CPos) : int
+    GetTerrainIndex(cell:CPos) : byte
+}
+class "Requires`1"<T> {
+}
+class "CellLayer`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- TerrainTunnelLayerInfo
+"Requires`1" "<DomainIndexInfo>" <|-- TerrainTunnelLayerInfo
+ILobbyCustomRulesIgnore <|-- TerrainTunnelLayerInfo
+ICustomMovementLayer <|-- TerrainTunnelLayer
+IWorldLoaded <|-- TerrainTunnelLayer
+TerrainTunnelLayer --> "map" Map
+TerrainTunnelLayer --> "cellCenters<WPos>" "CellLayer`1"
+TerrainTunnelLayer --> "terrainIndices<byte>" "CellLayer`1"
+TerrainTunnelLayer o-> "portals<CPos>" "HashSet`1"
+@enduml

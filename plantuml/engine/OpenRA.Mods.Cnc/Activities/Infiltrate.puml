@@ -1,0 +1,8 @@
+@startuml
+class Infiltrate {
+    + Infiltrate(self:Actor, target:Target, infiltrates:Infiltrates, targetLineColor:Color?)
+}
+Enter <|-- Infiltrate
+Infiltrate --> "infiltrates" Infiltrates
+Infiltrate --> "enterActor" Actor
+@enduml

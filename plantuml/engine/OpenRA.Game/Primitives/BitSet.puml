@@ -1,0 +1,43 @@
+@startuml
+class "BitSetAllocator`1"<T> <<static>> {
+    {static} Allocate(value:string) : BitSetIndex
+    + {static} GetBits(values:string[]) : BitSetIndex
+    + {static} GetBitsNoAlloc(values:string[]) : BitSetIndex
+    + {static} GetStrings(bits:BitSetIndex) : IEnumerable<string>
+    + {static} BitsContainString(bits:BitSetIndex, value:string) : bool
+}
+class "BitSet`1"<T> <<struct>> {
+    + BitSet(values:string[])
+    BitSet(bits:BitSetIndex)
+    + {static} FromStringsNoAlloc(values:string[]) : BitSet<T>
+    + <<override>> ToString() : string
+    + Equals(other:BitSet<T>) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> GetHashCode() : int
+    + IsEmpty : bool <<get>>
+    + IsProperSubsetOf(other:BitSet<T>) : bool
+    + IsProperSupersetOf(other:BitSet<T>) : bool
+    + IsSubsetOf(other:BitSet<T>) : bool
+    + IsSupersetOf(other:BitSet<T>) : bool
+    + Overlaps(other:BitSet<T>) : bool
+    + SetEquals(other:BitSet<T>) : bool
+    + Contains(value:string) : bool
+    + GetEnumerator() : IEnumerator<string>
+    GetEnumerator() : IEnumerator
+    + Except(other:BitSet<T>) : BitSet<T>
+    + Intersect(other:BitSet<T>) : BitSet<T>
+    + SymmetricExcept(other:BitSet<T>) : BitSet<T>
+    + Union(other:BitSet<T>) : BitSet<T>
+}
+class "Cache`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class "IEquatable`1"<T> {
+}
+"BitSetAllocator`1" o-> "Bits<string,BitSetIndex>" "Cache`2"
+"BitSetAllocator`1" o-> "nextBits" BitSetIndex
+"IEnumerable`1" "<string>" <|-- "BitSet`1"
+"IEquatable`1" "<BitSet<T>>" <|-- "BitSet`1"
+"BitSet`1" --> "bits" BitSetIndex
+@enduml

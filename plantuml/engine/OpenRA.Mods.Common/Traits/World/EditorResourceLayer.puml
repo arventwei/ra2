@@ -1,0 +1,26 @@
+@startuml
+class EditorResourceLayerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class EditorResourceLayer {
+    + NetWorth : int <<get>> <<protected set>>
+    disposed : bool
+    +  <<event>> CellChanged : Action<CPos, ResourceType> 
+    GetResource(cell:CPos) : ResourceLayerContents
+    IsVisible(cell:CPos) : bool
+    + EditorResourceLayer(self:Actor)
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + UpdateCell(cell:CPos) : void
+    UpdateNetWorth(oldType:ResourceType, oldDensity:int, newType:ResourceType, newDensity:int) : void
+    + CalculateCellDensity(type:ResourceType, c:CPos) : int
+    Disposing(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- EditorResourceLayerInfo
+IResourceLayerInfo <|-- EditorResourceLayerInfo
+"Requires`1" "<ResourceTypeInfo>" <|-- EditorResourceLayerInfo
+IResourceLayer <|-- EditorResourceLayer
+IWorldLoaded <|-- EditorResourceLayer
+INotifyActorDisposing <|-- EditorResourceLayer
+@enduml

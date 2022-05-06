@@ -1,0 +1,26 @@
+@startuml
+class BaseBuilderQueueManager {
+    <<readonly>> category : string
+    waitTicks : int
+    failCount : int
+    failRetryTicks : int
+    checkForBasesTicks : int
+    cachedBases : int
+    cachedBuildings : int
+    minimumExcessPower : int
+    + BaseBuilderQueueManager(baseBuilder:BaseBuilderBotModule, category:string, p:Player, pm:PowerManager, pr:PlayerResources, resourceTypeIndices:BitArray)
+    + Tick(bot:IBot) : void
+    TickQueue(bot:IBot, queue:ProductionQueue) : bool
+    GetProducibleBuilding(actors:HashSet<string>, buildables:IEnumerable<ActorInfo>, orderBy:Func<ActorInfo, int>) : ActorInfo
+    HasSufficientPowerForActor(actorInfo:ActorInfo) : bool
+    ChooseBuildingToBuild(queue:ProductionQueue) : ActorInfo
+    ChooseBuildLocation(actorType:string, distanceToBaseIsImportant:bool, type:BuildingType) : CPos?
+}
+BaseBuilderQueueManager --> "baseBuilder" BaseBuilderBotModule
+BaseBuilderQueueManager --> "world" World
+BaseBuilderQueueManager --> "player" Player
+BaseBuilderQueueManager --> "playerPower" PowerManager
+BaseBuilderQueueManager --> "playerResources" PlayerResources
+BaseBuilderQueueManager --> "resourceTypeIndices" BitArray
+BaseBuilderQueueManager o-> "waterState" WaterCheck
+@enduml

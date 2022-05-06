@@ -1,0 +1,15 @@
+@startuml
+class AngleGlobal {
+    + AngleGlobal(context:ScriptContext)
+    + New(a:int) : WAngle
+}
+ScriptGlobal <|-- AngleGlobal
+AngleGlobal --> "North" WAngle
+AngleGlobal --> "NorthWest" WAngle
+AngleGlobal --> "West" WAngle
+AngleGlobal --> "SouthWest" WAngle
+AngleGlobal --> "South" WAngle
+AngleGlobal --> "SouthEast" WAngle
+AngleGlobal --> "East" WAngle
+AngleGlobal --> "NorthEast" WAngle
+@enduml

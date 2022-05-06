@@ -1,0 +1,11 @@
+@startuml
+class CreateResourceWarhead {
+    + <<readonly>> AddsResourceType : string = null
+    RulesetLoaded(rules:Ruleset, info:WeaponInfo) : void
+    + <<override>> DoImpact(target:Target, args:WarheadArgs) : void
+}
+class "IRulesetLoaded`1"<T> {
+}
+Warhead <|-- CreateResourceWarhead
+"IRulesetLoaded`1" "<WeaponInfo>" <|-- CreateResourceWarhead
+@enduml

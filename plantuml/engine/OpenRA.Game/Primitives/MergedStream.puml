@@ -1,0 +1,22 @@
+@startuml
+class MergedStream {
+    VirtualLength : long <<get>>
+    position : long
+    + MergedStream(stream1:Stream, stream2:Stream)
+    + <<override>> Flush() : void
+    + <<override>> Seek(offset:long, origin:SeekOrigin) : long
+    + <<override>> SetLength(value:long) : void
+    + <<override>> ReadByte() : int
+    + <<override>> Read(buffer:byte[], offset:int, count:int) : int
+    + <<override>> WriteByte(value:byte) : void
+    + <<override>> Write(buffer:byte[], offset:int, count:int) : void
+    + <<override>> CanRead : bool <<get>>
+    + <<override>> CanSeek : bool <<get>>
+    + <<override>> CanWrite : bool <<get>>
+    + <<override>> Length : long <<get>>
+    + <<override>> Position : long <<get>> <<set>>
+}
+Stream <|-- MergedStream
+MergedStream --> "Stream1" Stream
+MergedStream --> "Stream2" Stream
+@enduml

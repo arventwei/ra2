@@ -1,0 +1,38 @@
+@startuml
+class WithVoxelWalkerBodyInfo {
+    + <<readonly>> Sequence : string = "idle"
+    + <<readonly>> TickRate : int = 5
+    + <<readonly>> ShowShadow : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewVoxels(init:ActorPreviewInitializer, rv:RenderVoxelsInfo, image:string, orientation:Func<WRot>, facings:int, p:PaletteReference) : IEnumerable<ModelAnimation>
+}
+class WithVoxelWalkerBody {
+    tick : uint
+    frame : uint
+    frames : uint
+    + WithVoxelWalkerBody(self:Actor, info:WithVoxelWalkerBodyInfo)
+    Tick(self:Actor) : void
+    ModifyActorPreviewInit(self:Actor, inits:TypeDictionary) : void
+    AutoMouseoverBounds(self:Actor, wr:WorldRenderer) : Rectangle
+}
+class BodyAnimationFrameInit {
+    + BodyAnimationFrameInit(value:uint)
+}
+class "Requires`1"<T> {
+}
+class "ValueActorInit`1"<T> {
+}
+TraitInfo <|-- WithVoxelWalkerBodyInfo
+IRenderActorPreviewVoxelsInfo <|-- WithVoxelWalkerBodyInfo
+"Requires`1" "<RenderVoxelsInfo>" <|-- WithVoxelWalkerBodyInfo
+"Requires`1" "<IMoveInfo>" <|-- WithVoxelWalkerBodyInfo
+"Requires`1" "<IFacingInfo>" <|-- WithVoxelWalkerBodyInfo
+ITick <|-- WithVoxelWalkerBody
+IActorPreviewInitModifier <|-- WithVoxelWalkerBody
+IAutoMouseBounds <|-- WithVoxelWalkerBody
+WithVoxelWalkerBody --> "info" WithVoxelWalkerBodyInfo
+WithVoxelWalkerBody --> "movement" IMove
+WithVoxelWalkerBody --> "modelAnimation" ModelAnimation
+WithVoxelWalkerBody --> "rv" RenderVoxels
+"ValueActorInit`1" "<uint>" <|-- BodyAnimationFrameInit
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+class PlayerReference {
+    + Name : string
+    + Palette : string
+    + Bot : string = null
+    + StartingUnitsClass : string = null
+    + AllowBots : bool = true
+    + Playable : bool = false
+    + Required : bool = false
+    + OwnsWorld : bool = false
+    + Spectating : bool = false
+    + NonCombatant : bool = false
+    + LockFaction : bool = false
+    + Faction : string
+    + LockColor : bool = false
+    + LockSpawn : bool = false
+    + Spawn : int = 0
+    + LockTeam : bool = false
+    + Team : int = 0
+    + LockHandicap : bool = false
+    + Handicap : int = 0
+    + PlayerReference()
+    + PlayerReference(my:MiniYaml)
+    + <<override>> ToString() : string
+}
+PlayerReference o-> "Color" Color
+PlayerReference o-> "HomeLocation" CPos
+@enduml

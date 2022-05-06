@@ -1,0 +1,7 @@
+@startuml
+class LoadIngamePlayerOrObserverUILogic {
+    loadingObserverWidgets : bool = false
+    + LoadIngamePlayerOrObserverUILogic(widget:Widget, world:World)
+}
+ChromeLogic <|-- LoadIngamePlayerOrObserverUILogic
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class UserInterfaceGlobal {
+    + UserInterfaceGlobal(context:ScriptContext)
+    + SetMissionText(text:string, color:Color?) : void
+}
+ScriptGlobal <|-- UserInterfaceGlobal
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+class HotkeyEntryWidget {
+    + VisualHeight : int = 1
+    + LeftMargin : int = 5
+    + RightMargin : int = 5
+    + Font : string
+    + HotkeyEntryWidget()
+    + <<override>> TakeKeyboardFocus() : bool
+    + <<override>> YieldKeyboardFocus() : bool
+    + ForceYieldKeyboardFocus() : bool
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+    + <<override>> Tick() : void
+    + <<override>> Draw() : void
+    + <<override>> Clone() : Widget
+}
+class "Func`1"<T> {
+}
+Widget <|-- HotkeyEntryWidget
+HotkeyEntryWidget --> "Key" Hotkey
+HotkeyEntryWidget o-> "OnEscKey" Action
+HotkeyEntryWidget o-> "OnLoseFocus" Action
+HotkeyEntryWidget o-> "IsDisabled<bool>" "Func`1"
+HotkeyEntryWidget o-> "IsValid<bool>" "Func`1"
+HotkeyEntryWidget o-> "TextColor" Color
+HotkeyEntryWidget o-> "TextColorDisabled" Color
+HotkeyEntryWidget o-> "TextColorInvalid" Color
+@enduml

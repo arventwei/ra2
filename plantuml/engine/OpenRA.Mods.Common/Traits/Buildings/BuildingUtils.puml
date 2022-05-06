@@ -1,0 +1,7 @@
+@startuml
+class BuildingUtils <<static>> {
+    + {static} IsCellBuildable(world:World, cell:CPos, ai:ActorInfo, bi:BuildingInfo, toIgnore:Actor) : bool
+    + {static} CanPlaceBuilding(world:World, cell:CPos, ai:ActorInfo, bi:BuildingInfo, toIgnore:Actor) : bool
+    + {static} GetLineBuildCells(world:World, cell:CPos, ai:ActorInfo, bi:BuildingInfo, owner:Player) : IEnumerable<(CPos Cell, Actor Actor)>
+}
+@enduml

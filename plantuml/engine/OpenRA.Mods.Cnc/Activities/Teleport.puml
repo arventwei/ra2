@@ -1,0 +1,18 @@
+@startuml
+class Teleport {
+    <<readonly>> maximumDistance : int?
+    <<readonly>> killOnFailure : bool
+    killCargo : bool
+    screenFlash : bool
+    sound : string
+    + Teleport(teleporter:Actor, destination:CPos, maximumDistance:int?, killCargo:bool, screenFlash:bool, sound:string, interruptable:bool, killOnFailure:bool, killDamageTypes:BitSet<DamageType>)
+    + <<override>> Tick(self:Actor) : bool
+    ChooseBestDestinationCell(self:Actor, destination:CPos) : CPos?
+}
+class "BitSet`1"<T> {
+}
+Activity <|-- Teleport
+Teleport --> "teleporter" Actor
+Teleport --> "killDamageTypes<DamageType>" "BitSet`1"
+Teleport --> "destination" CPos
+@enduml

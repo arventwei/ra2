@@ -1,0 +1,14 @@
+@startuml
+class ActorLostNotificationInfo {
+    + <<readonly>> Notification : string = "UnitLost"
+    + <<readonly>> NotifyAll : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ActorLostNotification {
+    + ActorLostNotification(info:ActorLostNotificationInfo)
+    Killed(self:Actor, e:AttackInfo) : void
+}
+TraitInfo <|-- ActorLostNotificationInfo
+INotifyKilled <|-- ActorLostNotification
+ActorLostNotification --> "info" ActorLostNotificationInfo
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+class SupportPowerCrateActionInfo {
+    + <<readonly>> Proxy : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SupportPowerCrateAction {
+    + SupportPowerCrateAction(self:Actor, info:SupportPowerCrateActionInfo)
+    + <<override>> Activate(collector:Actor) : void
+}
+CrateActionInfo <|-- SupportPowerCrateActionInfo
+CrateAction <|-- SupportPowerCrateAction
+SupportPowerCrateAction --> "info" SupportPowerCrateActionInfo
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+class UIModelRenderable <<struct>> {
+    <<readonly>> zOffset : int
+    <<readonly>> scale : float
+    + UIModelRenderable(models:IEnumerable<ModelAnimation>, effectiveWorldPos:WPos, screenPos:int2, zOffset:int, camera:WRot, scale:float, lightSource:WRot, lightAmbientColor:float[], lightDiffuseColor:float[], color:PaletteReference, normals:PaletteReference, shadow:PaletteReference)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+}
+class "IEnumerable`1"<T> {
+}
+class FinalizedUIModelRenderable <<struct>> {
+    + FinalizedUIModelRenderable(wr:WorldRenderer, model:UIModelRenderable)
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+    Screen3DBounds(wr:WorldRenderer) : (Rectangle Bounds, float2 Z)
+}
+IRenderable <|-- UIModelRenderable
+UIModelRenderable --> "models<ModelAnimation>" "IEnumerable`1"
+UIModelRenderable --> "effectiveWorldPos" WPos
+UIModelRenderable --> "screenPos" int2
+UIModelRenderable --> "camera" WRot
+UIModelRenderable --> "lightSource" WRot
+UIModelRenderable --> "palette" PaletteReference
+UIModelRenderable --> "normalsPalette" PaletteReference
+UIModelRenderable --> "shadowPalette" PaletteReference
+UIModelRenderable --> "Pos" WPos
+UIModelRenderable --> "Palette" PaletteReference
+UIModelRenderable +-- FinalizedUIModelRenderable
+IFinalizedRenderable <|-- FinalizedUIModelRenderable
+FinalizedUIModelRenderable --> "model" UIModelRenderable
+FinalizedUIModelRenderable --> "renderProxy" ModelRenderProxy
+@enduml

@@ -1,0 +1,121 @@
+@startuml
+enum WorldType {
+    Regular,
+    Shellmap,
+    Editor,
+}
+class World <<sealed>> {
+    + Timestep : int
+    +  <<event>> RenderPlayerChanged : Action<Player> 
+    + SetPlayers(players:IEnumerable<Player>, localPlayer:Player) : void
+    +  <<event>> GameOver : Action 
+    + IsGameOver : bool <<get>>
+    + EndGame() : void
+    + FogObscures(a:Actor) : bool
+    + FogObscures(p:CPos) : bool
+    + FogObscures(pos:WPos) : bool
+    + ShroudObscures(p:CPos) : bool
+    + ShroudObscures(uv:MPos) : bool
+    + ShroudObscures(pos:WPos) : bool
+    + ShroudObscures(uv:PPos) : bool
+    + IsReplay : bool <<get>>
+    + IsLoadingGameSave : bool <<get>>
+    + GameSaveLoadingPercentage : int <<get>>
+    SetLocalPlayer(localPlayer:Player) : void
+    + IssueOrder(o:Order) : void
+    + CancelInputMode() : void
+    + ToggleInputMode() : bool
+    + RulesContainTemporaryBlocker : bool <<get>>
+    wasLoadingGameSave : bool
+    + AddToMaps(self:Actor, ios:IOccupySpace) : void
+    + UpdateMaps(self:Actor, ios:IOccupySpace) : void
+    + RemoveFromMaps(self:Actor, ios:IOccupySpace) : void
+    + LoadComplete(wr:WorldRenderer) : void
+    + SetWorldOwner(p:Player) : void
+    + CreateActor(name:string, initDict:TypeDictionary) : Actor
+    + CreateActor(addToWorld:bool, reference:ActorReference) : Actor
+    + CreateActor(addToWorld:bool, name:string, initDict:TypeDictionary) : Actor
+    + Add(a:Actor) : void
+    + Remove(a:Actor) : void
+    + Add(e:IEffect) : void
+    + Remove(e:IEffect) : void
+    + RemoveAll(predicate:Predicate<IEffect>) : void
+    + AddFrameEndTask(a:Action<World>) : void
+    +  <<event>> ActorAdded : Action<Actor> 
+    +  <<event>> ActorRemoved : Action<Actor> 
+    + Paused : bool <<get>> <<internal set>>
+    + PredictedPaused : bool <<get>> <<internal set>>
+    + PauseStateLocked : bool <<get>> <<set>>
+    + WorldTick : int <<get>>
+    + SetPauseState(paused:bool) : void
+    + SetLocalPauseState(paused:bool) : void
+    + Tick() : void
+    + TickRender(wr:WorldRenderer) : void
+    + GetActorById(actorId:uint) : Actor
+    nextAID : uint = 0
+    + SyncHash() : int
+    + ActorsWithTrait() : IEnumerable<TraitPair<T>>
+    + ApplyToActorsWithTraitTimed(action:Action<Actor, T>, text:string) : void
+    + ActorsHavingTrait() : IEnumerable<Actor>
+    + ActorsHavingTrait(predicate:Func<T, bool>) : IEnumerable<Actor>
+    + OnPlayerWinStateChanged(player:Player) : void
+    + OnPlayerDisconnected(player:Player) : void
+    + RequestGameSave(filename:string) : void
+    + Disposing : bool
+    + Dispose() : void
+}
+class "TraitPair`1"<T> <<struct>> {
+    + <<readonly>> Trait : T
+    + TraitPair(actor:Actor, trait:T)
+    + <<override>> GetHashCode() : int
+    + Equals(other:TraitPair<T>) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+}
+class "SortedDictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+class "Queue`1"<T> {
+}
+class "LongBitSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class "IEquatable`1"<T> {
+}
+IDisposable <|-- World
+World o-> "actors<uint,Actor>" "SortedDictionary`2"
+World o-> "effects<IEffect>" "List`1"
+World o-> "unpartitionedEffects<IEffect>" "List`1"
+World o-> "syncedEffects<ISync>" "List`1"
+World --> "gameSettings" GameSettings
+World o-> "frameEndActions<Action<World>>" "Queue`1"
+World --> "LobbyInfo" Session
+World --> "SharedRandom" MersenneTwister
+World --> "LocalRandom" MersenneTwister
+World --> "ModelCache" IModelCache
+World o-> "AllPlayersMask<PlayerBitMask>" "LongBitSet`1"
+World o-> "NoPlayersMask<PlayerBitMask>" "LongBitSet`1"
+World --> "LocalPlayer" Player
+World --> "renderPlayer" Player
+World --> "RenderPlayer" Player
+World --> "WorldActor" Actor
+World --> "Map" Map
+World --> "ActorMap" IActorMap
+World --> "ScreenMap" ScreenMap
+World --> "Type" WorldType
+World --> "gameInfo" GameInformation
+World --> "orderGenerator" IOrderGenerator
+World --> "OrderGenerator" IOrderGenerator
+World --> "Selection" ISelection
+World o-> "gameSaveTraitData<int,MiniYaml>" "Dictionary`2"
+World --> "Actors<Actor>" "IEnumerable`1"
+World --> "Effects<IEffect>" "IEnumerable`1"
+World --> "UnpartitionedEffects<IEffect>" "IEnumerable`1"
+World --> "SyncedEffects<ISync>" "IEnumerable`1"
+"IEquatable`1" "<TraitPair<T>>" <|-- "TraitPair`1"
+"TraitPair`1" --> "Actor" Actor
+@enduml

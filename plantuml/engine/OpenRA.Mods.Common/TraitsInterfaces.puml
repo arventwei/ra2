@@ -1,0 +1,480 @@
+@startuml
+enum VisibilityType {
+    Footprint,
+    CenterPosition,
+    GroundPosition,
+}
+enum AttackDelayType {
+    Preparation,
+    Attack,
+}
+enum ResupplyType {
+    None= 0,
+    Rearm= 1,
+    Repair= 2,
+}
+interface IQuantizeBodyOrientationInfo {
+    QuantizedBodyFacings(ai:ActorInfo, sequenceProvider:SequenceProvider, race:string) : int
+}
+interface IPlaceBuildingDecorationInfo {
+    RenderAnnotations(wr:WorldRenderer, w:World, ai:ActorInfo, centerPosition:WPos) : IEnumerable<IRenderable>
+}
+interface IBlocksProjectiles {
+}
+interface IBlocksProjectilesInfo {
+}
+interface INotifySold {
+    Selling(self:Actor) : void
+    Sold(self:Actor) : void
+}
+interface INotifyCustomLayerChanged {
+    CustomLayerChanged(self:Actor, oldLayer:byte, newLayer:byte) : void
+}
+interface INotifyVisualPositionChanged {
+    VisualPositionChanged(self:Actor, oldLayer:byte, newLayer:byte) : void
+}
+interface INotifyFinishedMoving {
+    FinishedMoving(self:Actor, oldLayer:byte, newLayer:byte) : void
+}
+interface IDemolishableInfo {
+    IsValidTarget(actorInfo:ActorInfo, saboteur:Actor) : bool
+}
+interface IDemolishable {
+    IsValidTarget(self:Actor, saboteur:Actor) : bool
+    Demolish(self:Actor, saboteur:Actor, delay:int, damageTypes:BitSet<DamageType>) : void
+}
+class CrushClass {
+}
+interface ICrushable {
+    CrushableBy(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : bool
+    CrushableBy(self:Actor, crushClasses:BitSet<CrushClass>) : LongBitSet<PlayerBitMask>
+}
+interface INotifyCrushed {
+    OnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+    WarnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+}
+interface INotifyAiming {
+    StartedAiming(self:Actor, attack:AttackBase) : void
+    StoppedAiming(self:Actor, attack:AttackBase) : void
+}
+interface INotifyAttack {
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+}
+interface INotifyDamageStateChanged {
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+}
+interface INotifyDamage {
+    Damaged(self:Actor, e:AttackInfo) : void
+}
+interface INotifyKilled {
+    Killed(self:Actor, e:AttackInfo) : void
+}
+interface INotifyAppliedDamage {
+    AppliedDamage(self:Actor, damaged:Actor, e:AttackInfo) : void
+}
+interface INotifyResupply {
+    BeforeResupply(host:Actor, target:Actor, types:ResupplyType) : void
+    ResupplyTick(host:Actor, target:Actor, types:ResupplyType) : void
+}
+interface INotifyBeingResupplied {
+    StartingResupply(self:Actor, host:Actor) : void
+    StoppingResupply(self:Actor, host:Actor) : void
+}
+interface INotifyPowerLevelChanged {
+    PowerLevelChanged(self:Actor) : void
+}
+interface INotifySupportPower {
+    Charged(self:Actor) : void
+    Activated(self:Actor) : void
+}
+interface INotifyBuildingPlaced {
+    BuildingPlaced(self:Actor) : void
+}
+interface INotifyBurstComplete {
+    FiredBurst(self:Actor, target:Target, a:Armament) : void
+}
+interface INotifyChat {
+    OnChat(from:string, message:string) : bool
+}
+interface INotifyProduction {
+    UnitProduced(self:Actor, other:Actor, exit:CPos) : void
+}
+interface INotifyOtherProduction {
+    UnitProducedByOther(self:Actor, producer:Actor, produced:Actor, productionType:string, init:TypeDictionary) : void
+}
+interface INotifyDelivery {
+    IncomingDelivery(self:Actor) : void
+    Delivered(self:Actor) : void
+}
+interface INotifyDocking {
+    Docked(self:Actor, harvester:Actor) : void
+    Undocked(self:Actor, harvester:Actor) : void
+}
+interface INotifyResourceAccepted {
+    OnResourceAccepted(self:Actor, refinery:Actor, amount:int) : void
+}
+interface INotifyParachute {
+    OnParachute(self:Actor) : void
+    OnLanded(self:Actor) : void
+}
+interface INotifyCapture {
+    OnCapture(self:Actor, captor:Actor, oldOwner:Player, newOwner:Player, captureTypes:BitSet<CaptureType>) : void
+}
+interface INotifyDiscovered {
+    OnDiscovered(self:Actor, discoverer:Player, playNotification:bool) : void
+}
+interface IRenderActorPreviewInfo {
+    RenderPreview(init:ActorPreviewInitializer) : IEnumerable<IActorPreview>
+}
+interface ICruiseAltitudeInfo {
+    GetCruiseAltitude() : WDist
+}
+interface IHuskModifier {
+    HuskActor(self:Actor) : string
+}
+interface ISeedableResource {
+    Seed(self:Actor) : void
+}
+interface INotifyInfiltrated {
+    Infiltrated(self:Actor, infiltrator:Actor, types:BitSet<TargetableType>) : void
+}
+interface INotifyBlockingMove {
+    OnNotifyBlockingMove(self:Actor, blocking:Actor) : void
+}
+interface INotifyPassengerEntered {
+    OnPassengerEntered(self:Actor, passenger:Actor) : void
+}
+interface INotifyPassengerExited {
+    OnPassengerExited(self:Actor, passenger:Actor) : void
+}
+interface INotifyEnteredCargo {
+    OnEnteredCargo(self:Actor, cargo:Actor) : void
+}
+interface INotifyExitedCargo {
+    OnExitedCargo(self:Actor, cargo:Actor) : void
+}
+interface INotifyHarvesterAction {
+    MovingToResources(self:Actor, targetCell:CPos) : void
+    MovingToRefinery(self:Actor, refineryActor:Actor) : void
+    MovementCancelled(self:Actor) : void
+    Harvested(self:Actor, resource:ResourceType) : void
+    Docked() : void
+    Undocked() : void
+}
+interface INotifyUnload {
+    Unloading(self:Actor) : void
+}
+interface INotifyDemolition {
+    Demolishing(self:Actor) : void
+}
+interface INotifyInfiltration {
+    Infiltrating(self:Actor) : void
+}
+interface ITechTreePrerequisiteInfo {
+    Prerequisites(info:ActorInfo) : IEnumerable<string>
+}
+interface ITechTreePrerequisite {
+}
+interface ITechTreeElement {
+    PrerequisitesAvailable(key:string) : void
+    PrerequisitesUnavailable(key:string) : void
+    PrerequisitesItemHidden(key:string) : void
+    PrerequisitesItemVisible(key:string) : void
+}
+interface IProductionIconOverlay {
+    Palette : string <<get>>
+    Offset(iconSize:float2) : float2
+    IsOverlayActive(ai:ActorInfo) : bool
+}
+interface INotifyTransform {
+    BeforeTransform(self:Actor) : void
+    OnTransform(self:Actor) : void
+    AfterTransform(toActor:Actor) : void
+}
+interface INotifyDeployComplete {
+    FinishedDeploy(self:Actor) : void
+    FinishedUndeploy(self:Actor) : void
+}
+interface INotifyDeployTriggered {
+    Deploy(self:Actor, skipMakeAnim:bool) : void
+    Undeploy(self:Actor, skipMakeAnim:bool) : void
+}
+interface IAcceptResourcesInfo {
+}
+interface IAcceptResources {
+    OnDock(harv:Actor, dockOrder:DeliverResources) : void
+    GiveResource(amount:int) : void
+    CanGiveResource(amount:int) : bool
+    AllowDocking : bool <<get>>
+}
+interface IProvidesAssetBrowserPalettes {
+}
+interface ICallForTransport {
+    WantsTransport : bool <<get>>
+    MovementCancelled(self:Actor) : void
+    RequestTransport(self:Actor, destination:CPos) : void
+}
+interface IDeathActorInitModifier {
+    ModifyDeathActorInit(self:Actor, init:TypeDictionary) : void
+}
+interface ITransformActorInitModifier {
+    ModifyTransformActorInit(self:Actor, init:TypeDictionary) : void
+}
+interface IDisableEnemyAutoTarget {
+    DisableEnemyAutoTarget(self:Actor, attacker:Actor) : bool
+}
+interface IDisableAutoTarget {
+    DisableAutoTarget(self:Actor) : bool
+}
+interface IWallConnector {
+    AdjacentWallCanConnect(self:Actor, wallLocation:CPos, wallType:string, facing:CVec) : bool
+    SetDirty() : void
+}
+interface IActorPreviewInitModifier {
+    ModifyActorPreviewInit(self:Actor, inits:TypeDictionary) : void
+}
+interface INotifyRearm {
+    RearmingStarted(host:Actor, other:Actor) : void
+    Rearming(host:Actor, other:Actor) : void
+    RearmingFinished(host:Actor, other:Actor) : void
+}
+interface IRenderInfantrySequenceModifier {
+    IsModifyingSequence : bool <<get>>
+    SequencePrefix : string <<get>>
+}
+interface IProductionCostModifierInfo {
+    GetProductionCostModifier(techTree:TechTree, queue:string) : int
+}
+interface IProductionTimeModifierInfo {
+    GetProductionTimeModifier(techTree:TechTree, queue:string) : int
+}
+interface ICashTricklerModifier {
+    GetCashTricklerModifier() : int
+}
+interface IDamageModifier {
+    GetDamageModifier(attacker:Actor, damage:Damage) : int
+}
+interface ISpeedModifier {
+    GetSpeedModifier() : int
+}
+interface IFirepowerModifier {
+    GetFirepowerModifier() : int
+}
+interface IReloadModifier {
+    GetReloadModifier() : int
+}
+interface IReloadAmmoModifier {
+    GetReloadAmmoModifier() : int
+}
+interface IInaccuracyModifier {
+    GetInaccuracyModifier() : int
+}
+interface IRangeModifier {
+    GetRangeModifier() : int
+}
+interface IRangeModifierInfo {
+    GetRangeModifierDefault() : int
+}
+interface IPowerModifier {
+    GetPowerModifier() : int
+}
+interface IGivesExperienceModifier {
+    GetGivesExperienceModifier() : int
+}
+interface IGainsExperienceModifier {
+    GetGainsExperienceModifier() : int
+}
+interface ICreatesShroudModifier {
+    GetCreatesShroudModifier() : int
+}
+interface IRevealsShroudModifier {
+    GetRevealsShroudModifier() : int
+}
+interface IDetectCloakedModifier {
+    GetDetectCloakedModifier() : int
+}
+interface ICustomMovementLayer {
+    Index : byte <<get>>
+    InteractsWithDefaultLayer : bool <<get>>
+    ReturnToGroundLayerOnIdle : bool <<get>>
+    EnabledForActor(a:ActorInfo, li:LocomotorInfo) : bool
+    EntryMovementCost(a:ActorInfo, li:LocomotorInfo, cell:CPos) : int
+    ExitMovementCost(a:ActorInfo, li:LocomotorInfo, cell:CPos) : int
+    GetTerrainIndex(cell:CPos) : byte
+    CenterOfCell(cell:CPos) : WPos
+}
+interface IIssueDeployOrder {
+    IssueDeployOrder(self:Actor, queued:bool) : Order
+    CanIssueDeployOrder(self:Actor, queued:bool) : bool
+}
+enum ActorPreviewType {
+    PlaceBuilding,
+    ColorPicker,
+    MapEditorSidebar,
+}
+interface IActorPreviewInitInfo {
+    ActorPreviewInits(ai:ActorInfo, type:ActorPreviewType) : IEnumerable<ActorInit>
+}
+interface IMove {
+    MoveTo(cell:CPos, nearEnough:int, ignoreActor:Actor, evaluateNearestMovableCell:bool, targetLineColor:Color?) : Activity
+    MoveWithinRange(target:Target, range:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    MoveWithinRange(target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    MoveFollow(self:Actor, target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    MoveToTarget(self:Actor, target:Target, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    ReturnToCell(self:Actor) : Activity
+    MoveIntoTarget(self:Actor, target:Target) : Activity
+    VisualMove(self:Actor, fromPos:WPos, toPos:WPos) : Activity
+    EstimatedMoveDuration(self:Actor, fromPos:WPos, toPos:WPos) : int
+    NearestMoveableCell(target:CPos) : CPos
+    CanEnterTargetNow(self:Actor, target:Target) : bool
+}
+interface IWrapMove {
+    WrapMove(moveInner:Activity) : Activity
+}
+interface IAircraftCenterPositionOffset {
+}
+interface IOverrideAircraftLanding {
+}
+interface IRadarSignature {
+    PopulateRadarSignatureCells(self:Actor, destinationBuffer:List<(CPos Cell, Color Color)>) : void
+}
+interface IRadarColorModifier {
+    RadarColorOverride(self:Actor, color:Color) : Color
+}
+interface IObjectivesPanel {
+    PanelName : string <<get>>
+    ExitDelay : int <<get>>
+}
+interface INotifyObjectivesUpdated {
+    OnObjectiveAdded(player:Player, objectiveID:int) : void
+    OnObjectiveCompleted(player:Player, objectiveID:int) : void
+    OnObjectiveFailed(player:Player, objectiveID:int) : void
+}
+interface INotifyWinStateChanged {
+    OnPlayerWon(winner:Player) : void
+    OnPlayerLost(loser:Player) : void
+}
+interface INotifyCashTransfer {
+    OnAcceptingCash(self:Actor, donor:Actor) : void
+    OnDeliveringCash(self:Actor, acceptor:Actor) : void
+}
+interface ITargetableCells {
+    TargetableCells() : (CPos Cell, SubCell SubCell)[]
+}
+interface IPreventsShroudReset {
+    PreventShroudReset(self:Actor) : bool
+}
+interface IBotEnabled {
+    BotEnabled(bot:IBot) : void
+}
+interface IBotTick {
+    BotTick(bot:IBot) : void
+}
+interface IBotRespondToAttack {
+    RespondToAttack(bot:IBot, self:Actor, e:AttackInfo) : void
+}
+interface IBotPositionsUpdated {
+    UpdatedBaseCenter(newLocation:CPos) : void
+    UpdatedDefenseCenter(newLocation:CPos) : void
+}
+interface IBotNotifyIdleBaseUnits {
+    UpdatedIdleBaseUnits(idleUnits:List<Actor>) : void
+}
+interface IBotRequestUnitProduction {
+    RequestUnitProduction(bot:IBot, requestedActor:string) : void
+    RequestedProductionCount(bot:IBot, requestedActor:string) : int
+}
+interface IBotRequestPauseUnitProduction {
+    PauseUnitProduction : bool <<get>>
+}
+interface IEditorActorOptions {
+    ActorOptions(ai:ActorInfo, world:World) : IEnumerable<EditorActorOption>
+}
+abstract class EditorActorOption {
+    + <<readonly>> Name : string
+    + <<readonly>> DisplayOrder : int
+    + EditorActorOption(name:string, displayOrder:int)
+}
+class EditorActorCheckbox {
+    + EditorActorCheckbox(name:string, displayOrder:int, getValue:Func<EditorActorPreview, bool>, onChange:Action<EditorActorPreview, bool>)
+}
+class EditorActorSlider {
+    + <<readonly>> MinValue : float
+    + <<readonly>> MaxValue : float
+    + <<readonly>> Ticks : int
+    + EditorActorSlider(name:string, displayOrder:int, minValue:float, maxValue:float, ticks:int, getValue:Func<EditorActorPreview, float>, onChange:Action<EditorActorPreview, float>)
+}
+class EditorActorDropdown {
+    + EditorActorDropdown(name:string, displayOrder:int, labels:Dictionary<string, string>, getValue:Func<EditorActorPreview, string>, onChange:Action<EditorActorPreview, string>)
+}
+interface INotifyEditorPlacementInfo {
+    AddedToEditor(preview:EditorActorPreview, editorWorld:World) : object
+    RemovedFromEditor(preview:EditorActorPreview, editorWorld:World, data:object) : void
+}
+interface IPreventMapSpawn {
+    PreventMapSpawn(world:World, actorReference:ActorReference) : bool
+}
+enum MovementType {
+    None= 0,
+    Horizontal= 1,
+    Vertical= 2,
+    Turn= 4,
+}
+interface INotifyMoving {
+    MovementTypeChanged(self:Actor, type:MovementType) : void
+}
+interface INotifyTimeLimit {
+    NotifyTimerExpired(self:Actor) : void
+}
+interface ISelectable {
+    Class : string <<get>>
+}
+interface IDecoration {
+    RequiresSelection : bool <<get>>
+    RenderDecoration(self:Actor, wr:WorldRenderer, container:ISelectionDecorations) : IEnumerable<IRenderable>
+}
+class "IEnumerable`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "Func`2"<T1,T2> {
+}
+class "Action`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ITraitInfoInterface <|-- IQuantizeBodyOrientationInfo
+ITraitInfoInterface <|-- IPlaceBuildingDecorationInfo
+IBlocksProjectiles --> "BlockingHeight" WDist
+ITraitInfoInterface <|-- IBlocksProjectilesInfo
+ITraitInfoInterface <|-- IDemolishableInfo
+ITraitInfoInterface <|-- IRenderActorPreviewInfo
+ITraitInfoInterface <|-- ICruiseAltitudeInfo
+ITraitInfoInterface <|-- ITechTreePrerequisiteInfo
+ITechTreePrerequisite --> "ProvidesPrerequisites<string>" "IEnumerable`1"
+IProductionIconOverlay --> "Sprite" Sprite
+ITraitInfoInterface <|-- IAcceptResourcesInfo
+IAcceptResources --> "DeliveryOffset" CVec
+IProvidesAssetBrowserPalettes --> "PaletteNames<string>" "IEnumerable`1"
+ICallForTransport --> "MinimumDistance" WDist
+ITraitInfoInterface <|-- IProductionCostModifierInfo
+ITraitInfoInterface <|-- IProductionTimeModifierInfo
+ITraitInfoInterface <|-- IRangeModifierInfo
+ITraitInfoInterface <|-- IActorPreviewInitInfo
+IMove --> "CurrentMovementTypes" MovementType
+IAircraftCenterPositionOffset --> "PositionOffset" WVec
+IOverrideAircraftLanding --> "LandableTerrainTypes<string>" "HashSet`1"
+ITraitInfoInterface <|-- IEditorActorOptions
+EditorActorOption <|-- EditorActorCheckbox
+EditorActorCheckbox --> "GetValue<EditorActorPreview,bool>" "Func`2"
+EditorActorCheckbox --> "OnChange<EditorActorPreview,bool>" "Action`2"
+EditorActorOption <|-- EditorActorSlider
+EditorActorSlider --> "GetValue<EditorActorPreview,float>" "Func`2"
+EditorActorSlider --> "OnChange<EditorActorPreview,float>" "Action`2"
+EditorActorOption <|-- EditorActorDropdown
+EditorActorDropdown --> "Labels<string,string>" "Dictionary`2"
+EditorActorDropdown --> "GetValue<EditorActorPreview,string>" "Func`2"
+EditorActorDropdown --> "OnChange<EditorActorPreview,string>" "Action`2"
+ITraitInfoInterface <|-- INotifyEditorPlacementInfo
+@enduml

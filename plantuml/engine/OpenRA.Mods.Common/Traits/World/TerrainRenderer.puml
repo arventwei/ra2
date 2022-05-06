@@ -1,0 +1,22 @@
+@startuml
+class TerrainRendererInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TerrainRenderer <<sealed>> {
+    disposed : bool
+    + TerrainRenderer(world:World)
+    WorldLoaded(world:World, wr:WorldRenderer) : void
+    + UpdateCell(cell:CPos) : void
+    RenderTerrain(wr:WorldRenderer, viewport:Viewport) : void
+    Disposing(self:Actor) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- TerrainRendererInfo
+IRenderTerrain <|-- TerrainRenderer
+IWorldLoaded <|-- TerrainRenderer
+INotifyActorDisposing <|-- TerrainRenderer
+TerrainRenderer --> "map" Map
+TerrainRenderer o-> "spriteLayers<string,TerrainSpriteLayer>" "Dictionary`2"
+TerrainRenderer --> "theater" Theater
+@enduml

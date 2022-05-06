@@ -1,0 +1,16 @@
+@startuml
+class ReplayControlBarLogic {
+    + ReplayControlBarLogic(widget:Widget, world:World, orderManager:OrderManager)
+}
+enum PlaybackSpeed {
+    Regular,
+    Slow,
+    Fast,
+    Maximum,
+}
+class "Dictionary`2"<T1,T2> {
+}
+ChromeLogic <|-- ReplayControlBarLogic
+ReplayControlBarLogic o-> "multipliers<PlaybackSpeed,float>" "Dictionary`2"
+ReplayControlBarLogic +-- PlaybackSpeed
+@enduml

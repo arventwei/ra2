@@ -1,0 +1,17 @@
+@startuml
+class PowerTooltipInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PowerTooltip {
+    + PowerTooltip(self:Actor)
+    + IsTooltipVisible(forPlayer:Player) : bool
+    + TooltipText : string <<get>>
+    + OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+TraitInfo <|-- PowerTooltipInfo
+IProvideTooltipInfo <|-- PowerTooltip
+INotifyOwnerChanged <|-- PowerTooltip
+PowerTooltip --> "self" Actor
+PowerTooltip --> "powerManager" PowerManager
+PowerTooltip --> "developerMode" DeveloperMode
+@enduml

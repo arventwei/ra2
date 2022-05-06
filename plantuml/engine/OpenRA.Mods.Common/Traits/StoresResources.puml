@@ -1,0 +1,26 @@
+@startuml
+class StoresResourcesInfo {
+    + <<readonly>> Capacity : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class StoresResources {
+    + Stored : int <<get>>
+    + StoresResources(self:Actor, info:StoresResourcesInfo)
+    Capacity : int <<get>>
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    OnCapture(self:Actor, captor:Actor, oldOwner:Player, newOwner:Player, captureTypes:BitSet<CaptureType>) : void
+    Killed(self:Actor, e:AttackInfo) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+}
+TraitInfo <|-- StoresResourcesInfo
+INotifyOwnerChanged <|-- StoresResources
+INotifyCapture <|-- StoresResources
+IStoreResources <|-- StoresResources
+ISync <|-- StoresResources
+INotifyKilled <|-- StoresResources
+INotifyAddedToWorld <|-- StoresResources
+INotifyRemovedFromWorld <|-- StoresResources
+StoresResources --> "info" StoresResourcesInfo
+StoresResources --> "player" PlayerResources
+@enduml

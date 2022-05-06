@@ -1,0 +1,33 @@
+@startuml
+class AttackMoveInfo {
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> AttackMoveCondition : string = null
+    + <<readonly>> AssaultMoveCondition : string = null
+    + <<readonly>> MoveIntoShroud : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackMove {
+    + AttackMove(self:Actor, info:AttackMoveInfo)
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    + ResolveOrder(self:Actor, order:Order) : void
+}
+class AttackMoveOrderGenerator {
+    + AttackMoveOrderGenerator(subjects:IEnumerable<Actor>, button:MouseButton)
+    + <<override>> Order(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : IEnumerable<Order>
+    + <<override>> SelectionChanged(world:World, selected:IEnumerable<Actor>) : void
+    + <<override>> GetCursor(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : string
+    + <<override>> InputOverridesSelection(world:World, xy:int2, mi:MouseInput) : bool
+    + <<override>> ClearSelectionOnLeftClick : bool <<get>>
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- AttackMoveInfo
+"Requires`1" "<IMoveInfo>" <|-- AttackMoveInfo
+AttackMoveInfo o-> "TargetLineColor" Color
+IResolveOrder <|-- AttackMove
+IOrderVoice <|-- AttackMove
+AttackMove --> "Info" AttackMoveInfo
+AttackMove --> "move" IMove
+UnitOrderGenerator <|-- AttackMoveOrderGenerator
+AttackMoveOrderGenerator --> "expectedButton" MouseButton
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+class WithTextDecorationInfo {
+    + <<readonly>> Text : string = null
+    + <<readonly>> Font : string = "TinyBold"
+    + <<readonly>> UsePlayerColor : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class WithTextDecoration {
+    + WithTextDecoration(self:Actor, info:WithTextDecorationInfo)
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "WithDecorationBase`1"<T> {
+}
+WithDecorationBaseInfo <|-- WithTextDecorationInfo
+WithTextDecorationInfo o-> "Color" Color
+"WithDecorationBase`1" "<WithTextDecorationInfo>" <|-- WithTextDecoration
+INotifyOwnerChanged <|-- WithTextDecoration
+WithTextDecoration --> "font" SpriteFont
+WithTextDecoration --> "color" Color
+@enduml

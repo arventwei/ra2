@@ -1,0 +1,21 @@
+@startuml
+class MapCreepsInfo {
+    + <<readonly>> CheckboxLabel : string = "Creep Actors"
+    + <<readonly>> CheckboxDescription : string = "Hostile forces spawn on the battlefield"
+    + <<readonly>> CheckboxEnabled : bool = true
+    + <<readonly>> CheckboxLocked : bool = false
+    + <<readonly>> CheckboxVisible : bool = true
+    + <<readonly>> CheckboxDisplayOrder : int = 0
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MapCreeps {
+    + Enabled : bool <<get>>
+    + MapCreeps(info:MapCreepsInfo)
+    Created(self:Actor) : void
+}
+TraitInfo <|-- MapCreepsInfo
+ILobbyOptions <|-- MapCreepsInfo
+INotifyCreated <|-- MapCreeps
+MapCreeps --> "info" MapCreepsInfo
+@enduml

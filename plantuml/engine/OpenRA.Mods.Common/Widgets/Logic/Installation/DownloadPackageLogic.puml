@@ -1,0 +1,14 @@
+@startuml
+class DownloadPackageLogic {
+    downloadHost : string
+    + DownloadPackageLogic(widget:Widget, download:ModContent.ModDownload, onSuccess:Action)
+    ShowDownloadDialog() : void
+}
+class "Func`1"<T> {
+}
+ChromeLogic <|-- DownloadPackageLogic
+DownloadPackageLogic --> "onSuccess" Action
+DownloadPackageLogic --> "panel" Widget
+DownloadPackageLogic --> "progressBar" ProgressBarWidget
+DownloadPackageLogic o-> "getStatusText<string>" "Func`1"
+@enduml

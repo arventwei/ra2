@@ -1,0 +1,19 @@
+@startuml
+class BaseAttackNotifierInfo {
+    + <<readonly>> NotifyInterval : int = 30
+    + <<readonly>> RadarPingDuration : int
+    + Notification : string = "BaseAttack"
+    + AllyNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BaseAttackNotifier {
+    lastAttackTime : int
+    + BaseAttackNotifier(self:Actor, info:BaseAttackNotifierInfo)
+    Damaged(self:Actor, e:AttackInfo) : void
+}
+TraitInfo <|-- BaseAttackNotifierInfo
+BaseAttackNotifierInfo o-> "RadarPingColor" Color
+INotifyDamage <|-- BaseAttackNotifier
+BaseAttackNotifier --> "radarPings" RadarPings
+BaseAttackNotifier --> "info" BaseAttackNotifierInfo
+@enduml

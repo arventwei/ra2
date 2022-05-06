@@ -1,0 +1,28 @@
+@startuml
+class EditorSelectionLayerInfo {
+    + <<readonly>> Palette : string
+    + <<readonly>> Image : string = "editor-overlay"
+    + <<readonly>> CopySequence : string = "copy"
+    + <<readonly>> PasteSequence : string = "paste"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class EditorSelectionLayer {
+    + EditorSelectionLayer(self:Actor, info:EditorSelectionLayerInfo)
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+    + SetCopyRegion(start:CPos, end:CPos) : void
+    + SetPasteRegion(start:CPos, end:CPos) : void
+    + Clear() : void
+    RenderAboveShroud(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+TraitInfo <|-- EditorSelectionLayerInfo
+IWorldLoaded <|-- EditorSelectionLayer
+IRenderAboveShroud <|-- EditorSelectionLayer
+EditorSelectionLayer --> "info" EditorSelectionLayerInfo
+EditorSelectionLayer --> "map" Map
+EditorSelectionLayer --> "copySprite" Sprite
+EditorSelectionLayer --> "pasteSprite" Sprite
+EditorSelectionLayer --> "palette" PaletteReference
+EditorSelectionLayer --> "CopyRegion" CellRegion
+EditorSelectionLayer --> "PasteRegion" CellRegion
+@enduml

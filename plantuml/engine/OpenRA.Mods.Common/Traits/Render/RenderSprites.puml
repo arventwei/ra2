@@ -1,0 +1,64 @@
+@startuml
+interface IRenderActorPreviewSpritesInfo {
+    RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class RenderSpritesInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> Palette : string = null
+    + <<readonly>> PlayerPalette : string = "player"
+    + <<readonly>> Scale : float = 1f
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreview(init:ActorPreviewInitializer) : IEnumerable<IActorPreview>
+    + GetImage(actor:ActorInfo, sequenceProvider:SequenceProvider, faction:string) : string
+}
+class RenderSprites {
+    <<readonly>> faction : string
+    cachedImage : string
+    + {static} MakeFacingFunc(self:Actor) : Func<WAngle>
+    + RenderSprites(init:ActorInitializer, info:RenderSpritesInfo)
+    + GetImage(self:Actor) : string
+    + UpdatePalette() : void
+    + <<virtual>> OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    + OnEffectiveOwnerChanged(self:Actor, oldEffectiveOwner:Player, newEffectiveOwner:Player) : void
+    + <<virtual>> Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    + <<virtual>> ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+    Tick(self:Actor) : void
+    + Add(anim:AnimationWithOffset, palette:string, isPlayerPalette:bool) : void
+    + Remove(anim:AnimationWithOffset) : void
+    + {static} UnnormalizeSequence(sequence:string) : string
+    + {static} NormalizeSequence(anim:Animation, state:DamageState, sequence:string) : string
+    + AutoSelectionSize(self:Actor) : int2
+    + AutoRenderSize(self:Actor) : int2
+    ModifyActorPreviewInit(self:Actor, inits:TypeDictionary) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class AnimationWrapper {
+    + <<readonly>> Palette : string
+    + <<readonly>> IsPlayerPalette : bool
+    cachedVisible : bool
+    + AnimationWrapper(animation:AnimationWithOffset, palette:string, isPlayerPalette:bool)
+    + CachePalette(wr:WorldRenderer, owner:Player) : void
+    + OwnerChanged() : void
+    + IsVisible : bool <<get>>
+    + Tick() : bool
+}
+class "List`1"<T> {
+}
+ITraitInfoInterface <|-- IRenderActorPreviewSpritesInfo
+TraitInfo <|-- RenderSpritesInfo
+IRenderActorPreviewInfo <|-- RenderSpritesInfo
+RenderSpritesInfo o-> "FactionImages<string,string>" "Dictionary`2"
+IRender <|-- RenderSprites
+ITick <|-- RenderSprites
+INotifyOwnerChanged <|-- RenderSprites
+INotifyEffectiveOwnerChanged <|-- RenderSprites
+IActorPreviewInitModifier <|-- RenderSprites
+RenderSprites --> "Info" RenderSpritesInfo
+RenderSprites o-> "anims<AnimationWrapper>" "List`1"
+RenderSprites +-- AnimationWrapper
+AnimationWrapper --> "Animation" AnimationWithOffset
+AnimationWrapper --> "PaletteReference" PaletteReference
+AnimationWrapper --> "cachedOffset" WVec
+AnimationWrapper --> "cachedSequence" ISpriteSequence
+@enduml

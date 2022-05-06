@@ -1,0 +1,15 @@
+@startuml
+class CheckboxWidget {
+    + CheckType : string = "checked"
+    + CheckOffset : int = 2
+    + HasPressedState : bool
+    + CheckboxWidget(modData:ModData)
+    + <<override>> Draw() : void
+    + <<override>> Clone() : Widget
+}
+class "Func`1"<T> {
+}
+ButtonWidget <|-- CheckboxWidget
+CheckboxWidget --> "GetCheckType<string>" "Func`1"
+CheckboxWidget o-> "IsChecked<bool>" "Func`1"
+@enduml

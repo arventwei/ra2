@@ -1,0 +1,49 @@
+@startuml
+enum SpawnerChildDisposal {
+    DoNothing,
+    KillChildren,
+    GiveChildrenToAttacker,
+}
+class BaseSpawnerChildEntry {
+    + ActorName : string = null
+    + IsValid : bool <<get>>
+}
+class BaseSpawnerParentInfo {
+    + <<readonly>> InitialActorCount : int
+    + <<readonly>> NoRegeneration : bool = false
+    + <<readonly>> SpawnAllAtOnce : bool = false
+    + <<readonly>> RespawnTicks : int = 150
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BaseSpawnerParent {
+    + BaseSpawnerParent(init:ActorInitializer, info:BaseSpawnerParentInfo)
+    + <<virtual>> CreateChildEntries(info:BaseSpawnerParentInfo) : BaseSpawnerChildEntry[]
+    + Replenish(self:Actor, childEntries:BaseSpawnerChildEntry[]) : void
+    + <<virtual>> Replenish(self:Actor, entry:BaseSpawnerChildEntry) : void
+    + <<virtual>> InitializeChildEntry(child:Actor, entry:BaseSpawnerChildEntry) : void
+    + <<virtual>> OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    Disposing(self:Actor) : void
+    + <<virtual>> SpawnIntoWorld(self:Actor, child:Actor, centerPosition:WPos) : void
+    SetSpawnedFacing(spawned:Actor, spawner:Actor, exit:Exit) : void
+    + Stopchildren() : void
+    + <<virtual>> OnChildKilled(self:Actor, child:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+BaseSpawnerChildEntry o-> "Actor" Actor
+BaseSpawnerChildEntry o-> "SpawnerChild" BaseSpawnerChild
+ConditionalTraitInfo <|-- BaseSpawnerParentInfo
+BaseSpawnerParentInfo o-> "ArmamentNames<string>" "HashSet`1"
+BaseSpawnerParentInfo o-> "ChildDisposalOnKill" SpawnerChildDisposal
+BaseSpawnerParentInfo o-> "ChildDisposalOnOwnerChange" SpawnerChildDisposal
+"ConditionalTrait`1" "<BaseSpawnerParentInfo>" <|-- BaseSpawnerParent
+INotifyKilled <|-- BaseSpawnerParent
+INotifyOwnerChanged <|-- BaseSpawnerParent
+INotifyActorDisposing <|-- BaseSpawnerParent
+BaseSpawnerParent --> "self" Actor
+BaseSpawnerParent --> "facing" IFacing
+@enduml

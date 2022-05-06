@@ -1,0 +1,33 @@
+@startuml
+class BuildableTerrainLayerInfo {
+    + <<readonly>> Palette : string
+    + <<readonly>> MaxStrength : int = 9000
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BuildableTerrainLayer {
+    disposed : bool
+    + BuildableTerrainLayer(self:Actor, info:BuildableTerrainLayerInfo)
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + AddTile(cell:CPos, tile:TerrainTile) : void
+    + HitTile(cell:CPos, damage:int) : void
+    + RemoveTile(cell:CPos) : void
+    TickRender(wr:WorldRenderer, self:Actor) : void
+    Render(wr:WorldRenderer) : void
+    Disposing(self:Actor) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "CellLayer`1"<T> {
+}
+TraitInfo <|-- BuildableTerrainLayerInfo
+IRenderOverlay <|-- BuildableTerrainLayer
+IWorldLoaded <|-- BuildableTerrainLayer
+ITickRender <|-- BuildableTerrainLayer
+INotifyActorDisposing <|-- BuildableTerrainLayer
+BuildableTerrainLayer --> "info" BuildableTerrainLayerInfo
+BuildableTerrainLayer o-> "dirty<CPos,TerrainTile?>" "Dictionary`2"
+BuildableTerrainLayer --> "world" World
+BuildableTerrainLayer --> "strength<int>" "CellLayer`1"
+BuildableTerrainLayer --> "render" TerrainSpriteLayer
+BuildableTerrainLayer --> "theater" Theater
+@enduml

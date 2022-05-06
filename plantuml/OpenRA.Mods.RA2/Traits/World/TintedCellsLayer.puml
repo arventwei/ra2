@@ -1,0 +1,43 @@
+@startuml
+enum FadeoutType {
+    Linear,
+    Logarithmic,
+}
+class TintedCellsLayerInfo {
+    + <<readonly>> MaxLevel : int = 500
+    + <<readonly>> UpdateDelay : int = 15
+    + <<readonly>> Darkest : int = 4
+    + <<readonly>> Brightest : int = 64
+    + <<readonly>> FadeoutDelay : int = 150
+    + <<readonly>> ZOffset : int = 512
+    + <<readonly>> Name : string = "radioactivity"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TintedCellsLayer {
+    + <<readonly>> FalloutScale : int
+    + <<readonly>> TintLevel : int
+    + TintedCellsLayer(self:Actor, info:TintedCellsLayerInfo)
+    Tick(self:Actor) : void
+    TickRender(wr:WorldRenderer, self:Actor) : void
+    + GetLevel(cell:CPos) : int
+    + IncreaseLevel(cell:CPos, level:int, maxLevel:int) : void
+    + Decay(tintedCell:TintedCell, updateDelay:int) : bool
+    disposed : bool = false
+    Disposing(self:Actor) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- TintedCellsLayerInfo
+TintedCellsLayerInfo o-> "Color" Color
+TintedCellsLayerInfo o-> "FadeoutType" FadeoutType
+INotifyActorDisposing <|-- TintedCellsLayer
+ITick <|-- TintedCellsLayer
+ITickRender <|-- TintedCellsLayer
+TintedCellsLayer --> "world" World
+TintedCellsLayer --> "Info" TintedCellsLayerInfo
+TintedCellsLayer o-> "tiles<CPos,TintedCell>" "Dictionary`2"
+TintedCellsLayer o-> "renderedTiles<CPos,TintedCell>" "Dictionary`2"
+TintedCellsLayer o-> "dirty<CPos>" "HashSet`1"
+@enduml

@@ -1,0 +1,48 @@
+@startuml
+enum LineBuildDirection {
+    Unset,
+    X,
+    Y,
+}
+class LineBuildDirectionInit {
+    + LineBuildDirectionInit(value:LineBuildDirection)
+}
+class LineBuildParentInit {
+    + LineBuildParentInit(value:Actor[])
+    + ActorValue(world:World) : Actor[]
+}
+interface INotifyLineBuildSegmentsChanged {
+    SegmentAdded(self:Actor, segment:Actor) : void
+    SegmentRemoved(self:Actor, segment:Actor) : void
+}
+class LineBuildInfo {
+    + <<readonly>> Range : int = 5
+    + <<readonly>> SegmentType : string = null
+    + <<readonly>> SegmentsRequireNode : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class LineBuild {
+    + LineBuild(init:ActorInitializer, info:LineBuildInfo)
+    SegmentAdded(self:Actor, segment:Actor) : void
+    SegmentRemoved(self:Actor, segment:Actor) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+}
+class "ValueActorInit`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"ValueActorInit`1" "<LineBuildDirection>" <|-- LineBuildDirectionInit
+ISingleInstanceInit <|-- LineBuildDirectionInit
+"ValueActorInit`1" "<string[]>" <|-- LineBuildParentInit
+ISingleInstanceInit <|-- LineBuildParentInit
+TraitInfo <|-- LineBuildInfo
+LineBuildInfo o-> "NodeTypes<string>" "HashSet`1"
+INotifyKilled <|-- LineBuild
+INotifyAddedToWorld <|-- LineBuild
+INotifyRemovedFromWorld <|-- LineBuild
+INotifyLineBuildSegmentsChanged <|-- LineBuild
+LineBuild --> "info" LineBuildInfo
+LineBuild --> "segments<Actor>" "HashSet`1"
+@enduml

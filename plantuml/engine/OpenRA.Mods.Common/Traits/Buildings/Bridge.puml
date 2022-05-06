@@ -1,0 +1,71 @@
+@startuml
+class BridgeInfo {
+    + <<readonly>> Long : bool = false
+    + <<readonly>> RepairPropagationDelay : int = 20
+    + <<readonly>> Template : ushort = 0
+    + <<readonly>> DamagedTemplate : ushort = 0
+    + <<readonly>> DestroyedTemplate : ushort = 0
+    + <<readonly>> DestroyedPlusNorthTemplate : ushort = 0
+    + <<readonly>> DestroyedPlusSouthTemplate : ushort = 0
+    + <<readonly>> DestroyedPlusBothTemplate : ushort = 0
+    + <<readonly>> DemolishWeapon : string = "Demolish"
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class Bridge {
+    <<readonly>> type : string
+    template : ushort
+    + IsDangling : bool <<get>>
+    + Bridge(self:Actor, info:BridgeInfo)
+    + Neighbour(direction:int) : Bridge
+    + Enumerate(direction:int, includeSelf:bool) : IEnumerable<Bridge>
+    + Do(action:Action<Bridge, int>) : void
+    + Create(template:ushort, footprint:Dictionary<CPos, byte>) : void
+    GetTerrainType(cell:CPos) : byte
+    + LinkNeighbouringBridges(world:World, bridges:LegacyBridgeLayer) : void
+    + GetHut(index:int) : LegacyBridgeHut
+    + GetNeighbor(offset:int[], bridges:LegacyBridgeLayer) : Bridge
+    TemplateRenderables(wr:WorldRenderer, palette:PaletteReference, template:ushort) : IRenderable[]
+    initialized : bool
+    + Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    + ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+    KillUnitsOnBridge() : void
+    NeighbourIsDeadShore(neighbour:Bridge) : bool
+    LongBridgeSegmentIsDead() : bool
+    ChooseTemplate() : ushort
+    killedUnits : bool = false
+    UpdateState() : void
+    + Repair(repairer:Actor, direction:int, onComplete:Action) : void
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+    AggregateDamageState(b:Bridge, d:int, damage:DamageState) : void
+    + AggregateDamageState() : DamageState
+    + Demolish(saboteur:Actor, direction:int, damageTypes:BitSet<DamageType>) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- BridgeInfo
+IRulesetLoaded <|-- BridgeInfo
+"Requires`1" "<HealthInfo>" <|-- BridgeInfo
+"Requires`1" "<BuildingInfo>" <|-- BridgeInfo
+BridgeInfo --> "DemolishWeaponInfo" WeaponInfo
+BridgeInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+BridgeInfo --> "Templates<(ushort Template, int Health)>" "IEnumerable`1"
+IRender <|-- Bridge
+INotifyDamageStateChanged <|-- Bridge
+Bridge --> "buildingInfo" BuildingInfo
+Bridge --> "health" Health
+Bridge --> "self" Actor
+Bridge --> "info" BridgeInfo
+Bridge --> "isDangling<bool>" "Lazy`1"
+Bridge --> "footprint<CPos,byte>" "Dictionary`2"
+Bridge --> "Hut" LegacyBridgeHut
+Bridge --> "renderables<ushort,IRenderable[]>" "Dictionary`2"
+@enduml

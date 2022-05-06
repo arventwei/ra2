@@ -1,0 +1,22 @@
+@startuml
+class PlayerProperties {
+    + PlayerProperties(context:ScriptContext, player:Player)
+    + InternalName : string <<get>>
+    + Name : string <<get>>
+    + Faction : string <<get>>
+    + Spawn : int <<get>>
+    + Team : int <<get>>
+    + Handicap : int <<get>>
+    + IsBot : bool <<get>>
+    + IsNonCombatant : bool <<get>>
+    + IsLocalPlayer : bool <<get>>
+    + GetActors() : Actor[]
+    + GetGroundAttackers() : Actor[]
+    + GetActorsByType(type:string) : Actor[]
+    + GetActorsByTypes(types:string[]) : Actor[]
+    + HasPrerequisites(type:string[]) : bool
+}
+ScriptPlayerProperties <|-- PlayerProperties
+PlayerProperties --> "Color" Color
+PlayerProperties --> "HomeLocation" CPos
+@enduml

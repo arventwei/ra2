@@ -1,0 +1,10 @@
+@startuml
+interface IObservableCollection {
+     <<event>> OnAdd : Action<IObservableCollection, object> 
+     <<event>> OnRemove : Action<IObservableCollection, object> 
+     <<event>> OnRemoveAt : Action<IObservableCollection, int> 
+     <<event>> OnSet : Action<IObservableCollection, object, object> 
+     <<event>> OnRefresh : Action<IObservableCollection> 
+}
+IObservableCollection --> "ObservedItems" IEnumerable
+@enduml

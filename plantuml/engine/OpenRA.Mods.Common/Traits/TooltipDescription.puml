@@ -1,0 +1,19 @@
+@startuml
+class TooltipDescriptionInfo {
+    + <<readonly>> Description : string = ""
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TooltipDescription {
+    + TooltipDescription(self:Actor, info:TooltipDescriptionInfo)
+    + IsTooltipVisible(forPlayer:Player) : bool
+    + TooltipText : string <<get>>
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- TooltipDescriptionInfo
+TooltipDescriptionInfo o-> "ValidRelationships" PlayerRelationship
+"ConditionalTrait`1" "<TooltipDescriptionInfo>" <|-- TooltipDescription
+IProvideTooltipInfo <|-- TooltipDescription
+TooltipDescription --> "self" Actor
+TooltipDescription --> "Owner" Player
+@enduml

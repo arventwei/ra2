@@ -1,0 +1,15 @@
+@startuml
+class CloakPaletteEffectInfo {
+}
+class CloakPaletteEffect {
+    t : float = 0
+    paletteName : string = "cloak"
+    AdjustPalette(b:IReadOnlyDictionary<string, MutablePalette>) : void
+    Tick(self:Actor) : void
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<CloakPaletteEffect>" <|-- CloakPaletteEffectInfo
+IPaletteModifier <|-- CloakPaletteEffect
+ITick <|-- CloakPaletteEffect
+@enduml

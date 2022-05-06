@@ -1,0 +1,10 @@
+@startuml
+class ForceModifiersOrderGenerator {
+    <<readonly>> cancelOnFirstUse : bool
+    + ForceModifiersOrderGenerator(modifiers:Modifiers, cancelOnFirstUse:bool)
+    + <<override>> Order(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : IEnumerable<Order>
+    + <<override>> GetCursor(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : string
+}
+UnitOrderGenerator <|-- ForceModifiersOrderGenerator
+ForceModifiersOrderGenerator --> "Modifiers" Modifiers
+@enduml

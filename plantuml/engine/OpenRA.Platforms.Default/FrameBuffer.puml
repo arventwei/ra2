@@ -1,0 +1,22 @@
+@startuml
+class FrameBuffer <<sealed>> {
+    framebuffer : uint
+    depth : uint
+    disposed : bool
+    scissored : bool
+    + FrameBuffer(size:Size, texture:ITextureInternal, clearColor:Color)
+    {static} ViewportRectangle() : int[]
+    + Bind() : void
+    + Unbind() : void
+    + EnableScissor(rect:Rectangle) : void
+    + DisableScissor() : void
+    + Dispose() : void
+    Dispose(disposing:bool) : void
+}
+ThreadAffine <|-- FrameBuffer
+IFrameBuffer <|-- FrameBuffer
+FrameBuffer --> "texture" ITexture
+FrameBuffer --> "size" Size
+FrameBuffer --> "clearColor" Color
+FrameBuffer --> "Texture" ITexture
+@enduml

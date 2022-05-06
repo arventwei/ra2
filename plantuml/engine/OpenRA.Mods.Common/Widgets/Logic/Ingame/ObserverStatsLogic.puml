@@ -1,0 +1,72 @@
+@startuml
+enum ObserverStatsPanel {
+    None,
+    Basic,
+    Economy,
+    Production,
+    SupportPowers,
+    Combat,
+    Army,
+    Graph,
+    ArmyGraph,
+}
+class ObserverStatsLogic {
+    <<readonly>> hasTeams : bool
+    <<readonly>> clickSound : string
+    + ObserverStatsLogic(world:World, modData:ModData, worldRenderer:WorldRenderer, widget:Widget, logicArgs:Dictionary<string, MiniYaml>)
+    ClearStats() : void
+    IncomeGraph() : void
+    ArmyValueGraph() : void
+    DisplayStats(createItem:Func<Player, ScrollItemWidget>) : void
+    CombatStats(player:Player) : ScrollItemWidget
+    ProductionStats(player:Player) : ScrollItemWidget
+    SupportPowerStats(player:Player) : ScrollItemWidget
+    ArmyStats(player:Player) : ScrollItemWidget
+    EconomyStats(player:Player) : ScrollItemWidget
+    BasicStats(player:Player) : ScrollItemWidget
+    SetupPlayerColor(player:Player, template:ScrollItemWidget, colorBlockWidget:ColorBlockWidget, gradientColorBlockWidget:GradientColorBlockWidget) : void
+    SetupPlayerScrollItemWidget(template:ScrollItemWidget, player:Player) : ScrollItemWidget
+    AdjustStatisticsPanel(itemTemplate:Widget) : void
+    AdjustHeader(headerTemplate:ContainerWidget) : void
+    {static} AddPlayerFlagAndName(template:ScrollItemWidget, player:Player) : void
+    AverageOrdersPerMinute(orders:double) : string
+    {static} GetPowerColor(state:PowerState) : Color
+    ShowScrollBar : bool <<get>>
+}
+class "IEnumerable`1"<T> {
+}
+class "IOrderedEnumerable`1"<T> {
+}
+class StatsDropDownOption {
+    + Title : string
+}
+class "Func`1"<T> {
+}
+ChromeLogic <|-- ObserverStatsLogic
+ObserverStatsLogic --> "basicStatsHeaders" ContainerWidget
+ObserverStatsLogic --> "economyStatsHeaders" ContainerWidget
+ObserverStatsLogic --> "productionStatsHeaders" ContainerWidget
+ObserverStatsLogic --> "supportPowerStatsHeaders" ContainerWidget
+ObserverStatsLogic --> "combatStatsHeaders" ContainerWidget
+ObserverStatsLogic --> "armyHeaders" ContainerWidget
+ObserverStatsLogic --> "playerStatsPanel" ScrollPanelWidget
+ObserverStatsLogic --> "basicPlayerTemplate" ScrollItemWidget
+ObserverStatsLogic --> "economyPlayerTemplate" ScrollItemWidget
+ObserverStatsLogic --> "productionPlayerTemplate" ScrollItemWidget
+ObserverStatsLogic --> "supportPowersPlayerTemplate" ScrollItemWidget
+ObserverStatsLogic --> "armyPlayerTemplate" ScrollItemWidget
+ObserverStatsLogic --> "combatPlayerTemplate" ScrollItemWidget
+ObserverStatsLogic --> "incomeGraphContainer" ContainerWidget
+ObserverStatsLogic --> "armyValueGraphContainer" ContainerWidget
+ObserverStatsLogic --> "incomeGraph" LineGraphWidget
+ObserverStatsLogic --> "armyValueGraph" LineGraphWidget
+ObserverStatsLogic --> "teamTemplate" ScrollItemWidget
+ObserverStatsLogic --> "players<Player>" "IEnumerable`1"
+ObserverStatsLogic --> "teams<IGrouping<int, Player>>" "IOrderedEnumerable`1"
+ObserverStatsLogic --> "world" World
+ObserverStatsLogic --> "worldRenderer" WorldRenderer
+ObserverStatsLogic --> "activePanel" ObserverStatsPanel
+ObserverStatsLogic +-- StatsDropDownOption
+StatsDropDownOption --> "IsSelected<bool>" "Func`1"
+StatsDropDownOption --> "OnClick" Action
+@enduml

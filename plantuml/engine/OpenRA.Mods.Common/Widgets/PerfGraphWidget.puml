@@ -1,0 +1,6 @@
+@startuml
+class PerfGraphWidget {
+    + <<override>> Draw() : void
+}
+Widget <|-- PerfGraphWidget
+@enduml

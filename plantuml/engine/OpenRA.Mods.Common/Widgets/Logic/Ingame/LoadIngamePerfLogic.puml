@@ -1,0 +1,6 @@
+@startuml
+class LoadIngamePerfLogic {
+    + LoadIngamePerfLogic(widget:Widget, world:World)
+}
+ChromeLogic <|-- LoadIngamePerfLogic
+@enduml

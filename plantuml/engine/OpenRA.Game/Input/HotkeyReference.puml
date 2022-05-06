@@ -1,0 +1,11 @@
+@startuml
+class HotkeyReference {
+    + HotkeyReference()
+    + GetValue() : Hotkey
+    + IsActivatedBy(e:KeyInput) : bool
+}
+class "Func`1"<T> {
+}
+HotkeyReference o-> "Invalid<Hotkey>" "Func`1"
+HotkeyReference --> "getValue<Hotkey>" "Func`1"
+@enduml

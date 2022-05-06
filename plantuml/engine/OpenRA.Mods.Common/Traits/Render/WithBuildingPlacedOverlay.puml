@@ -1,0 +1,26 @@
+@startuml
+class WithBuildingPlacedOverlayInfo {
+    + <<readonly>> Sequence : string = "crane-overlay"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithBuildingPlacedOverlay {
+    visible : bool
+    + WithBuildingPlacedOverlay(self:Actor, info:WithBuildingPlacedOverlayInfo)
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+    BuildingPlaced(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithBuildingPlacedOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithBuildingPlacedOverlayInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithBuildingPlacedOverlayInfo
+WithBuildingPlacedOverlayInfo o-> "Offset" WVec
+"ConditionalTrait`1" "<WithBuildingPlacedOverlayInfo>" <|-- WithBuildingPlacedOverlay
+INotifyDamageStateChanged <|-- WithBuildingPlacedOverlay
+INotifyBuildingPlaced <|-- WithBuildingPlacedOverlay
+WithBuildingPlacedOverlay --> "overlay" Animation
+@enduml

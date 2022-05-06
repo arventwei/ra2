@@ -1,0 +1,30 @@
+@startuml
+interface IActorPreview {
+    Tick() : void
+    Render(wr:WorldRenderer, pos:WPos) : IEnumerable<IRenderable>
+    RenderUI(wr:WorldRenderer, pos:int2, scale:float) : IEnumerable<IRenderable>
+    ScreenBounds(wr:WorldRenderer, pos:WPos) : IEnumerable<Rectangle>
+}
+class ActorPreviewInitializer {
+    + ActorPreviewInitializer(actor:ActorInfo, worldRenderer:WorldRenderer, dict:TypeDictionary)
+    + ActorPreviewInitializer(actor:ActorReference, worldRenderer:WorldRenderer)
+    + GetOrDefault(info:TraitInfo) : T
+    + Get(info:TraitInfo) : T
+    + GetValue(info:TraitInfo) : U
+    + GetValue(info:TraitInfo, fallback:U) : U
+    + Contains(info:TraitInfo) : bool
+    + GetOrDefault() : T
+    + Get() : T
+    + GetValue() : U
+    + GetValue(fallback:U) : U
+    + Contains() : bool
+    + GetOrientation() : Func<WRot>
+    + GetFacing() : Func<WAngle>
+    + GetDamageState() : DamageState
+}
+IActorInitializer <|-- ActorPreviewInitializer
+ActorPreviewInitializer --> "Actor" ActorInfo
+ActorPreviewInitializer --> "WorldRenderer" WorldRenderer
+ActorPreviewInitializer --> "World" World
+ActorPreviewInitializer --> "reference" ActorReference
+@enduml

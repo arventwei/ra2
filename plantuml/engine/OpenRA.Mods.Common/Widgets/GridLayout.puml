@@ -1,0 +1,10 @@
+@startuml
+class GridLayout {
+    + GridLayout(w:ScrollPanelWidget)
+    + AdjustChild(w:Widget) : void
+    + AdjustChildren() : void
+}
+ILayout <|-- GridLayout
+GridLayout --> "widget" ScrollPanelWidget
+GridLayout --> "pos" int2
+@enduml

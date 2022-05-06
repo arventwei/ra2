@@ -1,0 +1,24 @@
+@startuml
+enum OwnerLostActionType {
+    ChangeOwner,
+    Dispose,
+    Kill,
+}
+class OwnerLostActionInfo {
+    + <<readonly>> Owner : string = "Neutral"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class OwnerLostAction {
+    + OwnerLostAction(init:ActorInitializer, info:OwnerLostActionInfo)
+    OnOwnerLost(self:Actor) : void
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- OwnerLostActionInfo
+OwnerLostActionInfo o-> "Action" OwnerLostActionType
+OwnerLostActionInfo o-> "DeathTypes<DamageType>" "BitSet`1"
+"ConditionalTrait`1" "<OwnerLostActionInfo>" <|-- OwnerLostAction
+INotifyOwnerLost <|-- OwnerLostAction
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class ReinforcementsGlobal {
+    + ReinforcementsGlobal(context:ScriptContext)
+    CreateActor(owner:Player, actorType:string, addToWorld:bool, entryLocation:CPos?, nextLocation:CPos?) : Actor
+    Move(actor:Actor, dest:CPos) : void
+    + Reinforce(owner:Player, actorTypes:string[], entryPath:CPos[], interval:int, actionFunc:LuaFunction) : Actor[]
+    + ReinforceWithTransport(owner:Player, actorType:string, cargoTypes:string[], entryPath:CPos[], exitPath:CPos[], actionFunc:LuaFunction, exitFunc:LuaFunction, dropRange:int) : LuaTable
+}
+ScriptGlobal <|-- ReinforcementsGlobal
+ReinforcementsGlobal --> "domainIndex" DomainIndex
+@enduml

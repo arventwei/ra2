@@ -1,0 +1,52 @@
+@startuml
+class MissionBrowserLogic {
+    difficulty : string
+    gameSpeed : string
+    + MissionBrowserLogic(widget:Widget, modData:ModData, world:World, onStart:Action, onExit:Action)
+    OnGameStart() : void
+    disposed : bool
+    CreateMissionGroup(title:string, previews:IEnumerable<MapPreview>) : void
+    SelectMap(preview:MapPreview) : void
+    cachedSoundVolume : float
+    cachedMusicVolume : float
+    MuteSounds() : void
+    UnMuteSounds() : void
+    PlayVideo(player:VqaPlayerWidget, video:string, pv:PlayingVideo, onComplete:Action) : void
+    StopVideo(player:VqaPlayerWidget) : void
+    StartMissionClicked() : void
+}
+enum PlayingVideo {
+    None,
+    Info,
+    Briefing,
+    GameStart,
+}
+class DropDownOption {
+    + Title : string
+}
+class "Func`1"<T> {
+}
+ChromeLogic <|-- MissionBrowserLogic
+MissionBrowserLogic --> "modData" ModData
+MissionBrowserLogic --> "onStart" Action
+MissionBrowserLogic --> "descriptionPanel" ScrollPanelWidget
+MissionBrowserLogic --> "description" LabelWidget
+MissionBrowserLogic --> "descriptionFont" SpriteFont
+MissionBrowserLogic --> "difficultyButton" DropDownButtonWidget
+MissionBrowserLogic --> "gameSpeedButton" DropDownButtonWidget
+MissionBrowserLogic --> "startBriefingVideoButton" ButtonWidget
+MissionBrowserLogic --> "stopBriefingVideoButton" ButtonWidget
+MissionBrowserLogic --> "startInfoVideoButton" ButtonWidget
+MissionBrowserLogic --> "stopInfoVideoButton" ButtonWidget
+MissionBrowserLogic --> "videoPlayer" VqaPlayerWidget
+MissionBrowserLogic --> "fullscreenVideoPlayer" BackgroundWidget
+MissionBrowserLogic --> "missionList" ScrollPanelWidget
+MissionBrowserLogic --> "headerTemplate" ScrollItemWidget
+MissionBrowserLogic --> "template" ScrollItemWidget
+MissionBrowserLogic --> "selectedMap" MapPreview
+MissionBrowserLogic --> "playingVideo" PlayingVideo
+MissionBrowserLogic +-- PlayingVideo
+MissionBrowserLogic +-- DropDownOption
+DropDownOption --> "IsSelected<bool>" "Func`1"
+DropDownOption --> "OnClick" Action
+@enduml

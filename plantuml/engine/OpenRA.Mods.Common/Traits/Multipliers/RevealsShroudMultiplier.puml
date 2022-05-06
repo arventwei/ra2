@@ -1,0 +1,15 @@
+@startuml
+class RevealsShroudMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RevealsShroudMultiplier {
+    + RevealsShroudMultiplier(info:RevealsShroudMultiplierInfo)
+    GetRevealsShroudModifier() : int
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- RevealsShroudMultiplierInfo
+"ConditionalTrait`1" "<RevealsShroudMultiplierInfo>" <|-- RevealsShroudMultiplier
+IRevealsShroudModifier <|-- RevealsShroudMultiplier
+@enduml

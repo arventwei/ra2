@@ -1,0 +1,22 @@
+@startuml
+class NullInputHandler {
+    + ModifierKeys(mods:Modifiers) : void
+    + OnKeyInput(input:KeyInput) : void
+    + OnTextInput(text:string) : void
+    + OnMouseInput(input:MouseInput) : void
+}
+class DefaultInputHandler {
+    + DefaultInputHandler(world:World)
+    + ModifierKeys(mods:Modifiers) : void
+    + OnKeyInput(input:KeyInput) : void
+    + OnTextInput(text:string) : void
+    + OnMouseInput(input:MouseInput) : void
+}
+class MouseButtonPreference {
+}
+IInputHandler <|-- NullInputHandler
+IInputHandler <|-- DefaultInputHandler
+DefaultInputHandler --> "world" World
+MouseButtonPreference --> "Action" MouseButton
+MouseButtonPreference --> "Cancel" MouseButton
+@enduml

@@ -1,0 +1,47 @@
+@startuml
+class TransformsIntoMobileInfo {
+    + <<readonly>> Locomotor : string = null
+    + <<readonly>> Cursor : string = "move"
+    + <<readonly>> BlockedCursor : string = "move-blocked"
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> RequiresForceMove : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class TransformsIntoMobile {
+    + TransformsIntoMobile(init:ActorInitializer, info:TransformsIntoMobileInfo)
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    ResolveOrder(self:Actor, order:Order) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class MoveOrderTargeter {
+    <<readonly>> rejectMove : bool
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + MoveOrderTargeter(self:Actor, mobile:TransformsIntoMobile)
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + IsQueued : bool <<get>> <<protected set>>
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+    CanEnterCell(self:Actor, cell:CPos) : bool
+}
+ConditionalTraitInfo <|-- TransformsIntoMobileInfo
+"Requires`1" "<TransformsInfo>" <|-- TransformsIntoMobileInfo
+TransformsIntoMobileInfo o-> "TargetLineColor" Color
+TransformsIntoMobileInfo --> "LocomotorInfo" LocomotorInfo
+"ConditionalTrait`1" "<TransformsIntoMobileInfo>" <|-- TransformsIntoMobile
+IIssueOrder <|-- TransformsIntoMobile
+IResolveOrder <|-- TransformsIntoMobile
+IOrderVoice <|-- TransformsIntoMobile
+TransformsIntoMobile --> "self" Actor
+TransformsIntoMobile --> "locomotor" Locomotor
+TransformsIntoMobile --> "Orders<IOrderTargeter>" "IEnumerable`1"
+TransformsIntoMobile +-- MoveOrderTargeter
+IOrderTargeter <|-- MoveOrderTargeter
+MoveOrderTargeter --> "mobile" TransformsIntoMobile
+@enduml

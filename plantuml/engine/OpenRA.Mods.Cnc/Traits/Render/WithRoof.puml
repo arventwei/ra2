@@ -1,0 +1,13 @@
+@startuml
+class WithRoofInfo {
+    + <<readonly>> Sequence : string = "roof"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithRoof {
+    + WithRoof(self:Actor, info:WithRoofInfo)
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- WithRoofInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithRoofInfo
+@enduml

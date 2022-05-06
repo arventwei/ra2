@@ -1,0 +1,17 @@
+@startuml
+class TSShroudPaletteInfo {
+    + <<readonly>> Name : string = "shroud"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TSShroudPalette {
+    + TSShroudPalette(info:TSShroudPaletteInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- TSShroudPaletteInfo
+ILoadsPalettes <|-- TSShroudPalette
+IProvidesAssetBrowserPalettes <|-- TSShroudPalette
+TSShroudPalette --> "info" TSShroudPaletteInfo
+TSShroudPalette --> "PaletteNames<string>" "IEnumerable`1"
+@enduml

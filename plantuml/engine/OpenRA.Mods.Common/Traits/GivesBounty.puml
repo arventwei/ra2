@@ -1,0 +1,29 @@
+@startuml
+class GivesBountyInfo {
+    + <<readonly>> Percentage : int = 10
+    + <<readonly>> ShowBounty : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GivesBounty {
+    + GivesBounty(info:GivesBountyInfo)
+    GetBountyValue(self:Actor) : int
+    GetDisplayedBountyValue(self:Actor) : int
+    Killed(self:Actor, e:AttackInfo) : void
+    OnPassengerEntered(self:Actor, passenger:Actor) : void
+    OnPassengerExited(self:Actor, passenger:Actor) : void
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ConditionalTraitInfo <|-- GivesBountyInfo
+GivesBountyInfo o-> "ValidRelationships" PlayerRelationship
+GivesBountyInfo o-> "DeathTypes<DamageType>" "BitSet`1"
+"ConditionalTrait`1" "<GivesBountyInfo>" <|-- GivesBounty
+INotifyKilled <|-- GivesBounty
+INotifyPassengerEntered <|-- GivesBounty
+INotifyPassengerExited <|-- GivesBounty
+GivesBounty o-> "passengerBounties<Actor,GivesBounty[]>" "Dictionary`2"
+@enduml

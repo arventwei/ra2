@@ -1,0 +1,11 @@
+@startuml
+class CursorProvider <<sealed>> {
+    + CursorProvider(modData:ModData)
+    + HasCursorSequence(cursor:string) : bool
+    + GetCursorSequence(cursor:string) : CursorSequence
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+CursorProvider --> "Cursors<string,CursorSequence>" "IReadOnlyDictionary`2"
+CursorProvider --> "Palettes<string,ImmutablePalette>" "IReadOnlyDictionary`2"
+@enduml

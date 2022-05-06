@@ -1,0 +1,16 @@
+@startuml
+class ResourceClaimLayerInfo <<sealed>> {
+}
+class ResourceClaimLayer <<sealed>> {
+    + TryClaimCell(claimer:Actor, cell:CPos) : bool
+    + CanClaimCell(claimer:Actor, cell:CPos) : bool
+    + RemoveClaim(claimer:Actor) : void
+}
+class "TraitInfo`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+"TraitInfo`1" "<ResourceClaimLayer>" <|-- ResourceClaimLayerInfo
+ResourceClaimLayer o-> "claimByCell<CPos,List<Actor>>" "Dictionary`2"
+ResourceClaimLayer o-> "claimByActor<Actor,CPos>" "Dictionary`2"
+@enduml

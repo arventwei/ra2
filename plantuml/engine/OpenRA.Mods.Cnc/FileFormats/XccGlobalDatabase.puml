@@ -1,0 +1,8 @@
+@startuml
+class XccGlobalDatabase <<sealed>> {
+    + XccGlobalDatabase(stream:Stream)
+    + Dispose() : void
+}
+IDisposable <|-- XccGlobalDatabase
+XccGlobalDatabase --> "s" Stream
+@enduml

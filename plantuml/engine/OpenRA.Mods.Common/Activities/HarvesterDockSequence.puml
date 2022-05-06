@@ -1,0 +1,21 @@
+@startuml
+abstract class HarvesterDockSequence {
+    + HarvesterDockSequence(self:Actor, refinery:Actor, dockAngle:WAngle, isDragRequired:bool, dragOffset:WVec, dragLength:int)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> GetTargets(self:Actor) : IEnumerable<Target>
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+    + {abstract} OnStateDock(self:Actor) : void
+    + {abstract} OnStateUndock(self:Actor) : void
+}
+enum DockingState {
+    Wait,
+    Turn,
+    Drag,
+    Dock,
+    Loop,
+    Undock,
+    Complete,
+}
+Activity <|-- HarvesterDockSequence
+HarvesterDockSequence +-- DockingState
+@enduml

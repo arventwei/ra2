@@ -1,0 +1,8 @@
+@startuml
+class Glob <<static>> {
+    + {static} Enabled : bool = true
+    {static} NeedsExpansion(filePath:string) : bool
+    + {static} Expand(filePath:string) : IEnumerable<string>
+    {static} Expand(basePath:string, dirs:IList<string>, dirIndex:int, file:string) : IEnumerable<string>
+}
+@enduml

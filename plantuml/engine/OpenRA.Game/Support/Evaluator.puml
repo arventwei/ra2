@@ -1,0 +1,12 @@
+@startuml
+class Evaluator <<static>> {
+    + {static} Evaluate(expr:string) : int
+    + {static} Evaluate(expr:string, syms:Dictionary<string, int>) : int
+    {static} ApplyBinop(s:Stack<int>, f:Func<int, int, int>) : void
+    {static} ToPostfix(toks:IEnumerable<string>, syms:Dictionary<string, int>) : IEnumerable<string>
+    {static} Tokens(expr:string, ops:string) : IEnumerable<string>
+}
+class "Dictionary`2"<T1,T2> {
+}
+Evaluator o-> "Prec<string,int>" "Dictionary`2"
+@enduml

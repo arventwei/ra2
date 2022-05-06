@@ -1,0 +1,13 @@
+@startuml
+class RevealMapCrateActionInfo {
+    + <<readonly>> IncludeAllies : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RevealMapCrateAction {
+    + RevealMapCrateAction(self:Actor, info:RevealMapCrateActionInfo)
+    + <<override>> Activate(collector:Actor) : void
+}
+CrateActionInfo <|-- RevealMapCrateActionInfo
+CrateAction <|-- RevealMapCrateAction
+RevealMapCrateAction --> "info" RevealMapCrateActionInfo
+@enduml

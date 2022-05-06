@@ -1,0 +1,13 @@
+@startuml
+class MenuButtonsChromeLogic {
+    <<readonly>> clickSound : string
+    disableSystemButtons : bool
+    + MenuButtonsChromeLogic(widget:Widget, modData:ModData, world:World, logicArgs:Dictionary<string, MiniYaml>)
+    OpenMenuPanel(button:MenuButtonWidget, widgetArgs:WidgetArgs) : void
+}
+ChromeLogic <|-- MenuButtonsChromeLogic
+MenuButtonsChromeLogic --> "world" World
+MenuButtonsChromeLogic --> "worldRoot" Widget
+MenuButtonsChromeLogic --> "menuRoot" Widget
+MenuButtonsChromeLogic --> "currentWidget" Widget
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+class ArcLaserZapInfo {
+    + <<readonly>> ZOffset : int = 0
+    + <<readonly>> Duration : int = 10
+    + <<readonly>> QuantizedSegments : int = 32
+    + <<readonly>> UsePlayerColor : bool = false
+    + <<readonly>> TrackTarget : bool = true
+    + <<readonly>> Blockable : bool = false
+    + <<readonly>> HitAnim : string = null
+    + <<readonly>> HitAnimSequence : string = "idle"
+    + <<readonly>> HitAnimPalette : string = "effect"
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class ArcLaserZap {
+    ticks : int = 0
+    doneDamage : bool
+    animationComplete : bool
+    + ArcLaserZap(info:ArcLaserZapInfo, args:ProjectileArgs, color:Color)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IProjectileInfo <|-- ArcLaserZapInfo
+ArcLaserZapInfo o-> "Width" WDist
+ArcLaserZapInfo o-> "Angle" WAngle
+ArcLaserZapInfo o-> "Color" Color
+ArcLaserZapInfo o-> "Inaccuracy" WDist
+IProjectile <|-- ArcLaserZap
+ISync <|-- ArcLaserZap
+ArcLaserZap --> "args" ProjectileArgs
+ArcLaserZap --> "info" ArcLaserZapInfo
+ArcLaserZap --> "hitanim" Animation
+ArcLaserZap --> "color" Color
+ArcLaserZap --> "source" WPos
+ArcLaserZap --> "target" WPos
+@enduml

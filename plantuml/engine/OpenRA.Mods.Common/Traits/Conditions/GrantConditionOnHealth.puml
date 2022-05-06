@@ -1,0 +1,27 @@
+@startuml
+class GrantConditionOnHealthInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> MinHP : int = 0
+    + <<readonly>> MaxHP : int = 0
+    + <<readonly>> GrantPermanently : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class GrantConditionOnHealth {
+    <<readonly>> maxHP : int
+    conditionToken : int
+    + GrantConditionOnHealth(self:Actor, info:GrantConditionOnHealthInfo)
+    Created(self:Actor) : void
+    GrantConditionOnValidHealth(self:Actor, hp:int) : void
+    Damaged(self:Actor, e:AttackInfo) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- GrantConditionOnHealthInfo
+IRulesetLoaded <|-- GrantConditionOnHealthInfo
+"Requires`1" "<IHealthInfo>" <|-- GrantConditionOnHealthInfo
+INotifyCreated <|-- GrantConditionOnHealth
+INotifyDamage <|-- GrantConditionOnHealth
+GrantConditionOnHealth --> "info" GrantConditionOnHealthInfo
+GrantConditionOnHealth --> "health" IHealth
+@enduml

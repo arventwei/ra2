@@ -1,0 +1,21 @@
+@startuml
+class Blast <<static>> {
+    + {static} <<readonly>> MAXBITS : int = 13
+    + {static} <<readonly>> MAXWIN : int = 4096
+    + {static} Decompress(input:Stream, output:Stream, onProgress:Action<long, long>) : void
+    {static} Decode(h:Huffman, br:BitReader) : int
+}
+class BitReader {
+    bitBuffer : byte = 0
+    bitCount : int = 0
+    + BitReader(stream:Stream)
+    + ReadBits(count:int) : int
+}
+class Huffman {
+    + Huffman(rep:byte[], n:int, symbolCount:short)
+}
+Blast o-> "litcode" Huffman
+Blast o-> "lencode" Huffman
+Blast o-> "distcode" Huffman
+BitReader --> "stream" Stream
+@enduml

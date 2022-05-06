@@ -1,0 +1,25 @@
+@startuml
+class FindAndDeliverResources {
+    orderLocation : CPos?
+    lastHarvestedCell : CPos?
+    hasDeliveredLoad : bool
+    hasHarvestedCell : bool
+    hasWaited : bool
+    + LastSearchFailed : bool <<get>>
+    + FindAndDeliverResources(self:Actor, deliverActor:Actor)
+    + FindAndDeliverResources(self:Actor, orderLocation:CPos)
+    + <<override>> Tick(self:Actor) : bool
+    ClosestHarvestablePos(self:Actor) : CPos?
+    + <<override>> GetTargets(self:Actor) : IEnumerable<Target>
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+    GetSearchFromProcLocation(self:Actor) : CPos?
+}
+Activity <|-- FindAndDeliverResources
+FindAndDeliverResources --> "harv" Harvester
+FindAndDeliverResources --> "harvInfo" HarvesterInfo
+FindAndDeliverResources --> "mobile" Mobile
+FindAndDeliverResources --> "claimLayer" ResourceClaimLayer
+FindAndDeliverResources --> "pathFinder" IPathFinder
+FindAndDeliverResources --> "domainIndex" DomainIndex
+FindAndDeliverResources --> "deliverActor" Actor
+@enduml

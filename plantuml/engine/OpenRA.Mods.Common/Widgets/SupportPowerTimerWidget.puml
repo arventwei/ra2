@@ -1,0 +1,23 @@
+@startuml
+class SupportPowerTimerWidget {
+    + <<readonly>> Font : string = "Bold"
+    + <<readonly>> Format : string = "{0&#125;: {1&#125;"
+    <<readonly>> timestep : int
+    + SupportPowerTimerWidget(world:World)
+    + <<override>> Tick() : void
+    + <<override>> Draw() : void
+}
+class "IEnumerable`1"<T> {
+}
+enum TimerOrder {
+    Ascending= -1,
+    Descending= 1,
+}
+Widget <|-- SupportPowerTimerWidget
+SupportPowerTimerWidget o-> "Align" TextAlign
+SupportPowerTimerWidget o-> "Order" TimerOrder
+SupportPowerTimerWidget --> "powers<SupportPowerInstance>" "IEnumerable`1"
+SupportPowerTimerWidget --> "bgDark" Color
+SupportPowerTimerWidget --> "bgLight" Color
+SupportPowerTimerWidget +-- TimerOrder
+@enduml

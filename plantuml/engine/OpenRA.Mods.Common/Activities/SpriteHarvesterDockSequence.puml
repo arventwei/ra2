@@ -1,0 +1,10 @@
+@startuml
+class SpriteHarvesterDockSequence {
+    + SpriteHarvesterDockSequence(self:Actor, refinery:Actor, dockAngle:WAngle, isDragRequired:bool, dragOffset:WVec, dragLength:int)
+    + <<override>> OnStateDock(self:Actor) : void
+    + <<override>> OnStateUndock(self:Actor) : void
+}
+HarvesterDockSequence <|-- SpriteHarvesterDockSequence
+SpriteHarvesterDockSequence --> "wsb" WithSpriteBody
+SpriteHarvesterDockSequence --> "wda" WithDockingAnimationInfo
+@enduml

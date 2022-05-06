@@ -1,0 +1,31 @@
+@startuml
+class WithGateSpriteBodyInfo {
+    + <<readonly>> Type : string = "wall"
+    + <<readonly>> OpenSequence : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+    GetWallConnectionType() : string
+}
+class WithGateSpriteBody {
+    renderOpen : bool
+    + WithGateSpriteBody(init:ActorInitializer, info:WithGateSpriteBodyInfo)
+    UpdateState(self:Actor) : void
+    Tick(self:Actor) : void
+    GetGateFrame() : int
+    UpdateNeighbours(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    AdjacentWallCanConnect(self:Actor, wallLocation:CPos, wallType:string, facing:CVec) : bool
+    SetDirty() : void
+}
+class "Requires`1"<T> {
+}
+WithSpriteBodyInfo <|-- WithGateSpriteBodyInfo
+IWallConnectorInfo <|-- WithGateSpriteBodyInfo
+"Requires`1" "<GateInfo>" <|-- WithGateSpriteBodyInfo
+WithSpriteBody <|-- WithGateSpriteBody
+INotifyRemovedFromWorld <|-- WithGateSpriteBody
+IWallConnector <|-- WithGateSpriteBody
+ITick <|-- WithGateSpriteBody
+WithGateSpriteBody --> "gateBodyInfo" WithGateSpriteBodyInfo
+WithGateSpriteBody --> "gate" Gate
+@enduml

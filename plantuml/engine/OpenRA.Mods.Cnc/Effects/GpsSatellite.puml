@@ -1,0 +1,15 @@
+@startuml
+class GpsSatellite {
+    <<readonly>> palette : string
+    <<readonly>> revealDelay : int
+    tick : int
+    + GpsSatellite(world:World, pos:WPos, image:string, sequence:string, palette:string, revealDelay:int, launcher:Player)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- GpsSatellite
+ISpatiallyPartitionable <|-- GpsSatellite
+GpsSatellite --> "launcher" Player
+GpsSatellite --> "anim" Animation
+GpsSatellite --> "pos" WPos
+@enduml

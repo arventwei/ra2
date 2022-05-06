@@ -1,0 +1,36 @@
+@startuml
+class GrantConditionOnAttackInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> MaximumInstances : int = 1
+    + <<readonly>> IsCyclic : bool = false
+    + <<readonly>> RevokeDelay : int = 15
+    + <<readonly>> RevokeOnNewTarget : bool = false
+    + <<readonly>> RevokeAll : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnAttack {
+    cooldown : int = 0
+    shotsFired : int = 0
+    + GrantConditionOnAttack(init:ActorInitializer, info:GrantConditionOnAttackInfo)
+    GrantInstance(self:Actor, cond:string) : void
+    RevokeInstance(self:Actor, revokeAll:bool) : void
+    Tick(self:Actor) : void
+    TargetChanged(lastTarget:Target, target:Target) : bool
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+}
+class "HashSet`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "Stack`1"<T> {
+}
+PausableConditionalTraitInfo <|-- GrantConditionOnAttackInfo
+GrantConditionOnAttackInfo o-> "ArmamentNames<string>" "HashSet`1"
+"PausableConditionalTrait`1" "<GrantConditionOnAttackInfo>" <|-- GrantConditionOnAttack
+INotifyCreated <|-- GrantConditionOnAttack
+ITick <|-- GrantConditionOnAttack
+INotifyAttack <|-- GrantConditionOnAttack
+GrantConditionOnAttack o-> "tokens<int>" "Stack`1"
+GrantConditionOnAttack o-> "lastTarget" Target
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+enum InaccuracyType {
+    Maximum,
+    PerCellIncrement,
+    Absolute,
+}
+class Util <<static>> {
+    + {static} TickFacing(facing:int, desiredFacing:int, rot:int) : int
+    + {static} TickFacing(facing:WAngle, desiredFacing:WAngle, step:WAngle) : WAngle
+    + {static} GetTurnDirection(facing:WAngle, desiredFacing:WAngle) : int
+    + {static} IndexFacing(facing:WAngle, numFrames:int) : int
+    + {static} QuantizeFacing(facing:WAngle, steps:int) : WAngle
+    + {static} NormalizeFacing(f:int) : int
+    + {static} FacingWithinTolerance(facing:WAngle, desiredFacing:WAngle, facingTolerance:WAngle) : bool
+    + {static} BetweenCells(w:World, from:CPos, to:CPos) : WPos
+    + {static} GetVerticalAngle(source:WPos, target:WPos) : WAngle
+    + {static} Shuffle(ts:IEnumerable<T>, random:MersenneTwister) : IEnumerable<T>
+    {static} Neighbours(c:CPos, allowDiagonal:bool) : IEnumerable<CPos>
+    + {static} AreAdjacentCells(a:CPos, b:CPos) : bool
+    + {static} ExpandFootprint(cells:IEnumerable<CPos>, allowDiagonal:bool) : IEnumerable<CPos>
+    + {static} AdjacentCells(w:World, target:Target) : IEnumerable<CPos>
+    + {static} ApplyPercentageModifiers(number:int, percentages:IEnumerable<int>) : int
+    + {static} RandomWalk(p:CPos, r:MersenneTwister) : IEnumerable<CPos>
+    + {static} RandomDelay(world:World, range:int[]) : int
+    + {static} FriendlyTypeName(t:Type) : string
+    + {static} GetProjectileInaccuracy(baseInaccuracy:int, inaccuracyType:InaccuracyType, args:ProjectileArgs) : int
+}
+@enduml

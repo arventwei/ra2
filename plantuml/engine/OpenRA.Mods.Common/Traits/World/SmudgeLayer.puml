@@ -1,0 +1,47 @@
+@startuml
+class MapSmudge <<struct>> {
+    + Type : string
+    + Depth : int
+}
+class SmudgeLayerInfo {
+    + <<readonly>> Type : string = "Scorch"
+    + <<readonly>> Sequence : string = "scorch"
+    + <<readonly>> SmokeChance : int = 0
+    + <<readonly>> SmokeImage : string = null
+    + <<readonly>> SmokePalette : string = "effect"
+    + <<readonly>> Palette : string
+    + {static} LoadInitialSmudges(yaml:MiniYaml) : object
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SmudgeLayer {
+    <<readonly>> hasSmoke : bool
+    disposed : bool
+    + SmudgeLayer(self:Actor, info:SmudgeLayerInfo)
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + AddSmudge(loc:CPos) : void
+    + RemoveSmudge(loc:CPos) : void
+    TickRender(wr:WorldRenderer, self:Actor) : void
+    Render(wr:WorldRenderer) : void
+    Disposing(self:Actor) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class Smudge <<struct>> {
+    + Type : string
+    + Depth : int
+}
+TraitInfo <|-- SmudgeLayerInfo
+SmudgeLayerInfo --> "InitialSmudges<CPos,MapSmudge>" "Dictionary`2"
+IRenderOverlay <|-- SmudgeLayer
+IWorldLoaded <|-- SmudgeLayer
+ITickRender <|-- SmudgeLayer
+INotifyActorDisposing <|-- SmudgeLayer
+SmudgeLayer --> "Info" SmudgeLayerInfo
+SmudgeLayer o-> "tiles<CPos,Smudge>" "Dictionary`2"
+SmudgeLayer o-> "dirty<CPos,Smudge>" "Dictionary`2"
+SmudgeLayer o-> "smudges<string,ISpriteSequence>" "Dictionary`2"
+SmudgeLayer --> "world" World
+SmudgeLayer --> "render" TerrainSpriteLayer
+SmudgeLayer +-- Smudge
+Smudge --> "Sequence" ISpriteSequence
+@enduml

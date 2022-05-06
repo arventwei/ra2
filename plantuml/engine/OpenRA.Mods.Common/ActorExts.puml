@@ -1,0 +1,11 @@
+@startuml
+class ActorExts <<static>> {
+    + {static} IsAtGroundLevel(self:Actor) : bool
+    + {static} AppearsFriendlyTo(self:Actor, toActor:Actor) : bool
+    + {static} AppearsHostileTo(self:Actor, toActor:Actor) : bool
+    + {static} NotifyBlocker(self:Actor, blockers:IEnumerable<Actor>) : void
+    + {static} NotifyBlocker(self:Actor, position:CPos) : void
+    + {static} NotifyBlocker(self:Actor, positions:IEnumerable<CPos>) : void
+    + {static} ClosestCell(self:Actor, cells:IEnumerable<CPos>) : CPos
+}
+@enduml

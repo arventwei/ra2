@@ -1,0 +1,22 @@
+@startuml
+class WithAmmoPipsDecorationInfo {
+    + <<readonly>> PipCount : int
+    + <<readonly>> Image : string = "pips"
+    + <<readonly>> EmptySequence : string = "pip-empty"
+    + <<readonly>> FullSequence : string = "pip-green"
+    + <<readonly>> Palette : string = "chrome"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithAmmoPipsDecoration {
+    + WithAmmoPipsDecoration(self:Actor, info:WithAmmoPipsDecorationInfo)
+}
+class "Requires`1"<T> {
+}
+class "WithDecorationBase`1"<T> {
+}
+WithDecorationBaseInfo <|-- WithAmmoPipsDecorationInfo
+"Requires`1" "<AmmoPoolInfo>" <|-- WithAmmoPipsDecorationInfo
+WithAmmoPipsDecorationInfo o-> "PipStride" int2
+"WithDecorationBase`1" "<WithAmmoPipsDecorationInfo>" <|-- WithAmmoPipsDecoration
+WithAmmoPipsDecoration --> "pips" Animation
+@enduml

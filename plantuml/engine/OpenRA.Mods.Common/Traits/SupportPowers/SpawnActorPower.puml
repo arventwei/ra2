@@ -1,0 +1,17 @@
+@startuml
+class SpawnActorPowerInfo {
+    + <<readonly>> Actor : string = null
+    + <<readonly>> LifeTime : int = 250
+    + <<readonly>> DeploySound : string = null
+    + <<readonly>> EffectImage : string = null
+    + <<readonly>> EffectSequence : string = null
+    + <<readonly>> EffectPalette : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SpawnActorPower {
+    + SpawnActorPower(self:Actor, info:SpawnActorPowerInfo)
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+}
+SupportPowerInfo <|-- SpawnActorPowerInfo
+SupportPower <|-- SpawnActorPower
+@enduml

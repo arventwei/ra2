@@ -1,0 +1,36 @@
+@startuml
+class VqaPlayerWidget {
+    + AspectRatio : float = 1.2f
+    + DrawOverlay : bool = true
+    + Skippable : bool = true
+    + Paused : bool <<get>>
+    cachedVideo : string
+    invLength : float
+    overlayScale : float
+    stopped : bool
+    paused : bool
+    + Load(filename:string) : void
+    + Open(video:VqaReader) : void
+    + <<override>> Draw() : void
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> GetCursor(pos:int2) : string
+    + Play() : void
+    + PlayThen(after:Action) : void
+    + Pause() : void
+    + Stop() : void
+    + CloseVideo() : void
+}
+Widget <|-- VqaPlayerWidget
+VqaPlayerWidget o-> "CancelKey" Hotkey
+VqaPlayerWidget --> "Video" VqaReader
+VqaPlayerWidget --> "videoSprite" Sprite
+VqaPlayerWidget --> "overlaySprite" Sprite
+VqaPlayerWidget --> "overlaySheet" Sheet
+VqaPlayerWidget o-> "video" VqaReader
+VqaPlayerWidget --> "videoOrigin" float2
+VqaPlayerWidget --> "videoSize" float2
+VqaPlayerWidget --> "overlayOrigin" float2
+VqaPlayerWidget --> "overlaySize" float2
+VqaPlayerWidget --> "onComplete" Action
+@enduml

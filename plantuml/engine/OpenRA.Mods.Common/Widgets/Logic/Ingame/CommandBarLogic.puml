@@ -1,0 +1,23 @@
+@startuml
+class CommandBarLogic {
+    selectionHash : int
+    attackMoveDisabled : bool = true
+    forceMoveDisabled : bool = true
+    forceAttackDisabled : bool = true
+    guardDisabled : bool = true
+    scatterDisabled : bool = true
+    stopDisabled : bool = true
+    waypointModeDisabled : bool = true
+    deployHighlighted : int
+    scatterHighlighted : int
+    stopHighlighted : int
+    + CommandBarLogic(widget:Widget, world:World, logicArgs:Dictionary<string, MiniYaml>)
+    + <<override>> Tick() : void
+    IsForceModifiersActive(modifiers:Modifiers) : bool
+    UpdateStateIfNecessary() : void
+    PerformKeyboardOrderOnSelection(f:Func<Actor, Order>) : void
+    PerformDeployOrderOnSelection(queued:bool) : void
+}
+ChromeLogic <|-- CommandBarLogic
+CommandBarLogic --> "world" World
+@enduml

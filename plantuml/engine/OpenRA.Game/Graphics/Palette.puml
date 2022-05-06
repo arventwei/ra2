@@ -1,0 +1,38 @@
+@startuml
+interface IPalette {
+    CopyToArray(destination:Array, destinationOffset:int) : void
+}
+interface IPaletteRemap {
+    GetRemappedColor(original:Color, index:int) : Color
+}
+class Palette <<static>> {
+    + <<const>> Size : int = 256
+    + {static} GetColor(palette:IPalette, index:int) : Color
+    + {static} AsReadOnly(palette:IPalette) : IPalette
+}
+class ImmutablePalette {
+    + CopyToArray(destination:Array, destinationOffset:int) : void
+    + ImmutablePalette(filename:string, remap:int[])
+    + ImmutablePalette(s:Stream, remapShadow:int[])
+    LoadFromStream(s:Stream, remapShadow:int[]) : void
+    + ImmutablePalette(p:IPalette, r:IPaletteRemap)
+    + ImmutablePalette(p:IPalette)
+    + ImmutablePalette(sourceColors:IEnumerable<uint>)
+}
+class MutablePalette {
+    + CopyToArray(destination:Array, destinationOffset:int) : void
+    + MutablePalette(p:IPalette)
+    + SetColor(index:int, color:Color) : void
+    + SetFromPalette(p:IPalette) : void
+    + ApplyRemap(r:IPaletteRemap) : void
+}
+class ReadOnlyPalette {
+    + ReadOnlyPalette(palette:IPalette)
+    + CopyToArray(destination:Array, destinationOffset:int) : void
+}
+IPalette <|-- ImmutablePalette
+IPalette <|-- MutablePalette
+Palette +-- ReadOnlyPalette
+IPalette <|-- ReadOnlyPalette
+ReadOnlyPalette --> "palette" IPalette
+@enduml

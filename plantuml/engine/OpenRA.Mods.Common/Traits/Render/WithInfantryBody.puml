@@ -1,0 +1,52 @@
+@startuml
+class WithInfantryBodyInfo {
+    + <<readonly>> MinIdleDelay : int = 30
+    + <<readonly>> MaxIdleDelay : int = 110
+    + <<readonly>> MoveSequence : string = "run"
+    + <<readonly>> DefaultAttackSequence : string = null
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithInfantryBody {
+    dirty : bool
+    idleSequence : string
+    idleDelay : int
+    IsModifyingSequence : bool <<get>>
+    wasModifying : bool
+    + WithInfantryBody(init:ActorInitializer, info:WithInfantryBodyInfo)
+    + PlayStandAnimation(self:Actor) : void
+    Attacking(self:Actor, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Tick(self:Actor) : void
+    TickIdle(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "ConditionalTrait`1"<T> {
+}
+enum AnimationState {
+    Idle,
+    Attacking,
+    Moving,
+    Waiting,
+    IdleAnimating,
+}
+ConditionalTraitInfo <|-- WithInfantryBodyInfo
+IRenderActorPreviewSpritesInfo <|-- WithInfantryBodyInfo
+"Requires`1" "<IMoveInfo>" <|-- WithInfantryBodyInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithInfantryBodyInfo
+WithInfantryBodyInfo o-> "AttackSequences<string,string[]>" "Dictionary`2"
+"ConditionalTrait`1" "<WithInfantryBodyInfo>" <|-- WithInfantryBody
+ITick <|-- WithInfantryBody
+INotifyAttack <|-- WithInfantryBody
+INotifyIdle <|-- WithInfantryBody
+WithInfantryBody --> "move" IMove
+WithInfantryBody --> "state" AnimationState
+WithInfantryBody --> "rsm" IRenderInfantrySequenceModifier
+WithInfantryBody +-- AnimationState
+@enduml

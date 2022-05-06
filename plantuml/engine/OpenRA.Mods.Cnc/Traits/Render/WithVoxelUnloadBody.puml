@@ -1,0 +1,22 @@
+@startuml
+class WithVoxelUnloadBodyInfo {
+    + <<readonly>> UnloadSequence : string = "unload"
+    + <<readonly>> IdleSequence : string = "idle"
+    + <<readonly>> ShowShadow : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewVoxels(init:ActorPreviewInitializer, rv:RenderVoxelsInfo, image:string, orientation:Func<WRot>, facings:int, p:PaletteReference) : IEnumerable<ModelAnimation>
+}
+class WithVoxelUnloadBody {
+    + Docked : bool
+    + WithVoxelUnloadBody(self:Actor, info:WithVoxelUnloadBodyInfo)
+    AutoMouseoverBounds(self:Actor, wr:WorldRenderer) : Rectangle
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- WithVoxelUnloadBodyInfo
+IRenderActorPreviewVoxelsInfo <|-- WithVoxelUnloadBodyInfo
+"Requires`1" "<RenderVoxelsInfo>" <|-- WithVoxelUnloadBodyInfo
+IAutoMouseBounds <|-- WithVoxelUnloadBody
+WithVoxelUnloadBody --> "modelAnimation" ModelAnimation
+WithVoxelUnloadBody --> "rv" RenderVoxels
+@enduml

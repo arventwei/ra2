@@ -1,0 +1,14 @@
+@startuml
+class TerrainTile <<struct>> {
+    + <<readonly>> Type : ushort
+    + <<readonly>> Index : byte
+    + TerrainTile(type:ushort, index:byte)
+    + <<override>> GetHashCode() : int
+}
+class ResourceTile <<struct>> {
+    + <<readonly>> Type : byte
+    + <<readonly>> Index : byte
+    + ResourceTile(type:byte, index:byte)
+    + <<override>> GetHashCode() : int
+}
+@enduml

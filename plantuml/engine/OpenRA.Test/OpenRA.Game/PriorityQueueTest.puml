@@ -1,0 +1,5 @@
+@startuml
+class PriorityQueueTest {
+    + PriorityQueueGeneralTest() : void
+}
+@enduml

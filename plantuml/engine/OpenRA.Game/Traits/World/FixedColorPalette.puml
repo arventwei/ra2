@@ -1,0 +1,17 @@
+@startuml
+class FixedColorPaletteInfo {
+    + <<readonly>> Base : string
+    + <<readonly>> Name : string = "resources"
+    + <<readonly>> Ramp : float = 0.05f
+    + <<readonly>> AllowModifiers : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class FixedColorPalette {
+    + FixedColorPalette(info:FixedColorPaletteInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+TraitInfo <|-- FixedColorPaletteInfo
+FixedColorPaletteInfo --> "Color" Color
+ILoadsPalettes <|-- FixedColorPalette
+FixedColorPalette --> "info" FixedColorPaletteInfo
+@enduml

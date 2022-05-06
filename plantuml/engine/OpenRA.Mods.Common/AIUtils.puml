@@ -1,0 +1,24 @@
+@startuml
+enum BuildingType {
+    Building,
+    Defense,
+    Refinery,
+}
+enum WaterCheck {
+    NotChecked,
+    EnoughWater,
+    NotEnoughWater,
+    DontCheck,
+}
+class AIUtils <<static>> {
+    + {static} IsAreaAvailable(world:World, player:Player, map:Map, radius:int, terrainTypes:HashSet<string>) : bool
+    + {static} FindQueues(player:Player, category:string) : IEnumerable<ProductionQueue>
+    + {static} GetActorsWithTrait(world:World) : IEnumerable<Actor>
+    + {static} CountActorsWithTrait(actorName:string, owner:Player) : int
+    + {static} CountActorByCommonName(commonNames:HashSet<string>, owner:Player) : int
+    + {static} CountBuildingByCommonName(buildings:HashSet<string>, owner:Player) : int
+    + {static} FindEnemiesByCommonName(commonNames:HashSet<string>, player:Player) : List<Actor>
+    + {static} GetInfoByCommonName(names:HashSet<string>, owner:Player) : ActorInfo
+    + {static} BotDebug(s:string, args:object[]) : void
+}
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+class WithTurretDeployAnimationInfo {
+    + <<readonly>> Turret : string = "primary"
+    + <<readonly>> DeploySequence : string = "deploy"
+    + <<readonly>> UndeploySequence : string = "undeploy"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithTurretDeployAnimation {
+    + WithTurretDeployAnimation(self:Actor, info:WithTurretDeployAnimationInfo)
+    Deploy(self:Actor, skipMakeAnim:bool) : void
+    Undeploy(self:Actor, skipMakeAnim:bool) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithTurretDeployAnimationInfo
+"Requires`1" "<WithSpriteTurretInfo>" <|-- WithTurretDeployAnimationInfo
+"ConditionalTrait`1" "<WithTurretDeployAnimationInfo>" <|-- WithTurretDeployAnimation
+INotifyDeployTriggered <|-- WithTurretDeployAnimation
+WithTurretDeployAnimation --> "wst" WithSpriteTurret
+@enduml

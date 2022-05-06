@@ -1,0 +1,12 @@
+@startuml
+class CreateScreenShakeWarhead {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+    + <<override>> AfterUpdate(modData:ModData) : IEnumerable<string>
+}
+class "List`1"<T> {
+}
+UpdateRule <|-- CreateScreenShakeWarhead
+CreateScreenShakeWarhead o-> "weaponsToUpdate<Tuple<string, string, string>>" "List`1"
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+class VoxelLoader <<sealed>> {
+    totalVertexCount : int
+    cachedVertexCount : int
+    {static} CreateSheetBuilder() : SheetBuilder
+    + VoxelLoader(fileSystem:IReadOnlyFileSystem)
+    GenerateSlicePlane(su:int, sv:int, first:Func<int, int, VxlElement>, second:Func<int, int, VxlElement>, coord:Func<int, int, float3>) : Vertex[]
+    GenerateSlicePlanes(l:VxlLimb) : IEnumerable<Vertex[]>
+    + GenerateRenderData(l:VxlLimb) : ModelRenderData
+    + RefreshBuffer() : void
+    LoadFile(files:(string Vxl, string Hva)) : Voxel
+    + Load(vxl:string, hva:string) : Voxel
+    + Finish() : void
+    + Dispose() : void
+}
+class "List`1"<T> {
+}
+class "Cache`2"<T1,T2> {
+}
+class "IVertexBuffer`1"<T> {
+}
+IDisposable <|-- VoxelLoader
+VoxelLoader o-> "vertices<Vertex[]>" "List`1"
+VoxelLoader --> "voxels<(string, string),Voxel>" "Cache`2"
+VoxelLoader --> "fileSystem" IReadOnlyFileSystem
+VoxelLoader --> "vertexBuffer<Vertex>" "IVertexBuffer`1"
+VoxelLoader --> "sheetBuilder" SheetBuilder
+VoxelLoader --> "VertexBuffer<Vertex>" "IVertexBuffer`1"
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+class PeriodicExplosionInfo {
+    + <<readonly>> Weapon : string = null
+    + <<readonly>> ResetReloadWhenEnabled : bool = true
+    + <<readonly>> AmmoPoolName : string = ""
+    + <<override>> Create(init:ActorInitializer) : object
+    RulesetLoaded(rules:Ruleset, info:ActorInfo) : void
+}
+class PeriodicExplosion {
+    fireDelay : int
+    burst : int
+    + PeriodicExplosion(self:Actor, info:PeriodicExplosionInfo)
+    Tick(self:Actor) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+class "List`1"<T> {
+}
+ConditionalTraitInfo <|-- PeriodicExplosionInfo
+IRulesetLoaded <|-- PeriodicExplosionInfo
+PeriodicExplosionInfo --> "WeaponInfo" WeaponInfo
+PeriodicExplosionInfo o-> "LocalOffset" WVec
+"ConditionalTrait`1" "<PeriodicExplosionInfo>" <|-- PeriodicExplosion
+ITick <|-- PeriodicExplosion
+INotifyCreated <|-- PeriodicExplosion
+PeriodicExplosion --> "info" PeriodicExplosionInfo
+PeriodicExplosion --> "weapon" WeaponInfo
+PeriodicExplosion --> "body" BodyOrientation
+PeriodicExplosion o-> "delayedActions<(int Ticks, Action Action)>" "List`1"
+PeriodicExplosion --> "ammoPool" AmmoPool
+@enduml

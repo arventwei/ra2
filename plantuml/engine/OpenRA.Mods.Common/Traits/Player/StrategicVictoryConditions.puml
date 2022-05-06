@@ -1,0 +1,45 @@
+@startuml
+class StrategicPointInfo {
+}
+class StrategicPoint {
+}
+class StrategicVictoryConditionsInfo {
+    + <<readonly>> HoldDuration : int = 7500
+    + <<readonly>> ResetOnHoldLost : bool = true
+    + <<readonly>> RatioRequired : int = 50
+    + <<readonly>> NotificationDelay : int = 1500
+    + <<readonly>> Objective : string = "Hold all the strategic positions!"
+    + <<readonly>> SuppressNotifications : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class StrategicVictoryConditions {
+    + TicksLeft : int
+    <<readonly>> shortGame : bool
+    objectiveID : int
+    + StrategicVictoryConditions(self:Actor, svcInfo:StrategicVictoryConditionsInfo)
+    + Total : int <<get>>
+    Owned : int <<get>>
+    + Holding : bool <<get>>
+    Tick(self:Actor) : void
+    NotifyTimerExpired(self:Actor) : void
+    OnPlayerLost(player:Player) : void
+    OnPlayerWon(player:Player) : void
+}
+class "TraitInfo`1"<T> {
+}
+class "Requires`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+"TraitInfo`1" "<StrategicPoint>" <|-- StrategicPointInfo
+TraitInfo <|-- StrategicVictoryConditionsInfo
+"Requires`1" "<MissionObjectivesInfo>" <|-- StrategicVictoryConditionsInfo
+ITick <|-- StrategicVictoryConditions
+ISync <|-- StrategicVictoryConditions
+INotifyWinStateChanged <|-- StrategicVictoryConditions
+INotifyTimeLimit <|-- StrategicVictoryConditions
+StrategicVictoryConditions --> "info" StrategicVictoryConditionsInfo
+StrategicVictoryConditions --> "player" Player
+StrategicVictoryConditions --> "mo" MissionObjectives
+StrategicVictoryConditions --> "AllPoints<Actor>" "IEnumerable`1"
+@enduml

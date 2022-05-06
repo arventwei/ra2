@@ -1,0 +1,14 @@
+@startuml
+class UpdatePath {
+    + {static} FromSource(objectCreator:ObjectCreator, source:string, chain:bool) : IEnumerable<UpdateRule>
+    + {static} KnownRules(objectCreator:ObjectCreator) : IEnumerable<string>
+    <<readonly>> source : string
+    <<readonly>> chainToSource : string
+    UpdatePath(source:string, rules:UpdateRule[])
+    UpdatePath(source:string, chainToSource:string, rules:UpdateRule[])
+    Rules(chain:bool) : IEnumerable<UpdateRule>
+}
+class "IEnumerable`1"<T> {
+}
+UpdatePath --> "KnownPaths<string>" "IEnumerable`1"
+@enduml

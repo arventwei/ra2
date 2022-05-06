@@ -1,0 +1,59 @@
+@startuml
+class RadarWidget <<sealed>> {
+    + WorldInteractionController : string = null
+    + AnimationLength : int = 5
+    + RadarOnlineSound : string = null
+    + RadarOfflineSound : string = null
+    <<readonly>> isRectangularIsometric : bool
+    <<readonly>> cellWidth : int
+    <<readonly>> previewWidth : int
+    <<readonly>> previewHeight : int
+    radarMinimapHeight : float
+    frame : int
+    hasRadar : bool
+    cachedEnabled : bool
+    previewScale : float = 0
+    + SoundUp : string <<get>>
+    + SoundDown : string <<get>>
+    + RadarWidget(world:World, worldRenderer:WorldRenderer)
+    CellTerrainColorChanged(uv:MPos) : void
+    CellTerrainColorChanged(cell:CPos) : void
+    + <<override>> Initialize(args:WidgetArgs) : void
+    WorldOnRenderPlayerChanged(player:Player) : void
+    SetPlayer(player:Player, forceUpdate:bool) : void
+    MapBoundsChanged() : void
+    UpdateTerrainColor(uv:MPos) : void
+    UpdateShroudCell(puv:PPos) : void
+    + <<override>> GetCursor(pos:int2) : string
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> Draw() : void
+    DrawRadarPings() : void
+    + <<override>> Tick() : void
+    CellToMinimapPixel(p:CPos) : int2
+    MinimapPixelToCell(p:int2) : CPos
+    + <<override>> Removed() : void
+    + Dispose() : void
+}
+class "Func`1"<T> {
+}
+class "Action`1"<T> {
+}
+Widget <|-- RadarWidget
+IDisposable <|-- RadarWidget
+RadarWidget o-> "IsEnabled<bool>" "Func`1"
+RadarWidget o-> "AfterOpen" Action
+RadarWidget o-> "AfterClose" Action
+RadarWidget o-> "Animating<float>" "Action`1"
+RadarWidget --> "world" World
+RadarWidget --> "worldRenderer" WorldRenderer
+RadarWidget --> "radarPings" RadarPings
+RadarWidget o-> "previewOrigin" int2
+RadarWidget o-> "mapRect" Rectangle
+RadarWidget --> "radarSheet" Sheet
+RadarWidget --> "terrainSprite" Sprite
+RadarWidget --> "actorSprite" Sprite
+RadarWidget --> "shroudSprite" Sprite
+RadarWidget --> "shroud" Shroud
+RadarWidget --> "playerRadarTerrain" PlayerRadarTerrain
+RadarWidget --> "currentPlayer" Player
+@enduml

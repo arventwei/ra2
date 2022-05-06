@@ -1,0 +1,38 @@
+@startuml
+enum TargetType {
+    Invalid,
+    Actor,
+    Terrain,
+    FrozenActor,
+}
+class Target <<struct>> {
+    <<readonly>> cell : CPos?
+    <<readonly>> subCell : SubCell?
+    <<readonly>> generation : int
+    Target(terrainCenterPosition:WPos, terrainPositions:WPos[])
+    Target(w:World, c:CPos, subCell:SubCell)
+    Target(a:Actor)
+    Target(fa:FrozenActor)
+    + {static} FromPos(p:WPos) : Target
+    + {static} FromTargetPositions(t:Target) : Target
+    + {static} FromCell(w:World, c:CPos, subCell:SubCell) : Target
+    + {static} FromActor(a:Actor) : Target
+    + {static} FromFrozenActor(fa:FrozenActor) : Target
+    + IsValidFor(targeter:Actor) : bool
+    + RequiresForceFire : bool <<get>>
+    + IsInRange(origin:WPos, range:WDist) : bool
+    + <<override>> ToString() : string
+}
+class "IEnumerable`1"<T> {
+}
+Target o-> "Invalid" Target
+Target --> "type" TargetType
+Target --> "actor" Actor
+Target --> "frozen" FrozenActor
+Target --> "terrainCenterPosition" WPos
+Target --> "Actor" Actor
+Target --> "FrozenActor" FrozenActor
+Target --> "Type" TargetType
+Target --> "CenterPosition" WPos
+Target --> "Positions<WPos>" "IEnumerable`1"
+@enduml

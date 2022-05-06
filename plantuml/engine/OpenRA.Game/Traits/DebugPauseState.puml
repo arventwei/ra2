@@ -1,0 +1,12 @@
+@startuml
+class DebugPauseStateInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DebugPauseState {
+    + Paused : bool <<get>>
+    + DebugPauseState(world:World)
+}
+TraitInfo <|-- DebugPauseStateInfo
+ISync <|-- DebugPauseState
+DebugPauseState --> "world" World
+@enduml

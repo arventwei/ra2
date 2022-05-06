@@ -1,0 +1,7 @@
+@startuml
+enum RunStatus {
+    Error= -1,
+    Success= 0,
+    Running= int.MaxValue,
+}
+@enduml

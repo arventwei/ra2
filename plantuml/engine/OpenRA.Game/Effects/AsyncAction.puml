@@ -1,0 +1,10 @@
+@startuml
+class AsyncAction {
+    + AsyncAction(ar:IAsyncResult, a:Action)
+    + Tick(world:World) : void
+    + Render(r:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- AsyncAction
+AsyncAction --> "a" Action
+AsyncAction --> "ar" IAsyncResult
+@enduml

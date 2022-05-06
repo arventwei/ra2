@@ -1,0 +1,8 @@
+@startuml
+class RadarGlobal {
+    + RadarGlobal(context:ScriptContext)
+    + Ping(player:Player, position:WPos, color:Color, duration:int) : void
+}
+ScriptGlobal <|-- RadarGlobal
+RadarGlobal --> "radarPings" RadarPings
+@enduml

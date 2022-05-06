@@ -1,0 +1,104 @@
+@startuml
+class ProductionQueueInfo {
+    + <<readonly>> Type : string = null
+    + <<readonly>> DisplayOrder : int = 0
+    + <<readonly>> Group : string = null
+    + <<readonly>> Sticky : bool = true
+    + <<readonly>> DisallowPaused : bool = false
+    + <<readonly>> BuildDurationModifier : int = 100
+    + <<readonly>> ItemLimit : int = 999
+    + <<readonly>> QueueLimit : int = 0
+    + <<readonly>> LowPowerModifier : int = 100
+    + <<readonly>> InfiniteBuildLimit : int
+    + <<readonly>> ReadyAudio : string = null
+    + <<readonly>> BlockedAudio : string = null
+    + <<readonly>> LimitedAudio : string = null
+    + <<readonly>> QueuedAudio : string = null
+    + <<readonly>> OnHoldAudio : string = null
+    + <<readonly>> CancelledAudio : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class ProductionQueue {
+    + Enabled : bool <<get>> <<protected set>>
+    + Faction : string <<get>>
+    + IsValidFaction : bool <<get>>
+    + ProductionQueue(init:ActorInitializer, playerActor:Actor, info:ProductionQueueInfo)
+    Created(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    Killed(killed:Actor, e:AttackInfo) : void
+    Selling(self:Actor) : void
+    Sold(self:Actor) : void
+    BeforeTransform(self:Actor) : void
+    OnTransform(self:Actor) : void
+    AfterTransform(self:Actor) : void
+    CacheProducibles(playerActor:Actor) : void
+    AllBuildables(category:string) : IEnumerable<ActorInfo>
+    + PrerequisitesAvailable(key:string) : void
+    + PrerequisitesUnavailable(key:string) : void
+    + PrerequisitesItemHidden(key:string) : void
+    + PrerequisitesItemVisible(key:string) : void
+    + <<virtual>> IsProducing(item:ProductionItem) : bool
+    + CurrentItem() : ProductionItem
+    + <<virtual>> AllQueued() : IEnumerable<ProductionItem>
+    + <<virtual>> AllItems() : IEnumerable<ActorInfo>
+    + <<virtual>> BuildableItems() : IEnumerable<ActorInfo>
+    + CanBuild(actor:ActorInfo) : bool
+    Tick(self:Actor) : void
+    + CanQueue(actor:ActorInfo, notificationAudio:string) : bool
+    + ResolveOrder(self:Actor, order:Order) : void
+    + <<virtual>> GetBuildTime(unit:ActorInfo, bi:BuildableInfo) : int
+    + <<virtual>> GetProductionCost(unit:ActorInfo) : int
+    CancelProductionInner(itemName:string) : bool
+    + EndProduction(item:ProductionItem) : void
+    + <<virtual>> RemainingTimeActual(item:ProductionItem) : int
+    + <<virtual>> MostLikelyProducer() : TraitPair<Production>
+}
+class ProductionState {
+    + Visible : bool = true
+    + Buildable : bool = false
+}
+class ProductionItem {
+    + <<readonly>> Item : string
+    + <<readonly>> TotalCost : int
+    + TotalTime : int <<get>>
+    + RemainingTime : int <<get>>
+    + RemainingCost : int <<get>>
+    + RemainingTimeActual : int <<get>>
+    + Paused : bool <<get>>
+    + Done : bool <<get>>
+    + Started : bool <<get>>
+    + Slowdown : int <<get>>
+    + Infinite : bool <<get>> <<set>>
+    + BuildPaletteOrder : int <<get>>
+    + ProductionItem(queue:ProductionQueue, item:string, cost:int, pm:PowerManager, onComplete:Action)
+    + Tick(pr:PlayerResources) : void
+    + Pause(paused:bool) : void
+}
+class "HashSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- ProductionQueueInfo
+ProductionQueueInfo o-> "Factions<string>" "HashSet`1"
+IResolveOrder <|-- ProductionQueue
+ITick <|-- ProductionQueue
+ITechTreeElement <|-- ProductionQueue
+INotifyOwnerChanged <|-- ProductionQueue
+INotifyKilled <|-- ProductionQueue
+INotifySold <|-- ProductionQueue
+ISync <|-- ProductionQueue
+INotifyTransform <|-- ProductionQueue
+INotifyCreated <|-- ProductionQueue
+ProductionQueue --> "Info" ProductionQueueInfo
+ProductionQueue --> "self" Actor
+ProductionQueue --> "allProducibles<ActorInfo>" "IEnumerable`1"
+ProductionQueue --> "buildableProducibles<ActorInfo>" "IEnumerable`1"
+ProductionQueue --> "playerPower" PowerManager
+ProductionQueue --> "Actor" Actor
+ProductionItem --> "Queue" ProductionQueue
+ProductionItem --> "OnComplete" Action
+ProductionItem --> "ai" ActorInfo
+ProductionItem --> "bi" BuildableInfo
+ProductionItem --> "pm" PowerManager
+@enduml

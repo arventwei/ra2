@@ -1,0 +1,19 @@
+@startuml
+abstract class SelectionDecorationsBaseInfo {
+}
+abstract class SelectionDecorationsBase {
+    + SelectionDecorationsBase(info:SelectionDecorationsBaseInfo)
+    Created(self:Actor) : void
+    ActivityTargetPath(self:Actor) : IEnumerable<WPos>
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+    DrawDecorations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderSelectionAnnotations(self:Actor, worldRenderer:WorldRenderer, color:Color) : IEnumerable<IRenderable>
+    GetDecorationOrigin(self:Actor, wr:WorldRenderer, pos:string, margin:int2) : int2
+}
+TraitInfo <|-- SelectionDecorationsBaseInfo
+SelectionDecorationsBaseInfo o-> "SelectionBoxColor" Color
+ISelectionDecorations <|-- SelectionDecorationsBase
+IRenderAnnotations <|-- SelectionDecorationsBase
+INotifyCreated <|-- SelectionDecorationsBase
+@enduml

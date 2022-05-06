@@ -1,0 +1,5 @@
+@startuml
+abstract class SingleHotkeyBaseLogic {
+}
+ChromeLogic <|-- SingleHotkeyBaseLogic
+@enduml

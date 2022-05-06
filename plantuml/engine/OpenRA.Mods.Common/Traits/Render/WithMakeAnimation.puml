@@ -1,0 +1,25 @@
+@startuml
+class WithMakeAnimationInfo {
+    + <<readonly>> Sequence : string = "make"
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithMakeAnimation {
+    <<readonly>> skipMakeAnimation : bool
+    token : int
+    + WithMakeAnimation(init:ActorInitializer, info:WithMakeAnimationInfo)
+    Created(self:Actor) : void
+    + Forward(self:Actor, onComplete:Action) : void
+    + Reverse(self:Actor, onComplete:Action) : void
+    + Reverse(self:Actor, activity:Activity, queued:bool) : void
+    Deploy(self:Actor, skipMakeAnim:bool) : void
+    Undeploy(self:Actor, skipMakeAnim:bool) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- WithMakeAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithMakeAnimationInfo
+INotifyCreated <|-- WithMakeAnimation
+INotifyDeployTriggered <|-- WithMakeAnimation
+WithMakeAnimation --> "info" WithMakeAnimationInfo
+@enduml

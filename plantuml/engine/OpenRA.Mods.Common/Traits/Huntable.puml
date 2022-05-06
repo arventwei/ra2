@@ -1,0 +1,9 @@
+@startuml
+class HuntableInfo {
+}
+class Huntable {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<Huntable>" <|-- HuntableInfo
+@enduml

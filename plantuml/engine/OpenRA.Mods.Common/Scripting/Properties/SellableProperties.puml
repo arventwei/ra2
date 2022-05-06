@@ -1,0 +1,10 @@
+@startuml
+class SellableProperties {
+    + SellableProperties(context:ScriptContext, self:Actor)
+    + Sell() : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- SellableProperties
+"Requires`1" "<SellableInfo>" <|-- SellableProperties
+@enduml

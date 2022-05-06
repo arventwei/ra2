@@ -1,0 +1,22 @@
+@startuml
+class GivesExperienceInfo {
+    + <<readonly>> Experience : int
+    + <<readonly>> ActorExperienceModifier : int = 10000
+    + <<readonly>> PlayerExperienceModifier : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GivesExperience {
+    exp : int
+    + GivesExperience(self:Actor, info:GivesExperienceInfo)
+    Created(self:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- GivesExperienceInfo
+GivesExperienceInfo o-> "ValidRelationships" PlayerRelationship
+INotifyKilled <|-- GivesExperience
+INotifyCreated <|-- GivesExperience
+GivesExperience --> "info" GivesExperienceInfo
+GivesExperience --> "experienceModifiers<int>" "IEnumerable`1"
+@enduml

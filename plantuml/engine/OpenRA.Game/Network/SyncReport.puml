@@ -1,0 +1,55 @@
+@startuml
+class SyncReport {
+    <<const>> NumSyncReports : int = 5
+    curIndex : int = 0
+    {static} DumpSyncTrait(sync:ISync) : (string[] Names, Values Values)
+    + SyncReport(orderManager:OrderManager)
+    GenerateSyncReport(report:Report) : void
+}
+class "Cache`2"<T1,T2> {
+}
+class Report {
+    + Frame : int
+    + SyncedRandom : int
+    + TotalCount : int
+}
+class TraitReport <<struct>> {
+    + ActorID : uint
+    + Type : string
+    + Owner : string
+    + Trait : string
+    + Hash : int
+}
+class EffectReport <<struct>> {
+    + Name : string
+    + Hash : int
+}
+class TypeInfo <<struct>> {
+    + TypeInfo(type:Type)
+    {static} SerializableCopyOfMember(getMember:MemberExpression, memberType:Type, name:string) : Func<ISync, object>
+    {static} MemberToString(getMember:MemberExpression, memberType:Type, name:string) : Func<ISync, string>
+}
+class Values <<struct>> {
+    {static} <<readonly>> Sentinel : object
+    item1OrArray : object
+    item2OrSentinel : object
+    item3 : object
+    item4 : object
+    + Values(size:int)
+}
+class "List`1"<T> {
+}
+SyncReport o-> "typeInfoCache<Type,TypeInfo>" "Cache`2"
+SyncReport --> "orderManager" OrderManager
+SyncReport +-- Report
+Report o-> "Traits<TraitReport>" "List`1"
+Report o-> "Effects<EffectReport>" "List`1"
+SyncReport +-- TraitReport
+SyncReport +-- EffectReport
+SyncReport +-- TypeInfo
+TypeInfo o-> "SyncParam" ParameterExpression
+TypeInfo o-> "NullString" ConstantExpression
+TypeInfo o-> "TrueString" ConstantExpression
+TypeInfo o-> "FalseString" ConstantExpression
+SyncReport +-- Values
+@enduml

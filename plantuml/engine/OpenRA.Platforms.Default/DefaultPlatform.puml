@@ -1,0 +1,8 @@
+@startuml
+class DefaultPlatform {
+    + CreateWindow(size:Size, windowMode:WindowMode, scaleModifier:float, batchSize:int, videoDisplay:int, profile:GLProfile, enableLegacyGL:bool) : IPlatformWindow
+    + CreateSound(device:string) : ISoundEngine
+    + CreateFont(data:byte[]) : IFont
+}
+IPlatform <|-- DefaultPlatform
+@enduml

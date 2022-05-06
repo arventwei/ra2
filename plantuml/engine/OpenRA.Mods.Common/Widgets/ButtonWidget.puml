@@ -1,0 +1,62 @@
+@startuml
+class ButtonWidget {
+    + <<readonly>> TooltipContainer : string
+    + <<readonly>> TooltipTemplate : string = "BUTTON_TOOLTIP"
+    + DisableKeyRepeat : bool = false
+    + DisableKeySound : bool = false
+    + Text : string = ""
+    + LeftMargin : int = 5
+    + RightMargin : int = 5
+    + Background : string = "button"
+    + Depressed : bool = false
+    + VisualHeight : int
+    + Font : string
+    + Contrast : bool
+    + Shadow : bool
+    + ContrastRadius : int
+    + ClickSound : string
+    + ClickDisabledSound : string
+    + Disabled : bool = false
+    + Highlighted : bool = false
+    + TooltipText : string
+    + TooltipDesc : string
+    + ButtonWidget(modData:ModData)
+    + <<override>> YieldMouseFocus(mi:MouseInput) : bool
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> MouseEntered() : void
+    + <<override>> MouseExited() : void
+    + <<override>> Draw() : void
+    GetTextPosition(text:string, font:SpriteFont, rb:Rectangle) : int2
+    + <<override>> Clone() : Widget
+    + <<virtual>> UsableWidth : int <<get>>
+    + <<virtual>> DrawBackground(rect:Rectangle, disabled:bool, pressed:bool, hover:bool, highlighted:bool) : void
+    + {static} DrawBackground(baseName:string, rect:Rectangle, disabled:bool, pressed:bool, hover:bool, highlighted:bool) : void
+}
+class "Func`1"<T> {
+}
+class "Action`1"<T> {
+}
+Widget <|-- ButtonWidget
+ButtonWidget o-> "Key" HotkeyReference
+ButtonWidget o-> "Align" TextAlign
+ButtonWidget o-> "TextColor" Color
+ButtonWidget o-> "TextColorDisabled" Color
+ButtonWidget o-> "ContrastColorDark" Color
+ButtonWidget o-> "ContrastColorLight" Color
+ButtonWidget --> "GetText<string>" "Func`1"
+ButtonWidget --> "GetColor<Color>" "Func`1"
+ButtonWidget --> "GetColorDisabled<Color>" "Func`1"
+ButtonWidget --> "GetContrastColorDark<Color>" "Func`1"
+ButtonWidget --> "GetContrastColorLight<Color>" "Func`1"
+ButtonWidget --> "IsDisabled<bool>" "Func`1"
+ButtonWidget --> "IsHighlighted<bool>" "Func`1"
+ButtonWidget o-> "OnMouseDown<MouseInput>" "Action`1"
+ButtonWidget o-> "OnMouseUp<MouseInput>" "Action`1"
+ButtonWidget --> "GetTooltipText<string>" "Func`1"
+ButtonWidget --> "GetTooltipDesc<string>" "Func`1"
+ButtonWidget o-> "OnClick" Action
+ButtonWidget o-> "OnDoubleClick" Action
+ButtonWidget o-> "OnKeyPress<KeyInput>" "Action`1"
+ButtonWidget --> "ChildOrigin" int2
+@enduml

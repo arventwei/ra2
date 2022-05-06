@@ -1,0 +1,21 @@
+@startuml
+class TransformsNearResourcesInfo {
+    + <<readonly>> IntoActor : string = null
+    + <<readonly>> SkipMakeAnims : bool = false
+    + <<readonly>> Type : string = null
+    + <<readonly>> Density : int = 1
+    + <<readonly>> Adjacency : int = 1
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TransformsNearResources {
+    delay : int
+    + TransformsNearResources(self:Actor, info:TransformsNearResourcesInfo)
+    Tick(self:Actor) : void
+    Transform(self:Actor) : void
+}
+TraitInfo <|-- TransformsNearResourcesInfo
+TransformsNearResourcesInfo o-> "Offset" CVec
+ITick <|-- TransformsNearResources
+TransformsNearResources --> "info" TransformsNearResourcesInfo
+TransformsNearResources --> "resourceLayer" ResourceLayer
+@enduml

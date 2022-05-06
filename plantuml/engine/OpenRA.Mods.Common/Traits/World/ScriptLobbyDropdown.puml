@@ -1,0 +1,25 @@
+@startuml
+class ScriptLobbyDropdownInfo {
+    + <<readonly>> ID : string = null
+    + <<readonly>> Label : string = null
+    + <<readonly>> Description : string = null
+    + <<readonly>> Default : string = null
+    + <<readonly>> Locked : bool = false
+    + <<readonly>> Visible : bool = true
+    + <<readonly>> DisplayOrder : int = 0
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ScriptLobbyDropdown {
+    + Value : string <<get>>
+    + ScriptLobbyDropdown(info:ScriptLobbyDropdownInfo)
+    Created(self:Actor) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- ScriptLobbyDropdownInfo
+ILobbyOptions <|-- ScriptLobbyDropdownInfo
+ScriptLobbyDropdownInfo o-> "Values<string,string>" "Dictionary`2"
+INotifyCreated <|-- ScriptLobbyDropdown
+ScriptLobbyDropdown --> "Info" ScriptLobbyDropdownInfo
+@enduml

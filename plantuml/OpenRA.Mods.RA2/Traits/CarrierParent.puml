@@ -1,0 +1,47 @@
+@startuml
+class CarrierParentInfo {
+    + <<readonly>> RearmTicks : int = 150
+    + <<readonly>> LaunchingCondition : string = null
+    + <<readonly>> LaunchingTicks : int = 15
+    + <<readonly>> InstantRepair : bool = true
+    + <<readonly>> LoadedCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CarrierParent {
+    respawnTicks : int = 0
+    launchCondition : int
+    launchConditionTicks : int
+    + CarrierParent(init:ActorInitializer, info:CarrierParentInfo)
+    + <<override>> CreateChildEntries(info:BaseSpawnerParentInfo) : BaseSpawnerChildEntry[]
+    + <<override>> InitializeChildEntry(child:Actor, entry:BaseSpawnerChildEntry) : void
+    + GetChildrenInsideCount() : int
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    OnBecomingIdle(self:Actor) : void
+    Recall() : void
+    + <<override>> OnChildKilled(self:Actor, child:Actor) : void
+    GetLaunchable() : CarrierChildEntry
+    + PickupChild(self:Actor, child:Actor) : void
+    + <<override>> Replenish(self:Actor, entry:BaseSpawnerChildEntry) : void
+    Tick(self:Actor) : void
+}
+class CarrierChildEntry {
+    + RearmTicks : int = 0
+    + IsLaunched : bool = false
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Stack`1"<T> {
+}
+BaseSpawnerParentInfo <|-- CarrierParentInfo
+BaseSpawnerParent <|-- CarrierParent
+ITick <|-- CarrierParent
+INotifyAttack <|-- CarrierParent
+INotifyBecomingIdle <|-- CarrierParent
+CarrierParent o-> "spawnContainTokens<string,Stack<int>>" "Dictionary`2"
+CarrierParent --> "info" CarrierParentInfo
+CarrierParent o-> "loadedTokens<int>" "Stack`1"
+CarrierParent +-- CarrierChildEntry
+BaseSpawnerChildEntry <|-- CarrierChildEntry
+CarrierChildEntry --> "SpawnerChild" CarrierChild
+@enduml

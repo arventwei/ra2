@@ -1,0 +1,15 @@
+@startuml
+class WithDockingAnimationInfo {
+    + <<readonly>> DockSequence : string = "dock"
+    + <<readonly>> DockLoopSequence : string = "dock-loop"
+}
+class WithDockingAnimation {
+}
+class "TraitInfo`1"<T> {
+}
+class "Requires`1"<T> {
+}
+"TraitInfo`1" "<WithDockingAnimation>" <|-- WithDockingAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithDockingAnimationInfo
+"Requires`1" "<HarvesterInfo>" <|-- WithDockingAnimationInfo
+@enduml

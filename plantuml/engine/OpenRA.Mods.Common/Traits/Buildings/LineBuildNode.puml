@@ -1,0 +1,12 @@
+@startuml
+class LineBuildNodeInfo {
+}
+class LineBuildNode {
+}
+class "TraitInfo`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"TraitInfo`1" "<LineBuildNode>" <|-- LineBuildNodeInfo
+LineBuildNodeInfo o-> "Types<string>" "HashSet`1"
+@enduml

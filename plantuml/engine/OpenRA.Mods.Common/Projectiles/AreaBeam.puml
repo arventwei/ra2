@@ -1,0 +1,45 @@
+@startuml
+class AreaBeamInfo {
+    + <<readonly>> Duration : int = 10
+    + <<readonly>> DamageInterval : int = 3
+    + <<readonly>> Blockable : bool = false
+    + <<readonly>> TrackTarget : bool = false
+    + <<readonly>> RenderBeam : bool = true
+    + <<readonly>> ZOffset : int = 0
+    + <<readonly>> UsePlayerColor : bool = false
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class AreaBeam {
+    length : int
+    headTicks : int
+    tailTicks : int
+    isHeadTravelling : bool = true
+    isTailTravelling : bool
+    continueTracking : bool = true
+    IsBeamComplete : bool <<get>>
+    + AreaBeam(info:AreaBeamInfo, args:ProjectileArgs, color:Color)
+    TrackTarget() : void
+    StopTargeting() : void
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    GetFalloff(distance:int) : int
+}
+IProjectileInfo <|-- AreaBeamInfo
+AreaBeamInfo o-> "Width" WDist
+AreaBeamInfo o-> "Shape" BeamRenderableShape
+AreaBeamInfo o-> "BeyondTargetRange" WDist
+AreaBeamInfo o-> "Inaccuracy" WDist
+AreaBeamInfo o-> "InaccuracyType" InaccuracyType
+AreaBeamInfo o-> "Color" Color
+IProjectile <|-- AreaBeam
+ISync <|-- AreaBeam
+AreaBeam --> "info" AreaBeamInfo
+AreaBeam --> "args" ProjectileArgs
+AreaBeam --> "actorAttackBase" AttackBase
+AreaBeam --> "color" Color
+AreaBeam --> "speed" WDist
+AreaBeam --> "headPos" WPos
+AreaBeam --> "tailPos" WPos
+AreaBeam --> "target" WPos
+AreaBeam --> "towardsTargetFacing" WAngle
+@enduml

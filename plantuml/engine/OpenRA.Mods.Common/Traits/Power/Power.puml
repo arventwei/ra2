@@ -1,0 +1,24 @@
+@startuml
+class PowerInfo {
+    + <<readonly>> Amount : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Power {
+    + GetEnabledPower() : int
+    + Power(self:Actor, info:PowerInfo)
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+ConditionalTraitInfo <|-- PowerInfo
+"ConditionalTrait`1" "<PowerInfo>" <|-- Power
+INotifyAddedToWorld <|-- Power
+INotifyRemovedFromWorld <|-- Power
+INotifyOwnerChanged <|-- Power
+Power --> "powerModifiers<IPowerModifier[]>" "Lazy`1"
+Power --> "PlayerPower" PowerManager
+@enduml

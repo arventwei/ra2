@@ -1,0 +1,32 @@
+@startuml
+class HitShapeInfo {
+    + <<readonly>> Turret : string = null
+    + <<readonly>> UseTargetableCellsOffsets : bool = false
+    {static} LoadShape(yaml:MiniYaml) : object
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HitShape {
+    + HitShape(self:Actor, info:HitShapeInfo)
+    AlwaysEnabled : bool <<get>>
+    TargetablePositions(self:Actor) : IEnumerable<WPos>
+    TargetablePositions(self:Actor) : IEnumerable<WPos>
+    CalculateTargetableOffset(self:Actor, offset:WVec) : WVec
+    + DistanceFromEdge(self:Actor, pos:WPos) : WDist
+    + RenderDebugOverlay(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- HitShapeInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- HitShapeInfo
+HitShapeInfo o-> "ArmorTypes<ArmorType>" "BitSet`1"
+HitShapeInfo --> "Type" IHitShape
+"ConditionalTrait`1" "<HitShapeInfo>" <|-- HitShape
+ITargetablePositions <|-- HitShape
+HitShape --> "orientation" BodyOrientation
+HitShape --> "targetableCells" ITargetableCells
+HitShape --> "turret" Turreted
+@enduml

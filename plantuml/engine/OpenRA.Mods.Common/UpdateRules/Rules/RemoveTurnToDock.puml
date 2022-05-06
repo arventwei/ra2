@@ -1,0 +1,12 @@
+@startuml
+class RemoveTurnToDock {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> AfterUpdate(modData:ModData) : IEnumerable<string>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+}
+class "List`1"<T> {
+}
+UpdateRule <|-- RemoveTurnToDock
+RemoveTurnToDock o-> "turningAircraft<Tuple<string, string>>" "List`1"
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+class AttackTDGunboatTurretedInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackTDGunboatTurreted {
+    + AttackTDGunboatTurreted(self:Actor, info:AttackTDGunboatTurretedInfo)
+    + <<override>> GetAttackActivity(self:Actor, source:AttackSource, newTarget:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : Activity
+}
+class "Requires`1"<T> {
+}
+class AttackTDGunboatTurretedActivity {
+    <<readonly>> forceAttack : bool
+    <<readonly>> targetLineColor : Color?
+    hasTicked : bool
+    + AttackTDGunboatTurretedActivity(self:Actor, target:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+AttackTurretedInfo <|-- AttackTDGunboatTurretedInfo
+"Requires`1" "<TDGunboatInfo>" <|-- AttackTDGunboatTurretedInfo
+AttackTurreted <|-- AttackTDGunboatTurreted
+AttackTDGunboatTurreted +-- AttackTDGunboatTurretedActivity
+Activity <|-- AttackTDGunboatTurretedActivity
+AttackTDGunboatTurretedActivity --> "attack" AttackTDGunboatTurreted
+AttackTDGunboatTurretedActivity --> "target" Target
+@enduml

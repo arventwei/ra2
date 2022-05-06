@@ -1,0 +1,6 @@
+@startuml
+class CheckTraitPrerequisites {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, rules:Ruleset) : void
+}
+ILintRulesPass <|-- CheckTraitPrerequisites
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+class ConditionProperties {
+    + ConditionProperties(context:ScriptContext, self:Actor)
+    + GrantCondition(condition:string, duration:int) : int
+    + RevokeCondition(token:int) : void
+    + AcceptsCondition(condition:string) : bool
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- ConditionProperties
+"Requires`1" "<ExternalConditionInfo>" <|-- ConditionProperties
+@enduml

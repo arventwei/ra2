@@ -1,0 +1,16 @@
+@startuml
+class GrantConditionOnTerrainInfo {
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnTerrain {
+    conditionToken : int
+    cachedTerrain : string
+    + GrantConditionOnTerrain(init:ActorInitializer, info:GrantConditionOnTerrainInfo)
+    Tick(self:Actor) : void
+}
+TraitInfo <|-- GrantConditionOnTerrainInfo
+ITick <|-- GrantConditionOnTerrain
+GrantConditionOnTerrain --> "info" GrantConditionOnTerrainInfo
+GrantConditionOnTerrain --> "tileSet" TileSet
+@enduml

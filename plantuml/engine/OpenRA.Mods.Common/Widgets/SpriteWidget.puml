@@ -1,0 +1,19 @@
+@startuml
+class SpriteWidget {
+    + Palette : string = "chrome"
+    + SpriteWidget(worldRenderer:WorldRenderer)
+    + <<override>> Clone() : Widget
+    cachedPalette : string = null
+    cachedScale : float
+    + <<override>> Draw() : void
+}
+class "Func`1"<T> {
+}
+Widget <|-- SpriteWidget
+SpriteWidget o-> "GetScale<float>" "Func`1"
+SpriteWidget --> "GetPalette<string>" "Func`1"
+SpriteWidget --> "GetSprite<Sprite>" "Func`1"
+SpriteWidget o-> "cachedSprite" Sprite
+SpriteWidget --> "pr" PaletteReference
+SpriteWidget o-> "offset" float2
+@enduml

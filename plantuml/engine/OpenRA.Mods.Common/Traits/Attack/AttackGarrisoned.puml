@@ -1,0 +1,44 @@
+@startuml
+class FirePort {
+}
+class AttackGarrisonedInfo {
+    + <<readonly>> MuzzlePalette : string = "effect"
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class AttackGarrisoned {
+    + AttackGarrisoned(self:Actor, info:AttackGarrisonedInfo)
+    OnPassengerEntered(self:Actor, passenger:Actor) : void
+    OnPassengerExited(self:Actor, passenger:Actor) : void
+    SelectFirePort(self:Actor, targetYaw:WAngle) : FirePort
+    PortOffset(self:Actor, p:FirePort) : WVec
+    + <<override>> DoAttack(self:Actor, target:Target) : void
+    Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+}
+class "Requires`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+FirePort --> "Offset" WVec
+FirePort --> "Yaw" WAngle
+FirePort --> "Cone" WAngle
+AttackFollowInfo <|-- AttackGarrisonedInfo
+IRulesetLoaded <|-- AttackGarrisonedInfo
+"Requires`1" "<CargoInfo>" <|-- AttackGarrisonedInfo
+AttackFollow <|-- AttackGarrisoned
+INotifyPassengerEntered <|-- AttackGarrisoned
+INotifyPassengerExited <|-- AttackGarrisoned
+IRender <|-- AttackGarrisoned
+AttackGarrisoned --> "Info" AttackGarrisonedInfo
+AttackGarrisoned --> "coords<BodyOrientation>" "Lazy`1"
+AttackGarrisoned --> "armaments<Armament>" "List`1"
+AttackGarrisoned --> "muzzles<AnimationWithOffset>" "List`1"
+AttackGarrisoned --> "paxFacing<Actor,IFacing>" "Dictionary`2"
+AttackGarrisoned --> "paxPos<Actor,IPositionable>" "Dictionary`2"
+AttackGarrisoned --> "paxRender<Actor,RenderSprites>" "Dictionary`2"
+@enduml

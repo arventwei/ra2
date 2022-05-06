@@ -1,0 +1,66 @@
+@startuml
+enum WorldTooltipType {
+    None,
+    Unexplored,
+    Actor,
+    FrozenActor,
+    Resource,
+}
+class ViewportControllerWidget {
+    + <<readonly>> BookmarkSaveKeyPrefix : string = null
+    + <<readonly>> BookmarkRestoreKeyPrefix : string = null
+    + <<readonly>> BookmarkKeyCount : int = 0
+    + <<readonly>> TooltipTemplate : string = "WORLD_TOOLTIP"
+    + <<readonly>> TooltipContainer : string
+    joystickScrollStart : int2?
+    joystickScrollEnd : int2?
+    standardScrollStart : int2?
+    isStandardScrolling : bool
+    + {static} LinterHotkeyNames(widgetNode:MiniYamlNode, emitError:Action<string>, emitWarning:Action<string>) : IEnumerable<string>
+    + ViewportControllerWidget(modData:ModData, world:World, worldRenderer:WorldRenderer)
+    + <<override>> Initialize(args:WidgetArgs) : void
+    + <<override>> MouseEntered() : void
+    + <<override>> MouseExited() : void
+    lastScrollTime : long = 0
+    + <<override>> Draw() : void
+    + UpdateMouseover() : void
+    + <<override>> GetCursor(pos:int2) : string
+    IsJoystickScrolling : bool <<get>>
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> YieldMouseFocus(mi:MouseInput) : bool
+    + <<override>> YieldKeyboardFocus() : bool
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+    CheckForDirections() : ScrollDirection
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Lazy`1"<T> {
+}
+Widget <|-- ViewportControllerWidget
+ViewportControllerWidget --> "modData" ModData
+ViewportControllerWidget --> "resourceRenderers<ResourceRenderer>" "IEnumerable`1"
+ViewportControllerWidget o-> "ZoomInKey" HotkeyReference
+ViewportControllerWidget o-> "ZoomOutKey" HotkeyReference
+ViewportControllerWidget o-> "ScrollUpKey" HotkeyReference
+ViewportControllerWidget o-> "ScrollDownKey" HotkeyReference
+ViewportControllerWidget o-> "ScrollLeftKey" HotkeyReference
+ViewportControllerWidget o-> "ScrollRightKey" HotkeyReference
+ViewportControllerWidget o-> "JumpToTopEdgeKey" HotkeyReference
+ViewportControllerWidget o-> "JumpToBottomEdgeKey" HotkeyReference
+ViewportControllerWidget o-> "JumpToLeftEdgeKey" HotkeyReference
+ViewportControllerWidget o-> "JumpToRightEdgeKey" HotkeyReference
+ViewportControllerWidget --> "TooltipType" WorldTooltipType
+ViewportControllerWidget --> "ActorTooltip" ITooltip
+ViewportControllerWidget --> "FrozenActorTooltip" FrozenActor
+ViewportControllerWidget --> "ResourceTooltip" ResourceType
+ViewportControllerWidget o-> "ScrollCursors<ScrollDirection,string>" "Dictionary`2"
+ViewportControllerWidget o-> "JoystickCursors<ScrollDirection,string>" "Dictionary`2"
+ViewportControllerWidget o-> "ScrollOffsets<ScrollDirection,float2>" "Dictionary`2"
+ViewportControllerWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+ViewportControllerWidget --> "world" World
+ViewportControllerWidget --> "worldRenderer" WorldRenderer
+ViewportControllerWidget --> "keyboardDirections" ScrollDirection
+ViewportControllerWidget --> "edgeDirections" ScrollDirection
+@enduml

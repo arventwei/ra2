@@ -1,0 +1,11 @@
+@startuml
+class MapPlayers {
+    + MapPlayers()
+    + MapPlayers(playerDefinitions:IEnumerable<MiniYamlNode>)
+    + MapPlayers(rules:Ruleset, playerCount:int)
+    + ToMiniYaml() : List<MiniYamlNode>
+}
+class "Dictionary`2"<T1,T2> {
+}
+MapPlayers --> "Players<string,PlayerReference>" "Dictionary`2"
+@enduml

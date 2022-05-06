@@ -1,0 +1,24 @@
+@startuml
+class GiveUnitCrateActionInfo {
+    + <<readonly>> Owner : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GiveUnitCrateAction {
+    + GiveUnitCrateAction(self:Actor, info:GiveUnitCrateActionInfo)
+    + CanGiveTo(collector:Actor) : bool
+    + <<override>> GetSelectionShares(collector:Actor) : int
+    + <<override>> Activate(collector:Actor) : void
+    GetSuitableCells(near:CPos, unitName:string) : IEnumerable<CPos>
+    ChooseEmptyCellNear(a:Actor, unit:string) : CPos?
+}
+class "HashSet`1"<T> {
+}
+class "List`1"<T> {
+}
+CrateActionInfo <|-- GiveUnitCrateActionInfo
+GiveUnitCrateActionInfo o-> "ValidFactions<string>" "HashSet`1"
+CrateAction <|-- GiveUnitCrateAction
+GiveUnitCrateAction --> "self" Actor
+GiveUnitCrateAction --> "info" GiveUnitCrateActionInfo
+GiveUnitCrateAction o-> "usedCells<CPos>" "List`1"
+@enduml

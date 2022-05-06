@@ -1,0 +1,16 @@
+@startuml
+class LightingGlobal {
+    <<readonly>> hasLighting : bool
+    + LightingGlobal(context:ScriptContext)
+    + Flash(type:string, ticks:int) : void
+    + Red : double <<get>> <<set>>
+    + Green : double <<get>> <<set>>
+    + Blue : double <<get>> <<set>>
+    + Ambient : double <<get>> <<set>>
+}
+class "IEnumerable`1"<T> {
+}
+ScriptGlobal <|-- LightingGlobal
+LightingGlobal --> "flashPaletteEffects<FlashPaletteEffect>" "IEnumerable`1"
+LightingGlobal --> "lighting" GlobalLightingPaletteEffect
+@enduml

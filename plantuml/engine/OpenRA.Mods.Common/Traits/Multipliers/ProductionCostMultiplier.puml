@@ -1,0 +1,15 @@
+@startuml
+class ProductionCostMultiplierInfo {
+    + <<readonly>> Multiplier : int = 100
+    GetProductionCostModifier(techTree:TechTree, queue:string) : int
+}
+class ProductionCostMultiplier {
+}
+class "TraitInfo`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"TraitInfo`1" "<ProductionCostMultiplier>" <|-- ProductionCostMultiplierInfo
+IProductionCostModifierInfo <|-- ProductionCostMultiplierInfo
+ProductionCostMultiplierInfo o-> "Queue<string>" "HashSet`1"
+@enduml

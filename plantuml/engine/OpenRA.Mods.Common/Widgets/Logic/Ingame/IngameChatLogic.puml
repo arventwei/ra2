@@ -1,0 +1,21 @@
+@startuml
+class IngameChatLogic {
+    <<readonly>> chatLineSound : string
+    + IngameChatLogic(widget:Widget, orderManager:OrderManager, world:World, modData:ModData, isMenuChat:bool, logicArgs:Dictionary<string, MiniYaml>)
+    + OpenChat() : void
+    + CloseChat() : void
+    + AddChatLineWrapper(name:string, nameColor:Color, text:string, textColor:Color) : void
+    AddChatLine(@from:string, nameColor:Color, text:string, textColor:Color, suppressSound:bool) : void
+    disposed : bool = false
+}
+ChromeLogic <|-- IngameChatLogic
+IngameChatLogic --> "orderManager" OrderManager
+IngameChatLogic --> "modRules" Ruleset
+IngameChatLogic --> "chatOverlay" ContainerWidget
+IngameChatLogic --> "chatOverlayDisplay" ChatDisplayWidget
+IngameChatLogic --> "chatChrome" ContainerWidget
+IngameChatLogic --> "chatScrollPanel" ScrollPanelWidget
+IngameChatLogic --> "chatTemplate" ContainerWidget
+IngameChatLogic --> "chatText" TextFieldWidget
+IngameChatLogic o-> "tabCompletion" TabCompletionLogic
+@enduml

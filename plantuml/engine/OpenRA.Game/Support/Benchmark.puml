@@ -1,0 +1,18 @@
+@startuml
+class Benchmark {
+    <<readonly>> prefix : string
+    + Benchmark(prefix:string)
+    + Tick(localTick:int) : void
+    + Write() : void
+    + Reset() : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class BenchmarkPoint {
+    + Tick : int <<get>>
+    + Value : double <<get>>
+    + BenchmarkPoint(tick:int, value:double)
+}
+Benchmark o-> "samples<string,List<BenchmarkPoint>>" "Dictionary`2"
+Benchmark +-- BenchmarkPoint
+@enduml

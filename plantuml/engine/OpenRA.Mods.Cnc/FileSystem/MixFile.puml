@@ -1,0 +1,33 @@
+@startuml
+class MixLoader {
+    TryParsePackage(s:Stream, filename:string, context:FS, package:IReadOnlyPackage) : bool
+}
+class MixFile <<sealed>> {
+    + Name : string <<get>>
+    <<readonly>> dataStart : long
+    + MixFile(s:Stream, filename:string, allPossibleFilenames:HashSet<string>)
+    ParseIndex(entries:Dictionary<uint, PackageEntry>, allPossibleFilenames:HashSet<string>) : Dictionary<string, PackageEntry>
+    {static} ParseHeader(s:Stream, offset:long, headerEnd:long) : List<PackageEntry>
+    {static} DecryptHeader(s:Stream, offset:long, headerEnd:long) : MemoryStream
+    {static} Decrypt(h:uint[], fish:Blowfish) : MemoryStream
+    {static} ReadBlocks(s:Stream, offset:long, count:int) : uint[]
+    + GetContent(entry:PackageEntry) : Stream
+    + GetStream(filename:string) : Stream
+    + Contains(filename:string) : bool
+    + OpenPackage(filename:string, context:FS) : IReadOnlyPackage
+    + Dispose() : void
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+IPackageLoader <|-- MixLoader
+MixLoader +-- MixFile
+IReadOnlyPackage <|-- MixFile
+MixFile --> "Contents<string>" "IEnumerable`1"
+MixFile --> "index<string,PackageEntry>" "Dictionary`2"
+MixFile --> "s" Stream
+MixFile --> "Index<string,PackageEntry>" "IReadOnlyDictionary`2"
+@enduml

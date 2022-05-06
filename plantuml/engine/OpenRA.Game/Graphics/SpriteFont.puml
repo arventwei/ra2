@@ -1,0 +1,42 @@
+@startuml
+class SpriteFont <<sealed>> {
+    + TopOffset : int <<get>>
+    <<readonly>> size : int
+    deviceScale : float
+    + SpriteFont(name:string, data:byte[], size:int, ascender:int, scale:float, builder:SheetBuilder)
+    + SetScale(scale:float) : void
+    DrawTextContrast(text:string, location:float2, contrastColor:Color, contrastOffset:int) : void
+    + DrawText(text:string, location:float2, c:Color) : void
+    Rotate(v:float2, sina:float, cosa:float, offset:float2) : float2
+    + DrawText(text:string, location:float2, c:Color, angle:float) : void
+    + DrawTextWithContrast(text:string, location:float2, fg:Color, bg:Color, offset:int) : void
+    + DrawTextWithContrast(text:string, location:float2, fg:Color, bgDark:Color, bgLight:Color, offset:int) : void
+    + DrawTextWithShadow(text:string, location:float2, fg:Color, bg:Color, offset:int) : void
+    + DrawTextWithShadow(text:string, location:float2, fg:Color, bgDark:Color, bgLight:Color, offset:int) : void
+    + DrawTextWithShadow(text:string, location:float2, fg:Color, bg:Color, offset:int, angle:float) : void
+    + DrawTextWithShadow(text:string, location:float2, fg:Color, bgDark:Color, bgLight:Color, offset:int, angle:float) : void
+    + Measure(text:string) : int2
+    {static} MaxLineWidth(lines:string[], lineWidth:Func<string, float>) : float
+    CreateGlyph(c:char) : GlyphInfo
+    CreateCircularWeightMap(r:int) : float[]
+    CreateContrastGlyph(c:(char C, int Radius)) : Sprite
+    {static} GetContrastColor(fgColor:Color, bgDark:Color, bgLight:Color) : Color
+    + Dispose() : void
+}
+class GlyphInfo {
+    + Advance : float
+}
+class "Func`2"<T1,T2> {
+}
+class "Cache`2"<T1,T2> {
+}
+IDisposable <|-- SpriteFont
+SpriteFont --> "builder" SheetBuilder
+SpriteFont --> "lineWidth<string,float>" "Func`2"
+SpriteFont --> "font" IFont
+SpriteFont --> "glyphs<char,GlyphInfo>" "Cache`2"
+SpriteFont --> "contrastGlyphs<(char C, int Radius),Sprite>" "Cache`2"
+SpriteFont --> "dilationElements<int,float[]>" "Cache`2"
+GlyphInfo --> "Offset" int2
+GlyphInfo --> "Sprite" Sprite
+@enduml

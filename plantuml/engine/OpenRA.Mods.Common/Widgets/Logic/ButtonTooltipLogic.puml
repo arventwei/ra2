@@ -1,0 +1,6 @@
+@startuml
+class ButtonTooltipLogic {
+    + ButtonTooltipLogic(widget:Widget, button:ButtonWidget)
+}
+ChromeLogic <|-- ButtonTooltipLogic
+@enduml

@@ -1,0 +1,51 @@
+@startuml
+class ZipFileLoader {
+    + TryParsePackage(s:Stream, filename:string, context:FileSystem, package:IReadOnlyPackage) : bool
+    + {static} TryParseReadWritePackage(filename:string, package:IReadWritePackage) : bool
+    + {static} Create(filename:string) : IReadWritePackage
+}
+class ReadOnlyZipFile {
+    + Name : string <<get>> <<protected set>>
+    + ReadOnlyZipFile(s:Stream, filename:string)
+    + GetStream(filename:string) : Stream
+    + Contains(filename:string) : bool
+    + Dispose() : void
+    + OpenPackage(filename:string, context:FileSystem) : IReadOnlyPackage
+}
+class ReadWriteZipFile <<sealed>> {
+    + ReadWriteZipFile(filename:string, create:bool)
+    Commit() : void
+    + Update(filename:string, contents:byte[]) : void
+    + Delete(filename:string) : void
+}
+class ZipFolder <<sealed>> {
+    + Name : string <<get>>
+    <<readonly>> path : string
+    + ZipFolder(parent:ReadOnlyZipFile, path:string)
+    + GetStream(filename:string) : Stream
+    + Contains(filename:string) : bool
+    + OpenPackage(filename:string, context:FileSystem) : IReadOnlyPackage
+    + Dispose() : void
+}
+class StaticStreamDataSource {
+    + StaticStreamDataSource(s:Stream)
+    + GetSource() : Stream
+}
+class "IEnumerable`1"<T> {
+}
+IPackageLoader <|-- ZipFileLoader
+ZipFileLoader +-- ReadOnlyZipFile
+IReadOnlyPackage <|-- ReadOnlyZipFile
+ReadOnlyZipFile --> "Contents<string>" "IEnumerable`1"
+ZipFileLoader +-- ReadWriteZipFile
+ReadOnlyZipFile <|-- ReadWriteZipFile
+IReadWritePackage <|-- ReadWriteZipFile
+ReadWriteZipFile o-> "pkgStream" MemoryStream
+ZipFileLoader +-- ZipFolder
+IReadOnlyPackage <|-- ZipFolder
+ZipFolder --> "Parent" ReadOnlyZipFile
+ZipFolder --> "Contents<string>" "IEnumerable`1"
+ZipFileLoader +-- StaticStreamDataSource
+IStaticDataSource <|-- StaticStreamDataSource
+StaticStreamDataSource --> "s" Stream
+@enduml

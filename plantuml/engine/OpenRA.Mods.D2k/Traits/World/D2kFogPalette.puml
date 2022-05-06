@@ -1,0 +1,19 @@
+@startuml
+class D2kFogPaletteInfo {
+    + <<readonly>> Name : string = null
+    + <<readonly>> BasePalette : string = null
+    + <<readonly>> AllowModifiers : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class D2kFogPalette {
+    + D2kFogPalette(info:D2kFogPaletteInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- D2kFogPaletteInfo
+ILoadsPalettes <|-- D2kFogPalette
+IProvidesAssetBrowserPalettes <|-- D2kFogPalette
+D2kFogPalette --> "info" D2kFogPaletteInfo
+D2kFogPalette --> "PaletteNames<string>" "IEnumerable`1"
+@enduml

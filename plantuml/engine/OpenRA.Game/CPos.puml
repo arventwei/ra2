@@ -1,0 +1,29 @@
+@startuml
+class CPos <<struct>> {
+    + <<readonly>> Bits : int
+    + X : int <<get>>
+    + Y : int <<get>>
+    + Layer : byte <<get>>
+    + CPos(bits:int)
+    + CPos(x:int, y:int)
+    + CPos(x:int, y:int, layer:byte)
+    + <<override>> GetHashCode() : int
+    + Equals(other:CPos) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+    + ToMPos(map:Map) : MPos
+    + ToMPos(gridType:MapGridType) : MPos
+    + Add(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Subtract(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Equals(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+}
+class "IEquatable`1"<T> {
+}
+IScriptBindable <|-- CPos
+ILuaAdditionBinding <|-- CPos
+ILuaSubtractionBinding <|-- CPos
+ILuaEqualityBinding <|-- CPos
+ILuaTableBinding <|-- CPos
+"IEquatable`1" "<CPos>" <|-- CPos
+CPos o-> "Zero" CPos
+@enduml

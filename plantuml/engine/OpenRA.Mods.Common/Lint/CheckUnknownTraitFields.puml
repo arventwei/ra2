@@ -1,0 +1,10 @@
+@startuml
+class CheckUnknownTraitFields {
+    NormalizeName(key:string) : string
+    CheckActors(actors:IEnumerable<MiniYamlNode>, emitError:Action<string>, modData:ModData) : void
+    Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData) : void
+    Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, map:Map) : void
+}
+ILintPass <|-- CheckUnknownTraitFields
+ILintMapPass <|-- CheckUnknownTraitFields
+@enduml

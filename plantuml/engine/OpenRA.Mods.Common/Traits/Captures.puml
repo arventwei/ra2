@@ -1,0 +1,48 @@
+@startuml
+class CapturesInfo {
+    + <<readonly>> SabotageThreshold : int = 0
+    + <<readonly>> SabotageHPRemoval : int = 50
+    + <<readonly>> CaptureDelay : int = 0
+    + <<readonly>> ConsumedByCapture : bool = true
+    + <<readonly>> PlayerExperience : int = 0
+    + <<readonly>> SabotageCursor : string = "capture"
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + <<readonly>> Voice : string = "Action"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Captures {
+    + Captures(self:Actor, info:CapturesInfo)
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    + ResolveOrder(self:Actor, order:Order) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class CaptureOrderTargeter {
+    + CaptureOrderTargeter(captures:Captures)
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+ConditionalTraitInfo <|-- CapturesInfo
+"Requires`1" "<CaptureManagerInfo>" <|-- CapturesInfo
+CapturesInfo o-> "CaptureTypes<CaptureType>" "BitSet`1"
+CapturesInfo o-> "SabotageDamageTypes<DamageType>" "BitSet`1"
+CapturesInfo o-> "PlayerExperienceRelationships" PlayerRelationship
+CapturesInfo o-> "TargetLineColor" Color
+"ConditionalTrait`1" "<CapturesInfo>" <|-- Captures
+IIssueOrder <|-- Captures
+IResolveOrder <|-- Captures
+IOrderVoice <|-- Captures
+Captures --> "captureManager" CaptureManager
+Captures --> "Orders<IOrderTargeter>" "IEnumerable`1"
+Captures +-- CaptureOrderTargeter
+UnitOrderTargeter <|-- CaptureOrderTargeter
+CaptureOrderTargeter --> "captures" Captures
+@enduml

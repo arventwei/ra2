@@ -1,0 +1,19 @@
+@startuml
+class UnloadCargo {
+    <<readonly>> unloadAll : bool
+    <<readonly>> assignTargetOnFirstRun : bool
+    takeOffAfterUnload : bool
+    + UnloadCargo(self:Actor, unloadRange:WDist, unloadAll:bool)
+    + UnloadCargo(self:Actor, destination:Target, unloadRange:WDist, unloadAll:bool)
+    + ChooseExitSubCell(passenger:Actor) : (CPos Cell, SubCell SubCell)?
+    BlockedExitCells(passenger:Actor) : IEnumerable<CPos>
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- UnloadCargo
+UnloadCargo --> "self" Actor
+UnloadCargo --> "cargo" Cargo
+UnloadCargo --> "aircraft" Aircraft
+UnloadCargo --> "mobile" Mobile
+UnloadCargo --> "unloadRange" WDist
+UnloadCargo --> "destination" Target
+@enduml

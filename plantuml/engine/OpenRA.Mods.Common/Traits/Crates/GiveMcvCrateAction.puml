@@ -1,0 +1,13 @@
+@startuml
+class GiveMcvCrateActionInfo {
+    + NoBaseSelectionShares : int = 1000
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GiveMcvCrateAction {
+    + GiveMcvCrateAction(self:Actor, info:GiveMcvCrateActionInfo)
+    + <<override>> GetSelectionShares(collector:Actor) : int
+}
+GiveUnitCrateActionInfo <|-- GiveMcvCrateActionInfo
+GiveUnitCrateAction <|-- GiveMcvCrateAction
+GiveMcvCrateAction --> "info" GiveMcvCrateActionInfo
+@enduml

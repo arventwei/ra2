@@ -1,0 +1,14 @@
+@startuml
+class BuildingRepairBotModuleInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BuildingRepairBotModule {
+    + BuildingRepairBotModule(self:Actor, info:BuildingRepairBotModuleInfo)
+    RespondToAttack(bot:IBot, self:Actor, e:AttackInfo) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- BuildingRepairBotModuleInfo
+"ConditionalTrait`1" "<BuildingRepairBotModuleInfo>" <|-- BuildingRepairBotModule
+IBotRespondToAttack <|-- BuildingRepairBotModule
+@enduml

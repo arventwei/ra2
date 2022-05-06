@@ -1,0 +1,45 @@
+@startuml
+class PowerManagerInfo {
+    + <<readonly>> AdviceInterval : int = 250
+    + <<readonly>> SpeechNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PowerManager {
+    totalProvided : int
+    + PowerProvided : int <<get>>
+    totalDrained : int
+    + PowerDrained : int <<get>>
+    + ExcessPower : int <<get>>
+    + PowerOutageRemainingTicks : int <<get>>
+    + PowerOutageTotalTicks : int <<get>>
+    nextPowerAdviceTime : int = 0
+    isLowPower : bool = false
+    wasLowPower : bool = false
+    wasHackEnabled : bool
+    + PowerManager(self:Actor, info:PowerManagerInfo)
+    Created(self:Actor) : void
+    + UpdateActor(a:Actor) : void
+    + RemoveActor(a:Actor) : void
+    UpdatePowerState() : void
+    Tick(self:Actor) : void
+    + TriggerPowerOutage(totalTicks:int) : void
+    UpdatePowerOutageActors() : void
+    UpdatePowerRequiringActors() : void
+    ResolveOrder(self:Actor, order:Order) : void
+}
+class "Requires`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- PowerManagerInfo
+"Requires`1" "<DeveloperModeInfo>" <|-- PowerManagerInfo
+INotifyCreated <|-- PowerManager
+ITick <|-- PowerManager
+ISync <|-- PowerManager
+IResolveOrder <|-- PowerManager
+PowerManager --> "self" Actor
+PowerManager --> "info" PowerManagerInfo
+PowerManager --> "devMode" DeveloperMode
+PowerManager o-> "powerDrain<Actor,int>" "Dictionary`2"
+PowerManager --> "PowerState" PowerState
+@enduml

@@ -1,0 +1,10 @@
+@startuml
+class ProductionTabsLogic {
+    SetupProductionGroupButton(button:ProductionTypeButtonWidget) : void
+    + ProductionTabsLogic(widget:Widget, world:World)
+    UnregisterEvents() : void
+}
+ChromeLogic <|-- ProductionTabsLogic
+ProductionTabsLogic --> "tabs" ProductionTabsWidget
+ProductionTabsLogic --> "world" World
+@enduml

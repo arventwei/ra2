@@ -1,0 +1,26 @@
+@startuml
+class EditorActorBrush <<sealed>> {
+    <<readonly>> cursorToken : int
+    + EditorActorBrush(editorWidget:EditorViewportControllerWidget, actor:ActorInfo, owner:PlayerReference, wr:WorldRenderer)
+    + HandleMouseInput(mi:MouseInput) : bool
+    + Tick() : void
+    + Dispose() : void
+}
+class AddActorAction {
+    + Text : string <<get>>
+    + AddActorAction(editorLayer:EditorActorLayer, actor:ActorReference)
+    + Execute() : void
+    + Do() : void
+    + Undo() : void
+}
+IEditorBrush <|-- EditorActorBrush
+EditorActorBrush --> "world" World
+EditorActorBrush --> "editorLayer" EditorActorLayer
+EditorActorBrush --> "editorCursor" EditorCursorLayer
+EditorActorBrush --> "editorActionManager" EditorActionManager
+EditorActorBrush --> "editorWidget" EditorViewportControllerWidget
+IEditorAction <|-- AddActorAction
+AddActorAction --> "editorLayer" EditorActorLayer
+AddActorAction --> "actor" ActorReference
+AddActorAction --> "editorActorPreview" EditorActorPreview
+@enduml

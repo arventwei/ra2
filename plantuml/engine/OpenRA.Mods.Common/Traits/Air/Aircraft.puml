@@ -1,0 +1,217 @@
+@startuml
+enum IdleBehaviorType {
+    None,
+    Land,
+    ReturnToBase,
+    LeaveMap,
+    LeaveMapAtClosestEdge,
+}
+class AircraftInfo {
+    + <<readonly>> Repulsable : bool = true
+    + <<readonly>> RepulsionSpeed : int
+    + <<readonly>> IdleTurnSpeed : WAngle? = null
+    + <<readonly>> Speed : int = 1
+    + <<readonly>> IdleSpeed : int
+    + <<readonly>> IdleRoll : WAngle? = null
+    + <<readonly>> MinAirborneAltitude : int = 1
+    + <<readonly>> MoveIntoShroud : bool = true
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> AirborneCondition : string = null
+    + <<readonly>> CruisingCondition : string = null
+    + <<readonly>> CanHover : bool = false
+    + <<readonly>> CanSlide : bool = false
+    + <<readonly>> VTOL : bool = false
+    + <<readonly>> TurnToLand : bool = false
+    + <<readonly>> TakeOffOnResupply : bool = false
+    + <<readonly>> TakeOffOnCreation : bool = true
+    + <<readonly>> CanForceLand : bool = true
+    + <<readonly>> NumberOfTicksToVerifyAvailableAirport : int = 150
+    + <<readonly>> EditorFacingDisplayOrder : int = 3
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + GetInitialFacing() : WAngle
+    + GetCruiseAltitude() : WDist
+    + GetTargetLineColor() : Color
+    + <<override>> Create(init:ActorInitializer) : object
+    ActorPreviewInits(ai:ActorInfo, type:ActorPreviewType) : IEnumerable<ActorInit>
+    + OccupiedCells(info:ActorInfo, location:CPos, subCell:SubCell) : IReadOnlyDictionary<CPos, SubCell>
+    SharesCell : bool <<get>>
+    + CanEnterCell(world:World, self:Actor, cell:CPos, subCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : bool
+    ActorOptions(ai:ActorInfo, world:World) : IEnumerable<EditorActorOption>
+}
+class Aircraft {
+    + IdleTurnSpeed : WAngle? <<get>>
+    + MayYieldReservation : bool <<get>>
+    + ForceLanding : bool <<get>>
+    requireForceMove : bool
+    creationActivityDelay : int
+    notify : bool = true
+    + {static} GroundPosition(self:Actor) : WPos
+    + AtLandAltitude : bool <<get>>
+    airborne : bool
+    cruising : bool
+    airborneToken : int
+    cruisingToken : int
+    + Aircraft(init:ActorInitializer, info:AircraftInfo)
+    + GetPosition() : WPos
+    + <<override>> GetVariableObservers() : IEnumerable<VariableObserver>
+    RequireForceMoveConditionChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    Tick(self:Actor) : void
+    + Repulse() : void
+    + <<virtual>> GetRepulsionForce() : WVec
+    + GetRepulsionForce(other:Actor) : WVec
+    + GetActorBelow() : Actor
+    + MakeReservation(target:Actor) : void
+    + AllowYieldingReservation() : void
+    + UnReserve() : void
+    AircraftCanEnter(a:Actor, modifiers:TargetModifiers) : bool
+    AircraftCanEnter(a:Actor) : bool
+    AircraftCanResupplyAt(a:Actor, allowedToForceEnter:bool) : bool
+    + MovementSpeed : int <<get>>
+    + OccupiedCells() : (CPos Cell, SubCell SubCell)[]
+    + FlyStep(facing:WAngle) : WVec
+    + FlyStep(speed:int, facing:WAngle) : WVec
+    + FindLandingLocation(targetCell:CPos, maxSearchDistance:WDist) : CPos?
+    + CanLand(cells:IEnumerable<CPos>, dockingActor:Actor, blockedByMobile:bool) : bool
+    + CanLand(cell:CPos, dockingActor:Actor, blockedByMobile:bool) : bool
+    IsBlockedBy(self:Actor, otherActor:Actor, ignoreActor:Actor, blockedByMobile:bool) : bool
+    + CanRearmAt(host:Actor) : bool
+    + CanRepairAt(host:Actor) : bool
+    + ModifyDeathActorInit(self:Actor, init:TypeDictionary) : void
+    OnBecomingIdle(self:Actor) : void
+    + CanExistInCell(cell:CPos) : bool
+    + IsLeavingCell(location:CPos, subCell:SubCell) : bool
+    + CanEnterCell(cell:CPos, ignoreActor:Actor, check:BlockedByActor) : bool
+    + GetValidSubCell(preferred:SubCell) : SubCell
+    + GetAvailableSubCell(a:CPos, preferredSubCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : SubCell
+    + SetVisualPosition(self:Actor, pos:WPos) : void
+    + SetPosition(self:Actor, cell:CPos, subCell:SubCell) : void
+    + SetPosition(self:Actor, pos:WPos) : void
+    + FinishedMoving(self:Actor) : void
+    AnyCrushables(actors:List<Actor>) : bool
+    + EnteringCell(self:Actor) : void
+    + AddInfluence(landingCells:IEnumerable<CPos>) : void
+    + AddInfluence(landingCell:CPos) : void
+    + RemoveInfluence() : void
+    + MoveTo(cell:CPos, nearEnough:int, ignoreActor:Actor, evaluateNearestMovableCell:bool, targetLineColor:Color?) : Activity
+    + MoveWithinRange(target:Target, range:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + MoveWithinRange(target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + MoveFollow(self:Actor, target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + ReturnToCell(self:Actor) : Activity
+    + MoveToTarget(self:Actor, target:Target, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + MoveIntoTarget(self:Actor, target:Target) : Activity
+    + VisualMove(self:Actor, fromPos:WPos, toPos:WPos) : Activity
+    + EstimatedMoveDuration(self:Actor, fromPos:WPos, toPos:WPos) : int
+    + NearestMoveableCell(cell:CPos) : CPos
+    + CanEnterTargetNow(self:Actor, target:Target) : bool
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    IssueDeployOrder(self:Actor, queued:bool) : Order
+    CanIssueDeployOrder(self:Actor, queued:bool) : bool
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    + ResolveOrder(self:Actor, order:Order) : void
+    Nudge(self:Actor) : void
+    OnAirborneAltitudeReached() : void
+    OnAirborneAltitudeLeft() : void
+    OnCruisingAltitudeReached() : void
+    OnCruisingAltitudeLeft() : void
+    Disposing(self:Actor) : void
+    ModifyActorPreviewInit(self:Actor, inits:TypeDictionary) : void
+    GetCreationActivity() : Activity
+}
+class "HashSet`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class AssociateWithAirfieldActivity {
+    <<readonly>> delay : int
+    + AssociateWithAirfieldActivity(self:Actor, delay:int)
+    + <<override>> Tick(self:Actor) : bool
+}
+class AircraftMoveOrderTargeter {
+    + OrderID : string <<get>> <<protected set>>
+    + OrderPriority : int <<get>>
+    + IsQueued : bool <<get>> <<protected set>>
+    + AircraftMoveOrderTargeter(aircraft:Aircraft)
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + <<virtual>> CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+}
+PausableConditionalTraitInfo <|-- AircraftInfo
+IPositionableInfo <|-- AircraftInfo
+IFacingInfo <|-- AircraftInfo
+IMoveInfo <|-- AircraftInfo
+ICruiseAltitudeInfo <|-- AircraftInfo
+IActorPreviewInitInfo <|-- AircraftInfo
+IEditorActorOptions <|-- AircraftInfo
+AircraftInfo o-> "IdleBehavior" IdleBehaviorType
+AircraftInfo o-> "CruiseAltitude" WDist
+AircraftInfo o-> "IdealSeparation" WDist
+AircraftInfo o-> "InitialFacing" WAngle
+AircraftInfo o-> "TurnSpeed" WAngle
+AircraftInfo o-> "Pitch" WAngle
+AircraftInfo o-> "PitchSpeed" WAngle
+AircraftInfo o-> "Roll" WAngle
+AircraftInfo o-> "RollSpeed" WAngle
+AircraftInfo o-> "LandableTerrainTypes<string>" "HashSet`1"
+AircraftInfo o-> "Crushes<CrushClass>" "BitSet`1"
+AircraftInfo o-> "CrushDamageTypes<DamageType>" "BitSet`1"
+AircraftInfo o-> "TargetLineColor" Color
+AircraftInfo o-> "LandAltitude" WDist
+AircraftInfo o-> "LandRange" WDist
+AircraftInfo o-> "MaximumPitch" WAngle
+AircraftInfo o-> "AltitudeVelocity" WDist
+AircraftInfo o-> "WaitDistanceFromResupplyBase" WDist
+AircraftInfo o-> "PreviewFacing" WAngle
+AircraftInfo o-> "RequireForceMoveCondition" BooleanExpression
+"PausableConditionalTrait`1" "<AircraftInfo>" <|-- Aircraft
+ITick <|-- Aircraft
+ISync <|-- Aircraft
+IFacing <|-- Aircraft
+IPositionable <|-- Aircraft
+IMove <|-- Aircraft
+INotifyAddedToWorld <|-- Aircraft
+INotifyRemovedFromWorld <|-- Aircraft
+INotifyActorDisposing <|-- Aircraft
+INotifyBecomingIdle <|-- Aircraft
+ICreationActivity <|-- Aircraft
+IActorPreviewInitModifier <|-- Aircraft
+IDeathActorInitModifier <|-- Aircraft
+IIssueDeployOrder <|-- Aircraft
+IIssueOrder <|-- Aircraft
+IResolveOrder <|-- Aircraft
+IOrderVoice <|-- Aircraft
+Aircraft --> "self" Actor
+Aircraft --> "repairable" Repairable
+Aircraft --> "rearmable" Rearmable
+Aircraft --> "reservation" IDisposable
+Aircraft --> "speedModifiers<int>" "IEnumerable`1"
+Aircraft --> "overrideAircraftLanding" IOverrideAircraftLanding
+Aircraft --> "orientation" WRot
+Aircraft --> "Facing" WAngle
+Aircraft --> "Pitch" WAngle
+Aircraft --> "Roll" WAngle
+Aircraft --> "Orientation" WRot
+Aircraft --> "CenterPosition" WPos
+Aircraft --> "TopLeft" CPos
+Aircraft --> "TurnSpeed" WAngle
+Aircraft --> "ReservedActor" Actor
+Aircraft o-> "landingCells<CPos>" "IEnumerable`1"
+Aircraft --> "movementTypes" MovementType
+Aircraft --> "cachedPosition" WPos
+Aircraft --> "cachedFacing" WAngle
+Aircraft --> "LandAltitude" WDist
+Aircraft --> "CurrentMovementTypes" MovementType
+Aircraft --> "Orders<IOrderTargeter>" "IEnumerable`1"
+Aircraft +-- AssociateWithAirfieldActivity
+Activity <|-- AssociateWithAirfieldActivity
+AssociateWithAirfieldActivity --> "self" Actor
+AssociateWithAirfieldActivity --> "aircraft" Aircraft
+Aircraft +-- AircraftMoveOrderTargeter
+IOrderTargeter <|-- AircraftMoveOrderTargeter
+AircraftMoveOrderTargeter --> "aircraft" Aircraft
+@enduml

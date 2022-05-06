@@ -1,0 +1,37 @@
+@startuml
+class Rectangle <<struct>> {
+    + X : int
+    + Y : int
+    + Width : int
+    + Height : int
+    + {static} FromLTRB(left:int, top:int, right:int, bottom:int) : Rectangle
+    + {static} Union(a:Rectangle, b:Rectangle) : Rectangle
+    + Rectangle(x:int, y:int, width:int, height:int)
+    + Rectangle(location:int2, size:Size)
+    + Left : int <<get>>
+    + Right : int <<get>>
+    + Top : int <<get>>
+    + Bottom : int <<get>>
+    + IsEmpty : bool <<get>>
+    + Contains(x:int, y:int) : bool
+    + Contains(pt:int2) : bool
+    + Equals(other:Rectangle) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> GetHashCode() : int
+    + IntersectsWith(rect:Rectangle) : bool
+    IntersectsWithInclusive(r:Rectangle) : bool
+    + {static} Intersect(a:Rectangle, b:Rectangle) : Rectangle
+    + Contains(rect:Rectangle) : bool
+    + <<override>> ToString() : string
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<Rectangle>" <|-- Rectangle
+Rectangle --> "Empty" Rectangle
+Rectangle --> "Location" int2
+Rectangle --> "Size" Size
+Rectangle --> "TopLeft" int2
+Rectangle --> "TopRight" int2
+Rectangle --> "BottomLeft" int2
+Rectangle --> "BottomRight" int2
+@enduml

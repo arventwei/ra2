@@ -1,0 +1,16 @@
+@startuml
+class CreateTintedCellsWarhead {
+    + <<readonly>> LayerName : string = "radioactivity"
+    + <<readonly>> ApplyFalloffToLevel : bool = true
+    + Level : int = 100
+    + MaxLevel : int = 500
+    + RulesetLoaded(rules:Ruleset, info:WeaponInfo) : void
+    IncreaseTintedCellLevel(pos:CPos, mul:int, foff:int, tcLayer:TintedCellsLayer) : void
+    GetIntensityFalloff(distance:int) : int
+}
+class "IRulesetLoaded`1"<T> {
+}
+DamageWarhead <|-- CreateTintedCellsWarhead
+"IRulesetLoaded`1" "<WeaponInfo>" <|-- CreateTintedCellsWarhead
+CreateTintedCellsWarhead o-> "Spread" WDist
+@enduml

@@ -1,0 +1,52 @@
+@startuml
+class FrozenUnderFogInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class FrozenUnderFog {
+    + VisibilityHash : int
+    <<readonly>> startsRevealed : bool
+    isRendering : bool
+    created : bool
+    + FrozenUnderFog(init:ActorInitializer, info:FrozenUnderFogInfo)
+    Created(self:Actor) : void
+    UpdateFrozenActor(self:Actor, frozenActor:FrozenActor, playerIndex:int) : void
+    OnVisibilityChanged(frozen:FrozenActor) : void
+    IsVisibleInner(self:Actor, byPlayer:Player) : bool
+    + IsVisible(self:Actor, byPlayer:Player) : bool
+    Tick(self:Actor) : void
+    TickRender(wr:WorldRenderer, self:Actor) : void
+    ModifyRender(self:Actor, wr:WorldRenderer, r:IEnumerable<IRenderable>) : IEnumerable<IRenderable>
+    ModifyScreenBounds(self:Actor, wr:WorldRenderer, bounds:IEnumerable<Rectangle>) : IEnumerable<Rectangle>
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    Disposing(self:Actor) : void
+}
+class HiddenUnderFogInit {
+}
+class "Requires`1"<T> {
+}
+class "PlayerDictionary`1"<T> {
+}
+class FrozenState {
+    + IsVisible : bool
+    + FrozenState(frozenActor:FrozenActor)
+}
+TraitInfo <|-- FrozenUnderFogInfo
+"Requires`1" "<BuildingInfo>" <|-- FrozenUnderFogInfo
+IDefaultVisibilityInfo <|-- FrozenUnderFogInfo
+FrozenUnderFogInfo o-> "AlwaysVisibleRelationships" PlayerRelationship
+ICreatesFrozenActors <|-- FrozenUnderFog
+IRenderModifier <|-- FrozenUnderFog
+IDefaultVisibility <|-- FrozenUnderFog
+ITick <|-- FrozenUnderFog
+ITickRender <|-- FrozenUnderFog
+ISync <|-- FrozenUnderFog
+INotifyCreated <|-- FrozenUnderFog
+INotifyOwnerChanged <|-- FrozenUnderFog
+INotifyActorDisposing <|-- FrozenUnderFog
+FrozenUnderFog --> "info" FrozenUnderFogInfo
+FrozenUnderFog --> "frozenStates<FrozenState>" "PlayerDictionary`1"
+RuntimeFlagInit <|-- HiddenUnderFogInit
+ISingleInstanceInit <|-- HiddenUnderFogInit
+FrozenUnderFog +-- FrozenState
+FrozenState --> "FrozenActor" FrozenActor
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+class AnimationWithOffset {
+    + AnimationWithOffset(a:Animation, offset:Func<WVec>, disable:Func<bool>)
+    + AnimationWithOffset(a:Animation, offset:Func<WVec>, disable:Func<bool>, zOffset:int)
+    + AnimationWithOffset(a:Animation, offset:Func<WVec>, disable:Func<bool>, zOffset:Func<WPos, int>)
+    + Render(self:Actor, wr:WorldRenderer, pal:PaletteReference, scale:float) : IRenderable[]
+    + ScreenBounds(self:Actor, wr:WorldRenderer, scale:float) : Rectangle
+}
+class "Func`1"<T> {
+}
+class "Func`2"<T1,T2> {
+}
+AnimationWithOffset --> "Animation" Animation
+AnimationWithOffset --> "OffsetFunc<WVec>" "Func`1"
+AnimationWithOffset --> "DisableFunc<bool>" "Func`1"
+AnimationWithOffset --> "ZOffset<WPos,int>" "Func`2"
+@enduml

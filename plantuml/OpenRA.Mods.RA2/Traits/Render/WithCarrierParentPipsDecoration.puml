@@ -1,0 +1,24 @@
+@startuml
+class WithCarrierParentPipsDecorationInfo {
+    + <<readonly>> PipCount : int = 0
+    + <<readonly>> Image : string = "pips"
+    + <<readonly>> EmptySequence : string = "pip-empty"
+    + <<readonly>> FullSequence : string = "pip-green"
+    + <<readonly>> Palette : string
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithCarrierParentPipsDecoration {
+    <<readonly>> pipCount : int
+    + WithCarrierParentPipsDecoration(self:Actor, info:WithCarrierParentPipsDecorationInfo)
+}
+class "Requires`1"<T> {
+}
+class "WithDecorationBase`1"<T> {
+}
+WithDecorationBaseInfo <|-- WithCarrierParentPipsDecorationInfo
+"Requires`1" "<CarrierParentInfo>" <|-- WithCarrierParentPipsDecorationInfo
+WithCarrierParentPipsDecorationInfo o-> "PipStride" int2
+"WithDecorationBase`1" "<WithCarrierParentPipsDecorationInfo>" <|-- WithCarrierParentPipsDecoration
+WithCarrierParentPipsDecoration --> "carrier" CarrierParent
+WithCarrierParentPipsDecoration --> "pips" Animation
+@enduml

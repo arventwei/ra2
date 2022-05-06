@@ -1,0 +1,100 @@
+@startuml
+class CarryallInfo {
+    + <<readonly>> BeforeLoadDelay : int = 0
+    + <<readonly>> BeforeUnloadDelay : int = 0
+    + <<readonly>> UnloadCursor : string = "deploy"
+    + <<readonly>> UnloadBlockedCursor : string = "deploy-blocked"
+    + <<readonly>> AllowDropOff : bool = false
+    + <<readonly>> DropOffCursor : string = "ability"
+    + <<readonly>> DropOffBlockedCursor : string = "move-blocked"
+    + <<readonly>> PickUpCursor : string = "ability"
+    + <<readonly>> CarryCondition : string = null
+    + <<readonly>> Voice : string = "Action"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Carryall {
+    carryConditionToken : int
+    + Carryall(self:Actor, info:CarryallInfo)
+    Tick(self:Actor) : void
+    Disposing(self:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+    + <<virtual>> RequestTransportNotify(self:Actor, carryable:Actor, destination:CPos) : bool
+    + <<virtual>> OffsetForCarryable(self:Actor, carryable:Actor) : WVec
+    + <<virtual>> AttachCarryable(self:Actor, carryable:Actor) : bool
+    + <<virtual>> DetachCarryable(self:Actor) : void
+    + <<virtual>> ReserveCarryable(self:Actor, carryable:Actor) : bool
+    + <<virtual>> UnreserveCarryable(self:Actor) : void
+    Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+    + CanUnload() : bool
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    IssueDeployOrder(self:Actor, queued:bool) : Order
+    CanIssueDeployOrder(self:Actor, queued:bool) : bool
+    ResolveOrder(self:Actor, order:Order) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+}
+class "Requires`1"<T> {
+}
+enum CarryallState {
+    Idle,
+    Reserved,
+    Carrying,
+}
+class "HashSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class CarryallPickupOrderTargeter {
+    + CarryallPickupOrderTargeter(info:CarryallInfo)
+    {static} CanTarget(self:Actor, target:Actor) : bool
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+class CarryallDeliverUnitTargeter {
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + IsQueued : bool <<get>> <<protected set>>
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + CarryallDeliverUnitTargeter(aircraftInfo:AircraftInfo, info:CarryallInfo)
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+}
+TraitInfo <|-- CarryallInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- CarryallInfo
+"Requires`1" "<AircraftInfo>" <|-- CarryallInfo
+CarryallInfo o-> "LocalOffset" WVec
+CarryallInfo o-> "DropRange" WDist
+CarryallInfo o-> "TargetLineColor" Color
+INotifyKilled <|-- Carryall
+ISync <|-- Carryall
+ITick <|-- Carryall
+IRender <|-- Carryall
+INotifyActorDisposing <|-- Carryall
+IIssueOrder <|-- Carryall
+IResolveOrder <|-- Carryall
+IOrderVoice <|-- Carryall
+IIssueDeployOrder <|-- Carryall
+IAircraftCenterPositionOffset <|-- Carryall
+IOverrideAircraftLanding <|-- Carryall
+Carryall --> "Info" CarryallInfo
+Carryall --> "aircraftInfo" AircraftInfo
+Carryall --> "aircraft" Aircraft
+Carryall --> "body" BodyOrientation
+Carryall --> "move" IMove
+Carryall --> "facing" IFacing
+Carryall --> "self" Actor
+Carryall --> "Carryable" Actor
+Carryall --> "State" CarryallState
+Carryall --> "cachedFacing" WAngle
+Carryall --> "landableTerrainTypes<string>" "HashSet`1"
+Carryall --> "CarryableOffset" WVec
+Carryall --> "PositionOffset" WVec
+Carryall --> "LandableTerrainTypes<string>" "HashSet`1"
+Carryall --> "Orders<IOrderTargeter>" "IEnumerable`1"
+Carryall +-- CarryallState
+Carryall +-- CarryallPickupOrderTargeter
+UnitOrderTargeter <|-- CarryallPickupOrderTargeter
+Carryall +-- CarryallDeliverUnitTargeter
+IOrderTargeter <|-- CarryallDeliverUnitTargeter
+CarryallDeliverUnitTargeter --> "aircraftInfo" AircraftInfo
+CarryallDeliverUnitTargeter --> "info" CarryallInfo
+@enduml

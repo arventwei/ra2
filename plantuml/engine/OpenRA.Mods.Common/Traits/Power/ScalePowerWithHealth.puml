@@ -1,0 +1,21 @@
+@startuml
+class ScalePowerWithHealthInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ScalePowerWithHealth {
+    + ScalePowerWithHealth(self:Actor)
+    GetPowerModifier() : int
+    Damaged(self:Actor, e:AttackInfo) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- ScalePowerWithHealthInfo
+"Requires`1" "<PowerInfo>" <|-- ScalePowerWithHealthInfo
+"Requires`1" "<IHealthInfo>" <|-- ScalePowerWithHealthInfo
+IPowerModifier <|-- ScalePowerWithHealth
+INotifyDamage <|-- ScalePowerWithHealth
+INotifyOwnerChanged <|-- ScalePowerWithHealth
+ScalePowerWithHealth --> "health" IHealth
+ScalePowerWithHealth --> "power" PowerManager
+@enduml

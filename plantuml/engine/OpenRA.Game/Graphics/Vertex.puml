@@ -1,0 +1,20 @@
+@startuml
+class Vertex <<struct>> {
+    + <<readonly>> X : float
+    + <<readonly>> Y : float
+    + <<readonly>> Z : float
+    + <<readonly>> S : float
+    + <<readonly>> T : float
+    + <<readonly>> U : float
+    + <<readonly>> V : float
+    + <<readonly>> P : float
+    + <<readonly>> C : float
+    + <<readonly>> R : float
+    + <<readonly>> G : float
+    + <<readonly>> B : float
+    + Vertex(xyz:float3, s:float, t:float, u:float, v:float, p:float, c:float)
+    + Vertex(xyz:float3, s:float, t:float, u:float, v:float, p:float, c:float, tint:float3)
+    + Vertex(x:float, y:float, z:float, s:float, t:float, u:float, v:float, p:float, c:float, tint:float3)
+    + Vertex(x:float, y:float, z:float, s:float, t:float, u:float, v:float, p:float, c:float, r:float, g:float, b:float)
+}
+@enduml

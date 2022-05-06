@@ -1,0 +1,30 @@
+@startuml
+class DummySoundEngine <<sealed>> {
+    + Dummy : bool <<get>>
+    + AvailableDevices() : SoundDevice[]
+    + DummySoundEngine(deviceName:string)
+    + AddSoundSourceFromMemory(data:byte[], channels:int, sampleBits:int, sampleRate:int) : ISoundSource
+    + Play2D(soundSource:ISoundSource, loop:bool, relative:bool, pos:WPos, volume:float, attenuateVolume:bool) : ISound
+    + Play2DStream(stream:Stream, channels:int, sampleBits:int, sampleRate:int, loop:bool, relative:bool, pos:WPos, volume:float) : ISound
+    + Volume : float <<get>> <<set>>
+    + PauseSound(sound:ISound, paused:bool) : void
+    + SetAllSoundsPaused(paused:bool) : void
+    + SetSoundVolume(volume:float, music:ISound, video:ISound) : void
+    + StopSound(sound:ISound) : void
+    + StopAllSounds() : void
+    + SetListenerPosition(position:WPos) : void
+    + Dispose() : void
+}
+class NullSoundSource {
+    + Dispose() : void
+}
+class NullSound {
+    + Volume : float <<get>> <<set>>
+    + SeekPosition : float <<get>>
+    + Complete : bool <<get>>
+    + SetPosition(position:WPos) : void
+}
+ISoundEngine <|-- DummySoundEngine
+ISoundSource <|-- NullSoundSource
+ISound <|-- NullSound
+@enduml

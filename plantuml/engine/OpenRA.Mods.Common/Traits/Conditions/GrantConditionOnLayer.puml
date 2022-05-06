@@ -1,0 +1,14 @@
+@startuml
+abstract class GrantConditionOnLayerInfo {
+    + <<readonly>> Condition : string = null
+}
+abstract class "GrantConditionOnLayer`1"<InfoType> {
+    + GrantConditionOnLayer(self:Actor, info:InfoType, validLayer:byte)
+    CustomLayerChanged(self:Actor, oldLayer:byte, newLayer:byte) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- GrantConditionOnLayerInfo
+"ConditionalTrait`1" "<InfoType>" <|-- "GrantConditionOnLayer`1"
+INotifyCustomLayerChanged <|-- "GrantConditionOnLayer`1"
+@enduml

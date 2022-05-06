@@ -1,0 +1,14 @@
+@startuml
+class DebugVisualizationsInfo {
+}
+class DebugVisualizations {
+    + CombatGeometry : bool
+    + RenderGeometry : bool
+    + ScreenMap : bool
+    + DepthBuffer : bool
+    + ActorTags : bool
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<DebugVisualizations>" <|-- DebugVisualizationsInfo
+@enduml

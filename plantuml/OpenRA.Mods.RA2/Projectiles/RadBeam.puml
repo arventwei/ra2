@@ -1,0 +1,31 @@
+@startuml
+class RadBeamInfo {
+    + <<readonly>> QuantizationCount : int = 8
+    + <<readonly>> ZOffset : int = 0
+    + <<readonly>> BeamDuration : int = 15
+    + <<readonly>> ScaleAmplitudeWithDuration : bool = true
+    + <<readonly>> UsePlayerColor : bool = false
+    + <<readonly>> HitAnim : string = null
+    + <<readonly>> HitAnimSequence : string = "idle"
+    + <<readonly>> HitAnimPalette : string = "effect"
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class RadBeam {
+    ticks : int = 0
+    doneDamage : bool
+    animationComplete : bool
+    + RadBeam(args:ProjectileArgs, info:RadBeamInfo, color:Color)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IProjectileInfo <|-- RadBeamInfo
+RadBeamInfo o-> "Thickness" WDist
+RadBeamInfo o-> "Amplitude" WDist
+RadBeamInfo o-> "WaveLength" WDist
+RadBeamInfo o-> "Color" Color
+IProjectile <|-- RadBeam
+RadBeam --> "args" ProjectileArgs
+RadBeam --> "info" RadBeamInfo
+RadBeam --> "hitanim" Animation
+RadBeam --> "target" WPos
+@enduml

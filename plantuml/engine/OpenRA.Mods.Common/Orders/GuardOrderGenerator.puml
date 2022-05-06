@@ -1,0 +1,9 @@
+@startuml
+class GuardOrderGenerator {
+    + GuardOrderGenerator(subjects:IEnumerable<Actor>, order:string, cursor:string, button:MouseButton)
+    + <<override>> SelectionChanged(world:World, selected:IEnumerable<Actor>) : void
+    + <<override>> GetCursor(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : string
+    {static} FriendlyGuardableUnits(world:World, mi:MouseInput) : IEnumerable<Actor>
+}
+GenericSelectTarget <|-- GuardOrderGenerator
+@enduml

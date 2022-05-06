@@ -1,0 +1,59 @@
+@startuml
+class EmbeddedSpritePalette {
+    + EmbeddedSpritePalette(filePalette:uint[], framePalettes:Dictionary<int, uint[]>)
+    + TryGetPaletteForFrame(frame:int, palette:uint[]) : bool
+}
+class DefaultSpriteSequenceLoader {
+    + DefaultSpriteSequenceLoader(modData:ModData)
+    + <<virtual>> CreateSequence(modData:ModData, tileSet:string, cache:SpriteCache, sequence:string, animation:string, info:MiniYaml) : ISpriteSequence
+    + ParseSequences(modData:ModData, tileSet:string, cache:SpriteCache, node:MiniYamlNode) : IReadOnlyDictionary<string, ISpriteSequence>
+}
+class FileNotFoundSequence {
+    + FileNotFoundSequence(exception:FileNotFoundException)
+    + Filename : string <<get>>
+    Name : string <<get>>
+    Start : int <<get>>
+    Length : int <<get>>
+    Stride : int <<get>>
+    Facings : int <<get>>
+    Tick : int <<get>>
+    ZOffset : int <<get>>
+    ShadowStart : int <<get>>
+    ShadowZOffset : int <<get>>
+    IgnoreWorldTint : bool <<get>>
+    GetSprite(frame:int) : Sprite
+    GetSprite(frame:int, facing:WAngle) : Sprite
+    GetShadow(frame:int, facing:WAngle) : Sprite
+}
+class DefaultSpriteSequence {
+    <<readonly>> reverseFacings : bool
+    <<readonly>> transpose : bool
+    <<readonly>> sequence : string
+    + Name : string <<get>>
+    + Start : int <<get>>
+    + Length : int <<get>>
+    + Stride : int <<get>>
+    + Facings : int <<get>>
+    + Tick : int <<get>>
+    + ZOffset : int <<get>>
+    + ZRamp : float <<get>>
+    + ShadowStart : int <<get>>
+    + ShadowZOffset : int <<get>>
+    + IgnoreWorldTint : bool <<get>>
+    + DefaultSpriteSequence(modData:ModData, tileSet:string, cache:SpriteCache, loader:ISpriteSequenceLoader, sequence:string, animation:string, info:MiniYaml)
+    {static} SpriteBounds(sprites:Sprite[], frames:int[], start:int, facings:int, length:int, stride:int, transpose:bool) : IEnumerable<Rectangle>
+    + GetSprite(frame:int) : Sprite
+    + GetSprite(frame:int, facing:WAngle) : Sprite
+    + GetShadow(frame:int, facing:WAngle) : Sprite
+}
+class "Dictionary`2"<T1,T2> {
+}
+EmbeddedSpritePalette o-> "framePalettes<int,uint[]>" "Dictionary`2"
+ISpriteSequenceLoader <|-- DefaultSpriteSequenceLoader
+ISpriteSequence <|-- FileNotFoundSequence
+FileNotFoundSequence --> "exception" FileNotFoundException
+FileNotFoundSequence --> "Bounds" Rectangle
+ISpriteSequence <|-- DefaultSpriteSequence
+DefaultSpriteSequence o-> "DefaultShadowSpriteZOffset" WDist
+DefaultSpriteSequence --> "Bounds" Rectangle
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+class FreeActorWithDeliveryInfo {
+    + <<readonly>> DeliveringActor : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class FreeActorWithDelivery {
+    + FreeActorWithDelivery(init:ActorInitializer, info:FreeActorWithDeliveryInfo)
+    + DoDelivery(location:CPos, actorName:string, carrierActorName:string) : void
+    CreateActors(actorName:string, deliveringActorName:string, cargo:Actor, carrier:Actor) : void
+}
+FreeActorInfo <|-- FreeActorWithDeliveryInfo
+FreeActorWithDeliveryInfo o-> "SpawnLocation" CPos
+FreeActorWithDeliveryInfo o-> "DeliveryOffset" CVec
+FreeActorWithDeliveryInfo o-> "DeliveryRange" WDist
+FreeActor <|-- FreeActorWithDelivery
+FreeActorWithDelivery --> "info" FreeActorWithDeliveryInfo
+FreeActorWithDelivery --> "self" Actor
+@enduml

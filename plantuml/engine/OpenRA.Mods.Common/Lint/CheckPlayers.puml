@@ -1,0 +1,6 @@
+@startuml
+class CheckPlayers {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, map:Map) : void
+}
+ILintMapPass <|-- CheckPlayers
+@enduml

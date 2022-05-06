@@ -1,0 +1,11 @@
+@startuml
+class Sdl2Input {
+    + GetClipboardText() : string
+    + SetClipboardText(text:string) : bool
+    {static} MakeButton(b:byte) : MouseButton
+    {static} MakeModifiers(raw:int) : Modifiers
+    EventPosition(device:Sdl2PlatformWindow, x:int, y:int) : int2
+    + PumpInput(device:Sdl2PlatformWindow, inputHandler:IInputHandler, lockedMousePosition:int2?) : void
+}
+Sdl2Input o-> "lastButtonBits" MouseButton
+@enduml

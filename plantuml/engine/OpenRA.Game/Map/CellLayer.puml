@@ -1,0 +1,21 @@
+@startuml
+class "CellLayer`1"<T> <<sealed>> {
+    +  <<event>> CellEntryChanged : Action<CPos> 
+    + CellLayer(map:Map)
+    + CellLayer(gridType:MapGridType, size:Size)
+    + <<override>> CopyValuesFrom(anotherLayer:CellLayerBase<T>) : void
+    + {static} CreateInstance(initialCellValueFactory:Func<MPos, T>, size:Size, mapGridType:MapGridType) : CellLayer<T>
+    Index(cell:CPos) : int
+    Index(uv:MPos) : int
+    + Contains(cell:CPos) : bool
+    + Contains(uv:MPos) : bool
+    + Clamp(uv:CPos) : CPos
+    + Clamp(uv:MPos) : MPos
+}
+class CellLayer <<static>> {
+    + {static} Resize(layer:CellLayer<T>, newSize:Size, defaultValue:T) : CellLayer<T>
+}
+class "CellLayerBase`1"<T> {
+}
+"CellLayerBase`1" "<T>" <|-- "CellLayer`1"
+@enduml

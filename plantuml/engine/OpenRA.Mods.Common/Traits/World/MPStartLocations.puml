@@ -1,0 +1,41 @@
+@startuml
+class MPStartLocationsInfo {
+    + <<readonly>> SeparateTeamSpawnsCheckboxLabel : string = "Separate Team Spawns"
+    + <<readonly>> SeparateTeamSpawnsCheckboxDescription : string = "Players without assigned spawn points will start as far as possible from enemy players"
+    + <<readonly>> SeparateTeamSpawnsCheckboxEnabled : bool = true
+    + <<readonly>> SeparateTeamSpawnsCheckboxLocked : bool = false
+    + <<readonly>> SeparateTeamSpawnsCheckboxVisible : bool = true
+    + <<readonly>> SeparateTeamSpawnsCheckboxDisplayOrder : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    InitializeState(map:MapPreview, lobbyInfo:Session) : object
+    AssignSpawnPoint(stateObject:object, lobbyInfo:Session, client:Session.Client, playerRandom:MersenneTwister) : int
+}
+class MPStartLocations {
+    separateTeamSpawns : bool
+    + MPStartLocations(info:MPStartLocationsInfo)
+    Created(self:Actor) : void
+    AssignHomeLocation(world:World, client:Session.Client, playerRandom:MersenneTwister) : CPos
+    SpawnPointForPlayer(player:Player) : int
+    WorldLoaded(world:World, wr:WorldRenderer) : void
+}
+class AssignSpawnLocationsState {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+TraitInfo <|-- MPStartLocationsInfo
+ILobbyOptions <|-- MPStartLocationsInfo
+IAssignSpawnPointsInfo <|-- MPStartLocationsInfo
+MPStartLocationsInfo o-> "InitialExploreRange" WDist
+IWorldLoaded <|-- MPStartLocations
+INotifyCreated <|-- MPStartLocations
+IAssignSpawnPoints <|-- MPStartLocations
+MPStartLocations --> "info" MPStartLocationsInfo
+MPStartLocations o-> "occupiedSpawnPoints<int,Session.Client>" "Dictionary`2"
+MPStartLocations --> "availableSpawnPoints<int>" "List`1"
+MPStartLocationsInfo +-- AssignSpawnLocationsState
+AssignSpawnLocationsState --> "AvailableSpawnPoints<int>" "List`1"
+AssignSpawnLocationsState o-> "OccupiedSpawnPoints<int,Session.Client>" "Dictionary`2"
+@enduml

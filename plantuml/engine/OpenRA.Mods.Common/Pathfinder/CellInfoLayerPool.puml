@@ -1,0 +1,26 @@
+@startuml
+class CellInfoLayerPool <<sealed>> {
+    <<const>> MaxPoolSize : int = 4
+    + CellInfoLayerPool(map:Map)
+    + Get() : PooledCellInfoLayer
+    GetLayer() : CellLayer<CellInfo>
+    ReturnLayer(layer:CellLayer<CellInfo>) : void
+}
+class "Stack`1"<T> {
+}
+class "CellLayer`1"<T> {
+}
+class PooledCellInfoLayer {
+    + PooledCellInfoLayer(layerPool:CellInfoLayerPool)
+    + GetLayer() : CellLayer<CellInfo>
+    + Dispose() : void
+}
+class "List`1"<T> {
+}
+CellInfoLayerPool o-> "pool<CellLayer<CellInfo>>" "Stack`1"
+CellInfoLayerPool --> "defaultLayer<CellInfo>" "CellLayer`1"
+CellInfoLayerPool +-- PooledCellInfoLayer
+IDisposable <|-- PooledCellInfoLayer
+PooledCellInfoLayer --> "layerPool" CellInfoLayerPool
+PooledCellInfoLayer o-> "layers<CellLayer<CellInfo>>" "List`1"
+@enduml

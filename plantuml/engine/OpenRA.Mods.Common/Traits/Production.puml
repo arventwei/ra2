@@ -1,0 +1,17 @@
+@startuml
+class ProductionInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Production {
+    + Faction : string <<get>>
+    + Production(init:ActorInitializer, info:ProductionInfo)
+    + <<virtual>> DoProduction(self:Actor, producee:ActorInfo, exitinfo:ExitInfo, productionType:string, inits:TypeDictionary) : void
+    + <<virtual>> Produce(self:Actor, producee:ActorInfo, productionType:string, inits:TypeDictionary, refundableValue:int) : bool
+    {static} CanUseExit(self:Actor, producee:ActorInfo, s:ExitInfo) : bool
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- ProductionInfo
+"PausableConditionalTrait`1" "<ProductionInfo>" <|-- Production
+Production --> "rp" RallyPoint
+@enduml

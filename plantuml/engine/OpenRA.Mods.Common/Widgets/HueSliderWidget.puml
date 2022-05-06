@@ -1,0 +1,11 @@
+@startuml
+class HueSliderWidget {
+    + HueSliderWidget()
+    + HueSliderWidget(other:HueSliderWidget)
+    + <<override>> Initialize(args:WidgetArgs) : void
+    + <<override>> Draw() : void
+}
+SliderWidget <|-- HueSliderWidget
+HueSliderWidget --> "hueSprite" Sprite
+HueSliderWidget --> "pickerSprite" Sprite
+@enduml

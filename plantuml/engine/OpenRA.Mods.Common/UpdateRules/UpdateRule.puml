@@ -1,0 +1,17 @@
+@startuml
+abstract class UpdateRule {
+    + {abstract} Name : string <<get>>
+    + {abstract} Description : string <<get>>
+    + <<virtual>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+    + <<virtual>> UpdateWeaponNode(modData:ModData, weaponNode:MiniYamlNode) : IEnumerable<string>
+    + <<virtual>> UpdateSequenceNode(modData:ModData, sequenceNode:MiniYamlNode) : IEnumerable<string>
+    + <<virtual>> UpdateChromeNode(modData:ModData, chromeNode:MiniYamlNode) : IEnumerable<string>
+    + <<virtual>> UpdateTilesetNode(modData:ModData, tilesetNode:MiniYamlNode) : IEnumerable<string>
+    + <<virtual>> UpdateChromeProviderNode(modData:ModData, chromeProviderNode:MiniYamlNode) : IEnumerable<string>
+    + <<virtual>> UpdateMapActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+    + <<virtual>> BeforeUpdate(modData:ModData) : IEnumerable<string>
+    + <<virtual>> AfterUpdate(modData:ModData) : IEnumerable<string>
+}
+class "IEnumerable`1"<T> {
+}
+@enduml

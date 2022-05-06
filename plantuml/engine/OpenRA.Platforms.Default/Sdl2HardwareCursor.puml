@@ -1,0 +1,15 @@
+@startuml
+class Sdl2HardwareCursorException {
+    + Sdl2HardwareCursorException(message:string)
+    + Sdl2HardwareCursorException(message:string, innerException:Exception)
+}
+class Sdl2HardwareCursor <<sealed>> {
+    + Sdl2HardwareCursor(size:Size, data:byte[], hotspot:int2)
+    + Dispose() : void
+    Dispose(disposing:bool) : void
+}
+Exception <|-- Sdl2HardwareCursorException
+IHardwareCursor <|-- Sdl2HardwareCursor
+Sdl2HardwareCursor --> "Cursor" IntPtr
+Sdl2HardwareCursor --> "surface" IntPtr
+@enduml

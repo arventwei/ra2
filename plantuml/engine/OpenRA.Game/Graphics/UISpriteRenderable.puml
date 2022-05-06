@@ -1,0 +1,26 @@
+@startuml
+class UISpriteRenderable <<struct>> {
+    <<readonly>> zOffset : int
+    <<readonly>> scale : float
+    + UISpriteRenderable(sprite:Sprite, effectiveWorldPos:WPos, screenPos:int2, zOffset:int, palette:PaletteReference, scale:float)
+    + IsDecoration : bool <<get>>
+    + ZOffset : int <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- UISpriteRenderable
+IFinalizedRenderable <|-- UISpriteRenderable
+UISpriteRenderable --> "sprite" Sprite
+UISpriteRenderable --> "effectiveWorldPos" WPos
+UISpriteRenderable --> "screenPos" int2
+UISpriteRenderable --> "palette" PaletteReference
+UISpriteRenderable --> "Pos" WPos
+UISpriteRenderable --> "Offset" WVec
+UISpriteRenderable --> "Palette" PaletteReference
+@enduml

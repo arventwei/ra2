@@ -1,0 +1,14 @@
+@startuml
+class VoxelNormalsPaletteInfo {
+    + <<readonly>> Name : string = "normals"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class VoxelNormalsPalette {
+    + VoxelNormalsPalette(info:VoxelNormalsPaletteInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+TraitInfo <|-- VoxelNormalsPaletteInfo
+VoxelNormalsPaletteInfo o-> "Type" NormalType
+ILoadsPalettes <|-- VoxelNormalsPalette
+VoxelNormalsPalette --> "info" VoxelNormalsPaletteInfo
+@enduml

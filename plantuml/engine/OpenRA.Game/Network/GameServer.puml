@@ -1,0 +1,45 @@
+@startuml
+class GameClient {
+    + <<readonly>> Name : string
+    + <<readonly>> Fingerprint : string
+    + <<readonly>> Faction : string
+    + <<readonly>> Team : int
+    + <<readonly>> SpawnPoint : int
+    + <<readonly>> IsAdmin : bool
+    + <<readonly>> IsSpectator : bool
+    + <<readonly>> IsBot : bool
+    + GameClient()
+    + GameClient(c:Session.Client)
+}
+class GameServer {
+    + <<const>> ProtocolVersion : int = 2
+    + <<readonly>> Id : int
+    + <<readonly>> Name : string = null
+    + <<readonly>> Address : string = null
+    + <<readonly>> Port : int = 0
+    + <<readonly>> State : int = 0
+    + <<readonly>> MaxPlayers : int = 0
+    + <<readonly>> Map : string = null
+    + <<readonly>> Mod : string = ""
+    + <<readonly>> Version : string = ""
+    + <<readonly>> ModTitle : string = ""
+    + <<readonly>> ModWebsite : string = ""
+    + <<readonly>> ModIcon32 : string = ""
+    + <<readonly>> Location : string = ""
+    + <<readonly>> Protected : bool = false
+    + <<readonly>> Authentication : bool = false
+    + <<readonly>> Started : string = null
+    + <<readonly>> Players : int = 0
+    + <<readonly>> Bots : int = 0
+    + <<readonly>> Spectators : int = 0
+    + <<readonly>> PlayTime : int
+    + <<readonly>> IsCompatible : bool = false
+    + <<readonly>> IsJoinable : bool = false
+    + ModLabel : string <<get>>
+    {static} LoadClients(yaml:MiniYaml) : object
+    + GameServer(yaml:MiniYaml)
+    + GameServer(server:Server.Server)
+    + ToPOSTData(lanGame:bool) : string
+}
+GameClient --> "Color" Color
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class ImportD2kMapCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+}
+IUtilityCommand <|-- ImportD2kMapCommand
+@enduml

@@ -1,0 +1,51 @@
+@startuml
+class EditorActorPreview {
+    + <<readonly>> DescriptiveName : string
+    + Tooltip : string <<get>>
+    + Type : string <<get>>
+    + ID : string <<get>> <<set>>
+    + Selected : bool <<get>> <<set>>
+    + EditorActorPreview(worldRenderer:WorldRenderer, id:string, reference:ActorReference, owner:PlayerReference)
+    + Tick() : void
+    + Render() : IEnumerable<IRenderable>
+    + RenderAnnotations() : IEnumerable<IRenderable>
+    + AddedToEditor() : void
+    + RemovedFromEditor() : void
+    + AddInit(init:T) : void
+    + ReplaceInit(init:T, info:TraitInfo) : void
+    + RemoveInit(info:TraitInfo) : void
+    + RemoveInits() : int
+    + GetInitOrDefault(info:TraitInfo) : T
+    + GetInits() : IEnumerable<T>
+    + GetInitOrDefault() : T
+    + ReplaceInit(init:T) : void
+    + RemoveInit() : void
+    + Save() : MiniYaml
+    PreviewPosition(world:World, actor:ActorReference) : WPos
+    GeneratePreviews() : void
+    + Export() : ActorReference
+    + <<override>> ToString() : string
+    + Equals(other:EditorActorPreview) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> GetHashCode() : int
+}
+class "IEquatable`1"<T> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+"IEquatable`1" "<EditorActorPreview>" <|-- EditorActorPreview
+EditorActorPreview --> "Info" ActorInfo
+EditorActorPreview --> "CenterPosition" WPos
+EditorActorPreview --> "Footprint<CPos,SubCell>" "IReadOnlyDictionary`2"
+EditorActorPreview --> "Bounds" Rectangle
+EditorActorPreview --> "SelectionBox" SelectionBoxAnnotationRenderable
+EditorActorPreview --> "Owner" PlayerReference
+EditorActorPreview --> "SubCell" SubCell
+EditorActorPreview --> "RadarColor" Color
+EditorActorPreview --> "worldRenderer" WorldRenderer
+EditorActorPreview --> "tooltip" TooltipInfoBase
+EditorActorPreview --> "reference" ActorReference
+EditorActorPreview o-> "editorData<INotifyEditorPlacementInfo,object>" "Dictionary`2"
+@enduml

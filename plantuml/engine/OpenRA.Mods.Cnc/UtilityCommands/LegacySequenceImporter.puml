@@ -1,0 +1,13 @@
+@startuml
+class ImportLegacySequenceCommand {
+    ValidateArguments(args:string[]) : bool
+    Name : string <<get>>
+    Run(utility:Utility, args:string[]) : void
+    ImportBuildingSequences(section:IniSection) : void
+    ImportInfantrySequences(section:IniSection, sequence:string) : void
+    ConvertStartLengthFacings(input:string) : void
+}
+IUtilityCommand <|-- ImportLegacySequenceCommand
+ImportLegacySequenceCommand --> "file" IniFile
+ImportLegacySequenceCommand --> "grid" MapGrid
+@enduml

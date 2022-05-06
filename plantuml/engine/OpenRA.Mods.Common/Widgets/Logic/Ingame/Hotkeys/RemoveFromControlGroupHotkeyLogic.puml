@@ -1,0 +1,8 @@
+@startuml
+class RemoveFromControlGroupHotkeyLogic {
+    + RemoveFromControlGroupHotkeyLogic(widget:Widget, modData:ModData, world:World, logicArgs:Dictionary<string, MiniYaml>)
+}
+SingleHotkeyBaseLogic <|-- RemoveFromControlGroupHotkeyLogic
+RemoveFromControlGroupHotkeyLogic --> "selection" ISelection
+RemoveFromControlGroupHotkeyLogic --> "world" World
+@enduml

@@ -1,0 +1,66 @@
+@startuml
+enum MapCopyFilters {
+    None= 0,
+    Terrain= 1,
+    Resources= 2,
+    Actors= 4,
+    All= Terrain | Resources | Actors,
+}
+class EditorCopyPasteBrush <<sealed>> {
+    + EditorCopyPasteBrush(editorWidget:EditorViewportControllerWidget, wr:WorldRenderer, getCopyFilters:Func<MapCopyFilters>)
+    + HandleMouseInput(mi:MouseInput) : bool
+    Copy(source:CellRegion, offset:CVec) : void
+    + Tick() : void
+    + Dispose() : void
+}
+class CopyPasteEditorAction {
+    + Text : string <<get>>
+    + CopyPasteEditorAction(copyFilters:MapCopyFilters, map:Map, tiles:Dictionary<CPos, (TerrainTile, ResourceTile, byte)>, previews:Dictionary<string, ActorReference>, editorLayer:EditorActorLayer, dest:CellRegion)
+    + Execute() : void
+    + Do() : void
+    + Undo() : void
+}
+class UndoCopyPaste {
+    + Height : byte <<get>>
+    + UndoCopyPaste(cell:CPos, mapTile:TerrainTile, resourceTile:ResourceTile, height:byte)
+}
+enum State {
+    SelectFirst,
+    SelectSecond,
+    Paste,
+}
+class "Func`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "CellLayer`1"<T> {
+}
+class "Queue`1"<T> {
+}
+IEditorBrush <|-- EditorCopyPasteBrush
+EditorCopyPasteBrush --> "worldRenderer" WorldRenderer
+EditorCopyPasteBrush --> "editorWidget" EditorViewportControllerWidget
+EditorCopyPasteBrush --> "selectionLayer" EditorSelectionLayer
+EditorCopyPasteBrush --> "editorLayer" EditorActorLayer
+EditorCopyPasteBrush --> "getCopyFilters<MapCopyFilters>" "Func`1"
+EditorCopyPasteBrush --> "editorActionManager" EditorActionManager
+EditorCopyPasteBrush --> "state" State
+EditorCopyPasteBrush --> "start" CPos
+EditorCopyPasteBrush --> "end" CPos
+IEditorAction <|-- CopyPasteEditorAction
+CopyPasteEditorAction --> "copyFilters" MapCopyFilters
+CopyPasteEditorAction --> "tiles<CPos,(TerrainTile Tile, ResourceTile Resource, byte Height)>" "Dictionary`2"
+CopyPasteEditorAction --> "previews<string,ActorReference>" "Dictionary`2"
+CopyPasteEditorAction --> "editorLayer" EditorActorLayer
+CopyPasteEditorAction --> "dest" CellRegion
+CopyPasteEditorAction --> "mapTiles<TerrainTile>" "CellLayer`1"
+CopyPasteEditorAction --> "mapHeight<byte>" "CellLayer`1"
+CopyPasteEditorAction --> "mapResources<ResourceTile>" "CellLayer`1"
+CopyPasteEditorAction o-> "undoCopyPastes<UndoCopyPaste>" "Queue`1"
+CopyPasteEditorAction o-> "removedActors<EditorActorPreview>" "Queue`1"
+CopyPasteEditorAction o-> "addedActorPreviews<EditorActorPreview>" "Queue`1"
+UndoCopyPaste --> "Cell" CPos
+UndoCopyPaste --> "MapTile" TerrainTile
+UndoCopyPaste --> "ResourceTile" ResourceTile
+EditorCopyPasteBrush +-- State
+@enduml

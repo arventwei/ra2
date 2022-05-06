@@ -1,0 +1,28 @@
+@startuml
+class RotationPaletteEffectInfo {
+    + <<readonly>> RotationBase : int = 0x60
+    + <<readonly>> RotationRange : int = 7
+    + <<readonly>> RotationStep : float = .25f
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RotationPaletteEffect {
+    <<readonly>> validTileset : bool
+    <<readonly>> tilesetId : string
+    t : float = 0
+    + RotationPaletteEffect(world:World, info:RotationPaletteEffectInfo)
+    IsValidTileset() : bool
+    Tick(self:Actor) : void
+    + AdjustPalette(palettes:IReadOnlyDictionary<string, MutablePalette>) : void
+    {static} StartsWithAny(name:string, prefixes:HashSet<string>) : bool
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- RotationPaletteEffectInfo
+RotationPaletteEffectInfo o-> "Palettes<string>" "HashSet`1"
+RotationPaletteEffectInfo o-> "Tilesets<string>" "HashSet`1"
+RotationPaletteEffectInfo o-> "ExcludePalettes<string>" "HashSet`1"
+RotationPaletteEffectInfo o-> "ExcludeTilesets<string>" "HashSet`1"
+ITick <|-- RotationPaletteEffect
+IPaletteModifier <|-- RotationPaletteEffect
+RotationPaletteEffect --> "info" RotationPaletteEffectInfo
+@enduml

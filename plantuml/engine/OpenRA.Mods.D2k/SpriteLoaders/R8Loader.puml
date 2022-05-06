@@ -1,0 +1,17 @@
+@startuml
+class R8Loader {
+    IsR8(s:Stream) : bool
+    + TryParseSprite(s:Stream, frames:ISpriteFrame[], metadata:TypeDictionary) : bool
+}
+class R8Frame {
+    + DisableExportPadding : bool <<get>>
+    + R8Frame(s:Stream)
+}
+ISpriteLoader <|-- R8Loader
+R8Loader +-- R8Frame
+ISpriteFrame <|-- R8Frame
+R8Frame --> "Type" SpriteFrameType
+R8Frame --> "Size" Size
+R8Frame --> "FrameSize" Size
+R8Frame --> "Offset" float2
+@enduml

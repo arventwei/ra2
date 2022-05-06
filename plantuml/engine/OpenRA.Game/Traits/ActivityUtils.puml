@@ -1,0 +1,5 @@
+@startuml
+class ActivityUtils <<static>> {
+    + {static} RunActivity(self:Actor, act:Activity) : Activity
+}
+@enduml

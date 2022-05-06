@@ -1,0 +1,87 @@
+@startuml
+enum CellFlag {
+    HasFreeSpace= 0,
+    HasMovingActor= 1,
+    HasStationaryActor= 2,
+    HasMovableActor= 4,
+    HasCrushableActor= 8,
+    HasTemporaryBlocker= 16,
+    HasTransitOnlyActor= 32,
+}
+class LocomoterExts <<static>> {
+    + {static} HasCellFlag(c:CellFlag, cellFlag:CellFlag) : bool
+    + {static} HasMovementType(m:MovementType, movementType:MovementType) : bool
+}
+class CustomMovementLayerType <<static>> {
+    + <<const>> Tunnel : byte = 1
+    + <<const>> Subterranean : byte = 2
+    + <<const>> Jumpjet : byte = 3
+    + <<const>> ElevatedBridge : byte = 4
+}
+class LocomotorInfo {
+    + <<readonly>> Name : string = "default"
+    + <<readonly>> WaitAverage : int = 40
+    + <<readonly>> WaitSpread : int = 10
+    + <<readonly>> SharesCell : bool = false
+    + <<readonly>> MoveIntoShroud : bool = true
+    + <<virtual>> DisableDomainPassabilityCheck : bool <<get>>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Locomotor {
+    + <<readonly>> MovementClass : uint
+    sharesCell : bool
+    + Locomotor(self:Actor, info:LocomotorInfo)
+    + MovementCostForCell(cell:CPos) : short
+    + MovementSpeedForCell(cell:CPos) : int
+    + MovementCostToEnterCell(actor:Actor, destNode:CPos, check:BlockedByActor, ignoreActor:Actor) : short
+    + CanMoveFreelyInto(actor:Actor, cell:CPos, check:BlockedByActor, ignoreActor:Actor) : bool
+    + CanMoveFreelyInto(actor:Actor, cell:CPos, subCell:SubCell, check:BlockedByActor, ignoreActor:Actor) : bool
+    + CanStayInCell(cell:CPos) : bool
+    + GetAvailableSubCell(self:Actor, cell:CPos, check:BlockedByActor, preferredSubCell:SubCell, ignoreActor:Actor) : SubCell
+    IsBlockedBy(actor:Actor, otherActor:Actor, ignoreActor:Actor, cell:CPos, check:BlockedByActor, cellFlag:CellFlag) : bool
+    {static} IsMoving(self:Actor, other:Actor) : bool
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    GetCache(cell:CPos) : CellCache
+    CellUpdated(cell:CPos) : void
+    UpdateCellCost(cell:CPos) : void
+    UpdateCellBlocking(cell:CPos) : void
+}
+class "BitSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class TerrainInfo {
+    + <<readonly>> Cost : short
+    + <<readonly>> Speed : int
+    + TerrainInfo()
+    + TerrainInfo(speed:int, cost:short)
+}
+class CellCache <<struct>> {
+    + CellCache(immovable:LongBitSet<PlayerBitMask>, cellFlag:CellFlag, crushable:LongBitSet<PlayerBitMask>)
+}
+class "CellLayer`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "LongBitSet`1"<T> {
+}
+TraitInfo <|-- LocomotorInfo
+LocomotorInfo o-> "Crushes<CrushClass>" "BitSet`1"
+LocomotorInfo o-> "CrushDamageTypes<DamageType>" "BitSet`1"
+LocomotorInfo --> "TerrainSpeeds<string,TerrainInfo>" "Dictionary`2"
+IWorldLoaded <|-- Locomotor
+Locomotor --> "Info" LocomotorInfo
+Locomotor --> "cellsCost<short>" "CellLayer`1"
+Locomotor --> "blockingCache<CellCache>" "CellLayer`1"
+Locomotor o-> "customLayerCellsCost<byte,CellLayer<short>>" "Dictionary`2"
+Locomotor o-> "customLayerBlockingCache<byte,CellLayer<CellCache>>" "Dictionary`2"
+Locomotor --> "world" World
+Locomotor o-> "dirtyCells<CPos>" "HashSet`1"
+Locomotor --> "actorMap" IActorMap
+LocomotorInfo +-- TerrainInfo
+TerrainInfo o-> "Impassable" TerrainInfo
+Locomotor +-- CellCache
+CellCache --> "Immovable<PlayerBitMask>" "LongBitSet`1"
+CellCache --> "Crushable<PlayerBitMask>" "LongBitSet`1"
+CellCache --> "CellFlag" CellFlag
+@enduml

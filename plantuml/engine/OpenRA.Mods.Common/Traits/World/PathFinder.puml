@@ -1,0 +1,31 @@
+@startuml
+class PathFinderInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+interface IPathFinder {
+    FindUnitPath(source:CPos, target:CPos, self:Actor, ignoreActor:Actor, check:BlockedByActor) : List<CPos>
+    FindUnitPathToRange(source:CPos, srcSub:SubCell, target:WPos, range:WDist, self:Actor, check:BlockedByActor) : List<CPos>
+    FindPath(search:IPathSearch) : List<CPos>
+    FindBidiPath(fromSrc:IPathSearch, fromDest:IPathSearch) : List<CPos>
+}
+class PathFinder {
+    cached : bool
+    + PathFinder(world:World)
+    + FindUnitPath(source:CPos, target:CPos, self:Actor, ignoreActor:Actor, check:BlockedByActor) : List<CPos>
+    + FindUnitPathToRange(source:CPos, srcSub:SubCell, target:WPos, range:WDist, self:Actor, check:BlockedByActor) : List<CPos>
+    + FindPath(search:IPathSearch) : List<CPos>
+    + FindBidiPath(fromSrc:IPathSearch, fromDest:IPathSearch) : List<CPos>
+    {static} MakePath(cellInfo:IGraph<CellInfo>, destination:CPos) : List<CPos>
+    {static} MakeBidiPath(a:IPathSearch, b:IPathSearch, confluenceNode:CPos) : List<CPos>
+}
+class "Requires`1"<T> {
+}
+class "List`1"<T> {
+}
+TraitInfo <|-- PathFinderInfo
+"Requires`1" "<LocomotorInfo>" <|-- PathFinderInfo
+IPathFinder <|-- PathFinder
+PathFinder o-> "EmptyPath<CPos>" "List`1"
+PathFinder --> "world" World
+PathFinder --> "domainIndex" DomainIndex
+@enduml

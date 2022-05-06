@@ -1,0 +1,27 @@
+@startuml
+class WithResupplyAnimationInfo {
+    + <<readonly>> Sequence : string = "active"
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithResupplyAnimation {
+    animPlaying : bool
+    repairing : bool
+    rearming : bool
+    + WithResupplyAnimation(self:Actor, info:WithResupplyAnimationInfo)
+    Tick(self:Actor) : void
+    BeforeResupply(self:Actor, target:Actor, types:ResupplyType) : void
+    ResupplyTick(self:Actor, target:Actor, types:ResupplyType) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithResupplyAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithResupplyAnimationInfo
+WithResupplyAnimationInfo o-> "PlayAnimationOn" ResupplyType
+"ConditionalTrait`1" "<WithResupplyAnimationInfo>" <|-- WithResupplyAnimation
+INotifyResupply <|-- WithResupplyAnimation
+ITick <|-- WithResupplyAnimation
+WithResupplyAnimation --> "wsb" WithSpriteBody
+@enduml

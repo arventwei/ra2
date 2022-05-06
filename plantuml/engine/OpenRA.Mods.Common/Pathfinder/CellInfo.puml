@@ -1,0 +1,14 @@
+@startuml
+enum CellStatus {
+    Unvisited,
+    Open,
+    Closed,
+}
+class CellInfo <<struct>> {
+    + <<readonly>> CostSoFar : int
+    + <<readonly>> EstimatedTotal : int
+    + CellInfo(costSoFar:int, estimatedTotal:int, previousPos:CPos, status:CellStatus)
+}
+CellInfo --> "PreviousPos" CPos
+CellInfo --> "Status" CellStatus
+@enduml

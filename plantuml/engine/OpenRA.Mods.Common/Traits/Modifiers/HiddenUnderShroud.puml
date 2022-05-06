@@ -1,0 +1,17 @@
+@startuml
+class HiddenUnderShroudInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HiddenUnderShroud {
+    + HiddenUnderShroud(info:HiddenUnderShroudInfo)
+    + IsVisible(self:Actor, byPlayer:Player) : bool
+    ModifyRender(self:Actor, wr:WorldRenderer, r:IEnumerable<IRenderable>) : IEnumerable<IRenderable>
+    ModifyScreenBounds(self:Actor, wr:WorldRenderer, bounds:IEnumerable<Rectangle>) : IEnumerable<Rectangle>
+}
+TraitInfo <|-- HiddenUnderShroudInfo
+IDefaultVisibilityInfo <|-- HiddenUnderShroudInfo
+HiddenUnderShroudInfo o-> "AlwaysVisibleRelationships" PlayerRelationship
+HiddenUnderShroudInfo o-> "Type" VisibilityType
+IDefaultVisibility <|-- HiddenUnderShroud
+IRenderModifier <|-- HiddenUnderShroud
+@enduml

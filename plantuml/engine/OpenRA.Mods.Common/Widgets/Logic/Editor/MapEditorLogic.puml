@@ -1,0 +1,8 @@
+@startuml
+class MapEditorLogic {
+    + MapEditorLogic(widget:Widget, world:World, worldRenderer:WorldRenderer)
+    CreateCategoriesPanel() : Widget
+}
+ChromeLogic <|-- MapEditorLogic
+MapEditorLogic o-> "copyFilters" MapCopyFilters
+@enduml

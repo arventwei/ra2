@@ -1,0 +1,5 @@
+@startuml
+class ActionQueueTest {
+    + ActionsArePerformedOrderedByTimeThenByInsertionOrder() : void
+}
+@enduml

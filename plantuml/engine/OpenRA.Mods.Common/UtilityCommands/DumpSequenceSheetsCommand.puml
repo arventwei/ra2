@@ -1,0 +1,8 @@
+@startuml
+class DumpSequenceSheetsCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+}
+IUtilityCommand <|-- DumpSequenceSheetsCommand
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+abstract class DamageWarhead {
+    + <<readonly>> Damage : int = 0
+    + <<override>> IsValidAgainst(victim:Actor, firedBy:Actor) : bool
+    + <<override>> DoImpact(target:Target, args:WarheadArgs) : void
+}
+class "BitSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+Warhead <|-- DamageWarhead
+DamageWarhead o-> "DamageTypes<DamageType>" "BitSet`1"
+DamageWarhead o-> "Versus<string,int>" "Dictionary`2"
+@enduml

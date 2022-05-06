@@ -1,0 +1,27 @@
+@startuml
+class RadBeamRenderable <<struct>> {
+    <<readonly>> zOffset : int
+    <<readonly>> quantizationCount : int
+    + RadBeamRenderable(pos:WPos, zOffset:int, sourceToTarget:WVec, width:WDist, color:Color, amplitude:WDist, wavelength:WDist, quantizationCount:int)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- RadBeamRenderable
+IFinalizedRenderable <|-- RadBeamRenderable
+RadBeamRenderable --> "pos" WPos
+RadBeamRenderable --> "sourceToTarget" WVec
+RadBeamRenderable --> "width" WDist
+RadBeamRenderable --> "color" Color
+RadBeamRenderable --> "amplitude" WDist
+RadBeamRenderable --> "wavelength" WDist
+RadBeamRenderable --> "Pos" WPos
+RadBeamRenderable --> "Palette" PaletteReference
+@enduml

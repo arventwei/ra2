@@ -1,0 +1,8 @@
+@startuml
+class JumpToSelectedActorsHotkeyLogic {
+    + JumpToSelectedActorsHotkeyLogic(widget:Widget, modData:ModData, worldRenderer:WorldRenderer, world:World, logicArgs:Dictionary<string, MiniYaml>)
+}
+SingleHotkeyBaseLogic <|-- JumpToSelectedActorsHotkeyLogic
+JumpToSelectedActorsHotkeyLogic --> "viewport" Viewport
+JumpToSelectedActorsHotkeyLogic --> "selection" ISelection
+@enduml

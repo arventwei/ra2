@@ -1,0 +1,22 @@
+@startuml
+class SpawnActorsOnSellInfo {
+    + <<readonly>> ValuePercent : int = 40
+    + <<readonly>> MinHpPercent : int = 30
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SpawnActorsOnSell {
+    <<readonly>> correctFaction : bool
+    + SpawnActorsOnSell(self:Actor, info:SpawnActorsOnSellInfo)
+    Selling(self:Actor) : void
+    Emit(self:Actor) : void
+    Sold(self:Actor) : void
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- SpawnActorsOnSellInfo
+SpawnActorsOnSellInfo o-> "Factions<string>" "HashSet`1"
+"ConditionalTrait`1" "<SpawnActorsOnSellInfo>" <|-- SpawnActorsOnSell
+INotifySold <|-- SpawnActorsOnSell
+@enduml

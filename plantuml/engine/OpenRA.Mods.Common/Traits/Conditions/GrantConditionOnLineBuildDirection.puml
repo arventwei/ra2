@@ -1,0 +1,18 @@
+@startuml
+class GrantConditionOnLineBuildDirectionInfo {
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnLineBuildDirection {
+    + GrantConditionOnLineBuildDirection(init:ActorInitializer, info:GrantConditionOnLineBuildDirectionInfo)
+    Created(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- GrantConditionOnLineBuildDirectionInfo
+"Requires`1" "<LineBuildInfo>" <|-- GrantConditionOnLineBuildDirectionInfo
+GrantConditionOnLineBuildDirectionInfo o-> "Direction" LineBuildDirection
+INotifyCreated <|-- GrantConditionOnLineBuildDirection
+GrantConditionOnLineBuildDirection --> "info" GrantConditionOnLineBuildDirectionInfo
+GrantConditionOnLineBuildDirection --> "direction" LineBuildDirection
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+class UnitBuilderBotModuleInfo {
+    + <<readonly>> IdleBaseUnitsMaximum : int = 12
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class UnitBuilderBotModule {
+    + <<const>> FeedbackTime : int = 30
+    idleUnitCount : int
+    ticks : int
+    + UnitBuilderBotModule(self:Actor, info:UnitBuilderBotModuleInfo)
+    UpdatedIdleBaseUnits(idleUnits:List<Actor>) : void
+    BotTick(bot:IBot) : void
+    RequestUnitProduction(bot:IBot, requestedActor:string) : void
+    RequestedProductionCount(bot:IBot, requestedActor:string) : int
+    BuildUnit(bot:IBot, category:string, buildRandom:bool) : void
+    BuildUnit(bot:IBot, name:string) : void
+    ChooseRandomUnitToBuild(queue:ProductionQueue) : ActorInfo
+    ChooseUnitToBuild(queue:ProductionQueue) : ActorInfo
+    HasAdequateAirUnitReloadBuildings(actorInfo:ActorInfo) : bool
+    IssueTraitData(self:Actor) : List<MiniYamlNode>
+    ResolveTraitData(self:Actor, data:List<MiniYamlNode>) : void
+}
+class "HashSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "List`1"<T> {
+}
+ConditionalTraitInfo <|-- UnitBuilderBotModuleInfo
+UnitBuilderBotModuleInfo o-> "UnitQueues<string>" "HashSet`1"
+UnitBuilderBotModuleInfo o-> "UnitsToBuild<string,int>" "Dictionary`2"
+UnitBuilderBotModuleInfo o-> "UnitLimits<string,int>" "Dictionary`2"
+UnitBuilderBotModuleInfo o-> "UnitDelays<string,int>" "Dictionary`2"
+"ConditionalTrait`1" "<UnitBuilderBotModuleInfo>" <|-- UnitBuilderBotModule
+IBotTick <|-- UnitBuilderBotModule
+IBotNotifyIdleBaseUnits <|-- UnitBuilderBotModule
+IBotRequestUnitProduction <|-- UnitBuilderBotModule
+IGameSaveTraitData <|-- UnitBuilderBotModule
+UnitBuilderBotModule --> "world" World
+UnitBuilderBotModule --> "player" Player
+UnitBuilderBotModule o-> "queuedBuildRequests<string>" "List`1"
+@enduml

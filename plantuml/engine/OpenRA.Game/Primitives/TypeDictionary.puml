@@ -1,0 +1,26 @@
+@startuml
+class TypeDictionary {
+    + Add(val:object) : void
+    InnerAdd(t:Type, val:object) : void
+    + Contains() : bool
+    + Contains(t:Type) : bool
+    + Get() : T
+    + GetOrDefault() : T
+    Get(t:Type, throwsIfMissing:bool) : object
+    + WithInterface() : IEnumerable<T>
+    + Remove(val:T) : void
+    InnerRemove(t:Type, val:object) : void
+    + TrimExcess() : void
+    + GetEnumerator() : IEnumerator
+}
+class TypeExts <<static>> {
+    + {static} BaseTypes(t:Type) : IEnumerable<Type>
+}
+class "Func`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+IEnumerable <|-- TypeDictionary
+TypeDictionary o-> "CreateList<Type,List<object>>" "Func`2"
+TypeDictionary o-> "data<Type,List<object>>" "Dictionary`2"
+@enduml

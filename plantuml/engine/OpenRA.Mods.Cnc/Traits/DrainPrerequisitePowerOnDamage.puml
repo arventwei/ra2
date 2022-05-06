@@ -1,0 +1,20 @@
+@startuml
+class DrainPrerequisitePowerOnDamageInfo {
+    + <<readonly>> OrderName : string = "GrantPrerequisiteChargeDrainPowerInfoOrder"
+    + <<readonly>> DamageMultiplier : int = 1
+    + <<readonly>> DamageDivisor : int = 600
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DrainPrerequisitePowerOnDamage {
+    + DrainPrerequisitePowerOnDamage(self:Actor, info:DrainPrerequisitePowerOnDamageInfo)
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    GetDamageModifier(self:Actor, damage:Damage) : int
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- DrainPrerequisitePowerOnDamageInfo
+"ConditionalTrait`1" "<DrainPrerequisitePowerOnDamageInfo>" <|-- DrainPrerequisitePowerOnDamage
+INotifyOwnerChanged <|-- DrainPrerequisitePowerOnDamage
+IDamageModifier <|-- DrainPrerequisitePowerOnDamage
+DrainPrerequisitePowerOnDamage --> "spm" SupportPowerManager
+@enduml

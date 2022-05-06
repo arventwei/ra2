@@ -1,0 +1,39 @@
+@startuml
+enum SpriteFrameType {
+    Indexed,
+    BGRA,
+}
+interface ISpriteLoader {
+    TryParseSprite(s:Stream, frames:ISpriteFrame[], metadata:TypeDictionary) : bool
+}
+interface ISpriteFrame {
+    DisableExportPadding : bool <<get>>
+}
+class SpriteCache {
+    + SpriteCache(fileSystem:IReadOnlyFileSystem, loaders:ISpriteLoader[])
+    + FrameMetadata(filename:string) : TypeDictionary
+}
+class FrameCache {
+    + FrameCache(fileSystem:IReadOnlyFileSystem, loaders:ISpriteLoader[])
+}
+class FrameLoader <<static>> {
+    + {static} GetFrames(fileSystem:IReadOnlyFileSystem, filename:string, loaders:ISpriteLoader[], metadata:TypeDictionary) : ISpriteFrame[]
+    + {static} GetFrames(stream:Stream, loaders:ISpriteLoader[], metadata:TypeDictionary) : ISpriteFrame[]
+}
+class "Cache`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Func`2"<T1,T2> {
+}
+ISpriteFrame --> "Type" SpriteFrameType
+ISpriteFrame --> "Size" Size
+ISpriteFrame --> "FrameSize" Size
+ISpriteFrame --> "Offset" float2
+SpriteCache --> "SheetBuilders<SpriteFrameType,SheetBuilder>" "Cache`2"
+SpriteCache --> "fileSystem" IReadOnlyFileSystem
+SpriteCache o-> "sprites<string,List<Sprite[]>>" "Dictionary`2"
+SpriteCache o-> "unloadedFrames<string,ISpriteFrame[]>" "Dictionary`2"
+SpriteCache o-> "metadata<string,TypeDictionary>" "Dictionary`2"
+FrameCache --> "frames<string,ISpriteFrame[]>" "Cache`2"
+@enduml

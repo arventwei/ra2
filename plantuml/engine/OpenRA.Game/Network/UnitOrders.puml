@@ -1,0 +1,8 @@
+@startuml
+class UnitOrders <<static>> {
+    + <<const>> ChatMessageMaxLength : int = 2500
+    {static} FindPlayerByClient(world:World, c:Session.Client) : Player
+    {static} ResolveOrder(order:Order, world:World, orderManager:OrderManager, clientId:int) : void
+    {static} SetOrderLag(o:OrderManager) : void
+}
+@enduml

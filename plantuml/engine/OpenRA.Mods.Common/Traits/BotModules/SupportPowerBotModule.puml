@@ -1,0 +1,34 @@
+@startuml
+class SupportPowerBotModuleInfo {
+    {static} LoadDecisions(yaml:MiniYaml) : object
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SupportPowerBotModule {
+    + SupportPowerBotModule(self:Actor, info:SupportPowerBotModuleInfo)
+    BotTick(bot:IBot) : void
+    FindCoarseAttackLocationToSupportPower(readyPower:SupportPowerInstance) : CPos?
+    FindFineAttackLocationToSupportPower(readyPower:SupportPowerInstance, checkPos:CPos, extendedRange:int) : CPos?
+    IssueTraitData(self:Actor) : List<MiniYamlNode>
+    ResolveTraitData(self:Actor, data:List<MiniYamlNode>) : void
+}
+class "Requires`1"<T> {
+}
+class "List`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ConditionalTraitInfo <|-- SupportPowerBotModuleInfo
+"Requires`1" "<SupportPowerManagerInfo>" <|-- SupportPowerBotModuleInfo
+SupportPowerBotModuleInfo o-> "Decisions<SupportPowerDecision>" "List`1"
+"ConditionalTrait`1" "<SupportPowerBotModuleInfo>" <|-- SupportPowerBotModule
+IBotTick <|-- SupportPowerBotModule
+IGameSaveTraitData <|-- SupportPowerBotModule
+SupportPowerBotModule --> "world" World
+SupportPowerBotModule --> "player" Player
+SupportPowerBotModule o-> "waitingPowers<SupportPowerInstance,int>" "Dictionary`2"
+SupportPowerBotModule o-> "powerDecisions<string,SupportPowerDecision>" "Dictionary`2"
+SupportPowerBotModule o-> "stalePowers<SupportPowerInstance>" "List`1"
+SupportPowerBotModule --> "supportPowerManager" SupportPowerManager
+@enduml

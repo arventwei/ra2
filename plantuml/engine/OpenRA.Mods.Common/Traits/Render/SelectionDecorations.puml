@@ -1,0 +1,19 @@
+@startuml
+class SelectionDecorationsInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SelectionDecorations {
+    + SelectionDecorations(self:Actor, info:SelectionDecorationsInfo)
+    GetDecorationPosition(self:Actor, wr:WorldRenderer, pos:string) : int2
+    {static} GetDecorationMargin(pos:string, margin:int2) : int2
+    Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+}
+class "Requires`1"<T> {
+}
+SelectionDecorationsBaseInfo <|-- SelectionDecorationsInfo
+"Requires`1" "<InteractableInfo>" <|-- SelectionDecorationsInfo
+SelectionDecorationsBase <|-- SelectionDecorations
+IRender <|-- SelectionDecorations
+SelectionDecorations --> "interactable" Interactable
+@enduml

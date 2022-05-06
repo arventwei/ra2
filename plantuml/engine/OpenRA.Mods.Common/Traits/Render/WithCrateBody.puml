@@ -1,0 +1,29 @@
+@startuml
+class WithCrateBodyInfo {
+    + <<readonly>> IdleSequence : string = "idle"
+    + <<readonly>> WaterSequence : string = null
+    + <<readonly>> LandSequence : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithCrateBody {
+    + WithCrateBody(self:Actor, info:WithCrateBodyInfo)
+    AddedToWorld(self:Actor) : void
+    OnParachute(self:Actor) : void
+    OnLanded(self:Actor) : void
+    PlaySequence() : void
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- WithCrateBodyInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithCrateBodyInfo
+IRenderActorPreviewSpritesInfo <|-- WithCrateBodyInfo
+WithCrateBodyInfo o-> "WaterTerrainTypes<string>" "HashSet`1"
+INotifyParachute <|-- WithCrateBody
+INotifyAddedToWorld <|-- WithCrateBody
+WithCrateBody --> "self" Actor
+WithCrateBody --> "anim" Animation
+WithCrateBody --> "info" WithCrateBodyInfo
+@enduml

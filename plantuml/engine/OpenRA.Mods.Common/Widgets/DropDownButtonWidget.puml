@@ -1,0 +1,35 @@
+@startuml
+class DropDownButtonWidget {
+    + <<readonly>> Decorations : string = "dropdown-decorations"
+    + <<readonly>> DecorationMarker : string = "marker"
+    + <<readonly>> Separators : string = "dropdown-separators"
+    + <<readonly>> SeparatorImage : string = "separator"
+    + PanelRoot : string
+    + SelectedItem : string
+    + DropDownButtonWidget(modData:ModData)
+    + <<override>> Draw() : void
+    + <<override>> Clone() : Widget
+    + <<override>> UsableWidth : int <<get>>
+    + <<override>> Hidden() : void
+    + <<override>> Removed() : void
+    + RemovePanel() : void
+    + AttachPanel(p:Widget) : void
+    + AttachPanel(p:Widget, onCancel:Action) : void
+    + ShowDropDown(panelTemplate:string, maxHeight:int, options:IEnumerable<T>, setupItem:Func<T, ScrollItemWidget, ScrollItemWidget>) : void
+    + ShowDropDown(panelTemplate:string, height:int, groups:Dictionary<string, IEnumerable<T>>, setupItem:Func<T, ScrollItemWidget, ScrollItemWidget>) : void
+}
+class MaskWidget {
+    +  <<event>> OnMouseDown : Action<MouseInput> 
+    + MaskWidget()
+    + MaskWidget(other:MaskWidget)
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> GetCursor(pos:int2) : string
+    + <<override>> Clone() : Widget
+}
+ButtonWidget <|-- DropDownButtonWidget
+DropDownButtonWidget o-> "PanelAlign" TextAlign
+DropDownButtonWidget --> "panel" Widget
+DropDownButtonWidget --> "fullscreenMask" MaskWidget
+DropDownButtonWidget --> "panelRoot" Widget
+Widget <|-- MaskWidget
+@enduml

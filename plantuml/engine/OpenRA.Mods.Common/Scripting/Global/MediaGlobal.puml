@@ -1,0 +1,21 @@
+@startuml
+class MediaGlobal {
+    + MediaGlobal(context:ScriptContext)
+    + PlaySpeechNotification(player:Player, notification:string) : void
+    + PlaySoundNotification(player:Player, notification:string) : void
+    + PlaySound(file:string) : void
+    + PlayMusic(track:string, func:LuaFunction) : void
+    + SetBackgroundMusic(track:string) : void
+    GetMusicTrack(track:string) : MusicInfo
+    + StopMusic() : void
+    + PlayMovieFullscreen(movie:string, func:LuaFunction) : void
+    + PlayMovieInRadar(movie:string, playComplete:LuaFunction) : bool
+    + DisplayMessage(text:string, prefix:string, color:Color?) : void
+    + DisplaySystemMessage(text:string, prefix:string) : void
+    + Debug(text:string) : void
+    + FloatingText(text:string, position:WPos, duration:int, color:Color?) : void
+}
+ScriptGlobal <|-- MediaGlobal
+MediaGlobal --> "world" World
+MediaGlobal --> "playlist" MusicPlaylist
+@enduml

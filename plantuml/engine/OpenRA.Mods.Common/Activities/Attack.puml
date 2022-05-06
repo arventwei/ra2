@@ -1,0 +1,36 @@
+@startuml
+class Attack {
+    <<readonly>> forceAttack : bool
+    <<readonly>> targetLineColor : Color?
+    useLastVisibleTarget : bool
+    wasMovingWithinRange : bool
+    + Attack(self:Actor, target:Target, allowMovement:bool, forceAttack:bool, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    StanceChanged(self:Actor, autoTarget:AutoTarget, oldStance:UnitStance, newStance:UnitStance) : void
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+enum AttackStatus {
+    UnableToAttack,
+    NeedsToTurn,
+    NeedsToMove,
+    Attacking,
+}
+class "IEnumerable`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+Activity <|-- Attack
+IActivityNotifyStanceChanged <|-- Attack
+Attack --> "attackTraits<AttackFrontal>" "IEnumerable`1"
+Attack --> "move" IMove
+Attack --> "facing" IFacing
+Attack --> "positionable" IPositionable
+Attack --> "lastVisibleTarget" Target
+Attack --> "lastVisibleMaximumRange" WDist
+Attack --> "lastVisibleTargetTypes<TargetableType>" "BitSet`1"
+Attack --> "lastVisibleOwner" Player
+Attack --> "minRange" WDist
+Attack --> "maxRange" WDist
+Attack o-> "attackStatus" AttackStatus
+Attack +-- AttackStatus
+@enduml

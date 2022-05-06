@@ -1,0 +1,20 @@
+@startuml
+class WithIdleAnimationInfo {
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithIdleAnimation {
+    ticks : int
+    + WithIdleAnimation(self:Actor, info:WithIdleAnimationInfo)
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithIdleAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithIdleAnimationInfo
+"ConditionalTrait`1" "<WithIdleAnimationInfo>" <|-- WithIdleAnimation
+ITick <|-- WithIdleAnimation
+WithIdleAnimation --> "wsb" WithSpriteBody
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+class RepairableInfo {
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> HpPerStep : int
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Repairable {
+    requireForceMove : bool
+    isAircraft : bool
+    + Repairable(self:Actor, info:RepairableInfo)
+    Created(self:Actor) : void
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    CanRepairAt(target:Actor) : bool
+    CanRepairAt(target:Actor, modifiers:TargetModifiers) : bool
+    CanRepair() : bool
+    CanRearm() : bool
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    ResolveOrder(self:Actor, order:Order) : void
+    GetVariableObservers() : IEnumerable<VariableObserver>
+    RequireForceMoveConditionChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+    + FindRepairBuilding(self:Actor) : Actor
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- RepairableInfo
+"Requires`1" "<IHealthInfo>" <|-- RepairableInfo
+"Requires`1" "<IMoveInfo>" <|-- RepairableInfo
+IObservesVariablesInfo <|-- RepairableInfo
+RepairableInfo o-> "RepairActors<string>" "HashSet`1"
+RepairableInfo o-> "RequireForceMoveCondition" BooleanExpression
+IIssueOrder <|-- Repairable
+IResolveOrder <|-- Repairable
+IOrderVoice <|-- Repairable
+INotifyCreated <|-- Repairable
+IObservesVariables <|-- Repairable
+Repairable --> "Info" RepairableInfo
+Repairable --> "health" IHealth
+Repairable --> "rearmable" Rearmable
+Repairable --> "Orders<IOrderTargeter>" "IEnumerable`1"
+@enduml

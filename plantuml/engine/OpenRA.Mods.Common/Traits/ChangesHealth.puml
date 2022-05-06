@@ -1,0 +1,30 @@
+@startuml
+class ChangesHealthInfo {
+    + <<readonly>> Step : int = 5
+    + <<readonly>> PercentageStep : int = 0
+    + <<readonly>> Delay : int = 5
+    + <<readonly>> StartIfBelow : int = 50
+    + <<readonly>> DamageCooldown : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ChangesHealth {
+    ticks : int
+    damageTicks : int
+    + ChangesHealth(self:Actor, info:ChangesHealthInfo)
+    Tick(self:Actor) : void
+    Damaged(self:Actor, e:AttackInfo) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ChangesHealthInfo
+"Requires`1" "<IHealthInfo>" <|-- ChangesHealthInfo
+ChangesHealthInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+"ConditionalTrait`1" "<ChangesHealthInfo>" <|-- ChangesHealth
+ITick <|-- ChangesHealth
+INotifyDamage <|-- ChangesHealth
+ChangesHealth --> "health" IHealth
+@enduml

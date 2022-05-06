@@ -1,0 +1,26 @@
+@startuml
+abstract class UnitOrderTargeter {
+    <<readonly>> cursor : string
+    <<readonly>> targetEnemyUnits : bool
+    <<readonly>> targetAllyUnits : bool
+    + UnitOrderTargeter(order:string, priority:int, cursor:string, targetEnemyUnits:bool, targetAllyUnits:bool)
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + ForceAttack : bool? = null
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + {abstract} CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + {abstract} CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+    + <<virtual>> IsQueued : bool <<get>> <<protected set>>
+}
+class TargetTypeOrderTargeter {
+    + TargetTypeOrderTargeter(targetTypes:BitSet<TargetableType>, order:string, priority:int, cursor:string, targetEnemyUnits:bool, targetAllyUnits:bool)
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+class "BitSet`1"<T> {
+}
+IOrderTargeter <|-- UnitOrderTargeter
+UnitOrderTargeter <|-- TargetTypeOrderTargeter
+TargetTypeOrderTargeter --> "targetTypes<TargetableType>" "BitSet`1"
+@enduml

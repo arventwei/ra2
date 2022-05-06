@@ -1,0 +1,23 @@
+@startuml
+class Leap {
+    <<readonly>> speed : int
+    length : int
+    canceled : bool = false
+    jumpComplete : bool = false
+    ticks : int = 0
+    + Leap(self:Actor, target:Target, mobile:Mobile, targetMobile:Mobile, speed:int, attack:AttackLeap, edible:EdibleByLeap)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> GetTargets(self:Actor) : IEnumerable<Target>
+}
+Activity <|-- Leap
+Leap --> "mobile" Mobile
+Leap --> "targetMobile" Mobile
+Leap --> "attack" AttackLeap
+Leap --> "edible" EdibleByLeap
+Leap --> "target" Target
+Leap --> "destinationCell" CPos
+Leap o-> "destinationSubCell" SubCell
+Leap --> "destination" WPos
+Leap --> "origin" WPos
+Leap --> "targetPosition" WPos
+@enduml

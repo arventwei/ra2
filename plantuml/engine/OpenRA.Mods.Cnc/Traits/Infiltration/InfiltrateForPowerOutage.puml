@@ -1,0 +1,21 @@
+@startuml
+class InfiltrateForPowerOutageInfo {
+    + <<readonly>> Duration : int
+    + <<readonly>> InfiltratedNotification : string = null
+    + <<readonly>> InfiltrationNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class InfiltrateForPowerOutage {
+    + InfiltrateForPowerOutage(self:Actor, info:InfiltrateForPowerOutageInfo)
+    Infiltrated(self:Actor, infiltrator:Actor, types:BitSet<TargetableType>) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- InfiltrateForPowerOutageInfo
+InfiltrateForPowerOutageInfo o-> "Types<TargetableType>" "BitSet`1"
+INotifyOwnerChanged <|-- InfiltrateForPowerOutage
+INotifyInfiltrated <|-- InfiltrateForPowerOutage
+InfiltrateForPowerOutage --> "info" InfiltrateForPowerOutageInfo
+InfiltrateForPowerOutage --> "playerPower" PowerManager
+@enduml

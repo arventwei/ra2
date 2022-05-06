@@ -1,0 +1,6 @@
+@startuml
+class CheckMapCordon {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, map:Map) : void
+}
+ILintMapPass <|-- CheckMapCordon
+@enduml

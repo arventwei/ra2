@@ -1,0 +1,11 @@
+@startuml
+class MustBeDestroyedInfo {
+    + RequiredForShortGame : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MustBeDestroyed {
+    + MustBeDestroyed(info:MustBeDestroyedInfo)
+}
+TraitInfo <|-- MustBeDestroyedInfo
+MustBeDestroyed --> "Info" MustBeDestroyedInfo
+@enduml

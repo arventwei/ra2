@@ -1,0 +1,38 @@
+@startuml
+class AttackPopupTurretedInfo {
+    + <<readonly>> CloseDelay : int = 125
+    + <<readonly>> ClosedDamageMultiplier : int = 50
+    + <<readonly>> OpeningSequence : string = "opening"
+    + <<readonly>> ClosingSequence : string = "closing"
+    + <<readonly>> ClosedIdleSequence : string = "closed-idle"
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackPopupTurreted {
+    idleTicks : int = 0
+    skippedMakeAnimation : bool
+    + AttackPopupTurreted(init:ActorInitializer, info:AttackPopupTurretedInfo)
+    TickIdle(self:Actor) : void
+    GetDamageModifier(attacker:Actor, damage:Damage) : int
+}
+class "Requires`1"<T> {
+}
+enum PopupState {
+    Open,
+    Rotating,
+    Transitioning,
+    Closed,
+}
+AttackTurretedInfo <|-- AttackPopupTurretedInfo
+"Requires`1" "<BuildingInfo>" <|-- AttackPopupTurretedInfo
+"Requires`1" "<WithEmbeddedTurretSpriteBodyInfo>" <|-- AttackPopupTurretedInfo
+AttackPopupTurretedInfo o-> "DefaultFacing" WAngle
+AttackTurreted <|-- AttackPopupTurreted
+INotifyIdle <|-- AttackPopupTurreted
+IDamageModifier <|-- AttackPopupTurreted
+AttackPopupTurreted --> "info" AttackPopupTurretedInfo
+AttackPopupTurreted --> "wsb" WithSpriteBody
+AttackPopupTurreted --> "turret" Turreted
+AttackPopupTurreted o-> "state" PopupState
+AttackPopupTurreted +-- PopupState
+@enduml

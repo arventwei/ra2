@@ -1,0 +1,16 @@
+@startuml
+class ServerCreationLogic {
+    advertiseOnline : bool
+    + ServerCreationLogic(widget:Widget, modData:ModData, onExit:Action, openLobby:Action)
+    BuildNotices() : void
+    CreateAndJoin() : void
+}
+ChromeLogic <|-- ServerCreationLogic
+ServerCreationLogic --> "panel" Widget
+ServerCreationLogic --> "noticesLabelA" LabelWidget
+ServerCreationLogic --> "noticesLabelB" LabelWidget
+ServerCreationLogic --> "noticesLabelC" LabelWidget
+ServerCreationLogic --> "onCreate" Action
+ServerCreationLogic --> "onExit" Action
+ServerCreationLogic o-> "preview" MapPreview
+@enduml

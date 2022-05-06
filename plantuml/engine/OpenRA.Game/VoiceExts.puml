@@ -1,0 +1,9 @@
+@startuml
+class VoiceExts <<static>> {
+    + {static} PlayVoice(self:Actor, phrase:string) : void
+    + {static} PlayVoiceLocal(self:Actor, phrase:string, volume:float) : void
+    + {static} HasVoice(self:Actor, voice:string) : bool
+    + {static} PlayVoiceForOrders(w:World, orders:Order[]) : void
+    {static} PlayVoiceForOrder(o:Order) : bool
+}
+@enduml

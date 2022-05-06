@@ -1,0 +1,28 @@
+@startuml
+class Shader {
+    + <<const>> VertexPosAttributeIndex : int = 0
+    + <<const>> TexCoordAttributeIndex : int = 1
+    + <<const>> TexMetadataAttributeIndex : int = 2
+    + <<const>> TintAttributeIndex : int = 3
+    <<readonly>> program : uint
+    + Shader(name:string)
+    + PrepareRender() : void
+    + SetTexture(name:string, t:ITexture) : void
+    + SetBool(name:string, value:bool) : void
+    + SetVec(name:string, x:float) : void
+    + SetVec(name:string, x:float, y:float) : void
+    + SetVec(name:string, x:float, y:float, z:float) : void
+    + SetVec(name:string, vec:float[], length:int) : void
+    + SetMatrix(name:string, mtx:float[]) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Queue`1"<T> {
+}
+ThreadAffine <|-- Shader
+IShader <|-- Shader
+Shader o-> "samplers<string,int>" "Dictionary`2"
+Shader o-> "legacySizeUniforms<int,int>" "Dictionary`2"
+Shader o-> "textures<int,ITexture>" "Dictionary`2"
+Shader o-> "unbindTextures<int>" "Queue`1"
+@enduml

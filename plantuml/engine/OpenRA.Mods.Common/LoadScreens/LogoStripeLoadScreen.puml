@@ -1,0 +1,14 @@
+@startuml
+class LogoStripeLoadScreen <<sealed>> {
+    lastDensity : int
+    + <<override>> Init(modData:ModData, info:Dictionary<string, string>) : void
+    + <<override>> DisplayInner(r:Renderer, s:Sheet, density:int) : void
+}
+SheetLoadScreen <|-- LogoStripeLoadScreen
+LogoStripeLoadScreen --> "stripeRect" Rectangle
+LogoStripeLoadScreen --> "logoPos" float2
+LogoStripeLoadScreen --> "stripe" Sprite
+LogoStripeLoadScreen --> "logo" Sprite
+LogoStripeLoadScreen --> "lastSheet" Sheet
+LogoStripeLoadScreen --> "lastResolution" Size
+@enduml

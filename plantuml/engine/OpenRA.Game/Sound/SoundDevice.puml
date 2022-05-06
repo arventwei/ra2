@@ -1,0 +1,31 @@
+@startuml
+interface ISoundEngine {
+    AvailableDevices() : SoundDevice[]
+    AddSoundSourceFromMemory(data:byte[], channels:int, sampleBits:int, sampleRate:int) : ISoundSource
+    Play2D(sound:ISoundSource, loop:bool, relative:bool, pos:WPos, volume:float, attenuateVolume:bool) : ISound
+    Play2DStream(stream:Stream, channels:int, sampleBits:int, sampleRate:int, loop:bool, relative:bool, pos:WPos, volume:float) : ISound
+    Dummy : bool <<get>>
+    Volume : float <<get>> <<set>>
+    PauseSound(sound:ISound, paused:bool) : void
+    StopSound(sound:ISound) : void
+    SetAllSoundsPaused(paused:bool) : void
+    StopAllSounds() : void
+    SetListenerPosition(position:WPos) : void
+    SetSoundVolume(volume:float, music:ISound, video:ISound) : void
+}
+class SoundDevice {
+    + <<readonly>> Device : string
+    + <<readonly>> Label : string
+    + SoundDevice(device:string, label:string)
+}
+interface ISoundSource {
+}
+interface ISound {
+    Volume : float <<get>> <<set>>
+    SeekPosition : float <<get>>
+    Complete : bool <<get>>
+    SetPosition(pos:WPos) : void
+}
+IDisposable <|-- ISoundEngine
+IDisposable <|-- ISoundSource
+@enduml

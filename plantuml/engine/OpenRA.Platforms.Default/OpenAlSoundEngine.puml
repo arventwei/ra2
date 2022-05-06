@@ -1,0 +1,70 @@
+@startuml
+class OpenAlSoundEngine <<sealed>> {
+    + Dummy : bool <<get>>
+    + AvailableDevices() : SoundDevice[]
+    <<const>> MaxInstancesPerFrame : int = 3
+    <<const>> GroupDistance : int = 2730
+    <<const>> GroupDistanceSqr : int
+    <<const>> PoolSize : int = 32
+    volume : float = 1f
+    {static} QueryDevices(label:string, type:int) : string[]
+    {static} PhysicalDevices() : string[]
+    + OpenAlSoundEngine(deviceName:string)
+    TryGetSourceFromPool(source:uint) : bool
+    + AddSoundSourceFromMemory(data:byte[], channels:int, sampleBits:int, sampleRate:int) : ISoundSource
+    + Play2D(soundSource:ISoundSource, loop:bool, relative:bool, pos:WPos, volume:float, attenuateVolume:bool) : ISound
+    + Play2DStream(stream:Stream, channels:int, sampleBits:int, sampleRate:int, loop:bool, relative:bool, pos:WPos, volume:float) : ISound
+    + Volume : float <<get>> <<set>>
+    + PauseSound(sound:ISound, paused:bool) : void
+    + SetAllSoundsPaused(paused:bool) : void
+    PauseSound(source:uint, paused:bool) : void
+    + SetSoundVolume(volume:float, music:ISound, video:ISound) : void
+    + StopSound(sound:ISound) : void
+    + StopAllSounds() : void
+    + SetListenerPosition(position:WPos) : void
+    + Dispose() : void
+    Dispose(disposing:bool) : void
+}
+class OpenAlSoundSource {
+    buffer : uint
+    disposed : bool
+    + Buffer : uint <<get>>
+    + SampleRate : int <<get>>
+    + OpenAlSoundSource(data:byte[], byteCount:int, channels:int, sampleBits:int, sampleRate:int)
+    + Dispose() : void
+}
+class OpenAlSound {
+    + <<readonly>> Source : uint
+    + OpenAlSound(source:uint, looping:bool, relative:bool, pos:WPos, volume:float, sampleRate:int, buffer:uint)
+    + Volume : float <<get>> <<set>>
+    + <<virtual>> SeekPosition : float <<get>>
+    + <<virtual>> Complete : bool <<get>>
+    + SetPosition(pos:WPos) : void
+    + <<virtual>> Stop() : void
+}
+class OpenAlAsyncLoadSound {
+    + OpenAlAsyncLoadSound(source:uint, looping:bool, relative:bool, pos:WPos, volume:float, channels:int, sampleBits:int, sampleRate:int, stream:Stream)
+    + <<override>> Stop() : void
+    + <<override>> Complete : bool <<get>>
+}
+class PoolSlot {
+    + IsActive : bool
+    + FrameStarted : int
+    + IsRelative : bool
+}
+class "Dictionary`2"<T1,T2> {
+}
+ISoundEngine <|-- OpenAlSoundEngine
+OpenAlSoundEngine o-> "sourcePool<uint,PoolSlot>" "Dictionary`2"
+OpenAlSoundEngine --> "device" IntPtr
+OpenAlSoundEngine --> "context" IntPtr
+ISoundSource <|-- OpenAlSoundSource
+ISound <|-- OpenAlSound
+OpenAlSound <|-- OpenAlAsyncLoadSound
+OpenAlAsyncLoadSound o-> "cts" CancellationTokenSource
+OpenAlAsyncLoadSound --> "playTask" Task
+OpenAlSoundEngine +-- PoolSlot
+PoolSlot --> "Pos" WPos
+PoolSlot --> "SoundSource" OpenAlSoundSource
+PoolSlot --> "Sound" OpenAlSound
+@enduml

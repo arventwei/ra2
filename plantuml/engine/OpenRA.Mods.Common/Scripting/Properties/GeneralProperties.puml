@@ -1,0 +1,35 @@
+@startuml
+class BaseActorProperties {
+    + BaseActorProperties(context:ScriptContext, self:Actor)
+    + IsInWorld : bool <<get>> <<set>>
+    + IsDead : bool <<get>>
+    + IsIdle : bool <<get>>
+    + Type : string <<get>>
+    + HasProperty(name:string) : bool
+    + Flash(duration:int, asPlayer:Player) : void
+}
+class GeneralProperties {
+    + GeneralProperties(context:ScriptContext, self:Actor)
+    + Teleport(cell:CPos) : void
+    + CallFunc(func:LuaFunction) : void
+    + Wait(ticks:int) : void
+    + Destroy() : void
+    + Stop() : void
+    + Stance : string <<get>> <<set>>
+    + TooltipName : string <<get>>
+    + IsTaggable : bool <<get>>
+    + AddTag(tag:string) : bool
+    + RemoveTag(tag:string) : bool
+    + HasTag(tag:string) : bool
+}
+ScriptActorProperties <|-- BaseActorProperties
+BaseActorProperties --> "Owner" Player
+BaseActorProperties --> "EffectiveOwner" Player
+ScriptActorProperties <|-- GeneralProperties
+GeneralProperties --> "facing" IFacing
+GeneralProperties --> "autotarget" AutoTarget
+GeneralProperties --> "scriptTags" ScriptTags
+GeneralProperties --> "Location" CPos
+GeneralProperties --> "CenterPosition" WPos
+GeneralProperties --> "Facing" WAngle
+@enduml

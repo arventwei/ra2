@@ -1,0 +1,136 @@
+@startuml
+class ActorMapInfo {
+    + <<readonly>> BinSize : int = 10
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ActorMap {
+    nextTriggerId : int
+    +  <<event>> CellUpdated : Action<CPos> 
+    <<readonly>> rows : int
+    <<readonly>> cols : int
+    + ActorMap(world:World, info:ActorMapInfo)
+    Created(self:Actor) : void
+    + GetActorsAt(a:CPos) : IEnumerable<Actor>
+    + GetActorsAt(a:CPos, sub:SubCell) : IEnumerable<Actor>
+    + HasFreeSubCell(cell:CPos, checkTransient:bool) : bool
+    + FreeSubCell(cell:CPos, preferredSubCell:SubCell, checkTransient:bool) : SubCell
+    + FreeSubCell(cell:CPos, preferredSubCell:SubCell, checkIfBlocker:Func<Actor, bool>) : SubCell
+    + AnyActorsAt(a:CPos) : bool
+    + AnyActorsAt(a:CPos, sub:SubCell, checkTransient:bool) : bool
+    + AnyActorsAt(a:CPos, sub:SubCell, withCondition:Func<Actor, bool>) : bool
+    + AddInfluence(self:Actor, ios:IOccupySpace) : void
+    + RemoveInfluence(self:Actor, ios:IOccupySpace) : void
+    {static} RemoveInfluenceInner(influenceNode:InfluenceNode, toRemove:Actor) : void
+    + UpdateOccupiedCells(ios:IOccupySpace) : void
+    Tick(self:Actor) : void
+    + AddCellTrigger(cells:CPos[], onEntry:Action<Actor>, onExit:Action<Actor>) : int
+    + RemoveCellTrigger(id:int) : void
+    + AddProximityTrigger(pos:WPos, range:WDist, vRange:WDist, onEntry:Action<Actor>, onExit:Action<Actor>) : int
+    + RemoveProximityTrigger(id:int) : void
+    + UpdateProximityTrigger(id:int, newPos:WPos, newRange:WDist, newVRange:WDist) : void
+    + AddPosition(a:Actor, ios:IOccupySpace) : void
+    + RemovePosition(a:Actor, ios:IOccupySpace) : void
+    + UpdatePosition(a:Actor, ios:IOccupySpace) : void
+    CellCoordToBinIndex(cell:int) : int
+    WorldCoordToBinIndex(world:int) : int
+    BinRectangleCoveringWorldArea(worldLeft:int, worldTop:int, worldRight:int, worldBottom:int) : Rectangle
+    BinAt(binRow:int, binCol:int) : Bin
+    BinsInBox(a:WPos, b:WPos) : IEnumerable<Bin>
+    + ActorsInBox(a:WPos, b:WPos) : IEnumerable<Actor>
+}
+class ActorMapWorldExts <<static>> {
+    + {static} GetCustomMovementLayers(world:World) : Dictionary<int, ICustomMovementLayer>
+}
+class InfluenceNode {
+}
+class Bin {
+}
+class CellTrigger {
+    + Dirty : bool
+    + CellTrigger(footprint:CPos[], onActorEntered:Action<Actor>, onActorExited:Action<Actor>)
+    + Tick(actorMap:ActorMap) : void
+}
+class ProximityTrigger {
+    + Dirty : bool
+    + ProximityTrigger(pos:WPos, range:WDist, vRange:WDist, onActorEntered:Action<Actor>, onActorExited:Action<Actor>)
+    + Update(newPos:WPos, newRange:WDist, newVRange:WDist) : void
+    + Tick(am:ActorMap) : void
+    + Dispose() : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "CellLayer`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "Predicate`1"<T> {
+}
+class ActorsAtEnumerator <<struct>> {
+    + ActorsAtEnumerator(node:InfluenceNode)
+    + Reset() : void
+    Current : object <<get>>
+    + Dispose() : void
+    + MoveNext() : bool
+}
+class ActorsAtEnumerable <<struct>> {
+    + ActorsAtEnumerable(node:InfluenceNode)
+    + GetEnumerator() : IEnumerator<Actor>
+    GetEnumerator() : IEnumerator
+}
+class "List`1"<T> {
+}
+class "Action`1"<T> {
+}
+class "IEnumerator`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- ActorMapInfo
+IActorMap <|-- ActorMap
+ITick <|-- ActorMap
+INotifyCreated <|-- ActorMap
+ActorMap --> "info" ActorMapInfo
+ActorMap --> "map" Map
+ActorMap o-> "cellTriggers<int,CellTrigger>" "Dictionary`2"
+ActorMap o-> "cellTriggerInfluence<CPos,List<CellTrigger>>" "Dictionary`2"
+ActorMap o-> "proximityTriggers<int,ProximityTrigger>" "Dictionary`2"
+ActorMap --> "influence<InfluenceNode>" "CellLayer`1"
+ActorMap o-> "customInfluence<int,CellLayer<InfluenceNode>>" "Dictionary`2"
+ActorMap o-> "CustomMovementLayers<int,ICustomMovementLayer>" "Dictionary`2"
+ActorMap o-> "addActorPosition<Actor>" "HashSet`1"
+ActorMap o-> "removeActorPosition<Actor>" "HashSet`1"
+ActorMap --> "actorShouldBeRemoved<Actor>" "Predicate`1"
+ActorMap --> "LargestActorRadius" WDist
+ActorMap --> "LargestBlockingActorRadius" WDist
+ActorMap +-- InfluenceNode
+InfluenceNode --> "Next" InfluenceNode
+InfluenceNode --> "SubCell" SubCell
+InfluenceNode --> "Actor" Actor
+ActorMap +-- Bin
+Bin o-> "Actors<Actor>" "List`1"
+Bin o-> "ProximityTriggers<ProximityTrigger>" "List`1"
+ActorMap +-- CellTrigger
+CellTrigger --> "onActorEntered<Actor>" "Action`1"
+CellTrigger --> "onActorExited<Actor>" "Action`1"
+CellTrigger o-> "oldActors<Actor>" "HashSet`1"
+CellTrigger o-> "currentActors<Actor>" "HashSet`1"
+ActorMap +-- ProximityTrigger
+IDisposable <|-- ProximityTrigger
+ProximityTrigger --> "TopLeft" WPos
+ProximityTrigger --> "BottomRight" WPos
+ProximityTrigger --> "onActorEntered<Actor>" "Action`1"
+ProximityTrigger --> "onActorExited<Actor>" "Action`1"
+ProximityTrigger o-> "oldActors<Actor>" "HashSet`1"
+ProximityTrigger o-> "currentActors<Actor>" "HashSet`1"
+ProximityTrigger --> "position" WPos
+ProximityTrigger --> "range" WDist
+ProximityTrigger --> "vRange" WDist
+ActorMap +-- ActorsAtEnumerator
+"IEnumerator`1" "<Actor>" <|-- ActorsAtEnumerator
+ActorsAtEnumerator --> "node" InfluenceNode
+ActorsAtEnumerator --> "current" Actor
+ActorsAtEnumerator --> "Current" Actor
+ActorMap +-- ActorsAtEnumerable
+"IEnumerable`1" "<Actor>" <|-- ActorsAtEnumerable
+ActorsAtEnumerable --> "node" InfluenceNode
+@enduml

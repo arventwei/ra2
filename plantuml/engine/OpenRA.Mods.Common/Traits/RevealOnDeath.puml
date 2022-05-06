@@ -1,0 +1,22 @@
+@startuml
+class RevealOnDeathInfo {
+    + <<readonly>> Duration : int = 25
+    + <<readonly>> RevealGeneratedShroud : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RevealOnDeath {
+    + RevealOnDeath(self:Actor, info:RevealOnDeathInfo)
+    Killed(self:Actor, attack:AttackInfo) : void
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- RevealOnDeathInfo
+RevealOnDeathInfo o-> "RevealForRelationships" PlayerRelationship
+RevealOnDeathInfo o-> "Radius" WDist
+RevealOnDeathInfo o-> "DeathTypes<DamageType>" "BitSet`1"
+"ConditionalTrait`1" "<RevealOnDeathInfo>" <|-- RevealOnDeath
+INotifyKilled <|-- RevealOnDeath
+RevealOnDeath --> "info" RevealOnDeathInfo
+@enduml

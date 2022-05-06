@@ -1,0 +1,17 @@
+@startuml
+class ActorSelectorLogic {
+    + ActorSelectorLogic(widget:Widget, world:World, worldRenderer:WorldRenderer)
+    SelectOwner(option:PlayerReference) : void
+}
+class ActorSelectorActor {
+    + <<readonly>> Tooltip : string
+    + ActorSelectorActor(actor:ActorInfo, categories:string[], searchTerms:string[], tooltip:string)
+}
+CommonSelectorLogic <|-- ActorSelectorLogic
+ActorSelectorLogic --> "ownersDropDown" DropDownButtonWidget
+ActorSelectorLogic --> "mapRules" Ruleset
+ActorSelectorLogic --> "editorCursor" EditorCursorLayer
+ActorSelectorLogic --> "selectedOwner" PlayerReference
+ActorSelectorLogic +-- ActorSelectorActor
+ActorSelectorActor --> "Actor" ActorInfo
+@enduml

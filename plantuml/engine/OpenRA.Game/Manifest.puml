@@ -1,0 +1,47 @@
+@startuml
+interface IGlobalModData {
+}
+class SpriteSequenceFormat <<sealed>> {
+    + <<readonly>> Type : string
+    + SpriteSequenceFormat(yaml:MiniYaml)
+}
+class ModelSequenceFormat <<sealed>> {
+    + <<readonly>> Type : string
+    + ModelSequenceFormat(yaml:MiniYaml)
+}
+class ModMetadata {
+    + Title : string
+    + Version : string
+    + Website : string
+    + WebIcon32 : string
+    + Hidden : bool
+}
+class Manifest {
+    + <<readonly>> Id : string
+    customDataLoaded : bool
+    + Manifest(modId:string, package:IReadOnlyPackage)
+    + LoadCustomData(oc:ObjectCreator) : void
+    {static} YamlList(yaml:Dictionary<string, MiniYaml>, key:string, parsePaths:bool) : string[]
+    {static} YamlDictionary(yaml:Dictionary<string, MiniYaml>, key:string) : IReadOnlyDictionary<string, string>
+    + Contains() : bool
+    + Get() : T
+    + Get(oc:ObjectCreator) : T
+    + Dispose() : void
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+IGlobalModData <|-- SpriteSequenceFormat
+SpriteSequenceFormat --> "Metadata<string,MiniYaml>" "IReadOnlyDictionary`2"
+IGlobalModData <|-- ModelSequenceFormat
+ModelSequenceFormat --> "Metadata<string,MiniYaml>" "IReadOnlyDictionary`2"
+IDisposable <|-- Manifest
+Manifest --> "Package" IReadOnlyPackage
+Manifest --> "Metadata" ModMetadata
+Manifest --> "Packages<string,string>" "IReadOnlyDictionary`2"
+Manifest --> "MapFolders<string,string>" "IReadOnlyDictionary`2"
+Manifest --> "LoadScreen" MiniYaml
+Manifest o-> "modules" TypeDictionary
+Manifest --> "yaml<string,MiniYaml>" "Dictionary`2"
+@enduml

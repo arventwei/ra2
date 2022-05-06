@@ -1,0 +1,20 @@
+@startuml
+class ExitsDebugOverlayInfo {
+    + <<readonly>> DrawPerimiterCellVectors : bool = true
+    + <<readonly>> DrawExitCellVectors : bool = true
+    + <<readonly>> DrawSpawnOffsetLines : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ExitsDebugOverlay {
+    + ExitsDebugOverlay(self:Actor, info:ExitsDebugOverlayInfo)
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- ExitsDebugOverlayInfo
+"Requires`1" "<ExitInfo>" <|-- ExitsDebugOverlayInfo
+IRenderAnnotationsWhenSelected <|-- ExitsDebugOverlay
+ExitsDebugOverlay --> "manager" ExitsDebugOverlayManager
+ExitsDebugOverlay --> "info" ExitsDebugOverlayInfo
+@enduml

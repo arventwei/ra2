@@ -1,0 +1,21 @@
+@startuml
+class ModernizeDecorationTraits {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> AfterUpdate(modData:ModData) : IEnumerable<string>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+}
+enum LegacyReferencePoints {
+    Center= 0,
+    Top= 1,
+    Bottom= 2,
+    Left= 4,
+    Right= 8,
+}
+class "Dictionary`2"<T1,T2> {
+}
+UpdateRule <|-- ModernizeDecorationTraits
+ModernizeDecorationTraits o-> "PositionMap<LegacyReferencePoints,string>" "Dictionary`2"
+ModernizeDecorationTraits o-> "locations<string,List<string>>" "Dictionary`2"
+ModernizeDecorationTraits +-- LegacyReferencePoints
+@enduml

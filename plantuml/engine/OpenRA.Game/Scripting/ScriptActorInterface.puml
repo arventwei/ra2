@@ -1,0 +1,9 @@
+@startuml
+class ScriptActorInterface {
+    + ScriptActorInterface(context:ScriptContext, actor:Actor)
+    InitializeBindings() : void
+    + OnActorDestroyed() : void
+}
+ScriptObjectWrapper <|-- ScriptActorInterface
+ScriptActorInterface --> "actor" Actor
+@enduml

@@ -1,0 +1,77 @@
+@startuml
+interface ILayout {
+    AdjustChild(w:Widget) : void
+    AdjustChildren() : void
+}
+enum ScrollPanelAlign {
+    Bottom,
+    Top,
+}
+enum ScrollBar {
+    Left,
+    Right,
+    Hidden,
+}
+class ScrollPanelWidget {
+    + ScrollbarWidth : int = 24
+    + BorderWidth : int = 1
+    + TopBottomSpacing : int = 2
+    + ItemSpacing : int = 0
+    + ButtonDepth : int
+    + ClickSound : string
+    + Background : string = "scrollpanel-bg"
+    + ScrollBarBackground : string = "scrollpanel-bg"
+    + Button : string = "scrollpanel-button"
+    + <<readonly>> Decorations : string = "scrollpanel-decorations"
+    + <<readonly>> DecorationScrollUp : string = "up"
+    + <<readonly>> DecorationScrollDown : string = "down"
+    + ContentHeight : int
+    + MinimumThumbSize : int = 10
+    + CollapseHiddenChildren : bool
+    + SmoothScrollSpeed : float = 0.333f
+    targetListOffset : float
+    currentListOffset : float
+    lastSmoothScrollTime : long = 0
+    + ScrollPanelWidget(modData:ModData)
+    + <<override>> RemoveChildren() : void
+    + <<override>> AddChild(child:Widget) : void
+    + <<override>> RemoveChild(child:Widget) : void
+    + ReplaceChild(oldChild:Widget, newChild:Widget) : void
+    + <<override>> DrawOuter() : void
+    + <<override>> EventBoundsContains(location:int2) : bool
+    Scroll(amount:int, smooth:bool) : void
+    + ScrollToBottom(smooth:bool) : void
+    + ScrollToTop(smooth:bool) : void
+    + ScrolledToBottom : bool <<get>>
+    ScrollToItem(item:Widget, smooth:bool) : void
+    + ScrollToItem(itemKey:string, smooth:bool) : void
+    + ScrollToSelectedItem() : void
+    UpdateSmoothScrolling() : void
+    + <<override>> Tick() : void
+    + <<override>> YieldMouseFocus(mi:MouseInput) : bool
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    autoScroll : bool
+    + Unbind() : void
+    + Bind(c:IObservableCollection, makeWidget:Func<object, Widget>, widgetItemEquals:Func<Widget, object, bool>, autoScroll:bool) : void
+    BindingAdd(col:IObservableCollection, item:object) : void
+    BindingAddImpl(item:object) : void
+    BindingRemove(col:IObservableCollection, item:object) : void
+    BindingRemoveAt(col:IObservableCollection, index:int) : void
+    BindingSet(col:IObservableCollection, oldItem:object, newItem:object) : void
+    BindingRefresh(col:IObservableCollection) : void
+}
+class "Func`2"<T1,T2> {
+}
+class "Func`3"<T1,T2,T3> {
+}
+Widget <|-- ScrollPanelWidget
+ScrollPanelWidget --> "modRules" Ruleset
+ScrollPanelWidget --> "Layout" ILayout
+ScrollPanelWidget o-> "Align" ScrollPanelAlign
+ScrollPanelWidget o-> "ScrollBar" ScrollBar
+ScrollPanelWidget --> "ChildOrigin" int2
+ScrollPanelWidget --> "lastMouseLocation" int2
+ScrollPanelWidget --> "collection" IObservableCollection
+ScrollPanelWidget --> "makeWidget<object,Widget>" "Func`2"
+ScrollPanelWidget --> "widgetItemEquals<Widget,object,bool>" "Func`3"
+@enduml

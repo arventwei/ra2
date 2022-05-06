@@ -1,0 +1,19 @@
+@startuml
+class InfiltrateForDecorationInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class InfiltrateForDecoration {
+    + InfiltrateForDecoration(self:Actor, info:InfiltrateForDecorationInfo)
+    Infiltrated(self:Actor, infiltrator:Actor, types:BitSet<TargetableType>) : void
+}
+class "BitSet`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+WithDecorationInfo <|-- InfiltrateForDecorationInfo
+InfiltrateForDecorationInfo o-> "Types<TargetableType>" "BitSet`1"
+WithDecoration <|-- InfiltrateForDecoration
+INotifyInfiltrated <|-- InfiltrateForDecoration
+InfiltrateForDecoration o-> "infiltrators<Player>" "HashSet`1"
+InfiltrateForDecoration --> "info" InfiltrateForDecorationInfo
+@enduml

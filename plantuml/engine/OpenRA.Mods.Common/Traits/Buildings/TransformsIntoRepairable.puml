@@ -1,0 +1,38 @@
+@startuml
+class TransformsIntoRepairableInfo {
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> RequiresForceMove : bool = false
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TransformsIntoRepairable {
+    + TransformsIntoRepairable(self:Actor, info:TransformsIntoRepairableInfo)
+    CanRepair() : bool
+    CanRepairAt(target:Actor, modifiers:TargetModifiers) : bool
+    CanRepairAt(target:Actor) : bool
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    ResolveOrder(self:Actor, order:Order) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+ConditionalTraitInfo <|-- TransformsIntoRepairableInfo
+"Requires`1" "<TransformsInfo>" <|-- TransformsIntoRepairableInfo
+"Requires`1" "<IHealthInfo>" <|-- TransformsIntoRepairableInfo
+TransformsIntoRepairableInfo o-> "RepairActors<string>" "HashSet`1"
+TransformsIntoRepairableInfo o-> "TargetLineColor" Color
+"ConditionalTrait`1" "<TransformsIntoRepairableInfo>" <|-- TransformsIntoRepairable
+IIssueOrder <|-- TransformsIntoRepairable
+IResolveOrder <|-- TransformsIntoRepairable
+IOrderVoice <|-- TransformsIntoRepairable
+TransformsIntoRepairable --> "self" Actor
+TransformsIntoRepairable --> "health" IHealth
+TransformsIntoRepairable --> "Orders<IOrderTargeter>" "IEnumerable`1"
+@enduml

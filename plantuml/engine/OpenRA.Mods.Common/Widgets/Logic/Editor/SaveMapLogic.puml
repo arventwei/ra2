@@ -1,0 +1,23 @@
+@startuml
+class SaveMapLogic {
+    + SaveMapLogic(widget:Widget, modData:ModData, onSave:Action<string>, onExit:Action, map:Map, playerDefinitions:List<MiniYamlNode>, actorDefinitions:List<MiniYamlNode>)
+}
+enum MapFileType {
+    Unpacked,
+    OraMap,
+}
+class MapFileTypeInfo <<struct>> {
+    + Extension : string
+    + UiLabel : string
+}
+class SaveDirectory {
+    + <<readonly>> DisplayName : string
+    + SaveDirectory(folder:Folder, displayName:string, classification:MapClassification)
+}
+ChromeLogic <|-- SaveMapLogic
+SaveMapLogic +-- MapFileType
+SaveMapLogic +-- MapFileTypeInfo
+SaveMapLogic +-- SaveDirectory
+SaveDirectory --> "Folder" Folder
+SaveDirectory --> "Classification" MapClassification
+@enduml

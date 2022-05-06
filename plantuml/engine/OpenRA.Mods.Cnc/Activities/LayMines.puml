@@ -1,0 +1,21 @@
+@startuml
+class LayMines {
+    returnToBase : bool
+    + LayMines(self:Actor, minefield:List<CPos>)
+    NextValidCell(self:Actor) : CPos?
+    + <<override>> Tick(self:Actor) : bool
+    + CleanMineField(self:Actor) : void
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+    {static} CanLayMine(self:Actor, p:CPos) : bool
+    LayMine(self:Actor) : void
+}
+class "List`1"<T> {
+}
+Activity <|-- LayMines
+LayMines --> "minelayer" Minelayer
+LayMines --> "movement" IMove
+LayMines --> "moveInfo" IMoveInfo
+LayMines --> "rearmableInfo" RearmableInfo
+LayMines --> "minefield<CPos>" "List`1"
+LayMines --> "rearmTarget" Actor
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+class WithBridgeSpriteBodyInfo {
+    + <<readonly>> Type : string = "GroundLevelBridge"
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithBridgeSpriteBody {
+    + WithBridgeSpriteBody(init:ActorInitializer, info:WithBridgeSpriteBodyInfo)
+    UpdateNeighbour(offset:CVec) : void
+    RemovedFromWorld(self:Actor) : void
+    SetDirty() : void
+    NeighbourIsDestroyed(offset:CVec) : bool
+}
+WithSpriteBodyInfo <|-- WithBridgeSpriteBodyInfo
+WithBridgeSpriteBodyInfo o-> "AOffset" CVec
+WithBridgeSpriteBodyInfo o-> "BOffset" CVec
+WithSpriteBody <|-- WithBridgeSpriteBody
+INotifyRemovedFromWorld <|-- WithBridgeSpriteBody
+WithBridgeSpriteBody --> "bridgeInfo" WithBridgeSpriteBodyInfo
+WithBridgeSpriteBody --> "bridgeLayer" BridgeLayer
+WithBridgeSpriteBody --> "self" Actor
+@enduml

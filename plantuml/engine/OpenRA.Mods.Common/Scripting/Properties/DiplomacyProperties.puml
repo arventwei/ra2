@@ -1,0 +1,7 @@
+@startuml
+class DiplomacyProperties {
+    + DiplomacyProperties(context:ScriptContext, player:Player)
+    + IsAlliedWith(targetPlayer:Player) : bool
+}
+ScriptPlayerProperties <|-- DiplomacyProperties
+@enduml

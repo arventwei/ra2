@@ -1,0 +1,40 @@
+@startuml
+class WVec <<struct>> {
+    + <<readonly>> X : int
+    + <<readonly>> Y : int
+    + <<readonly>> Z : int
+    + WVec(x:int, y:int, z:int)
+    + WVec(x:WDist, y:WDist, z:WDist)
+    + {static} Dot(a:WVec, b:WVec) : int
+    + LengthSquared : long <<get>>
+    + Length : int <<get>>
+    + HorizontalLengthSquared : long <<get>>
+    + HorizontalLength : int <<get>>
+    + VerticalLengthSquared : long <<get>>
+    + VerticalLength : int <<get>>
+    + Rotate(rot:WRot) : WVec
+    + Rotate(mtx:Int32Matrix4x4) : WVec
+    + {static} Lerp(a:WVec, b:WVec, mul:int, div:int) : WVec
+    + {static} LerpQuadratic(a:WVec, b:WVec, pitch:WAngle, mul:int, div:int) : WVec
+    + {static} FromPDF(r:MersenneTwister, samples:int) : WVec
+    + <<override>> GetHashCode() : int
+    + Equals(other:WVec) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+    + Add(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Subtract(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Minus(runtime:LuaRuntime) : LuaValue
+    + Equals(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+}
+class "IEquatable`1"<T> {
+}
+IScriptBindable <|-- WVec
+ILuaAdditionBinding <|-- WVec
+ILuaSubtractionBinding <|-- WVec
+ILuaUnaryMinusBinding <|-- WVec
+ILuaEqualityBinding <|-- WVec
+ILuaTableBinding <|-- WVec
+"IEquatable`1" "<WVec>" <|-- WVec
+WVec o-> "Zero" WVec
+WVec --> "Yaw" WAngle
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class PauseHotkeyLogic {
+    + PauseHotkeyLogic(widget:Widget, modData:ModData, world:World, logicArgs:Dictionary<string, MiniYaml>)
+}
+SingleHotkeyBaseLogic <|-- PauseHotkeyLogic
+PauseHotkeyLogic --> "world" World
+@enduml

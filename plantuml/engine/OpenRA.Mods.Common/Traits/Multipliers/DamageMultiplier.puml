@@ -1,0 +1,15 @@
+@startuml
+class DamageMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DamageMultiplier {
+    + DamageMultiplier(info:DamageMultiplierInfo)
+    GetDamageModifier(attacker:Actor, damage:Damage) : int
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- DamageMultiplierInfo
+"ConditionalTrait`1" "<DamageMultiplierInfo>" <|-- DamageMultiplier
+IDamageModifier <|-- DamageMultiplier
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+class WithBuildingBibInfo {
+    + <<readonly>> Sequence : string = "bib"
+    + <<readonly>> Palette : string
+    + <<readonly>> HasMinibib : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+    ActorPreviewInits(ai:ActorInfo, type:ActorPreviewType) : IEnumerable<ActorInit>
+}
+class WithBuildingBib {
+    + WithBuildingBib(self:Actor, info:WithBuildingBibInfo)
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+}
+class HideBibPreviewInit {
+}
+class "Requires`1"<T> {
+}
+class "List`1"<T> {
+}
+TraitInfo <|-- WithBuildingBibInfo
+"Requires`1" "<BuildingInfo>" <|-- WithBuildingBibInfo
+IRenderActorPreviewSpritesInfo <|-- WithBuildingBibInfo
+IActorPreviewInitInfo <|-- WithBuildingBibInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithBuildingBibInfo
+INotifyAddedToWorld <|-- WithBuildingBib
+INotifyRemovedFromWorld <|-- WithBuildingBib
+WithBuildingBib --> "info" WithBuildingBibInfo
+WithBuildingBib --> "rs" RenderSprites
+WithBuildingBib --> "bi" BuildingInfo
+WithBuildingBib o-> "anims<AnimationWithOffset>" "List`1"
+RuntimeFlagInit <|-- HideBibPreviewInit
+@enduml

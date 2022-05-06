@@ -1,0 +1,42 @@
+@startuml
+class Animation {
+    + Name : string <<get>>
+    + IsDecoration : bool <<get>> <<set>>
+    frame : int
+    backwards : bool
+    tickAlways : bool
+    timeUntilNextFrame : int
+    + Animation(world:World, name:string)
+    + Animation(world:World, name:string, facingFunc:Func<WAngle>)
+    + Animation(world:World, name:string, paused:Func<bool>)
+    + Animation(world:World, name:string, facingFunc:Func<WAngle>, paused:Func<bool>)
+    + CurrentFrame : int <<get>>
+    + Render(pos:WPos, offset:WVec, zOffset:int, palette:PaletteReference, scale:float) : IRenderable[]
+    + RenderUI(wr:WorldRenderer, pos:int2, offset:WVec, zOffset:int, palette:PaletteReference, scale:float) : IRenderable[]
+    + ScreenBounds(wr:WorldRenderer, pos:WPos, offset:WVec, scale:float) : Rectangle
+    + Render(pos:WPos, palette:PaletteReference) : IRenderable[]
+    + Play(sequenceName:string) : void
+    CurrentSequenceTickOrDefault() : int
+    PlaySequence(sequenceName:string) : void
+    + PlayRepeating(sequenceName:string) : void
+    + ReplaceAnim(sequenceName:string) : bool
+    + PlayThen(sequenceName:string, after:Action) : void
+    + PlayBackwardsThen(sequenceName:string, after:Action) : void
+    + PlayFetchIndex(sequenceName:string, func:Func<int>) : void
+    + PlayFetchDirection(sequenceName:string, direction:Func<int>) : void
+    + Tick() : void
+    + Tick(t:int) : void
+    + ChangeImage(newImage:string, newAnimIfMissing:string) : void
+    + HasSequence(seq:string) : bool
+    + GetSequence(sequenceName:string) : ISpriteSequence
+    + GetRandomExistingSequence(sequences:string[], random:MersenneTwister) : string
+}
+class "Func`1"<T> {
+}
+Animation --> "CurrentSequence" ISpriteSequence
+Animation --> "sequenceProvider" SequenceProvider
+Animation --> "facingFunc<WAngle>" "Func`1"
+Animation --> "paused<bool>" "Func`1"
+Animation o-> "tickFunc" Action
+Animation --> "Image" Sprite
+@enduml

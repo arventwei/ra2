@@ -1,0 +1,28 @@
+@startuml
+class PowerMeterWidget {
+    lastMeterCheck : int
+    barHeight : int = 0
+    bypassAnimation : bool = false
+    warningFlash : int = 0
+    lastTotalPowerDisplay : int
+    + <<readonly>> MeterAlongside : string = ""
+    + <<readonly>> ParentContainer : string = ""
+    + <<readonly>> MeterHeight : int = 3
+    + <<readonly>> PowerUnitsPerBar : int = 25
+    + <<readonly>> TickWait : int = 4
+    + <<readonly>> NoPowerImage : string = ""
+    + <<readonly>> AvailablePowerImage : string = ""
+    + <<readonly>> UsedPowerImage : string = ""
+    + <<readonly>> OverUsedPowerImage : string = ""
+    + <<readonly>> FlashPowerImage : string = ""
+    + <<readonly>> ImageCollection : string = ""
+    + PowerMeterWidget(world:World, worldRenderer:WorldRenderer)
+    + CalculateMeterBarDimensions() : void
+    + GetSidebar() : Widget
+    + CheckBarNumber() : void
+    + CheckFlash(powerManager:PowerManager, totalPowerDisplay:int) : void
+    + <<override>> Tick() : void
+}
+Widget <|-- PowerMeterWidget
+PowerMeterWidget --> "sidebarProduction" Widget
+@enduml

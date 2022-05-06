@@ -1,0 +1,6 @@
+@startuml
+class IngamePowerBarLogic {
+    + IngamePowerBarLogic(widget:Widget, world:World)
+}
+ChromeLogic <|-- IngamePowerBarLogic
+@enduml

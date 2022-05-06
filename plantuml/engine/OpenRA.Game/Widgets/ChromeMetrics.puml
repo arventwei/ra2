@@ -1,0 +1,10 @@
+@startuml
+class ChromeMetrics <<static>> {
+    + {static} Initialize(modData:ModData) : void
+    + {static} Get(key:string) : T
+    + {static} TryGet(key:string, result:T) : bool
+}
+class "Dictionary`2"<T1,T2> {
+}
+ChromeMetrics o-> "data<string,string>" "Dictionary`2"
+@enduml

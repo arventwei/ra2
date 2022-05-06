@@ -1,0 +1,16 @@
+@startuml
+class AttackFrontalInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackFrontal {
+    + AttackFrontal(self:Actor, info:AttackFrontalInfo)
+    + <<override>> GetAttackActivity(self:Actor, source:AttackSource, newTarget:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : Activity
+}
+class "Requires`1"<T> {
+}
+AttackBaseInfo <|-- AttackFrontalInfo
+"Requires`1" "<IFacingInfo>" <|-- AttackFrontalInfo
+AttackFrontalInfo o-> "FacingTolerance" WAngle
+AttackBase <|-- AttackFrontal
+AttackFrontal --> "Info" AttackFrontalInfo
+@enduml

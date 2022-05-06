@@ -1,0 +1,12 @@
+@startuml
+class Download {
+    <<readonly>> syncObject : object
+    + {static} FormatErrorMessage(e:Exception) : string
+    EnableTLS12OnWindows() : void
+    + Download(url:string, path:string, onProgress:Action<DownloadProgressChangedEventArgs>, onComplete:Action<AsyncCompletedEventArgs>)
+    + Download(url:string, onProgress:Action<DownloadProgressChangedEventArgs>, onComplete:Action<DownloadDataCompletedEventArgs>)
+    DisposeWebClient() : void
+    + CancelAsync() : void
+}
+Download --> "wc" WebClient
+@enduml

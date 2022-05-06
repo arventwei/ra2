@@ -1,0 +1,13 @@
+@startuml
+class MusicPlayerLogic {
+    + MusicPlayerLogic(widget:Widget, modData:ModData, world:World, onExit:Action)
+    + BuildMusicTable() : void
+    Play() : void
+    {static} SongLengthLabel(song:MusicInfo) : string
+}
+ChromeLogic <|-- MusicPlayerLogic
+MusicPlayerLogic --> "musicList" ScrollPanelWidget
+MusicPlayerLogic --> "itemTemplate" ScrollItemWidget
+MusicPlayerLogic --> "musicPlaylist" MusicPlaylist
+MusicPlayerLogic o-> "currentSong" MusicInfo
+@enduml

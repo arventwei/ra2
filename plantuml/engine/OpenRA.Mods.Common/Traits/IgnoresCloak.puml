@@ -1,0 +1,9 @@
+@startuml
+class IgnoresCloakInfo {
+}
+class IgnoresCloak {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<IgnoresCloak>" <|-- IgnoresCloakInfo
+@enduml

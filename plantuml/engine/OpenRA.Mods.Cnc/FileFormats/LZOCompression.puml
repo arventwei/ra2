@@ -1,0 +1,8 @@
+@startuml
+class LZOCompression <<static>> {
+    {static} <<unsafe>> LZO1xDecompress(@in:byte*, inLen:uint, @out:byte*, outLen:uint, wrkmem:void*) : int
+    {static} <<unsafe>> MatchNext(op:byte*, ip:byte*, t:uint) : void
+    {static} <<unsafe>> CopyMatch(op:byte*, mPos:byte*, t:uint) : void
+    + {static} DecodeInto(src:byte[], srcOffset:uint, srcLength:uint, dest:byte[], destOffset:uint, destLength:uint) : void
+}
+@enduml

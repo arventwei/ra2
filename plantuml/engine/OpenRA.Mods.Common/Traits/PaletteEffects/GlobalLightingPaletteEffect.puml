@@ -1,0 +1,25 @@
+@startuml
+class GlobalLightingPaletteEffectInfo {
+    + <<readonly>> Red : float = 1f
+    + <<readonly>> Green : float = 1f
+    + <<readonly>> Blue : float = 1f
+    + <<readonly>> Ambient : float = 1f
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GlobalLightingPaletteEffect {
+    + Red : float
+    + Green : float
+    + Blue : float
+    + Ambient : float
+    + GlobalLightingPaletteEffect(info:GlobalLightingPaletteEffectInfo)
+    + AdjustPalette(palettes:IReadOnlyDictionary<string, MutablePalette>) : void
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- GlobalLightingPaletteEffectInfo
+ILobbyCustomRulesIgnore <|-- GlobalLightingPaletteEffectInfo
+GlobalLightingPaletteEffectInfo o-> "ExcludePalettes<string>" "HashSet`1"
+GlobalLightingPaletteEffectInfo o-> "ExcludePalettePrefixes<string>" "HashSet`1"
+IPaletteModifier <|-- GlobalLightingPaletteEffect
+GlobalLightingPaletteEffect --> "info" GlobalLightingPaletteEffectInfo
+@enduml

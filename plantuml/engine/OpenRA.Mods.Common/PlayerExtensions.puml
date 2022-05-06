@@ -1,0 +1,5 @@
+@startuml
+class PlayerExtensions <<static>> {
+    + {static} HasNoRequiredUnits(player:Player, shortGame:bool) : bool
+}
+@enduml

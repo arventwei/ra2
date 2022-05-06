@@ -1,0 +1,20 @@
+@startuml
+class ShpTSLoader {
+    IsShpTS(s:Stream) : bool
+    ParseFrames(s:Stream) : ShpTSFrame[]
+    + TryParseSprite(s:Stream, frames:ISpriteFrame[], metadata:TypeDictionary) : bool
+}
+class ShpTSFrame {
+    + DisableExportPadding : bool <<get>>
+    + <<readonly>> FileOffset : uint
+    + <<readonly>> Format : byte
+    + ShpTSFrame(s:Stream, frameSize:Size)
+}
+ISpriteLoader <|-- ShpTSLoader
+ShpTSLoader +-- ShpTSFrame
+ISpriteFrame <|-- ShpTSFrame
+ShpTSFrame --> "Type" SpriteFrameType
+ShpTSFrame --> "Size" Size
+ShpTSFrame --> "FrameSize" Size
+ShpTSFrame --> "Offset" float2
+@enduml

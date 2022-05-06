@@ -1,0 +1,26 @@
+@startuml
+class WithDeliveryOverlayInfo {
+    + <<readonly>> Sequence : string = "active"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithDeliveryOverlay {
+    delivering : bool
+    + WithDeliveryOverlay(self:Actor, info:WithDeliveryOverlayInfo)
+    PlayDeliveryOverlay() : void
+    IncomingDelivery(self:Actor) : void
+    Delivered(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- WithDeliveryOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithDeliveryOverlayInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithDeliveryOverlayInfo
+WithDeliveryOverlayInfo o-> "Offset" WVec
+"PausableConditionalTrait`1" "<WithDeliveryOverlayInfo>" <|-- WithDeliveryOverlay
+INotifyDelivery <|-- WithDeliveryOverlay
+WithDeliveryOverlay --> "anim" AnimationWithOffset
+@enduml

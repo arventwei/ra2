@@ -1,0 +1,30 @@
+@startuml
+class FreeActorInfo {
+    + <<readonly>> Actor : string = null
+    + <<readonly>> AllowRespawn : bool = false
+    + <<readonly>> EditorFreeActorDisplayOrder : int = 4
+    ActorOptions(ai:ActorInfo, world:World) : IEnumerable<EditorActorOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class FreeActor {
+    + FreeActor(init:ActorInitializer, info:FreeActorInfo)
+}
+class FreeActorInit {
+    + FreeActorInit(info:TraitInfo, value:bool)
+}
+class ParentActorInit {
+    + ParentActorInit(value:Actor)
+}
+class "ConditionalTrait`1"<T> {
+}
+class "ValueActorInit`1"<T> {
+}
+ConditionalTraitInfo <|-- FreeActorInfo
+IEditorActorOptions <|-- FreeActorInfo
+FreeActorInfo o-> "SpawnOffset" CVec
+FreeActorInfo o-> "Facing" WAngle
+"ConditionalTrait`1" "<FreeActorInfo>" <|-- FreeActor
+"ValueActorInit`1" "<bool>" <|-- FreeActorInit
+"ValueActorInit`1" "<ActorInitActorReference>" <|-- ParentActorInit
+ISingleInstanceInit <|-- ParentActorInit
+@enduml

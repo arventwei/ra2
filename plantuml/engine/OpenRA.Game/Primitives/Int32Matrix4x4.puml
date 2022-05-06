@@ -1,0 +1,28 @@
+@startuml
+class Int32Matrix4x4 <<struct>> {
+    + <<readonly>> M11 : int
+    + <<readonly>> M12 : int
+    + <<readonly>> M13 : int
+    + <<readonly>> M14 : int
+    + <<readonly>> M21 : int
+    + <<readonly>> M22 : int
+    + <<readonly>> M23 : int
+    + <<readonly>> M24 : int
+    + <<readonly>> M31 : int
+    + <<readonly>> M32 : int
+    + <<readonly>> M33 : int
+    + <<readonly>> M34 : int
+    + <<readonly>> M41 : int
+    + <<readonly>> M42 : int
+    + <<readonly>> M43 : int
+    + <<readonly>> M44 : int
+    + Int32Matrix4x4(m11:int, m12:int, m13:int, m14:int, m21:int, m22:int, m23:int, m24:int, m31:int, m32:int, m33:int, m34:int, m41:int, m42:int, m43:int, m44:int)
+    + <<override>> GetHashCode() : int
+    + Equals(other:Int32Matrix4x4) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<Int32Matrix4x4>" <|-- Int32Matrix4x4
+@enduml

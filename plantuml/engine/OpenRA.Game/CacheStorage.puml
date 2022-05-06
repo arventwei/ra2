@@ -1,0 +1,7 @@
+@startuml
+interface "ICacheStorage`1"<T> {
+    Remove(key:string) : void
+    Store(key:string, data:T) : void
+    Retrieve(key:string) : T
+}
+@enduml

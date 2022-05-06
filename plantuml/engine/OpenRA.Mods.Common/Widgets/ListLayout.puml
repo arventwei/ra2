@@ -1,0 +1,9 @@
+@startuml
+class ListLayout {
+    + ListLayout(w:ScrollPanelWidget)
+    + AdjustChild(w:Widget) : void
+    + AdjustChildren() : void
+}
+ILayout <|-- ListLayout
+ListLayout --> "widget" ScrollPanelWidget
+@enduml

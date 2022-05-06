@@ -1,0 +1,11 @@
+@startuml
+class CheckConditionalTraitInterfaceOverrides {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    violationCount : int
+    {static} IsConditionalTrait(type:Type) : bool
+    CheckInterfaceViolation(utility:Utility, interfaceType:Type, methodName:string) : void
+    Run(utility:Utility, args:string[]) : void
+}
+IUtilityCommand <|-- CheckConditionalTraitInterfaceOverrides
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+class GameSaveViewportManagerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GameSaveViewportManager {
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+    IssueTraitData(self:Actor) : List<MiniYamlNode>
+    ResolveTraitData(self:Actor, data:List<MiniYamlNode>) : void
+}
+TraitInfo <|-- GameSaveViewportManagerInfo
+IWorldLoaded <|-- GameSaveViewportManager
+IGameSaveTraitData <|-- GameSaveViewportManager
+GameSaveViewportManager --> "worldRenderer" WorldRenderer
+@enduml

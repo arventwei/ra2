@@ -1,0 +1,6 @@
+@startuml
+class SimpleTooltipLogic {
+    + SimpleTooltipLogic(widget:Widget, tooltipContainer:TooltipContainerWidget, getText:Func<string>)
+}
+ChromeLogic <|-- SimpleTooltipLogic
+@enduml

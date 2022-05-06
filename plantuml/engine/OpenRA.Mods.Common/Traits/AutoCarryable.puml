@@ -1,0 +1,21 @@
+@startuml
+class AutoCarryableInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AutoCarryable {
+    + AutoCarryable(self:Actor, info:AutoCarryableInfo)
+    MovementCancelled(self:Actor) : void
+    RequestTransport(self:Actor, destination:CPos) : void
+    MovementCancelled(self:Actor) : void
+    RequestTransport(self:Actor, destination:CPos) : void
+    + <<override>> Detached(self:Actor) : void
+    + <<override>> Reserve(self:Actor, carrier:Actor) : bool
+    + <<override>> LockForPickup(self:Actor, carrier:Actor) : LockResponse
+}
+CarryableInfo <|-- AutoCarryableInfo
+AutoCarryableInfo o-> "MinDistance" WDist
+Carryable <|-- AutoCarryable
+ICallForTransport <|-- AutoCarryable
+AutoCarryable --> "info" AutoCarryableInfo
+AutoCarryable --> "MinimumDistance" WDist
+@enduml

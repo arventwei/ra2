@@ -1,0 +1,14 @@
+@startuml
+class HideMapCrateActionInfo {
+    + <<readonly>> IncludeAllies : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HideMapCrateAction {
+    + HideMapCrateAction(self:Actor, info:HideMapCrateActionInfo)
+    + <<override>> GetSelectionShares(collector:Actor) : int
+    + <<override>> Activate(collector:Actor) : void
+}
+CrateActionInfo <|-- HideMapCrateActionInfo
+CrateAction <|-- HideMapCrateAction
+HideMapCrateAction --> "info" HideMapCrateActionInfo
+@enduml

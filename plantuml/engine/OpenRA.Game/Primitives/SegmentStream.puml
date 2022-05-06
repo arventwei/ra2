@@ -1,0 +1,26 @@
+@startuml
+class SegmentStream {
+    + <<readonly>> BaseOffset : long
+    + <<readonly>> BaseCount : long
+    + SegmentStream(stream:Stream, offset:long, count:long)
+    + <<override>> CanSeek : bool <<get>>
+    + <<override>> CanRead : bool <<get>>
+    + <<override>> CanWrite : bool <<get>>
+    + <<override>> Length : long <<get>>
+    + <<override>> Position : long <<get>> <<set>>
+    + <<override>> ReadByte() : int
+    + <<override>> Read(buffer:byte[], offset:int, count:int) : int
+    + <<override>> WriteByte(value:byte) : void
+    + <<override>> Write(buffer:byte[], offset:int, count:int) : void
+    + <<override>> Flush() : void
+    + <<override>> Seek(offset:long, origin:SeekOrigin) : long
+    + <<override>> SetLength(value:long) : void
+    + <<override>> CanTimeout : bool <<get>>
+    + <<override>> ReadTimeout : int <<get>> <<set>>
+    + <<override>> WriteTimeout : int <<get>> <<set>>
+    {static} GetOverallNestedOffset(stream:Stream, overallBaseStream:Stream) : long
+    + {static} CreateWithoutOwningStream(stream:Stream, offset:long, count:int) : Stream
+}
+Stream <|-- SegmentStream
+SegmentStream --> "BaseStream" Stream
+@enduml

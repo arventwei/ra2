@@ -1,0 +1,7 @@
+@startuml
+class CheckSequences {
+    Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, rules:Ruleset) : void
+    Run(emitError:Action<string>, emitWarning:Action<string>, rules:Ruleset, sequences:SequenceProvider) : void
+}
+ILintRulesPass <|-- CheckSequences
+@enduml

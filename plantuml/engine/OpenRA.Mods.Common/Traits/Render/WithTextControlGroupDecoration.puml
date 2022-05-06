@@ -1,0 +1,28 @@
+@startuml
+class WithTextControlGroupDecorationInfo {
+    + <<readonly>> Font : string = "TinyBold"
+    + <<readonly>> UsePlayerColor : bool = false
+    + <<readonly>> Position : string = "TopLeft"
+    RulesetLoaded(rules:Ruleset, info:ActorInfo) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithTextControlGroupDecoration {
+    + WithTextControlGroupDecoration(self:Actor, info:WithTextControlGroupDecorationInfo)
+    RequiresSelection : bool <<get>>
+    RenderDecoration(self:Actor, wr:WorldRenderer, container:ISelectionDecorations) : IEnumerable<IRenderable>
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "CachedTransform`2"<T1,T2> {
+}
+TraitInfo <|-- WithTextControlGroupDecorationInfo
+IRulesetLoaded <|-- WithTextControlGroupDecorationInfo
+WithTextControlGroupDecorationInfo o-> "Color" Color
+WithTextControlGroupDecorationInfo o-> "Margin" int2
+IDecoration <|-- WithTextControlGroupDecoration
+INotifyOwnerChanged <|-- WithTextControlGroupDecoration
+WithTextControlGroupDecoration --> "info" WithTextControlGroupDecorationInfo
+WithTextControlGroupDecoration --> "font" SpriteFont
+WithTextControlGroupDecoration --> "self" Actor
+WithTextControlGroupDecoration --> "label<int,string>" "CachedTransform`2"
+WithTextControlGroupDecoration --> "color" Color
+@enduml

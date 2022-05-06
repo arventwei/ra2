@@ -1,0 +1,13 @@
+@startuml
+class MapEditorDataInfo {
+}
+class MapEditorData {
+}
+class "TraitInfo`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"TraitInfo`1" "<MapEditorData>" <|-- MapEditorDataInfo
+MapEditorDataInfo o-> "RequireTilesets<string>" "HashSet`1"
+MapEditorDataInfo o-> "ExcludeTilesets<string>" "HashSet`1"
+@enduml

@@ -1,0 +1,77 @@
+@startuml
+class TDGunboatInfo {
+    + <<readonly>> Speed : int = 28
+    + <<override>> Create(init:ActorInitializer) : object
+    + GetInitialFacing() : WAngle
+    + GetTargetLineColor() : Color
+    ActorPreviewInits(ai:ActorInfo, type:ActorPreviewType) : IEnumerable<ActorInit>
+    + OccupiedCells(info:ActorInfo, location:CPos, subCell:SubCell) : IReadOnlyDictionary<CPos, SubCell>
+    SharesCell : bool <<get>>
+    + CanEnterCell(world:World, self:Actor, cell:CPos, subCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : bool
+}
+class TDGunboat {
+    + TDGunboat(init:ActorInitializer, info:TDGunboatInfo)
+    Created(self:Actor) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    Tick(self:Actor) : void
+    Turn() : void
+    MovementSpeed : int <<get>>
+    + OccupiedCells() : (CPos, SubCell)[]
+    MoveStep(facing:WAngle) : WVec
+    MoveStep(speed:int, facing:WAngle) : WVec
+    ModifyDeathActorInit(self:Actor, init:TypeDictionary) : void
+    + CanExistInCell(cell:CPos) : bool
+    + IsLeavingCell(location:CPos, subCell:SubCell) : bool
+    + CanEnterCell(cell:CPos, ignoreActor:Actor, check:BlockedByActor) : bool
+    + GetValidSubCell(preferred:SubCell) : SubCell
+    + GetAvailableSubCell(a:CPos, preferredSubCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : SubCell
+    + SetVisualPosition(self:Actor, pos:WPos) : void
+    + SetPosition(self:Actor, cell:CPos, subCell:SubCell) : void
+    + SetPosition(self:Actor, pos:WPos) : void
+    + MoveTo(cell:CPos, nearEnough:int, ignoreActor:Actor, evaluateNearestMovableCell:bool, targetLineColor:Color?) : Activity
+    + MoveWithinRange(target:Target, range:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + MoveWithinRange(target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + MoveFollow(self:Actor, target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + ReturnToCell(self:Actor) : Activity
+    + MoveToTarget(self:Actor, target:Target, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + MoveIntoTarget(self:Actor, target:Target) : Activity
+    + VisualMove(self:Actor, fromPos:WPos, toPos:WPos) : Activity
+    + EstimatedMoveDuration(self:Actor, fromPos:WPos, toPos:WPos) : int
+    + NearestMoveableCell(cell:CPos) : CPos
+    + CanEnterTargetNow(self:Actor, target:Target) : bool
+    ModifyActorPreviewInit(self:Actor, inits:TypeDictionary) : void
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- TDGunboatInfo
+IPositionableInfo <|-- TDGunboatInfo
+IFacingInfo <|-- TDGunboatInfo
+IMoveInfo <|-- TDGunboatInfo
+IActorPreviewInitInfo <|-- TDGunboatInfo
+TDGunboatInfo o-> "InitialFacing" WAngle
+TDGunboatInfo o-> "PreviewFacing" WAngle
+ITick <|-- TDGunboat
+ISync <|-- TDGunboat
+IFacing <|-- TDGunboat
+IPositionable <|-- TDGunboat
+IMove <|-- TDGunboat
+IDeathActorInitModifier <|-- TDGunboat
+INotifyCreated <|-- TDGunboat
+INotifyAddedToWorld <|-- TDGunboat
+INotifyRemovedFromWorld <|-- TDGunboat
+IActorPreviewInitModifier <|-- TDGunboat
+TDGunboat --> "Info" TDGunboatInfo
+TDGunboat --> "self" Actor
+TDGunboat o-> "Left" WAngle
+TDGunboat o-> "Right" WAngle
+TDGunboat --> "speedModifiers<int>" "IEnumerable`1"
+TDGunboat --> "orientation" WRot
+TDGunboat --> "Facing" WAngle
+TDGunboat --> "Orientation" WRot
+TDGunboat --> "CenterPosition" WPos
+TDGunboat --> "TopLeft" CPos
+TDGunboat --> "TurnSpeed" WAngle
+TDGunboat --> "cachedLocation" CPos
+TDGunboat --> "CurrentMovementTypes" MovementType
+@enduml

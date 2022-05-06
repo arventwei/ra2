@@ -1,0 +1,17 @@
+@startuml
+class SubterraneanLocomotorInfo {
+    + <<readonly>> SubterraneanTransitionCost : int = 0
+    + <<readonly>> SubterraneanTransitionOnRamps : bool = false
+    + <<override>> DisableDomainPassabilityCheck : bool <<get>>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SubterraneanLocomotor {
+    + SubterraneanLocomotor(self:Actor, info:SubterraneanLocomotorInfo)
+}
+class "HashSet`1"<T> {
+}
+LocomotorInfo <|-- SubterraneanLocomotorInfo
+SubterraneanLocomotorInfo o-> "SubterraneanTransitionTerrainTypes<string>" "HashSet`1"
+SubterraneanLocomotorInfo o-> "SubterraneanTransitionDepth" WDist
+Locomotor <|-- SubterraneanLocomotor
+@enduml

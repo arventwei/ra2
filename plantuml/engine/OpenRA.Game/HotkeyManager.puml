@@ -1,0 +1,15 @@
+@startuml
+class HotkeyManager <<sealed>> {
+    + HotkeyManager(fileSystem:IReadOnlyFileSystem, settings:Dictionary<string, Hotkey>, manifest:Manifest)
+    + Set(name:string, value:Hotkey) : void
+    + GetFirstDuplicate(name:string, value:Hotkey, definition:HotkeyDefinition) : HotkeyDefinition
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+HotkeyManager --> "settings<string,Hotkey>" "Dictionary`2"
+HotkeyManager o-> "definitions<string,HotkeyDefinition>" "Dictionary`2"
+HotkeyManager o-> "keys<string,Hotkey>" "Dictionary`2"
+HotkeyManager --> "Definitions<HotkeyDefinition>" "IEnumerable`1"
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+class RejectsOrdersInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RejectsOrders {
+    + RejectsOrders(info:RejectsOrdersInfo)
+}
+class RejectsOrdersExts <<static>> {
+    + {static} AcceptsOrder(self:Actor, orderString:string) : bool
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- RejectsOrdersInfo
+RejectsOrdersInfo o-> "Reject<string>" "HashSet`1"
+RejectsOrdersInfo o-> "Except<string>" "HashSet`1"
+"ConditionalTrait`1" "<RejectsOrdersInfo>" <|-- RejectsOrders
+RejectsOrders --> "Reject<string>" "HashSet`1"
+RejectsOrders --> "Except<string>" "HashSet`1"
+@enduml

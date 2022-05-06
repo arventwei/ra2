@@ -1,0 +1,39 @@
+@startuml
+class WithParachuteInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> OpeningSequence : string = null
+    + <<readonly>> Sequence : string = null
+    + <<readonly>> ClosingSequence : string = null
+    + <<readonly>> Palette : string = "player"
+    + <<readonly>> IsPlayerPalette : bool = true
+    + <<readonly>> ShadowImage : string = null
+    + <<readonly>> ShadowSequence : string = null
+    + <<readonly>> ShadowPalette : string = "shadow"
+    + <<readonly>> ShadowZOffset : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithParachute {
+    renderProlonged : bool = false
+    + WithParachute(self:Actor, info:WithParachuteInfo)
+    Tick(self:Actor) : void
+    Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithParachuteInfo
+IRenderActorPreviewSpritesInfo <|-- WithParachuteInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithParachuteInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithParachuteInfo
+WithParachuteInfo o-> "Offset" WVec
+WithParachuteInfo o-> "ShadowOffset" WVec
+"ConditionalTrait`1" "<WithParachuteInfo>" <|-- WithParachute
+ITick <|-- WithParachute
+IRender <|-- WithParachute
+WithParachute --> "shadow" Animation
+WithParachute --> "anim" AnimationWithOffset
+WithParachute --> "info" WithParachuteInfo
+@enduml

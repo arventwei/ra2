@@ -1,0 +1,11 @@
+@startuml
+class RgbaSpriteRenderer {
+    + RgbaSpriteRenderer(parent:SpriteRenderer)
+    + DrawSprite(s:Sprite, location:float3, size:float3) : void
+    + DrawSprite(s:Sprite, location:float3) : void
+    + DrawSprite(s:Sprite, a:float3, b:float3, c:float3, d:float3) : void
+    + DrawSpriteWithTint(s:Sprite, location:float3, size:float3, tint:float3) : void
+    + DrawSpriteWithTint(s:Sprite, a:float3, b:float3, c:float3, d:float3, tint:float3) : void
+}
+RgbaSpriteRenderer --> "parent" SpriteRenderer
+@enduml

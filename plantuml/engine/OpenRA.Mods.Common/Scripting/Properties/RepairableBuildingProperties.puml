@@ -1,0 +1,12 @@
+@startuml
+class RepairableBuildingProperties {
+    + RepairableBuildingProperties(context:ScriptContext, self:Actor)
+    + StartBuildingRepairs(repairer:Player) : void
+    + StopBuildingRepairs(repairer:Player) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- RepairableBuildingProperties
+"Requires`1" "<RepairableBuildingInfo>" <|-- RepairableBuildingProperties
+RepairableBuildingProperties --> "rb" RepairableBuilding
+@enduml

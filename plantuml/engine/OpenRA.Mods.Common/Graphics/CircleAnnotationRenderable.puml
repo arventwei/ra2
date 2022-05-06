@@ -1,0 +1,25 @@
+@startuml
+class CircleAnnotationRenderable <<struct>> {
+    <<const>> CircleSegments : int = 32
+    <<readonly>> width : int
+    <<readonly>> filled : bool
+    + CircleAnnotationRenderable(centerPosition:WPos, radius:WDist, width:int, color:Color, filled:bool)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- CircleAnnotationRenderable
+IFinalizedRenderable <|-- CircleAnnotationRenderable
+CircleAnnotationRenderable --> "centerPosition" WPos
+CircleAnnotationRenderable --> "radius" WDist
+CircleAnnotationRenderable --> "color" Color
+CircleAnnotationRenderable --> "Pos" WPos
+CircleAnnotationRenderable --> "Palette" PaletteReference
+@enduml

@@ -1,0 +1,107 @@
+@startuml
+class Session {
+    + {static} AnonymizeIP(ip:IPAddress) : string
+    + {static} Deserialize(data:string) : Session
+    + ClientWithIndex(clientID:int) : Client
+    + ClientInSlot(slot:string) : Client
+    + FirstEmptySlot() : string
+    + FirstEmptyBotSlot() : string
+    + PingFromClient(client:Client) : ClientPing
+    + Serialize() : string
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "HashSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+enum ClientState {
+    NotReady,
+    Invalid,
+    Ready,
+    Disconnected= 1000,
+}
+class Client {
+    + {static} Deserialize(data:MiniYaml) : Client
+    + Index : int
+    + Faction : string
+    + SpawnPoint : int
+    + Name : string
+    + IPAddress : string
+    + AnonymizedIPAddress : string
+    + Location : string
+    + Team : int
+    + Handicap : int
+    + Slot : string
+    + Bot : string
+    + BotControllerClientIndex : int
+    + IsAdmin : bool
+    + IsReady : bool <<get>>
+    + IsInvalid : bool <<get>>
+    + IsObserver : bool <<get>>
+    + Fingerprint : string
+    + Serialize() : MiniYamlNode
+}
+class ClientPing {
+    + Index : int
+    + Latency : long
+    + LatencyJitter : long
+    + {static} Deserialize(data:MiniYaml) : ClientPing
+    + Serialize() : MiniYamlNode
+}
+class Slot {
+    + PlayerReference : string
+    + Closed : bool
+    + AllowBots : bool
+    + LockFaction : bool
+    + LockColor : bool
+    + LockTeam : bool
+    + LockHandicap : bool
+    + LockSpawn : bool
+    + Required : bool
+    + {static} Deserialize(data:MiniYaml) : Slot
+    + Serialize() : MiniYamlNode
+}
+class LobbyOptionState {
+    + Value : string
+    + PreferredValue : string
+    + IsLocked : bool
+    + IsEnabled : bool <<get>>
+}
+class Global {
+    + ServerName : string
+    + Map : string
+    + Timestep : int = 40
+    + OrderLatency : int = 3
+    + RandomSeed : int = 0
+    + AllowSpectators : bool = true
+    + GameUid : string
+    + EnableSingleplayer : bool
+    + EnableSyncReports : bool
+    + Dedicated : bool
+    + GameSavesEnabled : bool
+    + {static} Deserialize(data:MiniYaml) : Global
+    + Serialize() : MiniYamlNode
+    + OptionOrDefault(id:string, def:bool) : bool
+    + OptionOrDefault(id:string, def:string) : string
+}
+Session o-> "Clients<Client>" "List`1"
+Session o-> "ClientPings<ClientPing>" "List`1"
+Session o-> "Slots<string,Slot>" "Dictionary`2"
+Session o-> "DisabledSpawnPoints<int>" "HashSet`1"
+Session o-> "GlobalSettings" Global
+Session --> "NonBotClients<Client>" "IEnumerable`1"
+Session --> "NonBotPlayers<Client>" "IEnumerable`1"
+Session +-- ClientState
+Session +-- Client
+Client --> "PreferredColor" Color
+Client --> "Color" Color
+Client o-> "State" ClientState
+Session +-- ClientPing
+Session +-- Slot
+Session +-- LobbyOptionState
+Session +-- Global
+Global o-> "LobbyOptions<string,LobbyOptionState>" "Dictionary`2"
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class ShapeTest {
+    + Circle() : void
+    + Capsule() : void
+    + Rectangle() : void
+    + Polygon() : void
+}
+ShapeTest --> "shape" IHitShape
+@enduml

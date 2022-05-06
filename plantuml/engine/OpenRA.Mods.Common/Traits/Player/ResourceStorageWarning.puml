@@ -1,0 +1,20 @@
+@startuml
+class ResourceStorageWarningInfo {
+    + <<readonly>> AdviceInterval : int = 20
+    + <<readonly>> Threshold : int = 80
+    + <<readonly>> Notification : string = "SilosNeeded"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ResourceStorageWarning {
+    nextSiloAdviceTime : int = 0
+    + ResourceStorageWarning(self:Actor, info:ResourceStorageWarningInfo)
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- ResourceStorageWarningInfo
+"Requires`1" "<PlayerResourcesInfo>" <|-- ResourceStorageWarningInfo
+ITick <|-- ResourceStorageWarning
+ResourceStorageWarning --> "info" ResourceStorageWarningInfo
+ResourceStorageWarning --> "resources" PlayerResources
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+class "PlayerDictionary`1"<T> <<struct>> {
+    + PlayerDictionary(world:World, valueFactory:Func<Player, int, T>)
+    + PlayerDictionary(world:World, valueFactory:Func<Player, T>)
+    + Count : int <<get>>
+    + GetEnumerator() : IEnumerator<T>
+    ContainsKey(key:Player) : bool
+    TryGetValue(key:Player, value:T) : bool
+    GetEnumerator() : IEnumerator<KeyValuePair<Player, T>>
+    GetEnumerator() : System.Collections.IEnumerator
+}
+class "IReadOnlyList`1"<T> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "ICollection`1"<T> {
+}
+"IReadOnlyList`1" "<T>" <|-- "PlayerDictionary`1"
+"IReadOnlyDictionary`2" "<Player,T>" <|-- "PlayerDictionary`1"
+"PlayerDictionary`1" --> "valueByPlayer<Player,T>" "Dictionary`2"
+"PlayerDictionary`1" --> "Keys<Player>" "ICollection`1"
+"PlayerDictionary`1" --> "Values<T>" "ICollection`1"
+@enduml

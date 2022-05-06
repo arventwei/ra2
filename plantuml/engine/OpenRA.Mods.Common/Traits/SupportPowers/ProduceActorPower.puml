@@ -1,0 +1,16 @@
+@startuml
+class ProduceActorPowerInfo {
+    + <<readonly>> Type : string = null
+    + <<readonly>> ReadyAudio : string = null
+    + <<readonly>> BlockedAudio : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ProduceActorPower {
+    <<readonly>> faction : string
+    + ProduceActorPower(init:ActorInitializer, info:ProduceActorPowerInfo)
+    + <<override>> SelectTarget(self:Actor, order:string, manager:SupportPowerManager) : void
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+}
+SupportPowerInfo <|-- ProduceActorPowerInfo
+SupportPower <|-- ProduceActorPower
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+class LobbyPrerequisiteCheckboxInfo {
+    + <<readonly>> ID : string = null
+    + <<readonly>> Label : string = null
+    + <<readonly>> Description : string = null
+    + <<readonly>> Enabled : bool = false
+    + <<readonly>> Locked : bool = false
+    + <<readonly>> Visible : bool = true
+    + <<readonly>> DisplayOrder : int = 0
+    Prerequisites(info:ActorInfo) : IEnumerable<string>
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class LobbyPrerequisiteCheckbox {
+    + LobbyPrerequisiteCheckbox(info:LobbyPrerequisiteCheckboxInfo)
+    Created(self:Actor) : void
+}
+class "HashSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- LobbyPrerequisiteCheckboxInfo
+ILobbyOptions <|-- LobbyPrerequisiteCheckboxInfo
+ITechTreePrerequisiteInfo <|-- LobbyPrerequisiteCheckboxInfo
+LobbyPrerequisiteCheckboxInfo o-> "Prerequisites<string>" "HashSet`1"
+INotifyCreated <|-- LobbyPrerequisiteCheckbox
+ITechTreePrerequisite <|-- LobbyPrerequisiteCheckbox
+LobbyPrerequisiteCheckbox --> "info" LobbyPrerequisiteCheckboxInfo
+LobbyPrerequisiteCheckbox o-> "prerequisites<string>" "HashSet`1"
+LobbyPrerequisiteCheckbox --> "ProvidesPrerequisites<string>" "IEnumerable`1"
+@enduml

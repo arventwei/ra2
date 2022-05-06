@@ -1,0 +1,21 @@
+@startuml
+class MoveAdjacentTo {
+    <<readonly>> targetLineColor : Color?
+    useLastVisibleTarget : bool
+    + MoveAdjacentTo(self:Actor, target:Target, initialTargetPosition:WPos?, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    searchCellsTick : int
+    CalculatePathToTarget(self:Actor, check:BlockedByActor) : List<CPos>
+    + <<override>> GetTargets(self:Actor) : IEnumerable<Target>
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+class "List`1"<T> {
+}
+Activity <|-- MoveAdjacentTo
+MoveAdjacentTo o-> "NoPath<CPos>" "List`1"
+MoveAdjacentTo --> "pathFinder" IPathFinder
+MoveAdjacentTo --> "domainIndex" DomainIndex
+MoveAdjacentTo --> "target" Target
+MoveAdjacentTo --> "lastVisibleTarget" Target
+MoveAdjacentTo o-> "searchCells<CPos>" "List`1"
+@enduml

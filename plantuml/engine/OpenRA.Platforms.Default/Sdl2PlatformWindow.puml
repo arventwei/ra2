@@ -1,0 +1,43 @@
+@startuml
+class Sdl2PlatformWindow <<sealed>> {
+    disposed : bool
+    <<readonly>> syncObject : object
+    windowScale : float = 1f
+    lockedMousePosition : int2?
+    scaleModifier : float
+    + NativeWindowScale : float <<get>>
+    + EffectiveWindowScale : float <<get>>
+    + CurrentDisplay : int <<get>>
+    + DisplayCount : int <<get>>
+    + HasInputFocus : bool <<get>> <<internal set>>
+    +  <<event>> OnWindowScaleChanged : Action<float, float, float, float> 
+    {static} <<extern>> SetProcessDPIAware() : bool
+    + Sdl2PlatformWindow(requestEffectiveWindowSize:Size, windowMode:WindowMode, scaleModifier:float, batchSize:int, videoDisplay:int, requestProfile:GLProfile, enableLegacyGL:bool)
+    DoublePixelData(data:byte[], size:Size) : byte[]
+    + CreateHardwareCursor(name:string, size:Size, data:byte[], hotspot:int2, pixelDouble:bool) : IHardwareCursor
+    + SetHardwareCursor(cursor:IHardwareCursor) : void
+    + SetRelativeMouseMode(mode:bool) : void
+    + Dispose() : void
+    + GrabWindowMouseFocus() : void
+    + ReleaseWindowMouseFocus() : void
+    + PumpInput(inputHandler:IInputHandler) : void
+    + GetClipboardText() : string
+    + SetClipboardText(text:string) : bool
+    {static} SetSDLAttributes(profile:GLProfile) : void
+    {static} CanCreateGLWindow(profile:GLProfile) : bool
+    + SetScaleModifier(scale:float) : void
+}
+ThreadAffine <|-- Sdl2PlatformWindow
+IPlatformWindow <|-- Sdl2PlatformWindow
+Sdl2PlatformWindow --> "context" IGraphicsContext
+Sdl2PlatformWindow --> "input" Sdl2Input
+Sdl2PlatformWindow --> "Context" IGraphicsContext
+Sdl2PlatformWindow --> "window" IntPtr
+Sdl2PlatformWindow --> "windowSize" Size
+Sdl2PlatformWindow --> "surfaceSize" Size
+Sdl2PlatformWindow --> "profile" GLProfile
+Sdl2PlatformWindow --> "NativeWindowSize" Size
+Sdl2PlatformWindow --> "EffectiveWindowSize" Size
+Sdl2PlatformWindow --> "SurfaceSize" Size
+Sdl2PlatformWindow --> "GLProfile" GLProfile
+@enduml

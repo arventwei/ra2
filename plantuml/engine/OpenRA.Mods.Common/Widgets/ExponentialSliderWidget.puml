@@ -1,0 +1,11 @@
+@startuml
+class ExponentialSliderWidget {
+    + ExpA : double = 1.0e-3
+    + ExpB : double = 6.908
+    + ExponentialSliderWidget()
+    + ExponentialSliderWidget(other:ExponentialSliderWidget)
+    ExpFromLinear(x:float) : float
+    LinearFromExp(x:float) : float
+}
+SliderWidget <|-- ExponentialSliderWidget
+@enduml

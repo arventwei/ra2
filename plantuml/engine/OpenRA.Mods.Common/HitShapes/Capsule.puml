@@ -1,0 +1,19 @@
+@startuml
+class CapsuleShape {
+    + <<readonly>> VerticalTopOffset : int = 0
+    + <<readonly>> VerticalBottomOffset : int = 0
+    abLenSq : int
+    + CapsuleShape()
+    + CapsuleShape(a:int2, b:int2, radius:WDist)
+    + Initialize() : void
+    + DistanceFromEdge(v:WVec) : WDist
+    + DistanceFromEdge(pos:WPos, origin:WPos, orientation:WRot) : WDist
+    RenderDebugOverlay(wr:WorldRenderer, origin:WPos, orientation:WRot) : IEnumerable<IRenderable>
+}
+IHitShape <|-- CapsuleShape
+CapsuleShape --> "OuterRadius" WDist
+CapsuleShape --> "PointA" int2
+CapsuleShape --> "PointB" int2
+CapsuleShape o-> "Radius" WDist
+CapsuleShape --> "ab" int2
+@enduml

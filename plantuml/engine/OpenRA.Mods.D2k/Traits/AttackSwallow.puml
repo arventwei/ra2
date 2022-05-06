@@ -1,0 +1,23 @@
+@startuml
+class AttackSwallowInfo {
+    + <<readonly>> ReturnDelay : int = 60
+    + <<readonly>> AttackDelay : int = 30
+    + <<readonly>> AttackingCondition : string = null
+    + <<readonly>> WormAttackSound : string = "WORM.WAV"
+    + <<readonly>> WormAttackNotification : string = "WormAttack"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackSwallow {
+    + AttackSwallow(self:Actor, info:AttackSwallowInfo)
+    + <<override>> DoAttack(self:Actor, target:Target) : void
+    + <<override>> GetAttackActivity(self:Actor, source:AttackSource, newTarget:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : Activity
+}
+class SwallowTarget {
+    + SwallowTarget(self:Actor, target:Target, allowMovement:bool, forceAttack:bool)
+}
+AttackFrontalInfo <|-- AttackSwallowInfo
+AttackFrontal <|-- AttackSwallow
+AttackSwallow --> "Info" AttackSwallowInfo
+AttackSwallow +-- SwallowTarget
+Attack <|-- SwallowTarget
+@enduml

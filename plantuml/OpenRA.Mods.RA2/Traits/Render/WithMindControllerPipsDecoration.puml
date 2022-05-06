@@ -1,0 +1,24 @@
+@startuml
+class WithMindControllerPipsDecorationInfo {
+    + <<readonly>> PipCount : int = 0
+    + <<readonly>> Image : string = "pips"
+    + <<readonly>> EmptySequence : string = "pip-empty"
+    + <<readonly>> FullSequence : string = "pip-green"
+    + <<readonly>> Palette : string
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithMindControllerPipsDecoration {
+    <<readonly>> pipCount : int
+    + WithMindControllerPipsDecoration(self:Actor, info:WithMindControllerPipsDecorationInfo)
+}
+class "Requires`1"<T> {
+}
+class "WithDecorationBase`1"<T> {
+}
+WithDecorationBaseInfo <|-- WithMindControllerPipsDecorationInfo
+"Requires`1" "<MindControllerInfo>" <|-- WithMindControllerPipsDecorationInfo
+WithMindControllerPipsDecorationInfo o-> "PipStride" int2
+"WithDecorationBase`1" "<WithMindControllerPipsDecorationInfo>" <|-- WithMindControllerPipsDecoration
+WithMindControllerPipsDecoration --> "mindController" MindController
+WithMindControllerPipsDecoration --> "pips" Animation
+@enduml

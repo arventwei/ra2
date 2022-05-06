@@ -1,0 +1,14 @@
+@startuml
+class PlaceBuildingVariantsInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PlaceBuildingVariants {
+}
+class "TraitInfo`1"<T> {
+}
+class "Requires`1"<T> {
+}
+"TraitInfo`1" "<PlaceBuildingVariants>" <|-- PlaceBuildingVariantsInfo
+"Requires`1" "<BuildingInfo>" <|-- PlaceBuildingVariantsInfo
+"Requires`1" "<BuildableInfo>" <|-- PlaceBuildingVariantsInfo
+@enduml

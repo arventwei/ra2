@@ -1,0 +1,16 @@
+@startuml
+class ReturnToBase {
+    <<readonly>> alwaysLand : bool
+    facing : WAngle?
+    + ReturnToBase(self:Actor, dest:Actor, alwaysLand:bool)
+    + {static} ChooseResupplier(self:Actor, unreservedOnly:bool) : Actor
+    ShouldLandAtBuilding(self:Actor, dest:Actor) : bool
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+Activity <|-- ReturnToBase
+ReturnToBase --> "aircraft" Aircraft
+ReturnToBase --> "repairableInfo" RepairableInfo
+ReturnToBase --> "rearmable" Rearmable
+ReturnToBase --> "dest" Actor
+@enduml

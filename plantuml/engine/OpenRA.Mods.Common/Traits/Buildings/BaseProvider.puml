@@ -1,0 +1,39 @@
+@startuml
+class BaseProviderInfo {
+    + <<readonly>> Cooldown : int = 0
+    + <<readonly>> InitialDelay : int = 0
+    + <<readonly>> CircleWidth : float = 1
+    + <<readonly>> CircleBorderWidth : float = 3
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BaseProvider {
+    <<readonly>> allyBuildEnabled : bool
+    <<readonly>> buildRadiusEnabled : bool
+    total : int
+    progress : int
+    + BaseProvider(self:Actor, info:BaseProviderInfo)
+    Tick(self:Actor) : void
+    + BeginCooldown() : void
+    + Ready() : bool
+    ValidRenderPlayer() : bool
+    + RangeCircleRenderables(wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- BaseProviderInfo
+BaseProviderInfo o-> "Range" WDist
+BaseProviderInfo o-> "CircleReadyColor" Color
+BaseProviderInfo o-> "CircleBlockedColor" Color
+BaseProviderInfo o-> "CircleBorderColor" Color
+"PausableConditionalTrait`1" "<BaseProviderInfo>" <|-- BaseProvider
+ITick <|-- BaseProvider
+IRenderAnnotationsWhenSelected <|-- BaseProvider
+ISelectionBar <|-- BaseProvider
+BaseProvider --> "devMode" DeveloperMode
+BaseProvider --> "self" Actor
+@enduml

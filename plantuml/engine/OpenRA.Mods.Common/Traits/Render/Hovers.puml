@@ -1,0 +1,32 @@
+@startuml
+class HoversInfo {
+    + <<readonly>> Ticks : int = 6
+    + <<readonly>> FallTicks : int = 10
+    + <<readonly>> RiseTicks : int = 20
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class Hovers {
+    <<readonly>> stepPercentage : int
+    <<readonly>> fallTickHeight : int
+    ticks : int
+    + Hovers(info:HoversInfo, self:Actor)
+    Tick(self:Actor) : void
+    ModifyRender(self:Actor, wr:WorldRenderer, r:IEnumerable<IRenderable>) : IEnumerable<IRenderable>
+    ModifyScreenBounds(self:Actor, wr:WorldRenderer, bounds:IEnumerable<Rectangle>) : IEnumerable<Rectangle>
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- HoversInfo
+"Requires`1" "<IMoveInfo>" <|-- HoversInfo
+HoversInfo o-> "BobDistance" WDist
+HoversInfo o-> "MinHoveringAltitude" WDist
+HoversInfo o-> "InitialHeight" WDist
+"ConditionalTrait`1" "<HoversInfo>" <|-- Hovers
+IRenderModifier <|-- Hovers
+ITick <|-- Hovers
+Hovers --> "info" HoversInfo
+Hovers --> "worldVisualOffset" WVec
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class RideTransport {
+    + RideTransport(self:Actor, target:Target, targetLineColor:Color?)
+    + <<override>> Cancel(self:Actor, keepQueue:bool) : void
+}
+Enter <|-- RideTransport
+RideTransport --> "passenger" Passenger
+RideTransport --> "enterActor" Actor
+RideTransport --> "enterCargo" Cargo
+RideTransport --> "enterAircraft" Aircraft
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+class GainsExperienceInfo {
+    + <<readonly>> LevelUpImage : string = null
+    + <<readonly>> LevelUpSequence : string = "levelup"
+    + <<readonly>> LevelUpPalette : string = "effect"
+    + <<readonly>> ExperienceModifier : int
+    + <<readonly>> SuppressLevelupAnimation : bool = true
+    + <<readonly>> LevelUpNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GainsExperience {
+    <<readonly>> initialExperience : int
+    + Experience : int <<get>>
+    + Level : int <<get>>
+    + <<readonly>> MaxLevel : int
+    + GainsExperience(init:ActorInitializer, info:GainsExperienceInfo)
+    Created(self:Actor) : void
+    + CanGainLevel : bool <<get>>
+    + GiveLevels(numLevels:int, silent:bool) : void
+    + GiveExperience(amount:int, silent:bool) : void
+    + ResolveOrder(self:Actor, order:Order) : void
+    ModifyTransformActorInit(self:Actor, init:TypeDictionary) : void
+}
+class ExperienceInit {
+    + ExperienceInit(info:TraitInfo, value:int)
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class "List`1"<T> {
+}
+class "ValueActorInit`1"<T> {
+}
+TraitInfo <|-- GainsExperienceInfo
+GainsExperienceInfo o-> "Conditions<int,string>" "Dictionary`2"
+GainsExperienceInfo --> "LinterConditions<string>" "IEnumerable`1"
+INotifyCreated <|-- GainsExperience
+ISync <|-- GainsExperience
+IResolveOrder <|-- GainsExperience
+ITransformActorInitModifier <|-- GainsExperience
+GainsExperience --> "self" Actor
+GainsExperience --> "info" GainsExperienceInfo
+GainsExperience o-> "nextLevel<(int RequiredExperience, string Condition)>" "List`1"
+"ValueActorInit`1" "<int>" <|-- ExperienceInit
+@enduml

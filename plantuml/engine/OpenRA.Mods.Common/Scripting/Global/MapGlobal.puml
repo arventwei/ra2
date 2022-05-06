@@ -1,0 +1,25 @@
+@startuml
+class MapGlobal {
+    + MapGlobal(context:ScriptContext)
+    + ActorsInCircle(location:WPos, radius:WDist, filter:LuaFunction) : Actor[]
+    + ActorsInBox(topLeft:WPos, bottomRight:WPos, filter:LuaFunction) : Actor[]
+    + RandomCell() : CPos
+    + RandomEdgeCell() : CPos
+    + ClosestEdgeCell(givenCell:CPos) : CPos
+    + ClosestMatchingEdgeCell(givenCell:CPos, filter:LuaFunction) : CPos
+    + CenterOfCell(cell:CPos) : WPos
+    + TerrainType(cell:CPos) : string
+    + IsSinglePlayer : bool <<get>>
+    + IsPausedShellmap : bool <<get>>
+    + LobbyOption(id:string) : LuaValue
+    + NamedActor(actorName:string) : Actor
+    + IsNamedActor(actor:Actor) : bool
+    + ActorsWithTag(tag:string) : Actor[]
+}
+ScriptGlobal <|-- MapGlobal
+MapGlobal --> "sma" SpawnMapActors
+MapGlobal --> "world" World
+MapGlobal --> "gameSettings" GameSettings
+MapGlobal --> "TopLeft" WPos
+MapGlobal --> "BottomRight" WPos
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+class ImportTSMapCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+    {static} UnpackLZO(src:byte[], dest:byte[]) : void
+    {static} UnpackLCW(src:byte[], dest:byte[], temp:byte[]) : void
+    {static} ReadTiles(map:Map, file:IniFile, fullSize:int2) : void
+    {static} ReadOverlay(map:Map, file:IniFile, fullSize:int2) : void
+    {static} ReadWaypoints(map:Map, file:IniFile, fullSize:int2) : void
+    {static} ReadTerrainActors(map:Map, file:IniFile, fullSize:int2) : void
+    {static} ReadActors(map:Map, file:IniFile, type:string, fullSize:int2) : void
+    {static} ReadLighting(map:Map, file:IniFile) : void
+    {static} ReadLamps(map:Map, file:IniFile) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+IUtilityCommand <|-- ImportTSMapCommand
+ImportTSMapCommand o-> "OverlayToActor<byte,string>" "Dictionary`2"
+ImportTSMapCommand o-> "OverlayShapes<byte,Size>" "Dictionary`2"
+ImportTSMapCommand o-> "OverlayToHealth<byte,DamageState>" "Dictionary`2"
+ImportTSMapCommand o-> "ResourceFromOverlay<byte,byte[]>" "Dictionary`2"
+ImportTSMapCommand o-> "DeployableActors<string,string>" "Dictionary`2"
+@enduml

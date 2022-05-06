@@ -1,0 +1,11 @@
+@startuml
+class ClassicFacingBodyOrientationInfo {
+    + <<override>> QuantizeFacing(facing:WAngle, facings:int) : WAngle
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ClassicFacingBodyOrientation {
+    + ClassicFacingBodyOrientation(init:ActorInitializer, info:ClassicFacingBodyOrientationInfo)
+}
+BodyOrientationInfo <|-- ClassicFacingBodyOrientationInfo
+BodyOrientation <|-- ClassicFacingBodyOrientation
+@enduml

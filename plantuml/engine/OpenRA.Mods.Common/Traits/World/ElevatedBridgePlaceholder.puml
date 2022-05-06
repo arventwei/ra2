@@ -1,0 +1,24 @@
+@startuml
+enum ElevatedBridgePlaceholderOrientation {
+    X,
+    Y,
+}
+class ElevatedBridgePlaceholderInfo {
+    + <<readonly>> Length : int = 0
+    + <<readonly>> Height : byte = 0
+    + <<readonly>> TerrainType : string = "Road"
+    + BridgeCells() : IEnumerable<CPos>
+    + EndCells() : IEnumerable<CPos>
+}
+class ElevatedBridgePlaceholder {
+}
+class "TraitInfo`1"<T> {
+}
+class "Requires`1"<T> {
+}
+"TraitInfo`1" "<ElevatedBridgePlaceholder>" <|-- ElevatedBridgePlaceholderInfo
+"Requires`1" "<ElevatedBridgeLayerInfo>" <|-- ElevatedBridgePlaceholderInfo
+ILobbyCustomRulesIgnore <|-- ElevatedBridgePlaceholderInfo
+ElevatedBridgePlaceholderInfo o-> "Location" CPos
+ElevatedBridgePlaceholderInfo --> "Orientation" ElevatedBridgePlaceholderOrientation
+@enduml

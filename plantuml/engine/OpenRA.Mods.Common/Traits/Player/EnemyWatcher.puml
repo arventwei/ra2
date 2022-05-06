@@ -1,0 +1,23 @@
+@startuml
+class EnemyWatcherInfo {
+    + <<readonly>> ScanInterval : int = 25
+    + <<readonly>> NotificationInterval : int = 750
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class EnemyWatcher {
+    announcedAny : bool
+    rescanInterval : int
+    ticksBeforeNextNotification : int
+    + EnemyWatcher(info:EnemyWatcherInfo)
+    Tick(self:Actor) : void
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- EnemyWatcherInfo
+ITick <|-- EnemyWatcher
+EnemyWatcher --> "info" EnemyWatcherInfo
+EnemyWatcher --> "discoveredPlayers<Player>" "HashSet`1"
+EnemyWatcher --> "lastKnownActorIds<uint>" "HashSet`1"
+EnemyWatcher --> "visibleActorIds<uint>" "HashSet`1"
+EnemyWatcher --> "playedNotifications<string>" "HashSet`1"
+@enduml

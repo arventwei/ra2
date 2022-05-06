@@ -1,0 +1,61 @@
+@startuml
+class BulletInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> Palette : string = "effect"
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<readonly>> Shadow : bool = false
+    + <<readonly>> ShadowPalette : string = "shadow"
+    + <<readonly>> TrailImage : string = null
+    + <<readonly>> TrailInterval : int = 2
+    + <<readonly>> TrailDelay : int = 1
+    + <<readonly>> TrailPalette : string = "effect"
+    + <<readonly>> TrailUsePlayerPalette : bool = false
+    + <<readonly>> Blockable : bool = true
+    + <<readonly>> BounceCount : int = 0
+    + <<readonly>> BounceRangeModifier : int = 60
+    + <<readonly>> BounceSound : string = null
+    + <<readonly>> ContrailLength : int = 0
+    + <<readonly>> ContrailZOffset : int = 2047
+    + <<readonly>> ContrailUsePlayerColor : bool = false
+    + <<readonly>> ContrailDelay : int = 1
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class Bullet {
+    <<readonly>> trailPalette : string
+    length : int
+    ticks : int
+    smokeTicks : int
+    remainingBounces : int
+    + Bullet(info:BulletInfo, args:ProjectileArgs)
+    GetEffectiveFacing() : WAngle
+    + Tick(world:World) : void
+    ShouldExplode(world:World) : bool
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    Explode(world:World) : void
+    AnyValidTargetsInRadius(world:World, pos:WPos, radius:WDist, firedBy:Actor, checkTargetType:bool) : bool
+}
+class "HashSet`1"<T> {
+}
+IProjectileInfo <|-- BulletInfo
+BulletInfo o-> "Inaccuracy" WDist
+BulletInfo o-> "InaccuracyType" InaccuracyType
+BulletInfo o-> "Width" WDist
+BulletInfo o-> "InvalidBounceTerrain<string>" "HashSet`1"
+BulletInfo o-> "ValidBounceBlockerRelationships" PlayerRelationship
+BulletInfo o-> "AirburstAltitude" WDist
+BulletInfo o-> "ContrailColor" Color
+BulletInfo o-> "ContrailWidth" WDist
+IProjectile <|-- Bullet
+ISync <|-- Bullet
+Bullet --> "info" BulletInfo
+Bullet --> "args" ProjectileArgs
+Bullet --> "anim" Animation
+Bullet --> "facing" WAngle
+Bullet --> "angle" WAngle
+Bullet --> "speed" WDist
+Bullet --> "contrail" ContrailRenderable
+Bullet --> "pos" WPos
+Bullet --> "lastPos" WPos
+Bullet --> "target" WPos
+Bullet --> "source" WPos
+@enduml

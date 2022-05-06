@@ -1,0 +1,28 @@
+@startuml
+class GravityBombInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> OpenSequence : string = null
+    + <<readonly>> Palette : string = "effect"
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<readonly>> Shadow : bool = false
+    + <<readonly>> ShadowPalette : string = "shadow"
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class GravityBomb {
+    + GravityBomb(info:GravityBombInfo, args:ProjectileArgs)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IProjectileInfo <|-- GravityBombInfo
+GravityBombInfo o-> "Velocity" WVec
+GravityBombInfo o-> "Acceleration" WVec
+IProjectile <|-- GravityBomb
+ISync <|-- GravityBomb
+GravityBomb --> "info" GravityBombInfo
+GravityBomb --> "anim" Animation
+GravityBomb --> "args" ProjectileArgs
+GravityBomb --> "acceleration" WVec
+GravityBomb --> "velocity" WVec
+GravityBomb --> "pos" WPos
+GravityBomb --> "lastPos" WPos
+@enduml

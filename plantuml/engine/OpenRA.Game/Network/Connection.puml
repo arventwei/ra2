@@ -1,0 +1,66 @@
+@startuml
+enum ConnectionState {
+    PreConnecting,
+    NotConnected,
+    Connecting,
+    Connected,
+}
+interface IConnection {
+    LocalClientId : int <<get>>
+    ErrorMessage : string <<get>>
+    Send(frame:int, orders:List<byte[]>) : void
+    SendImmediate(orders:IEnumerable<byte[]>) : void
+    SendSync(frame:int, syncData:byte[]) : void
+    Receive(packetFn:Action<int, byte[]>) : void
+}
+class ConnectionTarget {
+    + ConnectionTarget()
+    + ConnectionTarget(host:string, port:int)
+    + ConnectionTarget(endpoints:IEnumerable<DnsEndPoint>)
+    + GetConnectEndPoints() : IEnumerable<IPEndPoint>
+    + <<override>> ToString() : string
+}
+class EchoConnection {
+    + <<virtual>> LocalClientId : int <<get>>
+    + <<virtual>> ErrorMessage : string <<get>>
+    + <<virtual>> Send(frame:int, orders:List<byte[]>) : void
+    + <<virtual>> SendImmediate(orders:IEnumerable<byte[]>) : void
+    + <<virtual>> SendSync(frame:int, syncData:byte[]) : void
+    + <<virtual>> Receive(packetFn:Action<int, byte[]>) : void
+    + StartRecording(chooseFilename:Func<string>) : void
+    + Dispose() : void
+}
+class NetworkConnection <<sealed>> {
+    <<volatile>> clientId : int
+    disposed : bool
+    errorMessage : string
+    + <<override>> ErrorMessage : string <<get>>
+    + NetworkConnection(target:ConnectionTarget)
+    NetworkConnectionConnect() : void
+    NetworkConnectionReceive() : void
+    + <<override>> LocalClientId : int <<get>>
+    + <<override>> SendSync(frame:int, syncData:byte[]) : void
+}
+class ReceivedPacket <<struct>> {
+    + FromClient : int
+}
+class "List`1"<T> {
+}
+IDisposable <|-- IConnection
+IConnection --> "ConnectionState" ConnectionState
+IConnection --> "EndPoint" IPEndPoint
+IConnection <|-- EchoConnection
+EchoConnection o-> "receivedPackets<ReceivedPacket>" "List`1"
+EchoConnection --> "Recorder" ReplayRecorder
+EchoConnection --> "ConnectionState" ConnectionState
+EchoConnection --> "EndPoint" IPEndPoint
+EchoConnection <|-- NetworkConnection
+NetworkConnection --> "target" ConnectionTarget
+NetworkConnection --> "tcp" TcpClient
+NetworkConnection --> "endpoint" IPEndPoint
+NetworkConnection o-> "queuedSyncPackets<byte[]>" "List`1"
+NetworkConnection o-> "connectionState" ConnectionState
+NetworkConnection --> "EndPoint" IPEndPoint
+NetworkConnection --> "ConnectionState" ConnectionState
+EchoConnection +-- ReceivedPacket
+@enduml

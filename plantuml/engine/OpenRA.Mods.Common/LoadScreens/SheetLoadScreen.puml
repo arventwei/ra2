@@ -1,0 +1,12 @@
+@startuml
+abstract class SheetLoadScreen {
+    dpiScale : float = 1
+    density : int
+    + <<override>> Init(modData:ModData, info:Dictionary<string, string>) : void
+    + {abstract} DisplayInner(r:Renderer, s:Sheet, density:int) : void
+    + <<override>> Display() : void
+}
+BlankLoadScreen <|-- SheetLoadScreen
+SheetLoadScreen --> "lastUpdate" Stopwatch
+SheetLoadScreen --> "sheet" Sheet
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+class RadarColorFromTerrainInfo {
+    + <<readonly>> Terrain : string
+    + GetColorFromTerrain(world:World) : Color
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RadarColorFromTerrain {
+    + RadarColorFromTerrain(self:Actor, info:RadarColorFromTerrainInfo)
+    + VisibleOnRadar(self:Actor) : bool
+    + RadarColorOverride(self:Actor, color:Color) : Color
+}
+TraitInfo <|-- RadarColorFromTerrainInfo
+IRadarColorModifier <|-- RadarColorFromTerrain
+RadarColorFromTerrain --> "c" Color
+@enduml

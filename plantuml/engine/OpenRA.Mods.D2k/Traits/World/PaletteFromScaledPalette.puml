@@ -1,0 +1,28 @@
+@startuml
+class PaletteFromScaledPaletteInfo {
+    + <<readonly>> Name : string = null
+    + <<readonly>> BasePalette : string = null
+    + <<readonly>> AllowModifiers : bool = true
+    + <<readonly>> Scale : float = 1.0f
+    + <<readonly>> Offset : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PaletteFromScaledPalette {
+    + PaletteFromScaledPalette(info:PaletteFromScaledPaletteInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+class ScaledPaletteRemap {
+    <<readonly>> scale : float
+    <<readonly>> offset : int
+    + ScaledPaletteRemap(scale:float, offset:int)
+    + GetRemappedColor(original:Color, index:int) : Color
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- PaletteFromScaledPaletteInfo
+ILoadsPalettes <|-- PaletteFromScaledPalette
+IProvidesAssetBrowserPalettes <|-- PaletteFromScaledPalette
+PaletteFromScaledPalette --> "info" PaletteFromScaledPaletteInfo
+PaletteFromScaledPalette --> "PaletteNames<string>" "IEnumerable`1"
+IPaletteRemap <|-- ScaledPaletteRemap
+@enduml

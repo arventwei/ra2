@@ -1,0 +1,10 @@
+@startuml
+class FlyIdle {
+    <<readonly>> idleTurn : bool
+    remainingTicks : int
+    + FlyIdle(self:Actor, ticks:int, idleTurn:bool)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- FlyIdle
+FlyIdle --> "aircraft" Aircraft
+@enduml

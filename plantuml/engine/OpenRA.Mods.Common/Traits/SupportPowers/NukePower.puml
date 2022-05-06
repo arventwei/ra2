@@ -1,0 +1,49 @@
+@startuml
+class NukePowerInfo {
+    + <<readonly>> MissileWeapon : string = ""
+    + <<readonly>> MissileDelay : int = 0
+    + <<readonly>> MissileUp : string = "up"
+    + <<readonly>> MissileDown : string = "down"
+    + <<readonly>> RemoveMissileOnDetonation : bool = true
+    + <<readonly>> MissilePalette : string = "effect"
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<readonly>> TrailImage : string = null
+    + <<readonly>> TrailInterval : int = 1
+    + <<readonly>> TrailDelay : int = 1
+    + <<readonly>> TrailPalette : string = "effect"
+    + <<readonly>> TrailUsePlayerPalette : bool = false
+    + <<readonly>> FlightDelay : int = 400
+    + <<readonly>> SkipAscent : bool = false
+    + <<readonly>> BeaconRemoveAdvance : int = 25
+    + <<readonly>> RevealGeneratedShroud : bool = true
+    + <<readonly>> CameraSpawnAdvance : int = 25
+    + <<readonly>> CameraRemoveDelay : int = 25
+    + <<readonly>> CircleWidth : float = 1
+    + <<readonly>> CircleBorderWidth : float = 3
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class NukePower {
+    + NukePower(self:Actor, info:NukePowerInfo)
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    + Activate(self:Actor, targetPosition:WPos) : void
+    + <<override>> SelectTarget(self:Actor, order:string, manager:SupportPowerManager) : void
+}
+class SelectNukePowerTarget {
+    + SelectNukePowerTarget(order:string, manager:SupportPowerManager, info:NukePowerInfo, button:MouseButton)
+}
+SupportPowerInfo <|-- NukePowerInfo
+NukePowerInfo o-> "SpawnOffset" WVec
+NukePowerInfo o-> "DetonationAltitude" WDist
+NukePowerInfo o-> "FlightVelocity" WDist
+NukePowerInfo o-> "CameraRange" WDist
+NukePowerInfo o-> "CameraRelationships" PlayerRelationship
+NukePowerInfo o-> "CircleColor" Color
+NukePowerInfo o-> "CircleBorderColor" Color
+NukePowerInfo --> "WeaponInfo" WeaponInfo
+SupportPower <|-- NukePower
+NukePower --> "info" NukePowerInfo
+NukePower --> "body" BodyOrientation
+SelectGenericPowerTarget <|-- SelectNukePowerTarget
+SelectNukePowerTarget --> "info" NukePowerInfo
+@enduml

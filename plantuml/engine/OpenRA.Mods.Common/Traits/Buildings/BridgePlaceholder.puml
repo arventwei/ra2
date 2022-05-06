@@ -1,0 +1,26 @@
+@startuml
+class BridgePlaceholderInfo {
+    + <<readonly>> Type : string = "GroundLevelBridge"
+    + <<readonly>> ReplaceWithActor : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BridgePlaceholder {
+    + BridgePlaceholder(self:Actor, info:BridgePlaceholderInfo)
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    Repair(repairer:Actor) : void
+    Demolish(saboteur:Actor, damageTypes:BitSet<DamageType>) : void
+    Type : string <<get>>
+    Valid : bool <<get>>
+}
+TraitInfo <|-- BridgePlaceholderInfo
+BridgePlaceholderInfo o-> "DamageState" DamageState
+IBridgeSegment <|-- BridgePlaceholder
+INotifyAddedToWorld <|-- BridgePlaceholder
+INotifyRemovedFromWorld <|-- BridgePlaceholder
+BridgePlaceholder --> "Info" BridgePlaceholderInfo
+BridgePlaceholder --> "self" Actor
+BridgePlaceholder --> "bridgeLayer" BridgeLayer
+BridgePlaceholder --> "DamageState" DamageState
+BridgePlaceholder --> "Location" CPos
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+class BigLoader {
+    TryParsePackage(s:Stream, filename:string, context:FS, package:IReadOnlyPackage) : bool
+}
+class BigFile <<sealed>> {
+    + Name : string <<get>>
+    + BigFile(s:Stream, filename:string)
+    + GetStream(filename:string) : Stream
+    + Contains(filename:string) : bool
+    + OpenPackage(filename:string, context:FS) : IReadOnlyPackage
+    + Dispose() : void
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class Entry {
+    + <<readonly>> Offset : uint
+    + <<readonly>> Size : uint
+    + <<readonly>> Path : string
+    + Entry(s:Stream)
+}
+IPackageLoader <|-- BigLoader
+BigLoader +-- BigFile
+IReadOnlyPackage <|-- BigFile
+BigFile --> "Contents<string>" "IEnumerable`1"
+BigFile o-> "index<string,Entry>" "Dictionary`2"
+BigFile --> "s" Stream
+BigFile +-- Entry
+@enduml

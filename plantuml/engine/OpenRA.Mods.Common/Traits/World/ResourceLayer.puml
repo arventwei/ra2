@@ -1,0 +1,47 @@
+@startuml
+class ResourceLayerContents <<struct>> {
+    + Density : int
+}
+interface IResourceLayerInfo {
+}
+interface IResourceLayer {
+     <<event>> CellChanged : Action<CPos, ResourceType> 
+    GetResource(cell:CPos) : ResourceLayerContents
+    IsVisible(cell:CPos) : bool
+}
+class ResourceLayerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ResourceLayer {
+    + IsResourceLayerEmpty : bool <<get>>
+    resCells : int
+    +  <<event>> CellChanged : Action<CPos, ResourceType> 
+    + ResourceLayer(self:Actor)
+    GetAdjacentCellsWith(t:ResourceType, cell:CPos) : int
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + AllowResourceAt(rt:ResourceType, cell:CPos) : bool
+    + CanSpawnResourceAt(newResourceType:ResourceType, cell:CPos) : bool
+    CreateResourceCell(t:ResourceType, cell:CPos) : ResourceLayerContents
+    + AddResource(t:ResourceType, p:CPos, n:int) : void
+    + IsFull(cell:CPos) : bool
+    + Harvest(cell:CPos) : ResourceType
+    + Destroy(cell:CPos) : void
+    + GetResourceType(cell:CPos) : ResourceType
+    + GetResourceDensity(cell:CPos) : int
+    GetResource(cell:CPos) : ResourceLayerContents
+    IsVisible(cell:CPos) : bool
+}
+class "Requires`1"<T> {
+}
+ResourceLayerContents o-> "Empty" ResourceLayerContents
+ResourceLayerContents --> "Type" ResourceType
+ITraitInfoInterface <|-- IResourceLayerInfo
+TraitInfo <|-- ResourceLayerInfo
+IResourceLayerInfo <|-- ResourceLayerInfo
+"Requires`1" "<ResourceTypeInfo>" <|-- ResourceLayerInfo
+"Requires`1" "<BuildingInfluenceInfo>" <|-- ResourceLayerInfo
+IResourceLayer <|-- ResourceLayer
+IWorldLoaded <|-- ResourceLayer
+ResourceLayer --> "world" World
+ResourceLayer --> "buildingInfluence" BuildingInfluence
+@enduml

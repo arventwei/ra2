@@ -1,0 +1,16 @@
+@startuml
+class IonCannon {
+    <<readonly>> palette : string
+    weaponDelay : int
+    impacted : bool = false
+    + IonCannon(firedBy:Player, weapon:WeaponInfo, world:World, launchPos:WPos, target:Target, effect:string, sequence:string, palette:string, delay:int)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    Finish(world:World) : void
+}
+IProjectile <|-- IonCannon
+IonCannon --> "target" Target
+IonCannon --> "anim" Animation
+IonCannon --> "firedBy" Player
+IonCannon --> "weapon" WeaponInfo
+@enduml

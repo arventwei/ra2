@@ -1,0 +1,22 @@
+@startuml
+class DummyBotInfo <<sealed>> {
+    + <<readonly>> Name : string = "Unnamed Bot"
+    + <<readonly>> Type : string = null
+    Type : string <<get>>
+    Name : string <<get>>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DummyBot <<sealed>> {
+    + IsEnabled : bool <<get>>
+    + DummyBot(info:DummyBotInfo)
+    Activate(p:Player) : void
+    QueueOrder(order:Order) : void
+}
+TraitInfo <|-- DummyBotInfo
+IBotInfo <|-- DummyBotInfo
+IBot <|-- DummyBot
+DummyBot --> "info" DummyBotInfo
+DummyBot --> "player" Player
+DummyBot --> "Info" IBotInfo
+DummyBot --> "Player" Player
+@enduml

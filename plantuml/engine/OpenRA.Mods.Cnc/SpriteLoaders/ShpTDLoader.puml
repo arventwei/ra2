@@ -1,0 +1,44 @@
+@startuml
+class ShpTDLoader {
+    {static} IsShpTD(s:Stream) : bool
+    + TryParseSprite(s:Stream, frames:ISpriteFrame[], metadata:TypeDictionary) : bool
+}
+class ShpTDSprite {
+    recurseDepth : int = 0
+    <<readonly>> imageCount : int
+    <<readonly>> shpBytesFileOffset : long
+    + ShpTDSprite(stream:Stream)
+    Decompress(h:ImageHeader) : void
+    CopyImageData(baseImage:byte[]) : byte[]
+    + {static} Write(s:Stream, size:Size, frames:IEnumerable<byte[]>) : void
+}
+enum Format {
+    XORPrev= 0x20,
+    XORLCW= 0x40,
+    LCW= 0x80,
+}
+class ImageHeader {
+    + DisableExportPadding : bool <<get>>
+    + FileOffset : uint
+    + RefOffset : uint
+    + ImageHeader()
+    + ImageHeader(stream:Stream, reader:ShpTDSprite)
+    + WriteTo(writer:BinaryWriter) : void
+}
+class "IReadOnlyList`1"<T> {
+}
+ISpriteLoader <|-- ShpTDLoader
+ShpTDSprite --> "Frames<ISpriteFrame>" "IReadOnlyList`1"
+ShpTDSprite --> "Size" Size
+ShpTDSprite +-- Format
+ShpTDSprite +-- ImageHeader
+ISpriteFrame <|-- ImageHeader
+ImageHeader --> "Type" SpriteFrameType
+ImageHeader --> "Size" Size
+ImageHeader --> "FrameSize" Size
+ImageHeader --> "Offset" float2
+ImageHeader --> "Format" Format
+ImageHeader --> "RefFormat" Format
+ImageHeader --> "RefImage" ImageHeader
+ImageHeader --> "reader" ShpTDSprite
+@enduml

@@ -1,0 +1,49 @@
+@startuml
+class DeveloperModeInfo {
+    + <<readonly>> CheckboxLabel : string = "Debug Menu"
+    + <<readonly>> CheckboxDescription : string = "Enables cheats and developer commands"
+    + <<readonly>> CheckboxEnabled : bool = false
+    + <<readonly>> CheckboxLocked : bool = false
+    + <<readonly>> CheckboxVisible : bool = true
+    + <<readonly>> CheckboxDisplayOrder : int = 0
+    + <<readonly>> Cash : int = 20000
+    + <<readonly>> ResourceGrowth : int = 100
+    + <<readonly>> FastBuild : bool
+    + <<readonly>> FastCharge : bool
+    + <<readonly>> DisableShroud : bool
+    + <<readonly>> UnlimitedPower : bool
+    + <<readonly>> BuildAnywhere : bool
+    + <<readonly>> PathDebug : bool
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DeveloperMode {
+    + Enabled : bool <<get>>
+    fastCharge : bool
+    allTech : bool
+    fastBuild : bool
+    disableShroud : bool
+    pathDebug : bool
+    unlimitedPower : bool
+    buildAnywhere : bool
+    + FastCharge : bool <<get>>
+    + AllTech : bool <<get>>
+    + FastBuild : bool <<get>>
+    + DisableShroud : bool <<get>>
+    + PathDebug : bool <<get>>
+    + UnlimitedPower : bool <<get>>
+    + BuildAnywhere : bool <<get>>
+    enableAll : bool
+    + DeveloperMode(info:DeveloperModeInfo)
+    Created(self:Actor) : void
+    + ResolveOrder(self:Actor, order:Order) : void
+    RenderPlayerUnlocked : bool <<get>>
+}
+TraitInfo <|-- DeveloperModeInfo
+ILobbyOptions <|-- DeveloperModeInfo
+IResolveOrder <|-- DeveloperMode
+ISync <|-- DeveloperMode
+INotifyCreated <|-- DeveloperMode
+IUnlocksRenderPlayer <|-- DeveloperMode
+DeveloperMode --> "info" DeveloperModeInfo
+@enduml

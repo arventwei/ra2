@@ -1,0 +1,24 @@
+@startuml
+class AmbientSoundInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AmbientSound {
+    <<readonly>> loop : bool
+    delay : int
+    + AmbientSound(self:Actor, info:AmbientSoundInfo)
+    Tick(self:Actor) : void
+    StartSound(self:Actor) : void
+    StopSound() : void
+    RemovedFromWorld(self:Actor) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+ConditionalTraitInfo <|-- AmbientSoundInfo
+"ConditionalTrait`1" "<AmbientSoundInfo>" <|-- AmbientSound
+ITick <|-- AmbientSound
+INotifyRemovedFromWorld <|-- AmbientSound
+AmbientSound o-> "currentSounds<ISound>" "HashSet`1"
+AmbientSound --> "cachedPosition" WPos
+@enduml

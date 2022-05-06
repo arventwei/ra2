@@ -1,0 +1,8 @@
+@startuml
+class PlayerGlobal {
+    + PlayerGlobal(context:ScriptContext)
+    + GetPlayer(name:string) : Player
+    + GetPlayers(filter:LuaFunction) : Player[]
+}
+ScriptGlobal <|-- PlayerGlobal
+@enduml

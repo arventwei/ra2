@@ -1,0 +1,15 @@
+@startuml
+class HealActorsCrateActionInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HealActorsCrateAction {
+    + HealActorsCrateAction(self:Actor, info:HealActorsCrateActionInfo)
+    + <<override>> Activate(collector:Actor) : void
+}
+class "BitSet`1"<T> {
+}
+CrateActionInfo <|-- HealActorsCrateActionInfo
+HealActorsCrateActionInfo o-> "TargetTypes<TargetableType>" "BitSet`1"
+CrateAction <|-- HealActorsCrateAction
+HealActorsCrateAction --> "info" HealActorsCrateActionInfo
+@enduml

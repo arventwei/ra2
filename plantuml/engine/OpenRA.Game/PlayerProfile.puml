@@ -1,0 +1,21 @@
+@startuml
+class PlayerProfile {
+    + <<readonly>> Fingerprint : string
+    + <<readonly>> PublicKey : string
+    + <<readonly>> KeyRevoked : bool
+    + <<readonly>> ProfileID : int
+    + <<readonly>> ProfileName : string
+    + <<readonly>> ProfileRank : string = "Registered Player"
+    {static} LoadBadges(yaml:MiniYaml) : object
+}
+class PlayerBadge {
+    + <<readonly>> Label : string
+    + <<readonly>> Icon : string
+    + <<readonly>> Icon2x : string
+    + <<readonly>> Icon3x : string
+    + PlayerBadge(label:string, icon:string, icon2x:string, icon3x:string)
+}
+class "List`1"<T> {
+}
+PlayerProfile --> "Badges<PlayerBadge>" "List`1"
+@enduml

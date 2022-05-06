@@ -1,0 +1,16 @@
+@startuml
+class JumpjetLocomotorInfo {
+    + <<readonly>> JumpjetTransitionCost : int = 0
+    + <<readonly>> JumpjetTransitionOnRamps : bool = true
+    + <<override>> DisableDomainPassabilityCheck : bool <<get>>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class JumpjetLocomotor {
+    + JumpjetLocomotor(self:Actor, info:JumpjetLocomotorInfo)
+}
+class "HashSet`1"<T> {
+}
+LocomotorInfo <|-- JumpjetLocomotorInfo
+JumpjetLocomotorInfo o-> "JumpjetTransitionTerrainTypes<string>" "HashSet`1"
+Locomotor <|-- JumpjetLocomotor
+@enduml

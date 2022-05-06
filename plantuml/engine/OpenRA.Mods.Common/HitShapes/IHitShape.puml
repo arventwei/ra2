@@ -1,0 +1,9 @@
+@startuml
+interface IHitShape {
+    DistanceFromEdge(v:WVec) : WDist
+    DistanceFromEdge(pos:WPos, origin:WPos, orientation:WRot) : WDist
+    Initialize() : void
+    RenderDebugOverlay(wr:WorldRenderer, origin:WPos, orientation:WRot) : IEnumerable<IRenderable>
+}
+IHitShape --> "OuterRadius" WDist
+@enduml

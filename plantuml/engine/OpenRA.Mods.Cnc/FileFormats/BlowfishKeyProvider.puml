@@ -1,0 +1,41 @@
+@startuml
+class BlowfishKeyProvider {
+    <<const>> PublicKeyString : string = "AihRvNoIbTn85FZRYNZRcT+i6KpU+maCsEqr3Q5q+LDB5tH7Tz2qQ38V"
+    globOneBitLen : uint
+    globOneLenXTwo : uint
+    globOneHighBitLen : uint
+    globOneHighInvLow : uint
+    globOneHighInvHigh : uint
+    {static} InitBigNum(n:uint[], val:uint, len:uint) : void
+    {static} MoveKeyToBig(n:uint[], key:byte[], klen:uint, blen:uint) : void
+    {static} KeyToBigNum(n:uint[], key:byte[], len:uint) : void
+    {static} LenBigNum(n:uint[], len:uint) : uint
+    {static} BitLenBigNum(n:uint[], len:uint) : uint
+    InitPublicKey() : void
+    {static} CompareBigNum(n1:uint[], n2:uint[], len:uint) : int
+    {static} MoveBigNum(dest:uint[], src:uint[], len:uint) : void
+    {static} ShrBigNum(n:uint[], bits:int, len:int) : void
+    {static} ShlBigNum(n:uint[], bits:int, len:int) : void
+    {static} SubBigNum(dest:uint[], src1:uint[], src2:uint[], carry:uint, len:int) : uint
+    {static} <<unsafe>> SubBigNum(dest:uint*, src1:uint*, src2:uint*, carry:uint, len:int) : uint
+    {static} InvertBigNum(n1:uint[], n2:uint[], len:uint) : void
+    {static} IncrementBigNum(n:uint[], len:uint) : void
+    InitTwoDw(n:uint[], len:uint) : void
+    {static} <<unsafe>> MulBignumWord(pn1:ushort*, n2:uint[], mul:uint, len:uint) : void
+    {static} MulBigNum(dest:uint[], src1:uint[], src2:uint[], len:uint) : void
+    {static} NotBigNum(n:uint[], len:uint) : void
+    {static} NegBigNum(n:uint[], len:uint) : void
+    <<unsafe>> GetMulWord(n:uint*) : uint
+    {static} DecBigNum(n:uint[], len:uint) : void
+    CalcBigNum(n1:uint[], n2:uint[], n3:uint[], len:uint) : void
+    ClearTempVars(len:uint) : void
+    CalcKey(n1:uint[], n2:uint[], n3:uint[], n4:uint[], len:uint) : void
+    ProcessPredata(src:byte[]) : byte[]
+    + DecryptKey(src:byte[]) : byte[]
+}
+class PublicKey {
+    + Len : uint
+}
+BlowfishKeyProvider o-> "pubkey" PublicKey
+BlowfishKeyProvider +-- PublicKey
+@enduml

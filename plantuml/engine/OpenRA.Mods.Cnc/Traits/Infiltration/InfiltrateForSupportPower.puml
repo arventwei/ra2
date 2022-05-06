@@ -1,0 +1,18 @@
+@startuml
+class InfiltrateForSupportPowerInfo {
+    + <<readonly>> Proxy : string = null
+    + <<readonly>> InfiltratedNotification : string = null
+    + <<readonly>> InfiltrationNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class InfiltrateForSupportPower {
+    + InfiltrateForSupportPower(info:InfiltrateForSupportPowerInfo)
+    Infiltrated(self:Actor, infiltrator:Actor, types:BitSet<TargetableType>) : void
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- InfiltrateForSupportPowerInfo
+InfiltrateForSupportPowerInfo o-> "Types<TargetableType>" "BitSet`1"
+INotifyInfiltrated <|-- InfiltrateForSupportPower
+InfiltrateForSupportPower --> "info" InfiltrateForSupportPowerInfo
+@enduml

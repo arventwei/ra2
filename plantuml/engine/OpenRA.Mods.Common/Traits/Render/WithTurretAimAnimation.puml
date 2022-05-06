@@ -1,0 +1,25 @@
+@startuml
+class WithTurretAimAnimationInfo {
+    + <<readonly>> Armament : string = "primary"
+    + <<readonly>> Turret : string = "primary"
+    + <<readonly>> Sequence : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class WithTurretAimAnimation {
+    + WithTurretAimAnimation(init:ActorInitializer, info:WithTurretAimAnimationInfo)
+    StartedAiming(self:Actor, ab:AttackBase) : void
+    StoppedAiming(self:Actor, ab:AttackBase) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithTurretAimAnimationInfo
+"Requires`1" "<WithSpriteTurretInfo>" <|-- WithTurretAimAnimationInfo
+"Requires`1" "<AttackBaseInfo>" <|-- WithTurretAimAnimationInfo
+"ConditionalTrait`1" "<WithTurretAimAnimationInfo>" <|-- WithTurretAimAnimation
+INotifyAiming <|-- WithTurretAimAnimation
+WithTurretAimAnimation --> "attack" AttackBase
+WithTurretAimAnimation --> "wst" WithSpriteTurret
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+abstract class AirStateBase {
+}
+class AirIdleState {
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class AirAttackState {
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class AirFleeState {
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class "BitSet`1"<T> {
+}
+StateBase <|-- AirStateBase
+AirStateBase o-> "AirTargetTypes<TargetableType>" "BitSet`1"
+AirStateBase <|-- AirIdleState
+IState <|-- AirIdleState
+AirStateBase <|-- AirAttackState
+IState <|-- AirAttackState
+AirStateBase <|-- AirFleeState
+IState <|-- AirFleeState
+@enduml

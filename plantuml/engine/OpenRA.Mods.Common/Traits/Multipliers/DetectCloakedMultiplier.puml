@@ -1,0 +1,15 @@
+@startuml
+class DetectCloakedMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DetectCloakedMultiplier {
+    + DetectCloakedMultiplier(info:DetectCloakedMultiplierInfo)
+    GetDetectCloakedModifier() : int
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- DetectCloakedMultiplierInfo
+"ConditionalTrait`1" "<DetectCloakedMultiplierInfo>" <|-- DetectCloakedMultiplier
+IDetectCloakedModifier <|-- DetectCloakedMultiplier
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+class RailgunHelixRenderable <<struct>> {
+    <<readonly>> zOffset : int
+    <<readonly>> alpha : int
+    <<readonly>> ticks : int
+    + RailgunHelixRenderable(pos:WPos, zOffset:int, railgun:Railgun, railgunInfo:RailgunInfo, ticks:int)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- RailgunHelixRenderable
+IFinalizedRenderable <|-- RailgunHelixRenderable
+RailgunHelixRenderable --> "pos" WPos
+RailgunHelixRenderable --> "railgun" Railgun
+RailgunHelixRenderable --> "info" RailgunInfo
+RailgunHelixRenderable --> "helixRadius" WDist
+RailgunHelixRenderable --> "angle" WAngle
+RailgunHelixRenderable --> "Pos" WPos
+RailgunHelixRenderable --> "Palette" PaletteReference
+@enduml

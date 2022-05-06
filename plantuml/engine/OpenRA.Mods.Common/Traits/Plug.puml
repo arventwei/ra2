@@ -1,0 +1,10 @@
+@startuml
+class PlugInfo {
+    + <<readonly>> Type : string = null
+}
+class Plug {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<Plug>" <|-- PlugInfo
+@enduml

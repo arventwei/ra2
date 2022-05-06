@@ -1,0 +1,16 @@
+@startuml
+class IngameCashCounterLogic {
+    <<const>> DisplayFracPerFrame : float = .07f
+    <<const>> DisplayDeltaPerFrame : int = 37
+    <<readonly>> cashLabel : string
+    nextCashTickTime : int = 0
+    displayResources : int
+    displayLabel : string
+    + IngameCashCounterLogic(widget:Widget, world:World)
+    + <<override>> Tick() : void
+}
+ChromeLogic <|-- IngameCashCounterLogic
+IngameCashCounterLogic --> "world" World
+IngameCashCounterLogic --> "player" Player
+IngameCashCounterLogic --> "playerResources" PlayerResources
+@enduml

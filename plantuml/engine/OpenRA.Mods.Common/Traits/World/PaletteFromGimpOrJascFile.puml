@@ -1,0 +1,30 @@
+@startuml
+class PaletteFromGimpOrJascFileInfo {
+    + <<readonly>> Name : string = null
+    + <<readonly>> Filename : string = null
+    + <<readonly>> Premultiply : bool = true
+    + <<readonly>> AllowModifiers : bool = true
+    + <<readonly>> TransparentIndex : int = 0
+    + <<readonly>> CursorPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    Palette : string <<get>>
+    ReadPalette(fileSystem:IReadOnlyFileSystem) : ImmutablePalette
+}
+class PaletteFromGimpOrJascFile {
+    + PaletteFromGimpOrJascFile(world:World, info:PaletteFromGimpOrJascFileInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+class "HashSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- PaletteFromGimpOrJascFileInfo
+IProvidesCursorPaletteInfo <|-- PaletteFromGimpOrJascFileInfo
+PaletteFromGimpOrJascFileInfo o-> "Tilesets<string>" "HashSet`1"
+PaletteFromGimpOrJascFileInfo o-> "ExcludeTilesets<string>" "HashSet`1"
+ILoadsPalettes <|-- PaletteFromGimpOrJascFile
+IProvidesAssetBrowserPalettes <|-- PaletteFromGimpOrJascFile
+PaletteFromGimpOrJascFile --> "world" World
+PaletteFromGimpOrJascFile --> "info" PaletteFromGimpOrJascFileInfo
+PaletteFromGimpOrJascFile --> "PaletteNames<string>" "IEnumerable`1"
+@enduml

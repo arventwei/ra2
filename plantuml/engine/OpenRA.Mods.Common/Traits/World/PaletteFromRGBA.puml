@@ -1,0 +1,21 @@
+@startuml
+class PaletteFromRGBAInfo {
+    + <<readonly>> Name : string = null
+    + <<readonly>> Tileset : string = null
+    + <<readonly>> R : int = 0
+    + <<readonly>> G : int = 0
+    + <<readonly>> B : int = 0
+    + <<readonly>> A : int = 255
+    + <<readonly>> AllowModifiers : bool = true
+    + <<readonly>> TransparentIndex : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PaletteFromRGBA {
+    + PaletteFromRGBA(world:World, info:PaletteFromRGBAInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+TraitInfo <|-- PaletteFromRGBAInfo
+ILoadsPalettes <|-- PaletteFromRGBA
+PaletteFromRGBA --> "world" World
+PaletteFromRGBA --> "info" PaletteFromRGBAInfo
+@enduml

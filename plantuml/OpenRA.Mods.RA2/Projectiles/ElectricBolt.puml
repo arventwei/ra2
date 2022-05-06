@@ -1,0 +1,35 @@
+@startuml
+class ElectricBoltInfo {
+    + <<readonly>> ZOffset : int = 0
+    + <<readonly>> Duration : int = 5
+    + <<readonly>> PlayerColorZaps : int = 0
+    + <<readonly>> Distortion : int = 128
+    + <<readonly>> LaunchEffectImage : string = null
+    + <<readonly>> LaunchEffectSequence : string = null
+    + <<readonly>> LaunchEffectPalette : string = "effect"
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class ElectricBolt {
+    <<readonly>> hasLaunchEffect : bool
+    ticks : int = 0
+    + ElectricBolt(info:ElectricBoltInfo, args:ProjectileArgs)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+class "HashSet`1"<T> {
+}
+IProjectileInfo <|-- ElectricBoltInfo
+ElectricBoltInfo o-> "Width" WDist
+ElectricBoltInfo o-> "Angle" WAngle
+ElectricBoltInfo o-> "SegmentLength" WDist
+IProjectile <|-- ElectricBolt
+ISync <|-- ElectricBolt
+ElectricBolt --> "args" ProjectileArgs
+ElectricBolt --> "info" ElectricBoltInfo
+ElectricBolt --> "leftVector" WVec
+ElectricBolt --> "upVector" WVec
+ElectricBolt --> "random" MersenneTwister
+ElectricBolt --> "zaps<(Color Color, WPos[] Offsets)>" "HashSet`1"
+ElectricBolt --> "target" WPos
+ElectricBolt --> "source" WPos
+@enduml

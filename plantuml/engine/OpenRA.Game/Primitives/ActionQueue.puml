@@ -1,0 +1,20 @@
+@startuml
+class ActionQueue {
+    + Add(a:Action, desiredTime:long) : void
+    + PerformActions(currentTime:long) : void
+    Index(action:DelayedAction) : int
+}
+class DelayedAction <<struct>> {
+    + <<readonly>> Time : long
+    + DelayedAction(action:Action, time:long)
+    + CompareTo(other:DelayedAction) : int
+    + <<override>> ToString() : string
+}
+class "List`1"<T> {
+}
+class "IComparable`1"<T> {
+}
+ActionQueue o-> "actions<DelayedAction>" "List`1"
+"IComparable`1" "<DelayedAction>" <|-- DelayedAction
+DelayedAction --> "Action" Action
+@enduml

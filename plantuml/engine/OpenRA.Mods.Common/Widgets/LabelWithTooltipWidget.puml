@@ -1,0 +1,14 @@
+@startuml
+class LabelWithTooltipWidget {
+    + <<readonly>> TooltipTemplate : string
+    + <<readonly>> TooltipContainer : string
+    + LabelWithTooltipWidget()
+    + <<override>> Clone() : Widget
+    + <<override>> MouseEntered() : void
+    + <<override>> MouseExited() : void
+}
+class "Func`1"<T> {
+}
+LabelWidget <|-- LabelWithTooltipWidget
+LabelWithTooltipWidget o-> "GetTooltipText<string>" "Func`1"
+@enduml

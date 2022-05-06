@@ -1,0 +1,36 @@
+@startuml
+abstract class AffectsShroudInfo {
+    + <<readonly>> MaxHeightDelta : int
+}
+abstract class AffectsShroud {
+    + AffectsShroud(self:Actor, info:AffectsShroudInfo)
+    ProjectedCells(self:Actor) : PPos[]
+    VisualPositionChanged(self:Actor, oldLayer:byte, newLayer:byte) : void
+    Tick(self:Actor) : void
+    UpdateShroudCells(self:Actor) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    MovementTypeChanged(self:Actor, type:MovementType) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+ConditionalTraitInfo <|-- AffectsShroudInfo
+AffectsShroudInfo o-> "MinRange" WDist
+AffectsShroudInfo o-> "Range" WDist
+AffectsShroudInfo o-> "MoveRecalculationThreshold" WDist
+AffectsShroudInfo o-> "Type" VisibilityType
+"ConditionalTrait`1" "<AffectsShroudInfo>" <|-- AffectsShroud
+ISync <|-- AffectsShroud
+INotifyAddedToWorld <|-- AffectsShroud
+INotifyRemovedFromWorld <|-- AffectsShroud
+INotifyMoving <|-- AffectsShroud
+INotifyVisualPositionChanged <|-- AffectsShroud
+ITick <|-- AffectsShroud
+AffectsShroud --> "footprint<PPos>" "HashSet`1"
+AffectsShroud --> "cachedLocation" CPos
+AffectsShroud --> "cachedRange" WDist
+AffectsShroud --> "cachedPos" WPos
+AffectsShroud --> "Range" WDist
+@enduml

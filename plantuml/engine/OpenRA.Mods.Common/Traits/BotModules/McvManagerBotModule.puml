@@ -1,0 +1,43 @@
+@startuml
+class McvManagerBotModuleInfo {
+    + <<readonly>> MinimumConstructionYardCount : int = 1
+    + <<readonly>> ScanForNewMcvInterval : int = 20
+    + <<readonly>> MinBaseRadius : int = 2
+    + <<readonly>> MaxBaseRadius : int = 20
+    + <<readonly>> RestrictMCVDeploymentFallbackToBase : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class McvManagerBotModule {
+    + GetRandomBaseCenter() : CPos
+    scanInterval : int
+    firstTick : bool = true
+    + McvManagerBotModule(self:Actor, info:McvManagerBotModuleInfo)
+    UpdatedBaseCenter(newLocation:CPos) : void
+    UpdatedDefenseCenter(newLocation:CPos) : void
+    BotTick(bot:IBot) : void
+    ShouldBuildMCV() : bool
+    DeployMcvs(bot:IBot, chooseLocation:bool) : void
+    DeployMcv(bot:IBot, mcv:Actor, move:bool) : void
+    ChooseMcvDeployLocation(actorType:string, offset:CVec, distanceToBaseIsImportant:bool) : CPos?
+    IssueTraitData(self:Actor) : List<MiniYamlNode>
+    ResolveTraitData(self:Actor, data:List<MiniYamlNode>) : void
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Predicate`1"<T> {
+}
+ConditionalTraitInfo <|-- McvManagerBotModuleInfo
+McvManagerBotModuleInfo o-> "McvTypes<string>" "HashSet`1"
+McvManagerBotModuleInfo o-> "ConstructionYardTypes<string>" "HashSet`1"
+McvManagerBotModuleInfo o-> "McvFactoryTypes<string>" "HashSet`1"
+"ConditionalTrait`1" "<McvManagerBotModuleInfo>" <|-- McvManagerBotModule
+IBotTick <|-- McvManagerBotModule
+IBotPositionsUpdated <|-- McvManagerBotModule
+IGameSaveTraitData <|-- McvManagerBotModule
+McvManagerBotModule --> "world" World
+McvManagerBotModule --> "player" Player
+McvManagerBotModule --> "unitCannotBeOrdered<Actor>" "Predicate`1"
+McvManagerBotModule --> "initialBaseCenter" CPos
+@enduml

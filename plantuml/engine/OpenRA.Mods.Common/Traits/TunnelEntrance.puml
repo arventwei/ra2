@@ -1,0 +1,18 @@
+@startuml
+class TunnelEntranceInfo {
+    + <<readonly>> Margin : int = 2
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TunnelEntrance {
+    + Exit : CPos? <<get>>
+    + NearEnough : int <<get>>
+    + TunnelEntrance(self:Actor, info:TunnelEntranceInfo)
+    Created(self:Actor) : void
+}
+TraitInfo <|-- TunnelEntranceInfo
+TunnelEntranceInfo o-> "RallyPoint" CVec
+TunnelEntranceInfo o-> "Sensor" CVec
+INotifyCreated <|-- TunnelEntrance
+TunnelEntrance --> "info" TunnelEntranceInfo
+TunnelEntrance --> "Entrance" CPos
+@enduml

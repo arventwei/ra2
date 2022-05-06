@@ -1,0 +1,34 @@
+@startuml
+class DemolishableInfo {
+    + IsValidTarget(actorInfo:ActorInfo, saboteur:Actor) : bool
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Demolishable {
+    + Demolishable(info:DemolishableInfo)
+    IsValidTarget(self:Actor, saboteur:Actor) : bool
+    Demolish(self:Actor, saboteur:Actor, delay:int, damageTypes:BitSet<DamageType>) : void
+    Tick(self:Actor) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+class DemolishAction {
+    + <<readonly>> Token : int
+    + Delay : int
+    + DemolishAction(saboteur:Actor, delay:int, token:int, damageTypes:BitSet<DamageType>)
+}
+class "List`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+ConditionalTraitInfo <|-- DemolishableInfo
+IDemolishableInfo <|-- DemolishableInfo
+"ConditionalTrait`1" "<DemolishableInfo>" <|-- Demolishable
+IDemolishable <|-- Demolishable
+ITick <|-- Demolishable
+Demolishable o-> "actions<DemolishAction>" "List`1"
+Demolishable o-> "removeActions<DemolishAction>" "List`1"
+Demolishable +-- DemolishAction
+DemolishAction --> "Saboteur" Actor
+DemolishAction --> "DamageTypes<DamageType>" "BitSet`1"
+@enduml

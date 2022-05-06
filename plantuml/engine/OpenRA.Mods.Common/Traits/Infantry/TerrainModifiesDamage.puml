@@ -1,0 +1,18 @@
+@startuml
+class TerrainModifiesDamageInfo {
+    + <<readonly>> ModifyHealing : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TerrainModifiesDamage {
+    <<const>> FullDamage : int = 100
+    + TerrainModifiesDamage(self:Actor, info:TerrainModifiesDamageInfo)
+    GetDamageModifier(attacker:Actor, damage:Damage) : int
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- TerrainModifiesDamageInfo
+TerrainModifiesDamageInfo o-> "TerrainModifier<string,int>" "Dictionary`2"
+IDamageModifier <|-- TerrainModifiesDamage
+TerrainModifiesDamage --> "Info" TerrainModifiesDamageInfo
+TerrainModifiesDamage --> "self" Actor
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+class CheckRangeLimit {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, rules:Ruleset) : void
+}
+ILintRulesPass <|-- CheckRangeLimit
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class AllyRepairInfo {
+}
+class AllyRepair {
+    + ResolveOrder(self:Actor, order:Order) : void
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<AllyRepair>" <|-- AllyRepairInfo
+IResolveOrder <|-- AllyRepair
+@enduml

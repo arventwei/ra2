@@ -1,0 +1,17 @@
+@startuml
+class VoiceSetReferenceAttribute <<sealed>> {
+}
+class VoiceReferenceAttribute <<sealed>> {
+}
+class LocomotorReferenceAttribute <<sealed>> {
+}
+class NotificationReferenceAttribute <<sealed>> {
+    + <<readonly>> NotificationTypeFieldName : string = null
+    + <<readonly>> NotificationType : string = null
+    + NotificationReferenceAttribute(type:string, typeFromField:string)
+}
+Attribute <|-- VoiceSetReferenceAttribute
+Attribute <|-- VoiceReferenceAttribute
+Attribute <|-- LocomotorReferenceAttribute
+Attribute <|-- NotificationReferenceAttribute
+@enduml

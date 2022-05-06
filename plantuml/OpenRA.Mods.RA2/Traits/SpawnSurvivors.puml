@@ -1,0 +1,18 @@
+@startuml
+class SpawnSurvivorsInfo {
+    + <<override>> Create(actor:ActorInitializer) : object
+}
+class SpawnSurvivors {
+    + SpawnSurvivors(info:SpawnSurvivorsInfo)
+    Killed(self:Actor, attack:AttackInfo) : void
+    Spawn(self:Actor) : void
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- SpawnSurvivorsInfo
+SpawnSurvivorsInfo o-> "DeathTypes<DamageType>" "BitSet`1"
+"ConditionalTrait`1" "<SpawnSurvivorsInfo>" <|-- SpawnSurvivors
+INotifyKilled <|-- SpawnSurvivors
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+class VisualMoveIntoTarget {
+    <<readonly>> targetLineColor : Color?
+    + VisualMoveIntoTarget(self:Actor, target:Target, targetMovementThreshold:WDist, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> GetTargets(self:Actor) : IEnumerable<Target>
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+Activity <|-- VisualMoveIntoTarget
+VisualMoveIntoTarget --> "mobile" Mobile
+VisualMoveIntoTarget --> "target" Target
+VisualMoveIntoTarget --> "targetMovementThreshold" WDist
+VisualMoveIntoTarget --> "targetStartPos" WPos
+@enduml

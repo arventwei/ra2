@@ -1,0 +1,52 @@
+@startuml
+class GameInformation {
+    + Mod : string
+    + Version : string
+    + MapUid : string
+    + MapTitle : string
+    + FinalGameTick : int
+    + IsSinglePlayer : bool <<get>>
+    + GameInformation()
+    + {static} Deserialize(data:string) : GameInformation
+    + Serialize() : string
+    + AddPlayer(runtimePlayer:OpenRA.Player, lobbyInfo:Session) : void
+    + GetPlayer(runtimePlayer:OpenRA.Player) : Player
+}
+class "IList`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class Player {
+    + ClientIndex : int
+    + Name : string
+    + IsHuman : bool
+    + IsBot : bool
+    + FactionName : string
+    + FactionId : string
+    + DisplayFactionName : string
+    + DisplayFactionId : string
+    + Team : int
+    + SpawnPoint : int
+    + Handicap : int
+    + IsRandomFaction : bool
+    + IsRandomSpawnPoint : bool
+    + Fingerprint : string
+    + DisconnectFrame : int
+}
+GameInformation --> "StartTimeUtc" DateTime
+GameInformation --> "EndTimeUtc" DateTime
+GameInformation --> "Duration" TimeSpan
+GameInformation --> "Players<Player>" "IList`1"
+GameInformation o-> "DisabledSpawnPoints<int>" "HashSet`1"
+GameInformation --> "MapPreview" MapPreview
+GameInformation --> "HumanPlayers<Player>" "IEnumerable`1"
+GameInformation --> "playersByRuntime<OpenRA.Player,Player>" "Dictionary`2"
+GameInformation +-- Player
+Player --> "Color" Color
+Player --> "Outcome" WinState
+Player --> "OutcomeTimestampUtc" DateTime
+@enduml

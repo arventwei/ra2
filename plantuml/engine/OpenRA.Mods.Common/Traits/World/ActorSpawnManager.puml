@@ -1,0 +1,31 @@
+@startuml
+class ActorSpawnManagerInfo {
+    + <<readonly>> Minimum : int = 0
+    + <<readonly>> Maximum : int = 4
+    + <<readonly>> SpawnInterval : int = 6000
+    + <<readonly>> Owner : string = "Creeps"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ActorSpawnManager {
+    enabled : bool
+    spawnCountdown : int
+    actorsPresent : int
+    + ActorSpawnManager(self:Actor, info:ActorSpawnManagerInfo)
+    Tick(self:Actor) : void
+    SpawnActor(self:Actor, spawnPoint:Actor) : WPos
+    GetRandomSpawnPoint(world:World, random:Support.MersenneTwister) : Actor
+    + DecreaseActorCount() : void
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ActorSpawnManagerInfo
+"Requires`1" "<MapCreepsInfo>" <|-- ActorSpawnManagerInfo
+ActorSpawnManagerInfo o-> "Types<string>" "HashSet`1"
+"ConditionalTrait`1" "<ActorSpawnManagerInfo>" <|-- ActorSpawnManager
+ITick <|-- ActorSpawnManager
+ActorSpawnManager --> "info" ActorSpawnManagerInfo
+@enduml

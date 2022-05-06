@@ -1,0 +1,7 @@
+@startuml
+class ReplayUtils <<static>> {
+    + {static} PromptConfirmReplayCompatibility(replayMeta:ReplayMetadata, onCancel:Action) : bool
+    {static} IncompatibleReplayDialog(type:string, name:string, onCancel:Action) : bool
+}
+ReplayUtils o-> "DoNothing" Action
+@enduml

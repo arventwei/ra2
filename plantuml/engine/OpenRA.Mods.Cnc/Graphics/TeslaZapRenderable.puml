@@ -1,0 +1,36 @@
+@startuml
+class TeslaZapRenderable <<struct>> {
+    <<readonly>> zOffset : int
+    <<readonly>> image : string
+    <<readonly>> palette : string
+    <<readonly>> dimSequence : string
+    <<readonly>> brightSequence : string
+    <<readonly>> brightZaps : int
+    <<readonly>> dimZaps : int
+    + TeslaZapRenderable(pos:WPos, zOffset:int, length:WVec, image:string, brightSequence:string, brightZaps:int, dimSequence:string, dimZaps:int, palette:string)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + Render(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+    + GenerateRenderables(wr:WorldRenderer) : IEnumerable<IFinalizedRenderable>
+    {static} DrawZapWandering(wr:WorldRenderer, from:float2, to:float2, s:ISpriteSequence, pal:string) : IEnumerable<IFinalizedRenderable>
+    {static} DrawZap(wr:WorldRenderer, from:float2, to:float2, s:ISpriteSequence, p:float2, palette:string) : IEnumerable<IFinalizedRenderable>
+}
+class "IEnumerable`1"<T> {
+}
+IRenderable <|-- TeslaZapRenderable
+IFinalizedRenderable <|-- TeslaZapRenderable
+TeslaZapRenderable --> "pos" WPos
+TeslaZapRenderable --> "length" WVec
+TeslaZapRenderable --> "cachedPos" WPos
+TeslaZapRenderable --> "cachedLength" WVec
+TeslaZapRenderable --> "cache<IFinalizedRenderable>" "IEnumerable`1"
+TeslaZapRenderable --> "Pos" WPos
+TeslaZapRenderable --> "Palette" PaletteReference
+@enduml

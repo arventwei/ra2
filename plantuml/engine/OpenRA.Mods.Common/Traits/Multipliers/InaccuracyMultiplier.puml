@@ -1,0 +1,15 @@
+@startuml
+class InaccuracyMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class InaccuracyMultiplier {
+    + InaccuracyMultiplier(info:InaccuracyMultiplierInfo)
+    GetInaccuracyModifier() : int
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- InaccuracyMultiplierInfo
+"ConditionalTrait`1" "<InaccuracyMultiplierInfo>" <|-- InaccuracyMultiplier
+IInaccuracyModifier <|-- InaccuracyMultiplier
+@enduml

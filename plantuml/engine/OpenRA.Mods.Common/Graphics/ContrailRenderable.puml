@@ -1,0 +1,32 @@
+@startuml
+class ContrailRenderable <<struct>> {
+    + Length : int <<get>>
+    <<readonly>> zOffset : int
+    next : int
+    length : int
+    skip : int
+    + ContrailRenderable(world:World, color:Color, width:WDist, length:int, skip:int, zOffset:int)
+    ContrailRenderable(world:World, trail:WPos[], width:WDist, next:int, length:int, skip:int, color:Color, zOffset:int)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+    Index(i:int) : int
+    {static} Average(list:WPos[]) : WPos
+    + Update(pos:WPos) : void
+    + {static} ChooseColor(self:Actor) : Color
+}
+IRenderable <|-- ContrailRenderable
+IFinalizedRenderable <|-- ContrailRenderable
+ContrailRenderable --> "world" World
+ContrailRenderable --> "color" Color
+ContrailRenderable --> "width" WDist
+ContrailRenderable --> "Pos" WPos
+ContrailRenderable --> "Palette" PaletteReference
+@enduml

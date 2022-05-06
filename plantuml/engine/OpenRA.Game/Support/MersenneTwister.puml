@@ -1,0 +1,14 @@
+@startuml
+class MersenneTwister {
+    index : int = 0
+    + Last : int
+    + TotalCount : int = 0
+    + MersenneTwister()
+    + MersenneTwister(seed:int)
+    + Next() : int
+    + Next(low:int, high:int) : int
+    + Next(high:int) : int
+    + NextFloat() : float
+    Generate() : void
+}
+@enduml

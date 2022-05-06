@@ -1,0 +1,8 @@
+@startuml
+class ListMSCabContentsCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+}
+IUtilityCommand <|-- ListMSCabContentsCommand
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+class AutoTargetPriorityInfo {
+    + <<readonly>> Priority : int = 1
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AutoTargetPriority {
+    + AutoTargetPriority(info:AutoTargetPriorityInfo)
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- AutoTargetPriorityInfo
+"Requires`1" "<AutoTargetInfo>" <|-- AutoTargetPriorityInfo
+AutoTargetPriorityInfo o-> "ValidTargets<TargetableType>" "BitSet`1"
+AutoTargetPriorityInfo --> "InvalidTargets<TargetableType>" "BitSet`1"
+AutoTargetPriorityInfo o-> "ValidRelationships" PlayerRelationship
+"ConditionalTrait`1" "<AutoTargetPriorityInfo>" <|-- AutoTargetPriority
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+class CreatesShroudInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CreatesShroud {
+    + CreatesShroud(self:Actor, info:CreatesShroudInfo)
+}
+class "IEnumerable`1"<T> {
+}
+AffectsShroudInfo <|-- CreatesShroudInfo
+CreatesShroudInfo o-> "ValidRelationships" PlayerRelationship
+AffectsShroud <|-- CreatesShroud
+CreatesShroud --> "info" CreatesShroudInfo
+CreatesShroud --> "rangeModifiers<int>" "IEnumerable`1"
+CreatesShroud --> "Range" WDist
+@enduml

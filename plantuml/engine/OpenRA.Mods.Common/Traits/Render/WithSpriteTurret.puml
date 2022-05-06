@@ -1,0 +1,34 @@
+@startuml
+class WithSpriteTurretInfo {
+    + <<readonly>> Sequence : string = "turret"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<readonly>> Turret : string = "primary"
+    + <<readonly>> Recoils : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithSpriteTurret {
+    + WithSpriteTurret(self:Actor, info:WithSpriteTurretInfo)
+    + NormalizeSequence(self:Actor, sequence:string) : string
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+    + PlayCustomAnimation(self:Actor, name:string, after:Action) : void
+    + CancelCustomAnimation(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithSpriteTurretInfo
+IRenderActorPreviewSpritesInfo <|-- WithSpriteTurretInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithSpriteTurretInfo
+"Requires`1" "<TurretedInfo>" <|-- WithSpriteTurretInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithSpriteTurretInfo
+"Requires`1" "<ArmamentInfo>" <|-- WithSpriteTurretInfo
+"ConditionalTrait`1" "<WithSpriteTurretInfo>" <|-- WithSpriteTurret
+INotifyDamageStateChanged <|-- WithSpriteTurret
+WithSpriteTurret --> "DefaultAnimation" Animation
+WithSpriteTurret --> "rs" RenderSprites
+WithSpriteTurret --> "body" BodyOrientation
+WithSpriteTurret --> "t" Turreted
+@enduml

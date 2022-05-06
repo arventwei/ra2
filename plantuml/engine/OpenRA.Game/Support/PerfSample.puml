@@ -1,0 +1,9 @@
+@startuml
+class PerfSample <<struct>> {
+    <<readonly>> item : string
+    <<readonly>> ticks : long
+    + PerfSample(item:string)
+    + Dispose() : void
+}
+IDisposable <|-- PerfSample
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+class FirepowerMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class FirepowerMultiplier {
+    + FirepowerMultiplier(info:FirepowerMultiplierInfo)
+    GetFirepowerModifier() : int
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- FirepowerMultiplierInfo
+"ConditionalTrait`1" "<FirepowerMultiplierInfo>" <|-- FirepowerMultiplier
+IFirepowerModifier <|-- FirepowerMultiplier
+@enduml

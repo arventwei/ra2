@@ -1,0 +1,32 @@
+@startuml
+class TransformsIntoEntersTunnelsInfo {
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> RequiresForceMove : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TransformsIntoEntersTunnels {
+    + TransformsIntoEntersTunnels(self:Actor, info:TransformsIntoEntersTunnelsInfo)
+    CanEnterTunnel(target:Actor, modifiers:TargetModifiers) : bool
+    UseEnterCursor(target:Actor) : bool
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    ResolveOrder(self:Actor, order:Order) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+ConditionalTraitInfo <|-- TransformsIntoEntersTunnelsInfo
+"Requires`1" "<TransformsInfo>" <|-- TransformsIntoEntersTunnelsInfo
+TransformsIntoEntersTunnelsInfo o-> "TargetLineColor" Color
+"ConditionalTrait`1" "<TransformsIntoEntersTunnelsInfo>" <|-- TransformsIntoEntersTunnels
+IIssueOrder <|-- TransformsIntoEntersTunnels
+IResolveOrder <|-- TransformsIntoEntersTunnels
+IOrderVoice <|-- TransformsIntoEntersTunnels
+TransformsIntoEntersTunnels --> "self" Actor
+TransformsIntoEntersTunnels --> "Orders<IOrderTargeter>" "IEnumerable`1"
+@enduml

@@ -1,0 +1,91 @@
+@startuml
+enum Trigger {
+    OnIdle,
+    OnDamaged,
+    OnKilled,
+    OnProduction,
+    OnOtherProduction,
+    OnPlayerWon,
+    OnPlayerLost,
+    OnObjectiveAdded,
+    OnObjectiveCompleted,
+    OnObjectiveFailed,
+    OnCapture,
+    OnInfiltrated,
+    OnAddedToWorld,
+    OnRemovedFromWorld,
+    OnDiscovered,
+    OnPlayerDiscovered,
+    OnPassengerEntered,
+    OnPassengerExited,
+    OnSold,
+    OnTimerExpired,
+}
+class ScriptTriggersInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ScriptTriggers <<sealed>> {
+    +  <<event>> OnKilledInternal : Action<Actor> 
+    +  <<event>> OnCapturedInternal : Action<Actor> 
+    +  <<event>> OnRemovedInternal : Action<Actor> 
+    +  <<event>> OnAddedInternal : Action<Actor> 
+    +  <<event>> OnProducedInternal : Action<Actor, Actor> 
+    +  <<event>> OnOtherProducedInternal : Action<Actor, Actor> 
+    + ScriptTriggers(world:World, self:Actor)
+    Triggerables(trigger:Trigger) : List<Triggerable>
+    + RegisterCallback(trigger:Trigger, func:LuaFunction, context:ScriptContext) : void
+    + HasAnyCallbacksFor(trigger:Trigger) : bool
+    TickIdle(self:Actor) : void
+    Damaged(self:Actor, e:AttackInfo) : void
+    Killed(self:Actor, e:AttackInfo) : void
+    UnitProduced(self:Actor, other:Actor, exit:CPos) : void
+    OnPlayerWon(player:Player) : void
+    OnPlayerLost(player:Player) : void
+    OnObjectiveAdded(player:Player, id:int) : void
+    OnObjectiveCompleted(player:Player, id:int) : void
+    OnObjectiveFailed(player:Player, id:int) : void
+    OnCapture(self:Actor, captor:Actor, oldOwner:Player, newOwner:Player, captureTypes:BitSet<CaptureType>) : void
+    Infiltrated(self:Actor, infiltrator:Actor, types:BitSet<TargetableType>) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    Selling(self:Actor) : void
+    Sold(self:Actor) : void
+    UnitProducedByOther(self:Actor, producee:Actor, produced:Actor, productionType:string, init:TypeDictionary) : void
+    OnDiscovered(self:Actor, discoverer:Player, playNotification:bool) : void
+    OnPassengerEntered(self:Actor, passenger:Actor) : void
+    OnPassengerExited(self:Actor, passenger:Actor) : void
+    NotifyTimerExpired(self:Actor) : void
+    + Clear(trigger:Trigger) : void
+    + ClearAll() : void
+    Disposing(self:Actor) : void
+}
+class Triggerable <<struct>> {
+    + Triggerable(function:LuaFunction, context:ScriptContext, self:Actor)
+    + Dispose() : void
+}
+TraitInfo <|-- ScriptTriggersInfo
+INotifyIdle <|-- ScriptTriggers
+INotifyDamage <|-- ScriptTriggers
+INotifyKilled <|-- ScriptTriggers
+INotifyProduction <|-- ScriptTriggers
+INotifyOtherProduction <|-- ScriptTriggers
+INotifyObjectivesUpdated <|-- ScriptTriggers
+INotifyCapture <|-- ScriptTriggers
+INotifyInfiltrated <|-- ScriptTriggers
+INotifyAddedToWorld <|-- ScriptTriggers
+INotifyRemovedFromWorld <|-- ScriptTriggers
+INotifyDiscovered <|-- ScriptTriggers
+INotifyActorDisposing <|-- ScriptTriggers
+INotifyPassengerEntered <|-- ScriptTriggers
+INotifyPassengerExited <|-- ScriptTriggers
+INotifySold <|-- ScriptTriggers
+INotifyWinStateChanged <|-- ScriptTriggers
+INotifyTimeLimit <|-- ScriptTriggers
+ScriptTriggers --> "world" World
+ScriptTriggers --> "self" Actor
+ScriptTriggers +-- Triggerable
+IDisposable <|-- Triggerable
+Triggerable --> "Function" LuaFunction
+Triggerable --> "Context" ScriptContext
+Triggerable --> "Self" LuaValue
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+class TransformOnCaptureInfo {
+    + <<readonly>> IntoActor : string = null
+    + <<readonly>> ForceHealthPercentage : int = 0
+    + <<readonly>> SkipMakeAnims : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TransformOnCapture {
+    <<readonly>> faction : string
+    + TransformOnCapture(init:ActorInitializer, info:TransformOnCaptureInfo)
+    OnCapture(self:Actor, captor:Actor, oldOwner:Player, newOwner:Player, captureTypes:BitSet<CaptureType>) : void
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- TransformOnCaptureInfo
+TransformOnCaptureInfo o-> "CaptureTypes<CaptureType>" "BitSet`1"
+INotifyCapture <|-- TransformOnCapture
+TransformOnCapture --> "info" TransformOnCaptureInfo
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+class WithHarvesterPipsDecorationInfo {
+    + <<readonly>> PipCount : int = 0
+    + <<readonly>> Image : string = "pips"
+    + <<readonly>> EmptySequence : string = "pip-empty"
+    + <<readonly>> FullSequence : string = "pip-green"
+    + <<readonly>> Palette : string = "chrome"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithHarvesterPipsDecoration {
+    + WithHarvesterPipsDecoration(self:Actor, info:WithHarvesterPipsDecorationInfo)
+    GetPipSequence(i:int) : string
+}
+class "Requires`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "WithDecorationBase`1"<T> {
+}
+WithDecorationBaseInfo <|-- WithHarvesterPipsDecorationInfo
+"Requires`1" "<HarvesterInfo>" <|-- WithHarvesterPipsDecorationInfo
+WithHarvesterPipsDecorationInfo o-> "PipStride" int2
+WithHarvesterPipsDecorationInfo o-> "ResourceSequences<string,string>" "Dictionary`2"
+"WithDecorationBase`1" "<WithHarvesterPipsDecorationInfo>" <|-- WithHarvesterPipsDecoration
+WithHarvesterPipsDecoration --> "harvester" Harvester
+WithHarvesterPipsDecoration --> "pips" Animation
+@enduml

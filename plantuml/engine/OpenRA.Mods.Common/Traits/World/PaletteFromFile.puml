@@ -1,0 +1,25 @@
+@startuml
+class PaletteFromFileInfo {
+    + <<readonly>> Name : string = null
+    + <<readonly>> Tileset : string = null
+    + <<readonly>> Filename : string = null
+    + <<readonly>> AllowModifiers : bool = true
+    + <<readonly>> CursorPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    Palette : string <<get>>
+    ReadPalette(fileSystem:IReadOnlyFileSystem) : ImmutablePalette
+}
+class PaletteFromFile {
+    + PaletteFromFile(world:World, info:PaletteFromFileInfo)
+    + LoadPalettes(wr:WorldRenderer) : void
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- PaletteFromFileInfo
+IProvidesCursorPaletteInfo <|-- PaletteFromFileInfo
+ILoadsPalettes <|-- PaletteFromFile
+IProvidesAssetBrowserPalettes <|-- PaletteFromFile
+PaletteFromFile --> "world" World
+PaletteFromFile --> "info" PaletteFromFileInfo
+PaletteFromFile --> "PaletteNames<string>" "IEnumerable`1"
+@enduml

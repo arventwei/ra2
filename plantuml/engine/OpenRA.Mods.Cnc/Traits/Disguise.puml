@@ -1,0 +1,93 @@
+@startuml
+class DisguiseTooltipInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DisguiseTooltip {
+    + DisguiseTooltip(self:Actor, info:DisguiseTooltipInfo)
+}
+enum RevealDisguiseType {
+    None= 0,
+    Attack= 1,
+    Damaged= 2,
+    Unload= 4,
+    Infiltrate= 8,
+    Demolish= 16,
+    Move= 32,
+}
+class DisguiseInfo {
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> DisguisedCondition : string = null
+    + <<readonly>> Cursor : string = "ability"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Disguise {
+    + Disguised : bool <<get>>
+    disguisedToken : int
+    disguisedAsToken : int
+    lastPos : CPos?
+    + Disguise(self:Actor, info:DisguiseInfo)
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    ResolveOrder(self:Actor, order:Order) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    RadarColorOverride(self:Actor, color:Color) : Color
+    + DisguiseAs(target:Actor) : void
+    + DisguiseAs(actorInfo:ActorInfo, newOwner:Player) : void
+    HandleDisguise(oldEffectiveActor:ActorInfo, oldEffectiveOwner:Player, oldDisguiseSetting:bool) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Damaged(self:Actor, e:AttackInfo) : void
+    Unloading(self:Actor) : void
+    Demolishing(self:Actor) : void
+    Infiltrating(self:Actor) : void
+    Tick(self:Actor) : void
+}
+class DisguiseOrderTargeter {
+    + DisguiseOrderTargeter(info:DisguiseInfo)
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+TooltipInfo <|-- DisguiseTooltipInfo
+"Requires`1" "<DisguiseInfo>" <|-- DisguiseTooltipInfo
+"ConditionalTrait`1" "<DisguiseTooltipInfo>" <|-- DisguiseTooltip
+ITooltip <|-- DisguiseTooltip
+DisguiseTooltip --> "self" Actor
+DisguiseTooltip --> "disguise" Disguise
+DisguiseTooltip --> "TooltipInfo" ITooltipInfo
+DisguiseTooltip --> "Owner" Player
+TraitInfo <|-- DisguiseInfo
+DisguiseInfo o-> "ValidRelationships" PlayerRelationship
+DisguiseInfo o-> "TargetTypes<TargetableType>" "BitSet`1"
+DisguiseInfo o-> "RevealDisguiseOn" RevealDisguiseType
+DisguiseInfo o-> "DisguisedAsConditions<string,string>" "Dictionary`2"
+DisguiseInfo --> "LinterConditions<string>" "IEnumerable`1"
+IEffectiveOwner <|-- Disguise
+IIssueOrder <|-- Disguise
+IResolveOrder <|-- Disguise
+IOrderVoice <|-- Disguise
+IRadarColorModifier <|-- Disguise
+INotifyAttack <|-- Disguise
+INotifyDamage <|-- Disguise
+INotifyUnload <|-- Disguise
+INotifyDemolition <|-- Disguise
+INotifyInfiltration <|-- Disguise
+ITick <|-- Disguise
+Disguise --> "AsActor" ActorInfo
+Disguise --> "AsPlayer" Player
+Disguise --> "AsTooltipInfo" ITooltipInfo
+Disguise --> "Owner" Player
+Disguise --> "self" Actor
+Disguise --> "info" DisguiseInfo
+Disguise --> "Orders<IOrderTargeter>" "IEnumerable`1"
+UnitOrderTargeter <|-- DisguiseOrderTargeter
+DisguiseOrderTargeter --> "info" DisguiseInfo
+@enduml

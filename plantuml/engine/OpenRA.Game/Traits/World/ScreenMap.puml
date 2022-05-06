@@ -1,0 +1,69 @@
+@startuml
+class ActorBoundsPair <<struct>> {
+    + ActorBoundsPair(actor:Actor, bounds:Polygon)
+    + <<override>> GetHashCode() : int
+    + <<override>> ToString() : string
+}
+class ScreenMapInfo {
+    + <<readonly>> BinSize : int = 250
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ScreenMap {
+    + ScreenMap(world:World, info:ScreenMapInfo)
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + AddOrUpdate(viewer:Player, fa:FrozenActor) : void
+    + Remove(viewer:Player, fa:FrozenActor) : void
+    + AddOrUpdate(a:Actor) : void
+    + Remove(a:Actor) : void
+    + Add(effect:IEffect, position:WPos, size:Size) : void
+    + Add(effect:IEffect, position:WPos, sprite:Sprite) : void
+    + Update(effect:IEffect, position:WPos, size:Size) : void
+    + Update(effect:IEffect, position:WPos, sprite:Sprite) : void
+    + Remove(effect:IEffect) : void
+    {static} ValidBounds(bounds:Rectangle) : bool
+    + FrozenActorsAtMouse(viewer:Player, worldPx:int2) : IEnumerable<FrozenActor>
+    + FrozenActorsAtMouse(viewer:Player, mi:MouseInput) : IEnumerable<FrozenActor>
+    + ActorsAtMouse(worldPx:int2) : IEnumerable<ActorBoundsPair>
+    + ActorsAtMouse(mi:MouseInput) : IEnumerable<ActorBoundsPair>
+    {static} RectWithCorners(a:int2, b:int2) : Rectangle
+    + ActorsInMouseBox(a:int2, b:int2) : IEnumerable<ActorBoundsPair>
+    + ActorsInMouseBox(r:Rectangle) : IEnumerable<ActorBoundsPair>
+    + RenderableActorsInBox(a:int2, b:int2) : IEnumerable<Actor>
+    + RenderableEffectsInBox(a:int2, b:int2) : IEnumerable<IEffect>
+    + RenderableFrozenActorsInBox(p:Player, a:int2, b:int2) : IEnumerable<FrozenActor>
+    + TickRender() : void
+    + RenderBounds(viewer:Player) : IEnumerable<Rectangle>
+    + MouseBounds(viewer:Player) : IEnumerable<Polygon>
+}
+class "IEnumerable`1"<T> {
+}
+class "Func`2"<T1,T2> {
+}
+class "Cache`2"<T1,T2> {
+}
+class "SpatiallyPartitioned`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "HashSet`1"<T> {
+}
+ActorBoundsPair --> "Actor" Actor
+ActorBoundsPair --> "Bounds" Polygon
+TraitInfo <|-- ScreenMapInfo
+IWorldLoaded <|-- ScreenMap
+ScreenMap o-> "NoFrozenActors<FrozenActor>" "IEnumerable`1"
+ScreenMap o-> "frozenActorIsValid<FrozenActor,bool>" "Func`2"
+ScreenMap o-> "actorIsInWorld<Actor,bool>" "Func`2"
+ScreenMap --> "selectActorAndBounds<Actor,ActorBoundsPair>" "Func`2"
+ScreenMap --> "partitionedMouseFrozenActors<Player,SpatiallyPartitioned<FrozenActor>>" "Cache`2"
+ScreenMap --> "partitionedMouseActors<Actor>" "SpatiallyPartitioned`1"
+ScreenMap o-> "partitionedMouseActorBounds<Actor,ActorBoundsPair>" "Dictionary`2"
+ScreenMap --> "partitionedRenderableFrozenActors<Player,SpatiallyPartitioned<FrozenActor>>" "Cache`2"
+ScreenMap --> "partitionedRenderableActors<Actor>" "SpatiallyPartitioned`1"
+ScreenMap --> "partitionedRenderableEffects<IEffect>" "SpatiallyPartitioned`1"
+ScreenMap o-> "addOrUpdateActors<Actor>" "HashSet`1"
+ScreenMap o-> "removeActors<Actor>" "HashSet`1"
+ScreenMap --> "addOrUpdateFrozenActors<Player,HashSet<FrozenActor>>" "Cache`2"
+ScreenMap --> "removeFrozenActors<Player,HashSet<FrozenActor>>" "Cache`2"
+ScreenMap --> "worldRenderer" WorldRenderer
+@enduml

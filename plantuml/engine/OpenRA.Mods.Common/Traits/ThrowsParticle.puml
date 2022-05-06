@@ -1,0 +1,32 @@
+@startuml
+class ThrowsParticleInfo {
+    + <<readonly>> Anim : string = null
+    + <<readonly>> Velocity : int = 75
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ThrowsParticle {
+    tick : int = 0
+    length : int
+    direction : int
+    + ThrowsParticle(init:ActorInitializer, info:ThrowsParticleInfo)
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- ThrowsParticleInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- ThrowsParticleInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- ThrowsParticleInfo
+ThrowsParticleInfo o-> "Offset" WVec
+ThrowsParticleInfo o-> "MinThrowRange" WDist
+ThrowsParticleInfo o-> "MaxThrowRange" WDist
+ThrowsParticleInfo o-> "MinThrowAngle" WAngle
+ThrowsParticleInfo o-> "MaxThrowAngle" WAngle
+ThrowsParticleInfo o-> "TurnSpeed" WAngle
+ITick <|-- ThrowsParticle
+ThrowsParticle --> "pos" WVec
+ThrowsParticle --> "initialPos" WVec
+ThrowsParticle --> "finalPos" WVec
+ThrowsParticle --> "angle" WAngle
+ThrowsParticle --> "facing" WAngle
+ThrowsParticle --> "rotation" WAngle
+@enduml

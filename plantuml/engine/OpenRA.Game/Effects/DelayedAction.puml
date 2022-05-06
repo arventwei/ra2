@@ -1,0 +1,10 @@
+@startuml
+class DelayedAction {
+    delay : int
+    + DelayedAction(delay:int, a:Action)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- DelayedAction
+DelayedAction --> "a" Action
+@enduml

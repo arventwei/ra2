@@ -1,0 +1,13 @@
+@startuml
+class DeliverResources {
+    + DeliverResources(self:Actor, targetActor:Actor)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> Cancel(self:Actor, keepQueue:bool) : void
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+Activity <|-- DeliverResources
+DeliverResources --> "movement" IMove
+DeliverResources --> "harv" Harvester
+DeliverResources --> "targetActor" Actor
+DeliverResources --> "proc" Actor
+@enduml

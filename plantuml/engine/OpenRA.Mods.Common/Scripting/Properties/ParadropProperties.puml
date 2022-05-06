@@ -1,0 +1,12 @@
+@startuml
+class ParadropProperties {
+    + ParadropProperties(context:ScriptContext, self:Actor)
+    + Paradrop(cell:CPos) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- ParadropProperties
+"Requires`1" "<CargoInfo>" <|-- ParadropProperties
+"Requires`1" "<ParaDropInfo>" <|-- ParadropProperties
+ParadropProperties --> "paradrop" ParaDrop
+@enduml

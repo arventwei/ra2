@@ -1,0 +1,11 @@
+@startuml
+class CaptureProperties {
+    + CaptureProperties(context:ScriptContext, self:Actor)
+    + Capture(target:Actor) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- CaptureProperties
+"Requires`1" "<CaptureManagerInfo>" <|-- CaptureProperties
+CaptureProperties --> "captureManager" CaptureManager
+@enduml

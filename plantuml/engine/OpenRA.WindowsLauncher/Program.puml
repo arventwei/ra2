@@ -1,0 +1,16 @@
+@startuml
+class WindowsLauncher {
+    {static} <<extern>> SetForegroundWindow(hWnd:IntPtr) : bool
+    {static} <<extern>> AllowSetForegroundWindow(dwProcessId:int) : bool
+    {static} modID : string
+    {static} displayName : string
+    {static} faqUrl : string
+    {static} Main(args:string[]) : int
+    {static} RunGame(args:string[]) : int
+    {static} RunInnerLauncher(args:string[]) : int
+    {static} ShowErrorDialog() : void
+    {static} GameProcessExited(sender:object, e:EventArgs) : void
+    {static} Exit() : void
+}
+WindowsLauncher --> "gameProcess" Process
+@enduml

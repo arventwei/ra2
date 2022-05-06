@@ -1,0 +1,13 @@
+@startuml
+class MultiplayerLogic {
+    + MultiplayerLogic(widget:Widget, modData:ModData, onStart:Action, onExit:Action, directConnectEndPoint:ConnectionTarget)
+    OpenLobby() : void
+    Join(server:GameServer) : void
+    disposed : bool
+}
+ChromeLogic <|-- MultiplayerLogic
+MultiplayerLogic o-> "DoNothing" Action
+MultiplayerLogic --> "onStart" Action
+MultiplayerLogic --> "onExit" Action
+MultiplayerLogic --> "serverListLogic" ServerListLogic
+@enduml

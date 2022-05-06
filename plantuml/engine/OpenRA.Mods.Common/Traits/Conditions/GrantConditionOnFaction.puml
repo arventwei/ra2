@@ -1,0 +1,21 @@
+@startuml
+class GrantConditionOnFactionInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> ResetOnOwnerChange : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnFaction {
+    conditionToken : int
+    faction : string
+    + GrantConditionOnFaction(init:ActorInitializer, info:GrantConditionOnFactionInfo)
+    + OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- GrantConditionOnFactionInfo
+GrantConditionOnFactionInfo o-> "Factions<string>" "HashSet`1"
+"ConditionalTrait`1" "<GrantConditionOnFactionInfo>" <|-- GrantConditionOnFaction
+INotifyOwnerChanged <|-- GrantConditionOnFaction
+@enduml

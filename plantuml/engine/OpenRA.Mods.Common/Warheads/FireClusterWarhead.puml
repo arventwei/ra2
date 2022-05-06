@@ -1,0 +1,17 @@
+@startuml
+class FireClusterWarhead {
+    + <<readonly>> Weapon : string = null
+    + <<readonly>> RandomClusterCount : int
+    + <<readonly>> Footprint : string
+    + RulesetLoaded(rules:Ruleset, info:WeaponInfo) : void
+    + <<override>> DoImpact(target:Target, args:WarheadArgs) : void
+    FireProjectileAtCell(map:Map, firedBy:Actor, target:Target, targetCell:CPos, args:WarheadArgs) : void
+    CellsMatching(location:CPos, random:bool) : IEnumerable<CPos>
+}
+class "IRulesetLoaded`1"<T> {
+}
+Warhead <|-- FireClusterWarhead
+"IRulesetLoaded`1" "<WeaponInfo>" <|-- FireClusterWarhead
+FireClusterWarhead o-> "Dimensions" CVec
+FireClusterWarhead --> "weapon" WeaponInfo
+@enduml

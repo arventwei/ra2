@@ -1,0 +1,21 @@
+@startuml
+class ReloadArmamentsBarInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ReloadArmamentsBar {
+    + ReloadArmamentsBar(self:Actor, info:ReloadArmamentsBarInfo)
+    Created(self:Actor) : void
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- ReloadArmamentsBarInfo
+ReloadArmamentsBarInfo o-> "Color" Color
+ISelectionBar <|-- ReloadArmamentsBar
+INotifyCreated <|-- ReloadArmamentsBar
+ReloadArmamentsBar --> "info" ReloadArmamentsBarInfo
+ReloadArmamentsBar --> "self" Actor
+ReloadArmamentsBar --> "armaments<Armament>" "IEnumerable`1"
+@enduml

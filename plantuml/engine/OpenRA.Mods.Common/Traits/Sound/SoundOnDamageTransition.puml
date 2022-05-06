@@ -1,0 +1,15 @@
+@startuml
+class SoundOnDamageTransitionInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SoundOnDamageTransition {
+    + SoundOnDamageTransition(info:SoundOnDamageTransitionInfo)
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- SoundOnDamageTransitionInfo
+SoundOnDamageTransitionInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+INotifyDamageStateChanged <|-- SoundOnDamageTransition
+SoundOnDamageTransition --> "info" SoundOnDamageTransitionInfo
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+class EjectOnDeathInfo {
+    + <<readonly>> PilotActor : string = "E1"
+    + <<readonly>> SuccessRate : int = 50
+    + <<readonly>> ChuteSound : string = null
+    + <<readonly>> EjectInAir : bool = false
+    + <<readonly>> EjectOnGround : bool = false
+    + <<readonly>> AllowUnsuitableCell : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class EjectOnDeath {
+    + EjectOnDeath(self:Actor, info:EjectOnDeathInfo)
+    Killed(self:Actor, e:AttackInfo) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- EjectOnDeathInfo
+"ConditionalTrait`1" "<EjectOnDeathInfo>" <|-- EjectOnDeath
+INotifyKilled <|-- EjectOnDeath
+@enduml

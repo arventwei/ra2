@@ -1,0 +1,27 @@
+@startuml
+class AirstrikePowerInfo {
+    + <<readonly>> UnitType : string = "badr.bomber"
+    + <<readonly>> SquadSize : int = 1
+    + <<readonly>> QuantizedFacings : int = 32
+    + <<readonly>> CameraActor : string = null
+    + <<readonly>> CameraRemoveDelay : int = 25
+    + <<readonly>> UseDirectionalTarget : bool = false
+    + <<readonly>> DirectionArrowAnimation : string = null
+    + <<readonly>> DirectionArrowPalette : string = "chrome"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AirstrikePower {
+    + AirstrikePower(self:Actor, info:AirstrikePowerInfo)
+    + <<override>> SelectTarget(self:Actor, order:string, manager:SupportPowerManager) : void
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    + SendAirstrike(self:Actor, target:WPos, facing:WAngle?) : Actor[]
+    RemoveCamera(camera:Actor) : void
+    RemoveBeacon(beacon:Beacon) : void
+}
+SupportPowerInfo <|-- AirstrikePowerInfo
+AirstrikePowerInfo o-> "SquadOffset" WVec
+AirstrikePowerInfo o-> "Cordon" WDist
+AirstrikePowerInfo o-> "BeaconDistanceOffset" WDist
+SupportPower <|-- AirstrikePower
+AirstrikePower --> "info" AirstrikePowerInfo
+@enduml

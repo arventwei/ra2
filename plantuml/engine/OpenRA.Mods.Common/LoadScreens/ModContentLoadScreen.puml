@@ -1,0 +1,14 @@
+@startuml
+class ModContentLoadScreen <<sealed>> {
+    lastDensity : int
+    + <<override>> DisplayInner(r:Renderer, s:Sheet, density:int) : void
+    + <<override>> StartGame(args:Arguments) : void
+    IsModInstalled(content:ModContent) : bool
+    + <<override>> BeforeLoad() : bool
+}
+SheetLoadScreen <|-- ModContentLoadScreen
+ModContentLoadScreen --> "sprite" Sprite
+ModContentLoadScreen --> "bounds" Rectangle
+ModContentLoadScreen --> "lastSheet" Sheet
+ModContentLoadScreen --> "lastResolution" Size
+@enduml

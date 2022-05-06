@@ -1,0 +1,20 @@
+@startuml
+class GrantConditionOnPlayerResourcesInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> Threshold : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnPlayerResources {
+    conditionToken : int
+    + GrantConditionOnPlayerResources(info:GrantConditionOnPlayerResourcesInfo)
+    Created(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    Tick(self:Actor) : void
+}
+TraitInfo <|-- GrantConditionOnPlayerResourcesInfo
+INotifyCreated <|-- GrantConditionOnPlayerResources
+INotifyOwnerChanged <|-- GrantConditionOnPlayerResources
+ITick <|-- GrantConditionOnPlayerResources
+GrantConditionOnPlayerResources --> "info" GrantConditionOnPlayerResourcesInfo
+GrantConditionOnPlayerResources --> "playerResources" PlayerResources
+@enduml

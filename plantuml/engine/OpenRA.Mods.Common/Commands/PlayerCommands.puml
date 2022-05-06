@@ -1,0 +1,14 @@
+@startuml
+class PlayerCommandsInfo {
+}
+class PlayerCommands {
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + InvokeCommand(name:string, arg:string) : void
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<PlayerCommands>" <|-- PlayerCommandsInfo
+IChatCommand <|-- PlayerCommands
+IWorldLoaded <|-- PlayerCommands
+PlayerCommands --> "world" World
+@enduml

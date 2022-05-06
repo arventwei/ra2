@@ -1,0 +1,48 @@
+@startuml
+class LaserZapInfo {
+    + <<readonly>> ZOffset : int = 0
+    + <<readonly>> Duration : int = 10
+    + <<readonly>> DamageDuration : int = 1
+    + <<readonly>> DamageInterval : int = 1
+    + <<readonly>> UsePlayerColor : bool = false
+    + <<readonly>> TrackTarget : bool = true
+    + <<readonly>> Blockable : bool = false
+    + <<readonly>> SecondaryBeam : bool = false
+    + <<readonly>> SecondaryBeamZOffset : int = 0
+    + <<readonly>> SecondaryBeamUsePlayerColor : bool = false
+    + <<readonly>> HitAnim : string = null
+    + <<readonly>> HitAnimSequence : string = "idle"
+    + <<readonly>> HitAnimPalette : string = "effect"
+    + <<readonly>> LaunchEffectImage : string = null
+    + <<readonly>> LaunchEffectSequence : string = null
+    + <<readonly>> LaunchEffectPalette : string = "effect"
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class LaserZap {
+    <<readonly>> hasLaunchEffect : bool
+    ticks : int
+    interval : int
+    showHitAnim : bool
+    + LaserZap(info:LaserZapInfo, args:ProjectileArgs, color:Color)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IProjectileInfo <|-- LaserZapInfo
+LaserZapInfo o-> "Width" WDist
+LaserZapInfo o-> "Shape" BeamRenderableShape
+LaserZapInfo o-> "Color" Color
+LaserZapInfo o-> "Inaccuracy" WDist
+LaserZapInfo o-> "InaccuracyType" InaccuracyType
+LaserZapInfo o-> "SecondaryBeamWidth" WDist
+LaserZapInfo o-> "SecondaryBeamShape" BeamRenderableShape
+LaserZapInfo o-> "SecondaryBeamColor" Color
+IProjectile <|-- LaserZap
+ISync <|-- LaserZap
+LaserZap --> "args" ProjectileArgs
+LaserZap --> "info" LaserZapInfo
+LaserZap --> "hitanim" Animation
+LaserZap --> "color" Color
+LaserZap --> "secondaryColor" Color
+LaserZap --> "target" WPos
+LaserZap --> "source" WPos
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+class CloneableType {
+}
+class CloneableInfo {
+}
+class Cloneable {
+}
+class "TraitInfo`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+"TraitInfo`1" "<Cloneable>" <|-- CloneableInfo
+CloneableInfo o-> "Types<CloneableType>" "BitSet`1"
+@enduml

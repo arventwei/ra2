@@ -1,0 +1,41 @@
+@startuml
+class ProximityCapturableInfo {
+    + <<readonly>> MustBeClear : bool = false
+    + <<readonly>> Sticky : bool = false
+    + <<readonly>> Permanent : bool = false
+    + RulesetLoaded(rules:Ruleset, info:ActorInfo) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ProximityCapturable {
+    + Captured : bool <<get>>
+    proximityTrigger : int
+    skipTriggerUpdate : bool
+    + ProximityCapturable(self:Actor, info:ProximityCapturableInfo)
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    Tick(self:Actor) : void
+    ActorEntered(other:Actor) : void
+    ActorLeft(other:Actor) : void
+    CanBeCapturedBy(a:Actor) : bool
+    UpdateOwnership() : void
+    ChangeOwnership(self:Actor, captor:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "BitSet`1"<T> {
+}
+class "List`1"<T> {
+}
+TraitInfo <|-- ProximityCapturableInfo
+IRulesetLoaded <|-- ProximityCapturableInfo
+ProximityCapturableInfo o-> "Range" WDist
+ProximityCapturableInfo o-> "CaptorTypes<CaptureType>" "BitSet`1"
+ITick <|-- ProximityCapturable
+INotifyAddedToWorld <|-- ProximityCapturable
+INotifyRemovedFromWorld <|-- ProximityCapturable
+INotifyOwnerChanged <|-- ProximityCapturable
+ProximityCapturable --> "OriginalOwner" Player
+ProximityCapturable --> "Info" ProximityCapturableInfo
+ProximityCapturable --> "Self" Actor
+ProximityCapturable o-> "actorsInRange<Actor>" "List`1"
+ProximityCapturable --> "prevPosition" WPos
+@enduml

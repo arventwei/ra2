@@ -1,0 +1,18 @@
+@startuml
+class AnnounceOnSeenInfo {
+    + <<readonly>> PingRadar : bool = false
+    + <<readonly>> Notification : string = null
+    + <<readonly>> AnnounceNeutrals : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AnnounceOnSeen {
+    + AnnounceOnSeen(self:Actor, info:AnnounceOnSeenInfo)
+    + OnDiscovered(self:Actor, discoverer:Player, playNotification:bool) : void
+}
+class "Lazy`1"<T> {
+}
+TraitInfo <|-- AnnounceOnSeenInfo
+INotifyDiscovered <|-- AnnounceOnSeen
+AnnounceOnSeen --> "Info" AnnounceOnSeenInfo
+AnnounceOnSeen --> "radarPings<RadarPings>" "Lazy`1"
+@enduml

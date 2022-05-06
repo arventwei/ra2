@@ -1,0 +1,31 @@
+@startuml
+class WithSpriteBarrelInfo {
+    + <<readonly>> Sequence : string = "barrel"
+    + <<readonly>> Armament : string = "primary"
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithSpriteBarrel {
+    + WithSpriteBarrel(self:Actor, info:WithSpriteBarrelInfo)
+    + NormalizeSequence(self:Actor, sequence:string) : string
+    BarrelOffset() : WVec
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithSpriteBarrelInfo
+IRenderActorPreviewSpritesInfo <|-- WithSpriteBarrelInfo
+"Requires`1" "<TurretedInfo>" <|-- WithSpriteBarrelInfo
+"Requires`1" "<ArmamentInfo>" <|-- WithSpriteBarrelInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithSpriteBarrelInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithSpriteBarrelInfo
+WithSpriteBarrelInfo o-> "LocalOffset" WVec
+"ConditionalTrait`1" "<WithSpriteBarrelInfo>" <|-- WithSpriteBarrel
+WithSpriteBarrel --> "DefaultAnimation" Animation
+WithSpriteBarrel --> "rs" RenderSprites
+WithSpriteBarrel --> "self" Actor
+WithSpriteBarrel --> "armament" Armament
+WithSpriteBarrel --> "turreted" Turreted
+WithSpriteBarrel --> "body" BodyOrientation
+@enduml

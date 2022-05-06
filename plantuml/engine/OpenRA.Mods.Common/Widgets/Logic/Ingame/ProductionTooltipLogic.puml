@@ -1,0 +1,7 @@
+@startuml
+class ProductionTooltipLogic {
+    + ProductionTooltipLogic(widget:Widget, tooltipContainer:TooltipContainerWidget, player:Player, getTooltipIcon:Func<ProductionIcon>)
+    {static} ActorName(rules:Ruleset, a:string) : string
+}
+ChromeLogic <|-- ProductionTooltipLogic
+@enduml

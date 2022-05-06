@@ -1,0 +1,9 @@
+@startuml
+class UpdateMapInits {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    + <<override>> UpdateMapActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+}
+UpdateRule <|-- UpdateMapInits
+@enduml

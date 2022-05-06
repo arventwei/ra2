@@ -1,0 +1,41 @@
+@startuml
+class RepairableNearInfo {
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RepairableNear {
+    requireForceMove : bool
+    + RepairableNear(self:Actor, info:RepairableNearInfo)
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    CanRepairAt(target:Actor, modifiers:TargetModifiers) : bool
+    CanRepairAt(target:Actor) : bool
+    ShouldRepair() : bool
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    ResolveOrder(self:Actor, order:Order) : void
+    + FindRepairBuilding(self:Actor) : Actor
+    GetVariableObservers() : IEnumerable<VariableObserver>
+    RequireForceMoveConditionChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- RepairableNearInfo
+"Requires`1" "<IHealthInfo>" <|-- RepairableNearInfo
+"Requires`1" "<IMoveInfo>" <|-- RepairableNearInfo
+IObservesVariablesInfo <|-- RepairableNearInfo
+RepairableNearInfo o-> "RepairActors<string>" "HashSet`1"
+RepairableNearInfo o-> "CloseEnough" WDist
+RepairableNearInfo o-> "RequireForceMoveCondition" BooleanExpression
+IIssueOrder <|-- RepairableNear
+IResolveOrder <|-- RepairableNear
+IOrderVoice <|-- RepairableNear
+IObservesVariables <|-- RepairableNear
+RepairableNear --> "Info" RepairableNearInfo
+RepairableNear --> "self" Actor
+RepairableNear --> "Orders<IOrderTargeter>" "IEnumerable`1"
+@enduml

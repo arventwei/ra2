@@ -1,0 +1,24 @@
+@startuml
+class ConnectionLogic {
+    ConnectionStateChanged(om:OrderManager) : void
+    CloseWindow() : void
+    + ConnectionLogic(widget:Widget, endpoint:ConnectionTarget, onConnect:Action, onAbort:Action, onRetry:Action<string>)
+    + {static} Connect(endpoint:ConnectionTarget, password:string, onConnect:Action, onAbort:Action) : void
+}
+class ConnectionFailedLogic {
+    passwordOffsetAdjusted : bool
+    + ConnectionFailedLogic(widget:Widget, orderManager:OrderManager, onAbort:Action, onRetry:Action<string>)
+}
+class ConnectionSwitchModLogic {
+    + ConnectionSwitchModLogic(widget:Widget, orderManager:OrderManager, onAbort:Action, onRetry:Action<string>)
+}
+class "Action`1"<T> {
+}
+ChromeLogic <|-- ConnectionLogic
+ConnectionLogic --> "onConnect" Action
+ConnectionLogic --> "onAbort" Action
+ConnectionLogic --> "onRetry<string>" "Action`1"
+ChromeLogic <|-- ConnectionFailedLogic
+ConnectionFailedLogic --> "passwordField" PasswordFieldWidget
+ChromeLogic <|-- ConnectionSwitchModLogic
+@enduml

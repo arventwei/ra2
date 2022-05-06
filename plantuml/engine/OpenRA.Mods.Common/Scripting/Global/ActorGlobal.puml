@@ -1,0 +1,11 @@
+@startuml
+class ActorGlobal {
+    + ActorGlobal(context:ScriptContext)
+    CreateInit(initName:string, value:LuaValue) : ActorInit
+    + Create(type:string, addToWorld:bool, initTable:LuaTable) : Actor
+    + BuildTime(type:string, queue:string) : int
+    + CruiseAltitude(type:string) : int
+    + Cost(type:string) : int
+}
+ScriptGlobal <|-- ActorGlobal
+@enduml

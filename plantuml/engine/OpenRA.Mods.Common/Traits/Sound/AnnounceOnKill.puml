@@ -1,0 +1,15 @@
+@startuml
+class AnnounceOnKillInfo {
+    + <<readonly>> Interval : int = 5
+    + <<readonly>> Voice : string = "Kill"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AnnounceOnKill {
+    lastAnnounce : int
+    + AnnounceOnKill(self:Actor, info:AnnounceOnKillInfo)
+    AppliedDamage(self:Actor, damaged:Actor, e:AttackInfo) : void
+}
+TraitInfo <|-- AnnounceOnKillInfo
+INotifyAppliedDamage <|-- AnnounceOnKill
+AnnounceOnKill --> "info" AnnounceOnKillInfo
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+class RequiresSpecificOwnersInfo {
+}
+class RequiresSpecificOwners {
+}
+class "TraitInfo`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"TraitInfo`1" "<RequiresSpecificOwners>" <|-- RequiresSpecificOwnersInfo
+RequiresSpecificOwnersInfo o-> "ValidOwnerNames<string>" "HashSet`1"
+@enduml

@@ -1,0 +1,15 @@
+{
+  "name": "plantuml",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "actor": "puml generate actor.puml -o actor_uml.png",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "node-plantuml": "^0.9.0"
+  }
+}

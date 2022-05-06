@@ -1,0 +1,13 @@
+@startuml
+class AirstrikeProperties {
+    + AirstrikeProperties(context:ScriptContext, self:Actor)
+    + TargetAirstrike(target:WPos, facing:WAngle?) : Actor[]
+    + SendAirstrike(target:WPos, randomize:bool, facing:int) : void
+    + SendAirstrikeFrom(from:CPos, to:CPos) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- AirstrikeProperties
+"Requires`1" "<AirstrikePowerInfo>" <|-- AirstrikeProperties
+AirstrikeProperties --> "ap" AirstrikePower
+@enduml

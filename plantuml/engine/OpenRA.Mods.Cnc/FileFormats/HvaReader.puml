@@ -1,0 +1,8 @@
+@startuml
+class HvaReader {
+    + <<readonly>> FrameCount : uint
+    + <<readonly>> LimbCount : uint
+    + HvaReader(s:Stream, fileName:string)
+    + {static} Load(filename:string) : HvaReader
+}
+@enduml

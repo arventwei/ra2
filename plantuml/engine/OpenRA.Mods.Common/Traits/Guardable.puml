@@ -1,0 +1,10 @@
+@startuml
+class GuardableInfo {
+}
+class Guardable {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<Guardable>" <|-- GuardableInfo
+GuardableInfo o-> "Range" WDist
+@enduml

@@ -1,0 +1,58 @@
+@startuml
+class WorldRenderer <<sealed>> {
+    + <<readonly>> TileScale : int
+    +  <<event>> PaletteInvalidated : Action 
+    <<readonly>> enableDepthBuffer : bool
+    lastDepthPreviewEnabled : bool
+    + UpdatePalettesForPlayer(internalName:string, color:Color, replaceExisting:bool) : void
+    CreatePaletteReference(name:string) : PaletteReference
+    + Palette(name:string) : PaletteReference
+    + AddPalette(name:string, pal:ImmutablePalette, allowModifiers:bool, allowOverwrite:bool) : void
+    + ReplacePalette(name:string, pal:IPalette) : void
+    GenerateRenderables() : void
+    GenerateOverlayRenderables() : void
+    GenerateAnnotationRenderables() : void
+    + PrepareRenderables() : void
+    + Draw() : void
+    + DrawAnnotations() : void
+    + RefreshPalette() : void
+    + ScreenPosition(pos:WPos) : float2
+    + Screen3DPosition(pos:WPos) : float3
+    + ScreenPxPosition(pos:WPos) : int2
+    + Screen3DPxPosition(pos:WPos) : float3
+    + ScreenVectorComponents(vec:WVec) : float3
+    + ScreenVector(vec:WVec) : float[]
+    + ScreenPxOffset(vec:WVec) : int2
+    + ScreenZPosition(pos:WPos, offset:int) : float
+    {static} ZPosition(pos:WPos, offset:int) : int
+    + ProjectedPosition(screenPx:int2) : WPos
+    + Dispose() : void
+}
+class "Func`2"<T1,T2> {
+}
+class "HashSet`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Lazy`1"<T> {
+}
+class "List`1"<T> {
+}
+IDisposable <|-- WorldRenderer
+WorldRenderer o-> "RenderableZPositionComparisonKey<IRenderable,int>" "Func`2"
+WorldRenderer --> "TileSize" Size
+WorldRenderer --> "World" World
+WorldRenderer --> "Theater" Theater
+WorldRenderer --> "Viewport" Viewport
+WorldRenderer --> "TerrainLighting" ITerrainLighting
+WorldRenderer o-> "onScreenActors<Actor>" "HashSet`1"
+WorldRenderer o-> "palette" HardwarePalette
+WorldRenderer o-> "palettes<string,PaletteReference>" "Dictionary`2"
+WorldRenderer --> "terrainRenderer" IRenderTerrain
+WorldRenderer --> "debugVis<DebugVisualizations>" "Lazy`1"
+WorldRenderer --> "createPaletteReference<string,PaletteReference>" "Func`2"
+WorldRenderer o-> "preparedRenderables<IFinalizedRenderable>" "List`1"
+WorldRenderer o-> "preparedOverlayRenderables<IFinalizedRenderable>" "List`1"
+WorldRenderer o-> "preparedAnnotationRenderables<IFinalizedRenderable>" "List`1"
+WorldRenderer o-> "renderablesBuffer<IRenderable>" "List`1"
+@enduml

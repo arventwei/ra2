@@ -1,0 +1,74 @@
+@startuml
+class VocLoader {
+    TryParseSound(stream:Stream, sound:ISoundFormat) : bool
+}
+class VocFormat <<sealed>> {
+    + SampleBits : int <<get>>
+    + Channels : int <<get>>
+    + SampleRate : int <<get>>
+    + LengthInSeconds : float <<get>>
+    + GetPCMInputStream() : Stream
+    + Dispose() : void
+    <<readonly>> totalSamples : int
+    currentBlockEnded : bool
+    samplesLeftInBlock : int
+    samplePosition : int
+    + VocFormat(stream:Stream)
+    VocFormat(cloneFrom:VocFormat)
+    {static} CheckVocHeader(stream:Stream) : void
+    {static} GetSampleRateFromVocRate(vocSampleRate:int) : int
+    {static} Preload(stream:Stream, blocks:VocBlock[], totalSamples:int, sampleRate:int) : void
+    Rewind() : void
+    EndOfData : bool <<get>>
+    FillBuffer(maxSamples:int) : int
+    UpdateBlockIfNeeded() : void
+    Read(buffer:byte[], offset:int, count:int) : int
+}
+class "IEnumerator`1"<T> {
+}
+class VocFileHeader <<struct>> {
+    + Description : string
+    + DatablockOffset : int
+    + Version : int
+    + ID : int
+    + {static} Read(s:Stream) : VocFileHeader
+}
+class VocBlock <<struct>> {
+    + Code : int
+    + Length : int
+}
+class VocSampleBlock <<struct>> {
+    + Rate : int
+    + Samples : int
+    + Offset : long
+}
+class VocLoopBlock <<struct>> {
+    + Count : int
+}
+class VocStream {
+    + VocStream(format:VocFormat)
+    + <<override>> CanRead : bool <<get>>
+    + <<override>> CanSeek : bool <<get>>
+    + <<override>> CanWrite : bool <<get>>
+    + <<override>> Length : long <<get>>
+    + <<override>> Position : long <<get>> <<set>>
+    + <<override>> Read(buffer:byte[], offset:int, count:int) : int
+    + <<override>> Flush() : void
+    + <<override>> Seek(offset:long, origin:SeekOrigin) : long
+    + <<override>> SetLength(value:long) : void
+    + <<override>> Write(buffer:byte[], offset:int, count:int) : void
+}
+ISoundLoader <|-- VocLoader
+ISoundFormat <|-- VocFormat
+VocFormat --> "stream" Stream
+VocFormat --> "currentBlock<VocBlock>" "IEnumerator`1"
+VocFormat +-- VocFileHeader
+VocFormat +-- VocBlock
+VocBlock --> "SampleBlock" VocSampleBlock
+VocBlock --> "LoopBlock" VocLoopBlock
+VocFormat +-- VocSampleBlock
+VocFormat +-- VocLoopBlock
+VocFormat +-- VocStream
+Stream <|-- VocStream
+VocStream --> "format" VocFormat
+@enduml

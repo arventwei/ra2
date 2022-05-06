@@ -1,0 +1,16 @@
+@startuml
+class ThrowsShrapnelInfo {
+    + <<override>> Create(actor:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class ThrowsShrapnel {
+    + ThrowsShrapnel(info:ThrowsShrapnelInfo)
+    + Killed(self:Actor, attack:AttackInfo) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ThrowsShrapnelInfo
+IRulesetLoaded <|-- ThrowsShrapnelInfo
+"ConditionalTrait`1" "<ThrowsShrapnelInfo>" <|-- ThrowsShrapnel
+INotifyKilled <|-- ThrowsShrapnel
+@enduml

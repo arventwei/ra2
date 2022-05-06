@@ -1,0 +1,17 @@
+@startuml
+class ShakeOnDeathInfo {
+    + <<readonly>> Duration : int = 10
+    + <<readonly>> Intensity : int = 1
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ShakeOnDeath {
+    + ShakeOnDeath(info:ShakeOnDeathInfo)
+    Killed(self:Actor, e:AttackInfo) : void
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- ShakeOnDeathInfo
+ShakeOnDeathInfo o-> "DeathTypes<DamageType>" "BitSet`1"
+INotifyKilled <|-- ShakeOnDeath
+ShakeOnDeath --> "info" ShakeOnDeathInfo
+@enduml

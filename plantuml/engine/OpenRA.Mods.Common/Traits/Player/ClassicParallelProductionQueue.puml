@@ -1,0 +1,24 @@
+@startuml
+class ClassicParallelProductionQueueInfo {
+    + <<readonly>> SpeedUp : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ClassicParallelProductionQueue {
+    penalty : int
+    + ClassicParallelProductionQueue(init:ActorInitializer, info:ClassicParallelProductionQueueInfo)
+    + <<override>> AllItems() : IEnumerable<ActorInfo>
+    + <<override>> BuildableItems() : IEnumerable<ActorInfo>
+    + <<override>> IsProducing(item:ProductionItem) : bool
+    + <<override>> MostLikelyProducer() : TraitPair<Production>
+    + <<override>> GetBuildTime(unit:ActorInfo, bi:BuildableInfo) : int
+    + <<override>> RemainingTimeActual(item:ProductionItem) : int
+}
+class "Requires`1"<T> {
+}
+ProductionQueueInfo <|-- ClassicParallelProductionQueueInfo
+"Requires`1" "<TechTreeInfo>" <|-- ClassicParallelProductionQueueInfo
+"Requires`1" "<PlayerResourcesInfo>" <|-- ClassicParallelProductionQueueInfo
+ProductionQueue <|-- ClassicParallelProductionQueue
+ClassicParallelProductionQueue --> "self" Actor
+ClassicParallelProductionQueue --> "info" ClassicParallelProductionQueueInfo
+@enduml

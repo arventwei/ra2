@@ -1,0 +1,9 @@
+@startuml
+class ModContentPromptLogic {
+    requiredContentInstalled : bool
+    + ModContentPromptLogic(widget:Widget, modData:ModData, mod:Manifest, content:ModContent, continueLoading:Action)
+    CheckRequiredContentInstalled() : void
+}
+ChromeLogic <|-- ModContentPromptLogic
+ModContentPromptLogic --> "content" ModContent
+@enduml

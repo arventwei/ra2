@@ -1,0 +1,6 @@
+@startuml
+class KickSpectatorsLogic {
+    + KickSpectatorsLogic(widget:Widget, clientCount:string, okPressed:Action, cancelPressed:Action)
+}
+ChromeLogic <|-- KickSpectatorsLogic
+@enduml

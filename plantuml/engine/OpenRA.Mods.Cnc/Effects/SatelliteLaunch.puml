@@ -1,0 +1,14 @@
+@startuml
+class SatelliteLaunch {
+    frame : int = 0
+    + SatelliteLaunch(launcher:Actor, info:GpsPowerInfo)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- SatelliteLaunch
+ISpatiallyPartitionable <|-- SatelliteLaunch
+SatelliteLaunch --> "info" GpsPowerInfo
+SatelliteLaunch --> "launcher" Actor
+SatelliteLaunch --> "doors" Animation
+SatelliteLaunch --> "pos" WPos
+@enduml

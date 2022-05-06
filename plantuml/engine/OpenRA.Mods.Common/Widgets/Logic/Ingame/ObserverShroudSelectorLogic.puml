@@ -1,0 +1,32 @@
+@startuml
+class ObserverShroudSelectorLogic {
+    <<readonly>> limitViews : bool
+    + ObserverShroudSelectorLogic(widget:Widget, modData:ModData, world:World, worldRenderer:WorldRenderer, logicArgs:Dictionary<string, MiniYaml>)
+    + HandleKeyPress(e:KeyInput) : bool
+    + <<override>> Tick() : void
+}
+class "IOrderedEnumerable`1"<T> {
+}
+class CameraOption {
+    + <<readonly>> Label : string
+    + <<readonly>> Faction : string
+    + CameraOption(logic:ObserverShroudSelectorLogic, p:Player)
+    + CameraOption(logic:ObserverShroudSelectorLogic, w:World, label:string, p:Player)
+}
+class "Func`1"<T> {
+}
+ChromeLogic <|-- ObserverShroudSelectorLogic
+ObserverShroudSelectorLogic --> "combined" CameraOption
+ObserverShroudSelectorLogic --> "disableShroud" CameraOption
+ObserverShroudSelectorLogic --> "teams<IGrouping<int, CameraOption>>" "IOrderedEnumerable`1"
+ObserverShroudSelectorLogic o-> "combinedViewKey" HotkeyReference
+ObserverShroudSelectorLogic o-> "worldViewKey" HotkeyReference
+ObserverShroudSelectorLogic --> "world" World
+ObserverShroudSelectorLogic --> "selected" CameraOption
+ObserverShroudSelectorLogic --> "shroudLabel" LabelWidget
+ObserverShroudSelectorLogic +-- CameraOption
+CameraOption --> "Player" Player
+CameraOption --> "Color" Color
+CameraOption --> "IsSelected<bool>" "Func`1"
+CameraOption --> "OnClick" Action
+@enduml

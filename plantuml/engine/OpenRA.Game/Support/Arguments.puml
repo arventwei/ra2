@@ -1,0 +1,12 @@
+@startuml
+class Arguments {
+    + Arguments(src:string[])
+    + Contains(key:string) : bool
+    + GetValue(key:string, defaultValue:string) : string
+    + ReplaceValue(key:string, value:string) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+Arguments o-> "args<string,string>" "Dictionary`2"
+Arguments --> "Empty" Arguments
+@enduml

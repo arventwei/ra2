@@ -1,0 +1,7 @@
+@startuml
+interface ITextureInternal {
+    ID : uint <<get>>
+    SetEmpty(width:int, height:int) : void
+}
+ITexture <|-- ITextureInternal
+@enduml

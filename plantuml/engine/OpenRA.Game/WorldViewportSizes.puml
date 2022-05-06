@@ -1,0 +1,13 @@
+@startuml
+class WorldViewportSizes {
+    + <<readonly>> MaxZoomScale : float = 2.0f
+    + <<readonly>> MaxZoomWindowHeight : int = 240
+    + <<readonly>> AllowNativeZoom : bool = true
+    + GetSizeRange(distance:WorldViewport) : int2
+}
+IGlobalModData <|-- WorldViewportSizes
+WorldViewportSizes o-> "CloseWindowHeights" int2
+WorldViewportSizes o-> "MediumWindowHeights" int2
+WorldViewportSizes o-> "FarWindowHeights" int2
+WorldViewportSizes o-> "MinEffectiveResolution" Size
+@enduml

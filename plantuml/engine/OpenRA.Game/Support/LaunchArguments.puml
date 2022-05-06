@@ -1,0 +1,11 @@
+@startuml
+class LaunchArguments {
+    + Connect : string
+    + URI : string
+    + Replay : string
+    + Benchmark : string
+    + Map : string
+    + LaunchArguments(args:Arguments)
+    + GetConnectEndPoint() : ConnectionTarget
+}
+@enduml

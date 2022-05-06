@@ -1,0 +1,30 @@
+@startuml
+class "SpatiallyPartitioned`1"<T> <<sealed>> {
+    <<readonly>> rows : int
+    <<readonly>> cols : int
+    <<readonly>> binSize : int
+    + SpatiallyPartitioned(width:int, height:int, binSize:int)
+    ValidateBounds(actor:T, bounds:Rectangle) : void
+    + Add(item:T, bounds:Rectangle) : void
+    + Update(item:T, bounds:Rectangle) : void
+    + Remove(item:T) : bool
+    + Contains(item:T) : bool
+    BinAt(row:int, col:int) : Dictionary<T, Rectangle>
+    BinBounds(row:int, col:int) : Rectangle
+    BoundsToBinRowsAndCols(bounds:Rectangle, minRow:int, maxRow:int, minCol:int, maxCol:int) : void
+    MutateBins(actor:T, bounds:Rectangle, action:Action<Dictionary<T, Rectangle>, T, Rectangle>) : void
+    + At(location:int2) : IEnumerable<T>
+    + InBox(box:Rectangle) : IEnumerable<T>
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Action`3"<T1,T2,T3> {
+}
+class "IEnumerable`1"<T> {
+}
+"SpatiallyPartitioned`1" o-> "itemBounds<T,Rectangle>" "Dictionary`2"
+"SpatiallyPartitioned`1" o-> "addItem<Dictionary<T, Rectangle>,T,Rectangle>" "Action`3"
+"SpatiallyPartitioned`1" o-> "removeItem<Dictionary<T, Rectangle>,T,Rectangle>" "Action`3"
+"SpatiallyPartitioned`1" --> "ItemBounds<Rectangle>" "IEnumerable`1"
+"SpatiallyPartitioned`1" --> "Items<T>" "IEnumerable`1"
+@enduml

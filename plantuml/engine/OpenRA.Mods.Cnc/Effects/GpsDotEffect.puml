@@ -1,0 +1,25 @@
+@startuml
+class GpsDotEffect {
+    + GpsDotEffect(actor:Actor, info:GpsDotInfo)
+    ShouldRender(state:DotState, toPlayer:Player) : bool
+    Tick(world:World) : void
+    Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAnnotation(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+class "PlayerDictionary`1"<T> {
+}
+class DotState {
+    + Visible : bool
+    + DotState(a:Actor, watcher:GpsWatcher, frozenLayer:FrozenActorLayer)
+}
+IEffect <|-- GpsDotEffect
+IEffectAnnotation <|-- GpsDotEffect
+GpsDotEffect --> "actor" Actor
+GpsDotEffect --> "info" GpsDotInfo
+GpsDotEffect --> "anim" Animation
+GpsDotEffect --> "dotStates<DotState>" "PlayerDictionary`1"
+GpsDotEffect --> "visibility" IDefaultVisibility
+GpsDotEffect +-- DotState
+DotState --> "Watcher" GpsWatcher
+DotState --> "FrozenActor" FrozenActor
+@enduml

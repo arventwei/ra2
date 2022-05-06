@@ -1,0 +1,21 @@
+@startuml
+class GivesCashOnCaptureInfo {
+    + <<readonly>> ShowTicks : bool = true
+    + <<readonly>> DisplayDuration : int = 30
+    + <<readonly>> Amount : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GivesCashOnCapture {
+    + GivesCashOnCapture(info:GivesCashOnCaptureInfo)
+    OnCapture(self:Actor, captor:Actor, oldOwner:Player, newOwner:Player, captureTypes:BitSet<CaptureType>) : void
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- GivesCashOnCaptureInfo
+GivesCashOnCaptureInfo o-> "CaptureTypes<CaptureType>" "BitSet`1"
+"ConditionalTrait`1" "<GivesCashOnCaptureInfo>" <|-- GivesCashOnCapture
+INotifyCapture <|-- GivesCashOnCapture
+GivesCashOnCapture --> "info" GivesCashOnCaptureInfo
+@enduml

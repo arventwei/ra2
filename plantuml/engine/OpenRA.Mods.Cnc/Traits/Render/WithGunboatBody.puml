@@ -1,0 +1,28 @@
+@startuml
+class WithGunboatBodyInfo {
+    + <<readonly>> Turret : string = "primary"
+    + <<readonly>> LeftSequence : string = "left"
+    + <<readonly>> RightSequence : string = "right"
+    + <<readonly>> WakeLeftSequence : string = "wake-left"
+    + <<readonly>> WakeRightSequence : string = "wake-right"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithGunboatBody {
+    {static} MakeTurretFacingFunc(self:Actor) : Func<WAngle>
+    + WithGunboatBody(init:ActorInitializer, info:WithGunboatBodyInfo)
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+WithSpriteBodyInfo <|-- WithGunboatBodyInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithGunboatBodyInfo
+"Requires`1" "<IFacingInfo>" <|-- WithGunboatBodyInfo
+"Requires`1" "<TurretedInfo>" <|-- WithGunboatBodyInfo
+WithSpriteBody <|-- WithGunboatBody
+ITick <|-- WithGunboatBody
+WithGunboatBody --> "info" WithGunboatBodyInfo
+WithGunboatBody --> "wake" Animation
+WithGunboatBody --> "rs" RenderSprites
+WithGunboatBody --> "facing" IFacing
+WithGunboatBody --> "turret" Turreted
+@enduml

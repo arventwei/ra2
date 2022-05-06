@@ -1,0 +1,26 @@
+@startuml
+enum SoundFlags {
+    Stereo= 0x1,
+    _16Bit= 0x2,
+}
+enum SoundFormat {
+    WestwoodCompressed= 1,
+    ImaAdpcm= 99,
+}
+class AudReader <<static>> {
+    + {static} LoadSound(raw:byte[], index:int) : byte[]
+    + {static} SoundLength(s:Stream) : float
+    + {static} LoadSound(s:Stream, result:Func<Stream>, sampleRate:int) : bool
+}
+class AudStream <<sealed>> {
+    <<readonly>> outputSize : int
+    dataSize : int
+    currentSample : int
+    baseOffset : int
+    index : int
+    + AudStream(stream:Stream, outputSize:int, dataSize:int)
+    + <<override>> Length : long <<get>>
+}
+AudReader +-- AudStream
+ReadOnlyAdapterStream <|-- AudStream
+@enduml

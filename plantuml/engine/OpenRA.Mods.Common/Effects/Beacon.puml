@@ -1,0 +1,28 @@
+@startuml
+class Beacon {
+    {static} <<readonly>> MaxArrowHeight : int = 512
+    <<readonly>> isPlayerPalette : bool
+    <<readonly>> beaconPalette : string
+    <<readonly>> posterPalette : string
+    <<readonly>> duration : int
+    delay : int
+    arrowHeight : int
+    arrowSpeed : int = 50
+    tick : int
+    + Beacon(owner:Player, position:WPos, duration:int, beaconPalette:string, isPlayerPalette:bool, beaconCollection:string, beaconSequence:string, arrowSprite:string, circleSprite:string, delay:int)
+    + Beacon(owner:Player, position:WPos, isPlayerPalette:bool, palette:string, posterCollection:string, posterType:string, posterPalette:string, beaconSequence:string, arrowSequence:string, circleSequence:string, clockSequence:string, clockFraction:Func<float>, delay:int, duration:int)
+    Tick(world:World) : void
+    Render(r:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAboveShroud(r:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- Beacon
+IScriptBindable <|-- Beacon
+IEffectAboveShroud <|-- Beacon
+Beacon --> "owner" Player
+Beacon --> "position" WPos
+Beacon --> "arrow" Animation
+Beacon --> "beacon" Animation
+Beacon --> "circles" Animation
+Beacon --> "clock" Animation
+Beacon --> "poster" Animation
+@enduml

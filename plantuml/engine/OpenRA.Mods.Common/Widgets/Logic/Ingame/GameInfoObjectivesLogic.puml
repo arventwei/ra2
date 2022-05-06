@@ -1,0 +1,8 @@
+@startuml
+class GameInfoObjectivesLogic {
+    + GameInfoObjectivesLogic(widget:Widget, world:World)
+    PopulateObjectivesList(mo:MissionObjectives, parent:ScrollPanelWidget, template:ContainerWidget) : void
+}
+ChromeLogic <|-- GameInfoObjectivesLogic
+GameInfoObjectivesLogic --> "template" ContainerWidget
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+class CursorManager <<sealed>> {
+    isLocked : bool = false
+    hardwareCursorsDisabled : bool = false
+    hardwareCursorsDoubled : bool = false
+    + CursorManager(cursorProvider:CursorProvider)
+    CreateOrUpdateHardwareCursors() : void
+    + SetCursor(cursorName:string) : void
+    frame : int
+    ticks : int
+    + Tick() : void
+    Update() : void
+    + Render(renderer:Renderer) : void
+    + Lock() : void
+    + Unlock() : void
+    + {static} FrameToBGRA(name:string, frame:ISpriteFrame, palette:ImmutablePalette) : byte[]
+    CreateHardwareCursor(name:string, data:Sprite, paddingTL:int2, paddingBR:int2, hotspot:int2) : IHardwareCursor
+    ClearHardwareCursors() : void
+    + Dispose() : void
+}
+class Cursor {
+    + Name : string
+    + Length : int
+}
+class "Dictionary`2"<T1,T2> {
+}
+CursorManager o-> "cursors<string,Cursor>" "Dictionary`2"
+CursorManager --> "sheetBuilder" SheetBuilder
+CursorManager --> "graphicSettings" GraphicSettings
+CursorManager --> "cursor" Cursor
+CursorManager --> "lockedPosition" int2
+CursorManager +-- Cursor
+Cursor --> "PaddedSize" int2
+Cursor --> "Bounds" Rectangle
+@enduml

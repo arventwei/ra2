@@ -1,0 +1,12 @@
+@startuml
+class HandicapDamageMultiplierInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HandicapDamageMultiplier {
+    + HandicapDamageMultiplier(self:Actor)
+    GetDamageModifier(attacker:Actor, damage:Damage) : int
+}
+TraitInfo <|-- HandicapDamageMultiplierInfo
+IDamageModifier <|-- HandicapDamageMultiplier
+HandicapDamageMultiplier --> "self" Actor
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+class ModelRenderProxy {
+    + <<readonly>> ShadowDirection : float
+    + ModelRenderProxy(sprite:Sprite, shadowSprite:Sprite, projectedShadowBounds:float3[], shadowDirection:float)
+}
+class ModelRenderer <<sealed>> {
+    isInFrame : bool
+    + ModelRenderer(renderer:Renderer, shader:IShader)
+    + SetPalette(palette:ITexture) : void
+    + SetViewportParams(screen:Size, scroll:int2) : void
+    + RenderAsync(wr:WorldRenderer, models:IEnumerable<ModelAnimation>, camera:WRot, scale:float, groundNormal:float[], lightSource:WRot, lightAmbientColor:float[], lightDiffuseColor:float[], color:PaletteReference, normals:PaletteReference, shadowPalette:PaletteReference) : ModelRenderProxy
+    {static} CalculateSpriteGeometry(tl:float2, br:float2, scale:float, size:Size, offset:int2) : void
+    {static} ExtractRotationVector(mtx:float[]) : float[]
+    Render(renderData:ModelRenderData, cache:IModelCache, t:float[], lightDirection:float[], ambientLight:float[], diffuseLight:float[], colorPaletteTextureMidIndex:float, normalsPaletteTextureMidIndex:float) : void
+    + BeginFrame() : void
+    EnableFrameBuffer(s:Sheet) : IFrameBuffer
+    DisableFrameBuffer(fbo:IFrameBuffer) : void
+    + EndFrame() : void
+    + AllocateSheet() : Sheet
+    + Dispose() : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Stack`1"<T> {
+}
+class "List`1"<T> {
+}
+ModelRenderProxy --> "Sprite" Sprite
+ModelRenderProxy --> "ShadowSprite" Sprite
+IDisposable <|-- ModelRenderer
+ModelRenderer o-> "SpritePadding" float2
+ModelRenderer --> "renderer" Renderer
+ModelRenderer --> "shader" IShader
+ModelRenderer o-> "mappedBuffers<Sheet,IFrameBuffer>" "Dictionary`2"
+ModelRenderer o-> "unmappedBuffers<KeyValuePair<Sheet, IFrameBuffer>>" "Stack`1"
+ModelRenderer o-> "doRender<(Sheet Sheet, Action Func)>" "List`1"
+ModelRenderer --> "sheetBuilderForFrame" SheetBuilder
+@enduml

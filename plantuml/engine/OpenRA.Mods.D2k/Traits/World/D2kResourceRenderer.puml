@@ -1,0 +1,31 @@
+@startuml
+class D2kResourceRendererInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class D2kResourceRenderer {
+    + D2kResourceRenderer(self:Actor, info:D2kResourceRendererInfo)
+    CellContains(c:CPos, t:ResourceType) : bool
+    FindClearSides(t:ResourceType, p:CPos) : ClearSides
+    UpdateRenderedSpriteInner(cell:CPos) : void
+    UpdateRenderedSpriteInner(cell:CPos, content:RendererCellContents) : void
+}
+enum ClearSides {
+    None= 0x0,
+    Left= 0x1,
+    Top= 0x2,
+    Right= 0x4,
+    Bottom= 0x8,
+    TopLeft= 0x10,
+    TopRight= 0x20,
+    BottomLeft= 0x40,
+    BottomRight= 0x80,
+    All= 0xFF,
+}
+class "Dictionary`2"<T1,T2> {
+}
+ResourceRendererInfo <|-- D2kResourceRendererInfo
+ResourceRenderer <|-- D2kResourceRenderer
+D2kResourceRenderer o-> "Variants<string,int[]>" "Dictionary`2"
+D2kResourceRenderer o-> "SpriteMap<ClearSides,int>" "Dictionary`2"
+D2kResourceRenderer +-- ClearSides
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+class TemporaryOwnerManagerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TemporaryOwnerManager {
+    remaining : int
+    duration : int
+    + TemporaryOwnerManager(self:Actor, info:TemporaryOwnerManagerInfo)
+    + ChangeOwner(self:Actor, newOwner:Player, duration:int) : void
+    Tick(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+}
+TraitInfo <|-- TemporaryOwnerManagerInfo
+TemporaryOwnerManagerInfo o-> "BarColor" Color
+ISelectionBar <|-- TemporaryOwnerManager
+ITick <|-- TemporaryOwnerManager
+ISync <|-- TemporaryOwnerManager
+INotifyOwnerChanged <|-- TemporaryOwnerManager
+TemporaryOwnerManager --> "info" TemporaryOwnerManagerInfo
+TemporaryOwnerManager --> "originalOwner" Player
+TemporaryOwnerManager --> "changingOwner" Player
+@enduml

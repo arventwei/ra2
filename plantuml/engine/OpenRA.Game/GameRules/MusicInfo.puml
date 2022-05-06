@@ -1,0 +1,12 @@
+@startuml
+class MusicInfo {
+    + <<readonly>> Filename : string
+    + <<readonly>> Title : string
+    + <<readonly>> Hidden : bool
+    + <<readonly>> VolumeModifier : float = 1f
+    + Length : int <<get>>
+    + Exists : bool <<get>>
+    + MusicInfo(key:string, value:MiniYaml)
+    + Load(fileSystem:IReadOnlyFileSystem) : void
+}
+@enduml

@@ -1,0 +1,64 @@
+@startuml
+class Barrel {
+}
+class ArmamentInfo {
+    + <<readonly>> Name : string = "primary"
+    + <<readonly>> Weapon : string = null
+    + <<readonly>> Turret : string = "primary"
+    + <<readonly>> FireDelay : int = 0
+    + <<readonly>> MuzzleSequence : string = null
+    + <<readonly>> MuzzlePalette : string = "effect"
+    + <<readonly>> ReloadingCondition : string = null
+    + <<readonly>> Cursor : string = "attack"
+    + <<readonly>> OutsideRangeCursor : string = "attackoutsiderange"
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class Armament {
+    conditionToken : int
+    ticksSinceLastShot : int
+    currentBarrel : int
+    barrelCount : int
+    + FireDelay : int <<get>> <<protected set>>
+    + Burst : int <<get>> <<protected set>>
+    + Armament(self:Actor, info:ArmamentInfo)
+    + <<virtual>> MaxRange() : WDist
+    UpdateCondition(self:Actor) : void
+    Tick(self:Actor) : void
+    + <<virtual>> CheckFire(self:Actor, facing:IFacing, target:Target) : Barrel
+    + <<virtual>> IsReloading : bool <<get>>
+    + MuzzleOffset(self:Actor, b:Barrel) : WVec
+    + MuzzleOrientation(self:Actor, b:Barrel) : WRot
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class "List`1"<T> {
+}
+Barrel --> "Offset" WVec
+Barrel --> "Yaw" WAngle
+PausableConditionalTraitInfo <|-- ArmamentInfo
+"Requires`1" "<AttackBaseInfo>" <|-- ArmamentInfo
+ArmamentInfo o-> "Recoil" WDist
+ArmamentInfo o-> "RecoilRecovery" WDist
+ArmamentInfo --> "WeaponInfo" WeaponInfo
+ArmamentInfo --> "ModifiedRange" WDist
+ArmamentInfo o-> "TargetRelationships" PlayerRelationship
+ArmamentInfo o-> "ForceTargetRelationships" PlayerRelationship
+"PausableConditionalTrait`1" "<ArmamentInfo>" <|-- Armament
+ITick <|-- Armament
+Armament --> "Weapon" WeaponInfo
+Armament --> "self" Actor
+Armament --> "turret" Turreted
+Armament --> "coords" BodyOrientation
+Armament --> "rangeModifiers<int>" "IEnumerable`1"
+Armament --> "reloadModifiers<int>" "IEnumerable`1"
+Armament --> "damageModifiers<int>" "IEnumerable`1"
+Armament --> "inaccuracyModifiers<int>" "IEnumerable`1"
+Armament o-> "delayedActions<(int Ticks, Action Func)>" "List`1"
+Armament --> "Recoil" WDist
+Armament --> "Actor" Actor
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+class PlayerDatabase {
+    + <<readonly>> Profile : string = "https://forum.openra.net/openra/info/"
+    + <<readonly>> IconSize : int = 24
+    LoadSprite(url:string, density:int) : Sprite
+    CreateSheet() : Sheet
+    + LoadBadge(yaml:MiniYaml) : PlayerBadge
+    + GetIcon(badge:PlayerBadge) : Sprite
+}
+class "Cache`2"<T1,T2> {
+}
+IGlobalModData <|-- PlayerDatabase
+PlayerDatabase --> "sheetBuilder" SheetBuilder
+PlayerDatabase --> "iconCache<(PlayerBadge, int),Sprite>" "Cache`2"
+@enduml

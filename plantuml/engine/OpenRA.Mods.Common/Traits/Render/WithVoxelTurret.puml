@@ -1,0 +1,24 @@
+@startuml
+class WithVoxelTurretInfo {
+    + <<readonly>> Sequence : string = "turret"
+    + <<readonly>> Turret : string = "primary"
+    + <<readonly>> ShowShadow : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewVoxels(init:ActorPreviewInitializer, rv:RenderVoxelsInfo, image:string, orientation:Func<WRot>, facings:int, p:PaletteReference) : IEnumerable<ModelAnimation>
+}
+class WithVoxelTurret {
+    + WithVoxelTurret(self:Actor, info:WithVoxelTurretInfo)
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithVoxelTurretInfo
+IRenderActorPreviewVoxelsInfo <|-- WithVoxelTurretInfo
+"Requires`1" "<RenderVoxelsInfo>" <|-- WithVoxelTurretInfo
+"Requires`1" "<TurretedInfo>" <|-- WithVoxelTurretInfo
+"ConditionalTrait`1" "<WithVoxelTurretInfo>" <|-- WithVoxelTurret
+WithVoxelTurret --> "self" Actor
+WithVoxelTurret --> "turreted" Turreted
+WithVoxelTurret --> "body" BodyOrientation
+@enduml

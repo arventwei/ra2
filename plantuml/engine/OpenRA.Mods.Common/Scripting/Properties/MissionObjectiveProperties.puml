@@ -1,0 +1,21 @@
+@startuml
+class MissionObjectiveProperties {
+    <<readonly>> shortGame : bool
+    + MissionObjectiveProperties(context:ScriptContext, player:Player)
+    + AddObjective(description:string, type:string, required:bool) : int
+    + AddPrimaryObjective(description:string) : int
+    + AddSecondaryObjective(description:string) : int
+    + MarkCompletedObjective(id:int) : void
+    + MarkFailedObjective(id:int) : void
+    + IsObjectiveCompleted(id:int) : bool
+    + IsObjectiveFailed(id:int) : bool
+    + GetObjectiveDescription(id:int) : string
+    + GetObjectiveType(id:int) : string
+    + HasNoRequiredUnits() : bool
+}
+class "Requires`1"<T> {
+}
+ScriptPlayerProperties <|-- MissionObjectiveProperties
+"Requires`1" "<MissionObjectivesInfo>" <|-- MissionObjectiveProperties
+MissionObjectiveProperties --> "mo" MissionObjectives
+@enduml

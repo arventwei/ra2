@@ -1,0 +1,6 @@
+@startuml
+class IngamePowerCounterLogic {
+    + IngamePowerCounterLogic(widget:Widget, world:World)
+}
+ChromeLogic <|-- IngamePowerCounterLogic
+@enduml

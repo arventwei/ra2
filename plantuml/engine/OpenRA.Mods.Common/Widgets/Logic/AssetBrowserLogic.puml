@@ -1,0 +1,38 @@
+@startuml
+class AssetBrowserLogic {
+    animateFrames : bool = false
+    currentPalette : string
+    currentFilename : string
+    isVideoLoaded : bool = false
+    isLoadError : bool = false
+    currentFrame : int
+    + AssetBrowserLogic(widget:Widget, onExit:Action, modData:ModData, world:World, logicArgs:Dictionary<string, MiniYaml>)
+    SelectNextFrame() : void
+    SelectPreviousFrame() : void
+    FilterAsset(filename:string) : bool
+    ApplyFilter() : void
+    AddAsset(list:ScrollPanelWidget, filepath:string, package:IReadOnlyPackage, template:ScrollItemWidget) : void
+    LoadAsset(package:IReadOnlyPackage, filename:string) : bool
+    ShowSourceDropdown(dropdown:DropDownButtonWidget) : bool
+    PopulateAssetList() : void
+    ShowPaletteDropdown(dropdown:DropDownButtonWidget, world:World) : bool
+    GetSourceDisplayName(source:IReadOnlyPackage) : string
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ChromeLogic <|-- AssetBrowserLogic
+AssetBrowserLogic --> "acceptablePackages<IReadOnlyPackage>" "IEnumerable`1"
+AssetBrowserLogic --> "world" World
+AssetBrowserLogic --> "modData" ModData
+AssetBrowserLogic --> "panel" Widget
+AssetBrowserLogic --> "filenameInput" TextFieldWidget
+AssetBrowserLogic --> "frameSlider" SliderWidget
+AssetBrowserLogic --> "assetList" ScrollPanelWidget
+AssetBrowserLogic --> "template" ScrollItemWidget
+AssetBrowserLogic o-> "assetSource" IReadOnlyPackage
+AssetBrowserLogic --> "currentPackage" IReadOnlyPackage
+AssetBrowserLogic o-> "player" VqaPlayerWidget
+AssetBrowserLogic o-> "assetVisByName<string,bool>" "Dictionary`2"
+@enduml

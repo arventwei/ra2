@@ -1,0 +1,7 @@
+@startuml
+class DirectConnectLogic {
+    + DirectConnectLogic(widget:Widget, onExit:Action, openLobby:Action, directConnectEndPoint:ConnectionTarget)
+}
+ChromeLogic <|-- DirectConnectLogic
+DirectConnectLogic o-> "DoNothing" Action
+@enduml

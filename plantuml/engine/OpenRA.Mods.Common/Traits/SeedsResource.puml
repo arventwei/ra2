@@ -1,0 +1,23 @@
+@startuml
+class SeedsResourceInfo {
+    + <<readonly>> Interval : int = 75
+    + <<readonly>> ResourceType : string = "Ore"
+    + <<readonly>> MaxRange : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SeedsResource {
+    + SeedsResource(self:Actor, info:SeedsResourceInfo)
+    ticks : int
+    Tick(self:Actor) : void
+    + Seed(self:Actor) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- SeedsResourceInfo
+"ConditionalTrait`1" "<SeedsResourceInfo>" <|-- SeedsResource
+ITick <|-- SeedsResource
+ISeedableResource <|-- SeedsResource
+SeedsResource --> "info" SeedsResourceInfo
+SeedsResource --> "resourceType" ResourceType
+SeedsResource --> "resLayer" ResourceLayer
+@enduml

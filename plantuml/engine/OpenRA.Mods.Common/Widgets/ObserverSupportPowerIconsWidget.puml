@@ -1,0 +1,38 @@
+@startuml
+class ObserverSupportPowerIconsWidget {
+    + <<readonly>> TooltipTemplate : string = "SUPPORT_POWER_TOOLTIP"
+    + <<readonly>> TooltipContainer : string
+    <<readonly>> timestep : int
+    + IconWidth : int = 32
+    + IconHeight : int = 24
+    + IconSpacing : int = 1
+    + ClockAnimation : string = "clock"
+    + ClockSequence : string = "idle"
+    + ClockPalette : string = "chrome"
+    lastIconIdx : int
+    currentTooltipToken : int
+    + ObserverSupportPowerIconsWidget(world:World, worldRenderer:WorldRenderer)
+    + <<override>> Draw() : void
+    {static} GetOverlayForItem(item:SupportPowerInstance, timestep:int) : string
+    + <<override>> Clone() : Widget
+    + <<override>> Tick() : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Lazy`1"<T> {
+}
+class "Func`1"<T> {
+}
+class "List`1"<T> {
+}
+Widget <|-- ObserverSupportPowerIconsWidget
+ObserverSupportPowerIconsWidget --> "world" World
+ObserverSupportPowerIconsWidget --> "worldRenderer" WorldRenderer
+ObserverSupportPowerIconsWidget --> "clocks<string,Animation>" "Dictionary`2"
+ObserverSupportPowerIconsWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+ObserverSupportPowerIconsWidget --> "GetTooltipIcon<SupportPowersWidget.SupportPowerIcon>" "Func`1"
+ObserverSupportPowerIconsWidget --> "GetPlayer<Player>" "Func`1"
+ObserverSupportPowerIconsWidget o-> "supportPowerIconsIcons<SupportPowersWidget.SupportPowerIcon>" "List`1"
+ObserverSupportPowerIconsWidget o-> "supportPowerIconsBounds<Rectangle>" "List`1"
+ObserverSupportPowerIconsWidget --> "icon" Animation
+@enduml

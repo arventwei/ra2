@@ -1,0 +1,9 @@
+@startuml
+class ChronoResourceTeleport {
+    + ChronoResourceTeleport(destination:CPos, info:ChronoResourceDeliveryInfo)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- ChronoResourceTeleport
+ChronoResourceTeleport --> "destination" CPos
+ChronoResourceTeleport --> "info" ChronoResourceDeliveryInfo
+@enduml

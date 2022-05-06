@@ -1,0 +1,15 @@
+@startuml
+class PerfItem {
+    + <<readonly>> Name : string
+    + Val : double = 0.0
+    head : int = 1
+    tail : int = 0
+    + HasNormalTick : bool = true
+    + PerfItem(name:string, c:Color)
+    + Tick() : void
+    + Samples() : IEnumerable<double>
+    + Average(count:int) : double
+    + LastValue : double <<get>>
+}
+PerfItem --> "C" Color
+@enduml

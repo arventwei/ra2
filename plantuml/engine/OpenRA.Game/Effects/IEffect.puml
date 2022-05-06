@@ -1,0 +1,14 @@
+@startuml
+interface IEffect {
+    Tick(world:World) : void
+    Render(r:WorldRenderer) : IEnumerable<IRenderable>
+}
+interface ISpatiallyPartitionable {
+}
+interface IEffectAboveShroud {
+    RenderAboveShroud(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+interface IEffectAnnotation {
+    RenderAnnotation(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+@enduml

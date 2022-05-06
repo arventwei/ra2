@@ -1,0 +1,32 @@
+@startuml
+interface ISuppressInitExport {
+}
+class ActorReference {
+    + Type : string
+    + ActorReference(type:string)
+    + ActorReference(type:string, inits:Dictionary<string, MiniYaml>)
+    + ActorReference(type:string, inits:TypeDictionary)
+    {static} LoadInit(initName:string, initYaml:MiniYaml) : ActorInit
+    + Save(initFilter:Func<ActorInit, bool>) : MiniYaml
+    + GetEnumerator() : IEnumerator
+    + Clone() : ActorReference
+    + Add(init:ActorInit) : void
+    + Remove(o:ActorInit) : void
+    + RemoveAll() : int
+    + GetAll() : IEnumerable<T>
+    + GetOrDefault(info:TraitInfo) : T
+    + Get(info:TraitInfo) : T
+    + GetValue(info:TraitInfo) : U
+    + GetValue(info:TraitInfo, fallback:U) : U
+    + Contains(info:TraitInfo) : bool
+    + GetOrDefault() : T
+    + Get() : T
+    + GetValue() : U
+    + GetValue(fallback:U) : U
+    + Contains() : bool
+}
+class "Lazy`1"<T> {
+}
+IEnumerable <|-- ActorReference
+ActorReference --> "initDict<TypeDictionary>" "Lazy`1"
+@enduml

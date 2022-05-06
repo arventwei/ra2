@@ -1,0 +1,6 @@
+@startuml
+class TargetExtensions <<static>> {
+    + {static} RecalculateInvalidatingHiddenTargets(t:Target, viewer:Player) : Target
+    + {static} Recalculate(t:Target, viewer:Player, targetIsHiddenActor:bool) : Target
+}
+@enduml

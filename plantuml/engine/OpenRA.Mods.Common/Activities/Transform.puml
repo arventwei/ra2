@@ -1,0 +1,24 @@
+@startuml
+class Transform {
+    + <<readonly>> ToActor : string
+    + Notification : string = null
+    + ForceHealthPercentage : int = 0
+    + SkipMakeAnims : bool = false
+    + Faction : string = null
+    + Transform(self:Actor, toActor:string)
+    + <<override>> Tick(self:Actor) : bool
+    DoTransform(self:Actor) : void
+}
+class IssueOrderAfterTransform {
+    <<readonly>> orderString : string
+    <<readonly>> targetLineColor : Color?
+    + IssueOrderAfterTransform(orderString:string, target:Target, targetLineColor:Color?)
+    + IssueOrderForTransformedActor(newActor:Actor) : Order
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+Activity <|-- Transform
+Transform o-> "Offset" CVec
+Transform o-> "Facing" WAngle
+Activity <|-- IssueOrderAfterTransform
+IssueOrderAfterTransform --> "target" Target
+@enduml

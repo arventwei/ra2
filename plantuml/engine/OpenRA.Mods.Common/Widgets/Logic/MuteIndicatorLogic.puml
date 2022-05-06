@@ -1,0 +1,6 @@
+@startuml
+class MuteIndicatorLogic {
+    + MuteIndicatorLogic(widget:Widget)
+}
+ChromeLogic <|-- MuteIndicatorLogic
+@enduml

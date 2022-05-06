@@ -1,0 +1,21 @@
+@startuml
+class ScriptTagsInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ScriptTags {
+    + ScriptTags(init:ActorInitializer, info:ScriptTagsInfo)
+    + AddTag(tag:string) : bool
+    + RemoveTag(tag:string) : bool
+    + HasTag(tag:string) : bool
+}
+class ScriptTagsInit {
+    + ScriptTagsInit(value:string[])
+}
+class "HashSet`1"<T> {
+}
+class "ValueActorInit`1"<T> {
+}
+TraitInfo <|-- ScriptTagsInfo
+ScriptTags o-> "tags<string>" "HashSet`1"
+"ValueActorInit`1" "<string[]>" <|-- ScriptTagsInit
+@enduml

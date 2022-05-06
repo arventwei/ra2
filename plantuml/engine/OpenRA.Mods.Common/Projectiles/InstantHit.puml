@@ -1,0 +1,20 @@
+@startuml
+class InstantHitInfo {
+    + <<readonly>> Blockable : bool = false
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class InstantHit {
+    + InstantHit(info:InstantHitInfo, args:ProjectileArgs)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IProjectileInfo <|-- InstantHitInfo
+InstantHitInfo o-> "Inaccuracy" WDist
+InstantHitInfo o-> "InaccuracyType" InaccuracyType
+InstantHitInfo o-> "Width" WDist
+InstantHitInfo o-> "BlockerScanRadius" WDist
+IProjectile <|-- InstantHit
+InstantHit --> "args" ProjectileArgs
+InstantHit --> "info" InstantHitInfo
+InstantHit --> "target" Target
+@enduml

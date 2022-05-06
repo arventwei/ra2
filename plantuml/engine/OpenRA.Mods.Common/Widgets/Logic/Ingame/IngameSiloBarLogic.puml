@@ -1,0 +1,6 @@
+@startuml
+class IngameSiloBarLogic {
+    + IngameSiloBarLogic(widget:Widget, world:World)
+}
+ChromeLogic <|-- IngameSiloBarLogic
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+class FootprintPlaceBuildingPreviewInfo {
+    + <<readonly>> Palette : string
+    + <<readonly>> LineBuildSegmentPalette : string
+    CreatePreview(wr:WorldRenderer, ai:ActorInfo, init:TypeDictionary) : IPlaceBuildingPreview
+}
+class FootprintPlaceBuildingPreview {
+}
+class FootprintPlaceBuildingPreviewPreview {
+    + FootprintPlaceBuildingPreviewPreview(wr:WorldRenderer, ai:ActorInfo, info:FootprintPlaceBuildingPreviewInfo, init:TypeDictionary)
+    Render(wr:WorldRenderer, topLeft:CPos, footprint:Dictionary<CPos, PlaceBuildingCellType>) : IEnumerable<IRenderable>
+    RenderAnnotations(wr:WorldRenderer, topLeft:CPos) : IEnumerable<IRenderable>
+    Tick() : void
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<FootprintPlaceBuildingPreview>" <|-- FootprintPlaceBuildingPreviewInfo
+IPlaceBuildingPreviewGeneratorInfo <|-- FootprintPlaceBuildingPreviewInfo
+IPlaceBuildingPreview <|-- FootprintPlaceBuildingPreviewPreview
+FootprintPlaceBuildingPreviewPreview --> "info" FootprintPlaceBuildingPreviewInfo
+FootprintPlaceBuildingPreviewPreview --> "topLeftScreenOffset" int2
+FootprintPlaceBuildingPreviewPreview --> "buildOk" Sprite
+FootprintPlaceBuildingPreviewPreview --> "buildBlocked" Sprite
+FootprintPlaceBuildingPreviewPreview --> "TopLeftScreenOffset" int2
+@enduml

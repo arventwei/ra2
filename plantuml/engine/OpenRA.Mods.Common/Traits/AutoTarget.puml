@@ -1,0 +1,85 @@
+@startuml
+enum UnitStance {
+    HoldFire,
+    ReturnFire,
+    Defend,
+    AttackAnything,
+}
+interface IActivityNotifyStanceChanged {
+    StanceChanged(self:Actor, autoTarget:AutoTarget, oldStance:UnitStance, newStance:UnitStance) : void
+}
+interface INotifyStanceChanged {
+    StanceChanged(self:Actor, autoTarget:AutoTarget, oldStance:UnitStance, newStance:UnitStance) : void
+}
+class AutoTargetInfo {
+    + <<readonly>> AllowMovement : bool = true
+    + <<readonly>> AllowTurning : bool = true
+    + <<readonly>> ScanOnIdle : bool = true
+    + <<readonly>> ScanRadius : int
+    + <<readonly>> HoldFireCondition : string = null
+    + <<readonly>> ReturnFireCondition : string = null
+    + <<readonly>> DefendCondition : string = null
+    + <<readonly>> AttackAnythingCondition : string = null
+    + <<readonly>> EnableStances : bool = true
+    + <<readonly>> MinimumScanTimeInterval : int = 3
+    + <<readonly>> MaximumScanTimeInterval : int = 8
+    + <<readonly>> EditorStanceDisplayOrder : int = 1
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, info:ActorInfo) : void
+    ActorOptions(ai:ActorInfo, world:World) : IEnumerable<EditorActorOption>
+}
+class AutoTarget {
+    <<readonly>> allowMovement : bool
+    nextScanTime : int = 0
+    conditionToken : int
+    + SetStance(self:Actor, value:UnitStance) : void
+    ApplyStanceCondition(self:Actor) : void
+    + AutoTarget(init:ActorInitializer, info:AutoTargetInfo)
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    ResolveOrder(self:Actor, order:Order) : void
+    Damaged(self:Actor, e:AttackInfo) : void
+    TickIdle(self:Actor) : void
+    Tick(self:Actor) : void
+    + ScanForTarget(self:Actor, allowMove:bool, allowTurn:bool, ignoreScanInterval:bool) : Target
+    + ScanAndAttack(self:Actor, allowMove:bool, allowTurn:bool) : void
+    Attack(self:Actor, target:Target, allowMove:bool) : void
+    + HasValidTargetPriority(self:Actor, owner:Player, targetTypes:BitSet<TargetableType>) : bool
+    ChooseTarget(self:Actor, ab:AttackBase, attackStances:PlayerRelationship, scanRange:WDist, allowMove:bool, allowTurn:bool) : Target
+    PreventsAutoTarget(attacker:Actor, target:Actor) : bool
+}
+class StanceInit {
+    + StanceInit(info:TraitInfo, value:UnitStance)
+}
+class "Requires`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class "ValueActorInit`1"<T> {
+}
+IActivityInterface <|-- IActivityNotifyStanceChanged
+ConditionalTraitInfo <|-- AutoTargetInfo
+"Requires`1" "<AttackBaseInfo>" <|-- AutoTargetInfo
+IEditorActorOptions <|-- AutoTargetInfo
+AutoTargetInfo o-> "InitialStanceAI" UnitStance
+AutoTargetInfo o-> "InitialStance" UnitStance
+AutoTargetInfo o-> "ConditionByStance<UnitStance,string>" "Dictionary`2"
+"ConditionalTrait`1" "<AutoTargetInfo>" <|-- AutoTarget
+INotifyIdle <|-- AutoTarget
+INotifyDamage <|-- AutoTarget
+ITick <|-- AutoTarget
+IResolveOrder <|-- AutoTarget
+ISync <|-- AutoTarget
+INotifyOwnerChanged <|-- AutoTarget
+AutoTarget --> "ActiveAttackBases<AttackBase>" "IEnumerable`1"
+AutoTarget --> "Stance" UnitStance
+AutoTarget --> "Aggressor" Actor
+AutoTarget --> "PredictedStance" UnitStance
+AutoTarget --> "stance" UnitStance
+AutoTarget --> "activeTargetPriorities<AutoTargetPriorityInfo>" "IEnumerable`1"
+"ValueActorInit`1" "<UnitStance>" <|-- StanceInit
+ISingleInstanceInit <|-- StanceInit
+@enduml

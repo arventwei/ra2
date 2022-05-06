@@ -1,0 +1,6 @@
+@startuml
+class DebugLogic {
+    + DebugLogic(widget:Widget, orderManager:OrderManager, world:World, worldRenderer:WorldRenderer)
+}
+ChromeLogic <|-- DebugLogic
+@enduml

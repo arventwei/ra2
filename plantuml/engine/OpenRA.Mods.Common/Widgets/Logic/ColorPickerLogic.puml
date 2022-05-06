@@ -1,0 +1,11 @@
+@startuml
+class ColorPickerLogic {
+    {static} paletteTabOpenedLast : bool
+    paletteTabHighlighted : int = 0
+    + ColorPickerLogic(widget:Widget, modData:ModData, world:World, initialColor:Color, initialFaction:string, onChange:Action<Color>, logicArgs:Dictionary<string, MiniYaml>)
+    {static} HueFromColor(c:Color) : float
+    + {static} ShowColorDropDown(color:DropDownButtonWidget, preview:ColorPreviewManagerWidget, world:World) : void
+    + <<override>> Tick() : void
+}
+ChromeLogic <|-- ColorPickerLogic
+@enduml

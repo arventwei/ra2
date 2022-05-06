@@ -1,0 +1,22 @@
+@startuml
+class WithCrumbleOverlayInfo {
+    + <<readonly>> Sequence : string = "crumble-overlay"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithCrumbleOverlay {
+    + WithCrumbleOverlay(init:ActorInitializer, info:WithCrumbleOverlayInfo)
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithCrumbleOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithCrumbleOverlayInfo
+"ConditionalTrait`1" "<WithCrumbleOverlayInfo>" <|-- WithCrumbleOverlay
+WithCrumbleOverlay --> "info" WithCrumbleOverlayInfo
+WithCrumbleOverlay --> "renderSprites" RenderSprites
+WithCrumbleOverlay --> "overlay" Animation
+WithCrumbleOverlay --> "animation" AnimationWithOffset
+@enduml

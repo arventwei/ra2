@@ -1,0 +1,39 @@
+@startuml
+class ProximityExternalConditionInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> AffectsParent : bool = false
+    + <<readonly>> EnableSound : string = null
+    + <<readonly>> DisableSound : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ProximityExternalCondition {
+    proximityTrigger : int
+    + ProximityExternalCondition(self:Actor, info:ProximityExternalConditionInfo)
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    Tick(self:Actor) : void
+    ActorEntered(a:Actor) : void
+    + UnitProducedByOther(self:Actor, producer:Actor, produced:Actor, productionType:string, init:TypeDictionary) : void
+    ActorExited(a:Actor) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ConditionalTraitInfo <|-- ProximityExternalConditionInfo
+ProximityExternalConditionInfo o-> "Range" WDist
+ProximityExternalConditionInfo o-> "MaximumVerticalOffset" WDist
+ProximityExternalConditionInfo o-> "ValidRelationships" PlayerRelationship
+"ConditionalTrait`1" "<ProximityExternalConditionInfo>" <|-- ProximityExternalCondition
+ITick <|-- ProximityExternalCondition
+INotifyAddedToWorld <|-- ProximityExternalCondition
+INotifyRemovedFromWorld <|-- ProximityExternalCondition
+INotifyOtherProduction <|-- ProximityExternalCondition
+ProximityExternalCondition --> "self" Actor
+ProximityExternalCondition o-> "tokens<Actor,int>" "Dictionary`2"
+ProximityExternalCondition --> "cachedPosition" WPos
+ProximityExternalCondition --> "cachedRange" WDist
+ProximityExternalCondition --> "desiredRange" WDist
+ProximityExternalCondition --> "cachedVRange" WDist
+ProximityExternalCondition --> "desiredVRange" WDist
+@enduml

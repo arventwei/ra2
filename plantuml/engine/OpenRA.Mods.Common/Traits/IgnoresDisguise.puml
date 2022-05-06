@@ -1,0 +1,9 @@
+@startuml
+class IgnoresDisguiseInfo {
+}
+class IgnoresDisguise {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<IgnoresDisguise>" <|-- IgnoresDisguiseInfo
+@enduml

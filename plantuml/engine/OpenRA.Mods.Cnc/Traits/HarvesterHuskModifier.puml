@@ -1,0 +1,17 @@
+@startuml
+class HarvesterHuskModifierInfo {
+    + <<readonly>> FullHuskActor : string = null
+    + <<readonly>> FullnessThreshold : int = 50
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HarvesterHuskModifier {
+    + HarvesterHuskModifier(info:HarvesterHuskModifierInfo)
+    + HuskActor(self:Actor) : string
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- HarvesterHuskModifierInfo
+"Requires`1" "<HarvesterInfo>" <|-- HarvesterHuskModifierInfo
+IHuskModifier <|-- HarvesterHuskModifier
+HarvesterHuskModifier --> "info" HarvesterHuskModifierInfo
+@enduml

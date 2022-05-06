@@ -1,0 +1,33 @@
+@startuml
+class WithSpriteBodyInfo {
+    + <<readonly>> StartSequence : string = null
+    + <<readonly>> Sequence : string = "idle"
+    + <<readonly>> Name : string = "body"
+    + <<readonly>> ForceToGround : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<virtual>> RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithSpriteBody {
+    + WithSpriteBody(init:ActorInitializer, info:WithSpriteBodyInfo)
+    + NormalizeSequence(self:Actor, sequence:string) : string
+    + <<virtual>> PlayCustomAnimation(self:Actor, name:string, after:Action) : void
+    + <<virtual>> PlayCustomAnimationRepeating(self:Actor, name:string) : void
+    + <<virtual>> PlayCustomAnimationBackwards(self:Actor, name:string, after:Action) : void
+    + <<virtual>> CancelCustomAnimation(self:Actor) : void
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+    AutoMouseoverBounds(self:Actor, wr:WorldRenderer) : Rectangle
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- WithSpriteBodyInfo
+IRenderActorPreviewSpritesInfo <|-- WithSpriteBodyInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithSpriteBodyInfo
+"PausableConditionalTrait`1" "<WithSpriteBodyInfo>" <|-- WithSpriteBody
+INotifyDamageStateChanged <|-- WithSpriteBody
+IAutoMouseBounds <|-- WithSpriteBody
+WithSpriteBody --> "DefaultAnimation" Animation
+WithSpriteBody --> "rs" RenderSprites
+WithSpriteBody --> "boundsAnimation" Animation
+@enduml

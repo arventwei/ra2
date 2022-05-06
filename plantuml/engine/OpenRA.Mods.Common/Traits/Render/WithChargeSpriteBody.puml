@@ -1,0 +1,17 @@
+@startuml
+class WithChargeSpriteBodyInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithChargeSpriteBody {
+    + WithChargeSpriteBody(init:ActorInitializer, info:WithChargeSpriteBodyInfo)
+    ConfigureAnimation(self:Actor) : void
+    + <<override>> CancelCustomAnimation(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+WithSpriteBodyInfo <|-- WithChargeSpriteBodyInfo
+"Requires`1" "<AttackChargesInfo>" <|-- WithChargeSpriteBodyInfo
+WithSpriteBody <|-- WithChargeSpriteBody
+WithChargeSpriteBody --> "attackCharges" AttackCharges
+@enduml

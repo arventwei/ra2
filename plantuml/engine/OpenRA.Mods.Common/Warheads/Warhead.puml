@@ -1,0 +1,23 @@
+@startuml
+enum ImpactActorType {
+    None,
+    Invalid,
+    Valid,
+}
+abstract class Warhead {
+    + <<readonly>> AffectsParent : bool = false
+    + <<readonly>> Delay : int = 0
+    Delay : int <<get>>
+    + {abstract} DoImpact(target:Target, args:WarheadArgs) : void
+    + <<virtual>> IsValidAgainst(victim:Actor, firedBy:Actor) : bool
+    + IsValidAgainst(victim:FrozenActor, firedBy:Actor) : bool
+}
+class "BitSet`1"<T> {
+}
+IWarhead <|-- Warhead
+Warhead o-> "ValidTargets<TargetableType>" "BitSet`1"
+Warhead --> "InvalidTargets<TargetableType>" "BitSet`1"
+Warhead o-> "ValidRelationships" PlayerRelationship
+Warhead o-> "AirThreshold" WDist
+Warhead o-> "DebugOverlayColor" Color
+@enduml

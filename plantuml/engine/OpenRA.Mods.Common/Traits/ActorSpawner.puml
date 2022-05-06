@@ -1,0 +1,16 @@
+@startuml
+class ActorSpawnerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ActorSpawner {
+    + ActorSpawner(info:ActorSpawnerInfo)
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ActorSpawnerInfo
+ActorSpawnerInfo o-> "Types<string>" "HashSet`1"
+"ConditionalTrait`1" "<ActorSpawnerInfo>" <|-- ActorSpawner
+ActorSpawner --> "Types<string>" "HashSet`1"
+@enduml

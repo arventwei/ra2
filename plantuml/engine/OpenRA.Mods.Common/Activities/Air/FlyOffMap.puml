@@ -1,0 +1,12 @@
+@startuml
+class FlyOffMap {
+    <<readonly>> hasTarget : bool
+    endingDelay : int
+    + FlyOffMap(self:Actor, endingDelay:int)
+    + FlyOffMap(self:Actor, target:Target, endingDelay:int)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- FlyOffMap
+FlyOffMap --> "aircraft" Aircraft
+FlyOffMap --> "target" Target
+@enduml

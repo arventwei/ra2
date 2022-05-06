@@ -1,0 +1,25 @@
+@startuml
+class LineAnnotationRenderable <<struct>> {
+    <<readonly>> width : float
+    + LineAnnotationRenderable(start:WPos, end:WPos, width:float, color:Color)
+    + LineAnnotationRenderable(start:WPos, end:WPos, width:float, startColor:Color, endColor:Color)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- LineAnnotationRenderable
+IFinalizedRenderable <|-- LineAnnotationRenderable
+LineAnnotationRenderable --> "start" WPos
+LineAnnotationRenderable --> "end" WPos
+LineAnnotationRenderable --> "startColor" Color
+LineAnnotationRenderable --> "endColor" Color
+LineAnnotationRenderable --> "Pos" WPos
+LineAnnotationRenderable --> "Palette" PaletteReference
+@enduml

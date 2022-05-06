@@ -1,0 +1,47 @@
+@startuml
+class "LongBitSetAllocator`1"<T> <<static>> {
+    {static} allBits : long = 1
+    {static} nextBits : long = 1
+    {static} Allocate(value:string) : long
+    + {static} GetBits(values:string[]) : long
+    + {static} GetBitsNoAlloc(values:string[]) : long
+    + {static} GetStrings(bits:long) : IEnumerable<string>
+    + {static} BitsContainString(bits:long, value:string) : bool
+    + {static} Reset() : void
+    + {static} Mask : long <<get>>
+}
+class "LongBitSet`1"<T> <<struct>> {
+    <<readonly>> bits : long
+    + LongBitSet(values:string[])
+    LongBitSet(bits:long)
+    + {static} FromStringsNoAlloc(values:string[]) : LongBitSet<T>
+    + {static} Reset() : void
+    + <<override>> ToString() : string
+    + Equals(other:LongBitSet<T>) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> GetHashCode() : int
+    + IsEmpty : bool <<get>>
+    + IsProperSubsetOf(other:LongBitSet<T>) : bool
+    + IsProperSupersetOf(other:LongBitSet<T>) : bool
+    + IsSubsetOf(other:LongBitSet<T>) : bool
+    + IsSupersetOf(other:LongBitSet<T>) : bool
+    + Overlaps(other:LongBitSet<T>) : bool
+    + SetEquals(other:LongBitSet<T>) : bool
+    + Contains(value:string) : bool
+    + GetEnumerator() : IEnumerator<string>
+    GetEnumerator() : IEnumerator
+    + Except(other:LongBitSet<T>) : LongBitSet<T>
+    + Intersect(other:LongBitSet<T>) : LongBitSet<T>
+    + SymmetricExcept(other:LongBitSet<T>) : LongBitSet<T>
+    + Union(other:LongBitSet<T>) : LongBitSet<T>
+}
+class "Cache`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class "IEquatable`1"<T> {
+}
+"LongBitSetAllocator`1" o-> "Bits<string,long>" "Cache`2"
+"IEnumerable`1" "<string>" <|-- "LongBitSet`1"
+"IEquatable`1" "<LongBitSet<T>>" <|-- "LongBitSet`1"
+@enduml

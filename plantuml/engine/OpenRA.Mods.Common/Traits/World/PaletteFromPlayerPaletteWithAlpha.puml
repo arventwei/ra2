@@ -1,0 +1,17 @@
+@startuml
+class PaletteFromPlayerPaletteWithAlphaInfo {
+    + <<readonly>> BaseName : string = null
+    + <<readonly>> BasePalette : string = null
+    + <<readonly>> AllowModifiers : bool = true
+    + <<readonly>> Alpha : float = 1.0f
+    + <<readonly>> Premultiply : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PaletteFromPlayerPaletteWithAlpha {
+    + PaletteFromPlayerPaletteWithAlpha(info:PaletteFromPlayerPaletteWithAlphaInfo)
+    + LoadPlayerPalettes(wr:WorldRenderer, playerName:string, color:Color, replaceExisting:bool) : void
+}
+TraitInfo <|-- PaletteFromPlayerPaletteWithAlphaInfo
+ILoadsPlayerPalettes <|-- PaletteFromPlayerPaletteWithAlpha
+PaletteFromPlayerPaletteWithAlpha --> "info" PaletteFromPlayerPaletteWithAlphaInfo
+@enduml

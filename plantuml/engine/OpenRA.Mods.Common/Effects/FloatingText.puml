@@ -1,0 +1,17 @@
+@startuml
+class FloatingText {
+    <<readonly>> text : string
+    remaining : int
+    + FloatingText(pos:WPos, color:Color, text:string, duration:int)
+    Tick(world:World) : void
+    Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAnnotation(wr:WorldRenderer) : IEnumerable<IRenderable>
+    + {static} FormatCashTick(cashAmount:int) : string
+}
+IEffect <|-- FloatingText
+IEffectAnnotation <|-- FloatingText
+FloatingText o-> "Velocity" WVec
+FloatingText --> "font" SpriteFont
+FloatingText --> "color" Color
+FloatingText --> "pos" WPos
+@enduml

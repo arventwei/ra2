@@ -1,0 +1,11 @@
+@startuml
+class FallToEarth {
+    acceleration : int
+    spin : int
+    + FallToEarth(self:Actor, info:FallsToEarthInfo)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- FallToEarth
+FallToEarth --> "aircraft" Aircraft
+FallToEarth --> "info" FallsToEarthInfo
+@enduml

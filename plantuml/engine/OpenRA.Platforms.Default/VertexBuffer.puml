@@ -1,0 +1,17 @@
+@startuml
+class "VertexBuffer`1"<T> <<sealed>> {
+    {static} <<readonly>> VertexSize : int
+    buffer : uint
+    disposed : bool
+    + VertexBuffer(size:int)
+    + SetData(data:T[], length:int) : void
+    + SetData(data:T[], offset:int, start:int, length:int) : void
+    + Bind() : void
+    + Dispose() : void
+    Dispose(disposing:bool) : void
+}
+class "IVertexBuffer`1"<T> {
+}
+ThreadAffine <|-- "VertexBuffer`1"
+"IVertexBuffer`1" "<T>" <|-- "VertexBuffer`1"
+@enduml

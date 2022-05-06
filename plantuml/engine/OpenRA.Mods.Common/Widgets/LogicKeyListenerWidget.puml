@@ -1,0 +1,10 @@
+@startuml
+class LogicKeyListenerWidget {
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+    + AddHandler(func:Func<KeyInput, bool>) : void
+}
+class "List`1"<T> {
+}
+Widget <|-- LogicKeyListenerWidget
+LogicKeyListenerWidget o-> "handlers<Func<KeyInput, bool>>" "List`1"
+@enduml

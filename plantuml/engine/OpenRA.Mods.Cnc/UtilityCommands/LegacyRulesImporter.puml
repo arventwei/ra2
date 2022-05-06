@@ -1,0 +1,11 @@
+@startuml
+class LegacyRulesImporter {
+    ValidateArguments(args:string[]) : bool
+    Name : string <<get>>
+    Run(utility:Utility, args:string[]) : void
+    ImportStructures(structures:IEnumerable<string>, useTerrainPalette:bool) : void
+}
+IUtilityCommand <|-- LegacyRulesImporter
+LegacyRulesImporter --> "rulesIni" IniFile
+LegacyRulesImporter --> "artIni" IniFile
+@enduml

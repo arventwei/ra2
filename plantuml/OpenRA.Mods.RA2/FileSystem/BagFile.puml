@@ -1,0 +1,23 @@
+@startuml
+class AudioBagLoader {
+    TryParsePackage(s:Stream, filename:string, context:FS, package:IReadOnlyPackage) : bool
+}
+class BagFile <<sealed>> {
+    + Name : string <<get>>
+    + BagFile(s:Stream, entries:List<IdxEntry>, filename:string)
+    + GetStream(filename:string) : Stream
+    + Contains(filename:string) : bool
+    + OpenPackage(filename:string, context:FS) : IReadOnlyPackage
+    + Dispose() : void
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+IPackageLoader <|-- AudioBagLoader
+AudioBagLoader +-- BagFile
+IReadOnlyPackage <|-- BagFile
+BagFile --> "Contents<string>" "IEnumerable`1"
+BagFile --> "s" Stream
+BagFile --> "index<string,IdxEntry>" "Dictionary`2"
+@enduml

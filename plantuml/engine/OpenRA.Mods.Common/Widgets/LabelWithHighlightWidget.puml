@@ -1,0 +1,12 @@
+@startuml
+class LabelWithHighlightWidget {
+    + LabelWithHighlightWidget()
+    MakeComponents(text:string) : (string, bool)[]
+    + <<override>> Clone() : Widget
+}
+class "CachedTransform`2"<T1,T2> {
+}
+LabelWidget <|-- LabelWithHighlightWidget
+LabelWithHighlightWidget o-> "HighlightColor" Color
+LabelWithHighlightWidget --> "textComponents<string,(string Text, bool Highlighted)[]>" "CachedTransform`2"
+@enduml

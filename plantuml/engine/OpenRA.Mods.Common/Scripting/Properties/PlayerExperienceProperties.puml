@@ -1,0 +1,11 @@
+@startuml
+class PlayerExperienceProperties {
+    + PlayerExperienceProperties(context:ScriptContext, player:Player)
+    + Experience : int <<get>> <<set>>
+}
+class "Requires`1"<T> {
+}
+ScriptPlayerProperties <|-- PlayerExperienceProperties
+"Requires`1" "<PlayerExperienceInfo>" <|-- PlayerExperienceProperties
+PlayerExperienceProperties --> "exp" PlayerExperience
+@enduml

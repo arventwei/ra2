@@ -1,0 +1,18 @@
+@startuml
+class AttackMoveActivity {
+    <<readonly>> isAssaultMove : bool
+    runningMoveActivity : bool = false
+    token : int
+    + AttackMoveActivity(self:Actor, getMove:Func<Activity>, assaultMoving:bool)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> GetTargets(self:Actor) : IEnumerable<Target>
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+class "Func`1"<T> {
+}
+Activity <|-- AttackMoveActivity
+AttackMoveActivity --> "getMove<Activity>" "Func`1"
+AttackMoveActivity --> "autoTarget" AutoTarget
+AttackMoveActivity --> "attackMove" AttackMove
+AttackMoveActivity o-> "target" Target
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+interface IModel {
+    Frames : uint <<get>>
+    Sections : uint <<get>>
+    TransformationMatrix(section:uint, frame:uint) : float[]
+    Bounds(frame:uint) : float[]
+    RenderData(section:uint) : ModelRenderData
+}
+class ModelRenderData <<struct>> {
+    + <<readonly>> Start : int
+    + <<readonly>> Count : int
+    + ModelRenderData(start:int, count:int, sheet:Sheet)
+}
+interface IModelCache {
+    GetModelSequence(model:string, sequence:string) : IModel
+    HasModelSequence(model:string, sequence:string) : bool
+}
+interface IModelSequenceLoader {
+    CacheModels(fileSystem:IReadOnlyFileSystem, modData:ModData, modelDefinitions:IReadOnlyDictionary<string, MiniYamlNode>) : IModelCache
+}
+class PlaceholderModelSequenceLoader {
+    + PlaceholderModelSequenceLoader(modData:ModData)
+    + CacheModels(fileSystem:IReadOnlyFileSystem, modData:ModData, modelDefinitions:IReadOnlyDictionary<string, MiniYamlNode>) : IModelCache
+}
+class "IVertexBuffer`1"<T> {
+}
+class "Action`1"<T> {
+}
+class PlaceholderModelCache {
+    + Dispose() : void
+    + GetModelSequence(model:string, sequence:string) : IModel
+    + HasModelSequence(model:string, sequence:string) : bool
+}
+IModel --> "AggregateBounds" Rectangle
+ModelRenderData --> "Sheet" Sheet
+IDisposable <|-- IModelCache
+IModelCache --> "VertexBuffer<Vertex>" "IVertexBuffer`1"
+IModelSequenceLoader --> "OnMissingModelError<string>" "Action`1"
+IModelSequenceLoader <|-- PlaceholderModelSequenceLoader
+PlaceholderModelSequenceLoader --> "OnMissingModelError<string>" "Action`1"
+PlaceholderModelSequenceLoader +-- PlaceholderModelCache
+IModelCache <|-- PlaceholderModelCache
+PlaceholderModelCache --> "VertexBuffer<Vertex>" "IVertexBuffer`1"
+@enduml

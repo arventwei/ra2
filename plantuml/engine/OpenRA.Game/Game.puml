@@ -1,0 +1,87 @@
+@startuml
+class Game <<static>> {
+    + <<const>> NetTickScale : int = 3
+    + <<const>> Timestep : int = 40
+    + <<const>> TimestepJankThreshold : int = 250
+    + {static} HideCursor : bool
+    {static} modLaunchWrapper : string
+    + {static} EngineVersion : string <<get>>
+    {static} takeScreenshot : bool = false
+    + {static}  <<event>> OnShellmapLoaded : Action 
+    + {static} JoinServer(endpoint:ConnectionTarget, password:string, recordReplay:bool) : OrderManager
+    + {static} TimestampedFilename(includemilliseconds:bool, extra:string) : string
+    {static} JoinInner(om:OrderManager) : void
+    + {static} JoinReplay(replayFile:string) : void
+    {static} JoinLocal() : void
+    + {static} RunTime : long <<get>>
+    + {static} RenderFrame : int = 0
+    + {static} NetFrameNumber : int <<get>>
+    + {static} LocalTick : int <<get>>
+    + {static}  <<event>> OnRemoteDirectConnect : Action<ConnectionTarget> 
+    + {static}  <<event>> ConnectionStateChanged : Action<OrderManager> 
+    + {static} LocalClientId : int <<get>>
+    + {static} RemoteDirectConnect(endpoint:ConnectionTarget) : void
+    + {static} OpenWindow(world:World, widget:string) : Widget
+    + {static} OpenWindow(widget:string, args:WidgetArgs) : Widget
+    + {static} LoadWidget(world:World, id:string, parent:Widget, args:WidgetArgs) : Widget
+    + {static}  <<event>> LobbyInfoChanged : Action 
+    + {static}  <<event>> BeforeGameStart : Action 
+    + {static} RestartGame() : void
+    + {static} CreateAndStartLocalServer(mapUID:string, setupOrders:IEnumerable<Order>) : void
+    + {static} IsHost : bool <<get>>
+    + {static} GetModifierKeys() : Modifiers
+    + {static} InitializeSettings(args:Arguments) : void
+    + {static} InitializeAndRun(args:string[]) : RunStatus
+    {static} Initialize(args:Arguments) : void
+    + {static} InitializeMod(mod:string, args:Arguments) : void
+    + {static} LoadEditor(mapUid:string) : void
+    + {static} LoadShellMap() : void
+    {static} ChooseShellmap() : string
+    + {static} SwitchToExternalMod(mod:ExternalMod, launchArguments:string[], onFailed:Action) : void
+    + {static}  <<event>> OnQuit : Action 
+    + {static} RunAfterTick(a:Action) : void
+    + {static} RunAfterDelay(delayMilliseconds:int, a:Action) : void
+    {static} TakeScreenshotInner() : void
+    {static} InnerLogicTick(orderManager:OrderManager) : void
+    {static} LogicTick() : void
+    + {static} PerformDelayedActions() : void
+    + {static} TakeScreenshot() : void
+    {static} RenderTick() : void
+    {static} Loop() : void
+    {static} Run() : RunStatus
+    + {static} Exit() : void
+    + {static} AddSystemLine(text:string) : void
+    + {static} AddSystemLine(name:string, text:string) : void
+    + {static} AddChatLine(name:string, nameColor:Color, text:string) : void
+    + {static} Debug(s:string, args:object[]) : void
+    + {static} Disconnect() : void
+    + {static} CloseServer() : void
+    + {static} CreateObject(name:string) : T
+    + {static} CreateServer(settings:ServerSettings) : ConnectionTarget
+    + {static} CreateLocalServer(map:string) : ConnectionTarget
+    + {static} IsCurrentWorld(world:World) : bool
+    + {static} SetClipboardText(text:string) : bool
+    + {static} BenchmarkMode(prefix:string) : void
+    + {static} LoadMap(launchMap:string) : void
+    + {static} FinishBenchmark() : void
+}
+Game --> "Mods" InstalledMods
+Game --> "ExternalMods" ExternalMods
+Game --> "ModData" ModData
+Game --> "Settings" Settings
+Game --> "Cursor" CursorManager
+Game --> "worldRenderer" WorldRenderer
+Game o-> "CosmeticRandom" MersenneTwister
+Game --> "Renderer" Renderer
+Game --> "Sound" Sound
+Game --> "LocalPlayerProfile" LocalPlayerProfile
+Game --> "discoverNat" Task
+Game o-> "benchmark" Benchmark
+Game o-> "stopwatch" Stopwatch
+Game o-> "lastConnectionState" ConnectionState
+Game --> "modifiers" Modifiers
+Game o-> "state" RunStatus
+Game o-> "delayedActions" ActionQueue
+Game o-> "systemMessageColor" Color
+Game o-> "chatMessageColor" Color
+@enduml

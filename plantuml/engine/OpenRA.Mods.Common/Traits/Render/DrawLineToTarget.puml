@@ -1,0 +1,33 @@
+@startuml
+class DrawLineToTargetInfo {
+    + <<readonly>> Delay : int = 2400
+    + <<readonly>> LineWidth : int = 1
+    + <<readonly>> QueuedLineWidth : int = 1
+    + <<readonly>> MarkerWidth : int = 2
+    + <<readonly>> QueuedMarkerWidth : int = 2
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DrawLineToTarget {
+    lifetime : long
+    + DrawLineToTarget(self:Actor, info:DrawLineToTargetInfo)
+    + ShowTargetLines(self:Actor) : void
+    Selected(self:Actor) : void
+    ShouldRender(self:Actor) : bool
+    RenderAboveShroud(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAboveShroud(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+class LineTargetExts <<static>> {
+    + {static} ShowTargetLines(self:Actor) : void
+}
+class "List`1"<T> {
+}
+TraitInfo <|-- DrawLineToTargetInfo
+IRenderAboveShroud <|-- DrawLineToTarget
+IRenderAnnotationsWhenSelected <|-- DrawLineToTarget
+INotifySelected <|-- DrawLineToTarget
+DrawLineToTarget --> "info" DrawLineToTargetInfo
+DrawLineToTarget o-> "renderableCache<IRenderable>" "List`1"
+@enduml

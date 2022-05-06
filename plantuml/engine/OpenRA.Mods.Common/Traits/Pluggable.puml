@@ -1,0 +1,41 @@
+@startuml
+class PluggableInfo {
+    + <<readonly>> EmptyOption : string = "Empty"
+    + <<readonly>> EditorDisplayOrder : int = 5
+    ActorOptions(ai:ActorInfo, world:World) : IEnumerable<EditorActorOption>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Pluggable {
+    <<readonly>> initialPlug : string
+    conditionToken : int
+    active : string
+    + Pluggable(init:ActorInitializer, info:PluggableInfo)
+    Created(self:Actor) : void
+    + AcceptsPlug(self:Actor, type:string) : bool
+    + EnablePlug(self:Actor, type:string) : void
+    + DisablePlug(self:Actor, type:string) : void
+    GetVariableObservers() : IEnumerable<VariableObserver>
+}
+class PlugInit {
+    + PlugInit(info:TraitInfo, value:string)
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class "ValueActorInit`1"<T> {
+}
+TraitInfo <|-- PluggableInfo
+IEditorActorOptions <|-- PluggableInfo
+PluggableInfo o-> "Offset" CVec
+PluggableInfo o-> "Conditions<string,string>" "Dictionary`2"
+PluggableInfo o-> "Requirements<string,BooleanExpression>" "Dictionary`2"
+PluggableInfo o-> "EditorOptions<string,string>" "Dictionary`2"
+PluggableInfo --> "LinterConditions<string>" "IEnumerable`1"
+PluggableInfo --> "ConsumedConditions<string>" "IEnumerable`1"
+IObservesVariables <|-- Pluggable
+INotifyCreated <|-- Pluggable
+Pluggable --> "Info" PluggableInfo
+Pluggable o-> "plugTypesAvailability<string,bool>" "Dictionary`2"
+"ValueActorInit`1" "<string>" <|-- PlugInit
+@enduml

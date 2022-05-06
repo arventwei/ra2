@@ -1,0 +1,20 @@
+@startuml
+class WeatherPaletteEffectInfo {
+    + <<readonly>> Ratio : float = 0.6f
+    + <<readonly>> Length : int = 40
+    + <<readonly>> Type : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WeatherPaletteEffect {
+    remainingFrames : int
+    + WeatherPaletteEffect(info:WeatherPaletteEffectInfo)
+    + Enable(ticks:int) : void
+    Tick(self:Actor) : void
+    AdjustPalette(palettes:IReadOnlyDictionary<string, MutablePalette>) : void
+}
+TraitInfo <|-- WeatherPaletteEffectInfo
+WeatherPaletteEffectInfo o-> "Color" Color
+IPaletteModifier <|-- WeatherPaletteEffect
+ITick <|-- WeatherPaletteEffect
+WeatherPaletteEffect --> "Info" WeatherPaletteEffectInfo
+@enduml

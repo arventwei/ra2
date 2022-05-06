@@ -1,0 +1,14 @@
+@startuml
+class PlayerPinger {
+    {static} <<readonly>> PingInterval : int = 5000
+    {static} <<readonly>> ConnReportInterval : int = 20000
+    {static} <<readonly>> ConnTimeout : int = 60000
+    + TickTimeout : int <<get>>
+    lastPing : long = 0
+    lastConnReport : long = 0
+    isInitialPing : bool = true
+    + Tick(server:S) : void
+}
+ServerTrait <|-- PlayerPinger
+ITick <|-- PlayerPinger
+@enduml

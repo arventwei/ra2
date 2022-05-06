@@ -1,0 +1,29 @@
+@startuml
+class WithExitOverlayInfo {
+    + <<readonly>> Sequence : string = "exit-overlay"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithExitOverlay {
+    enable : bool
+    + WithExitOverlay(self:Actor, info:WithExitOverlayInfo)
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+    UnitProduced(self:Actor, other:Actor, exit:CPos) : void
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- WithExitOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithExitOverlayInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithExitOverlayInfo
+WithExitOverlayInfo o-> "Offset" WVec
+"PausableConditionalTrait`1" "<WithExitOverlayInfo>" <|-- WithExitOverlay
+INotifyDamageStateChanged <|-- WithExitOverlay
+INotifyProduction <|-- WithExitOverlay
+ITick <|-- WithExitOverlay
+WithExitOverlay --> "overlay" Animation
+WithExitOverlay --> "exit" CPos
+@enduml

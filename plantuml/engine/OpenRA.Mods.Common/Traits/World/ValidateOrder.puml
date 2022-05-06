@@ -1,0 +1,11 @@
+@startuml
+class ValidateOrderInfo {
+}
+class ValidateOrder {
+    + OrderValidation(orderManager:OrderManager, world:World, clientId:int, order:Order) : bool
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<ValidateOrder>" <|-- ValidateOrderInfo
+IValidateOrder <|-- ValidateOrder
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+class float3 <<struct>> {
+    + <<readonly>> X : float
+    + <<readonly>> Y : float
+    + <<readonly>> Z : float
+    + float3(x:float, y:float, z:float)
+    + float3(xy:float2, z:float)
+    + {static} Lerp(a:float3, b:float3, t:float) : float3
+    + <<override>> GetHashCode() : int
+    + Equals(other:float3) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<float3>" <|-- float3
+float3 --> "XY" float2
+float3 o-> "Zero" float3
+float3 o-> "Ones" float3
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+class Ruleset {
+    + Ruleset(actors:IReadOnlyDictionary<string, ActorInfo>, weapons:IReadOnlyDictionary<string, WeaponInfo>, voices:IReadOnlyDictionary<string, SoundInfo>, notifications:IReadOnlyDictionary<string, SoundInfo>, music:IReadOnlyDictionary<string, MusicInfo>, tileSet:TileSet, sequences:SequenceProvider, modelSequences:IReadOnlyDictionary<string, MiniYamlNode>)
+    {static} MergeOrDefault(name:string, fileSystem:IReadOnlyFileSystem, files:IEnumerable<string>, additional:MiniYaml, defaults:IReadOnlyDictionary<string, T>, makeObject:Func<MiniYamlNode, T>, filterNode:Func<MiniYamlNode, bool>) : IReadOnlyDictionary<string, T>
+    + {static} LoadDefaults(modData:ModData) : Ruleset
+    + {static} LoadDefaultsForTileSet(modData:ModData, tileSet:string) : Ruleset
+    + {static} Load(modData:ModData, fileSystem:IReadOnlyFileSystem, tileSet:string, mapRules:MiniYaml, mapWeapons:MiniYaml, mapVoices:MiniYaml, mapNotifications:MiniYaml, mapMusic:MiniYaml, mapSequences:MiniYaml, mapModelSequences:MiniYaml) : Ruleset
+    {static} AnyCustomYaml(yaml:MiniYaml) : bool
+    {static} AnyFlaggedTraits(modData:ModData, actors:List<MiniYamlNode>) : bool
+    + {static} DefinesUnsafeCustomRules(modData:ModData, fileSystem:IReadOnlyFileSystem, mapRules:MiniYaml, mapWeapons:MiniYaml, mapVoices:MiniYaml, mapNotifications:MiniYaml, mapSequences:MiniYaml) : bool
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+Ruleset --> "Actors<string,ActorInfo>" "IReadOnlyDictionary`2"
+Ruleset --> "Weapons<string,WeaponInfo>" "IReadOnlyDictionary`2"
+Ruleset --> "Voices<string,SoundInfo>" "IReadOnlyDictionary`2"
+Ruleset --> "Notifications<string,SoundInfo>" "IReadOnlyDictionary`2"
+Ruleset --> "Music<string,MusicInfo>" "IReadOnlyDictionary`2"
+Ruleset --> "TileSet" TileSet
+Ruleset --> "Sequences" SequenceProvider
+Ruleset --> "ModelSequences<string,MiniYamlNode>" "IReadOnlyDictionary`2"
+Ruleset --> "InstalledMusic<KeyValuePair<string, MusicInfo>>" "IEnumerable`1"
+@enduml

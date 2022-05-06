@@ -1,0 +1,31 @@
+@startuml
+class ParaDropInfo {
+    + <<readonly>> DropInterval : int = 5
+    + <<readonly>> ChuteSound : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ParaDrop {
+    +  <<event>> OnRemovedFromWorld : Action<Actor> 
+    +  <<event>> OnEnteredDropRange : Action<Actor> 
+    +  <<event>> OnExitedDropRange : Action<Actor> 
+    inDropRange : bool
+    dropDelay : int
+    checkForSuitableCell : bool
+    + ParaDrop(self:Actor, info:ParaDropInfo)
+    + SetLZ(lz:CPos, checkLandingCell:bool) : void
+    Tick(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- ParaDropInfo
+"Requires`1" "<CargoInfo>" <|-- ParaDropInfo
+ParaDropInfo o-> "DropRange" WDist
+ITick <|-- ParaDrop
+ISync <|-- ParaDrop
+INotifyRemovedFromWorld <|-- ParaDrop
+ParaDrop --> "info" ParaDropInfo
+ParaDrop --> "self" Actor
+ParaDrop --> "cargo" Cargo
+ParaDrop --> "target" Target
+@enduml

@@ -1,0 +1,56 @@
+@startuml
+interface IRenderActorPreviewVoxelsInfo {
+    RenderPreviewVoxels(init:ActorPreviewInitializer, rv:RenderVoxelsInfo, image:string, orientation:Func<WRot>, facings:int, p:PaletteReference) : IEnumerable<ModelAnimation>
+}
+class RenderVoxelsInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> Palette : string = null
+    + <<readonly>> PlayerPalette : string = "player"
+    + <<readonly>> NormalsPalette : string = "normals"
+    + <<readonly>> ShadowPalette : string = "shadow"
+    + <<readonly>> Scale : float = 12
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<virtual>> RenderPreview(init:ActorPreviewInitializer) : IEnumerable<IActorPreview>
+}
+class RenderVoxels {
+    + RenderVoxels(self:Actor, info:RenderVoxelsInfo)
+    initializePalettes : bool = true
+    + OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    Tick(self:Actor) : void
+    Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+    + Image : string <<get>>
+    + Add(m:ModelAnimation) : void
+    + Remove(m:ModelAnimation) : void
+}
+class "Requires`1"<T> {
+}
+class AnimationWrapper {
+    cachedVisible : bool
+    + AnimationWrapper(model:ModelAnimation)
+    + Tick() : bool
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ITraitInfoInterface <|-- IRenderActorPreviewVoxelsInfo
+TraitInfo <|-- RenderVoxelsInfo
+IRenderActorPreviewInfo <|-- RenderVoxelsInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- RenderVoxelsInfo
+RenderVoxelsInfo o-> "LightPitch" WAngle
+RenderVoxelsInfo o-> "LightYaw" WAngle
+IRender <|-- RenderVoxels
+ITick <|-- RenderVoxels
+INotifyOwnerChanged <|-- RenderVoxels
+RenderVoxels --> "Info" RenderVoxelsInfo
+RenderVoxels o-> "components<ModelAnimation>" "List`1"
+RenderVoxels o-> "wrappers<ModelAnimation,AnimationWrapper>" "Dictionary`2"
+RenderVoxels --> "self" Actor
+RenderVoxels --> "body" BodyOrientation
+RenderVoxels --> "camera" WRot
+RenderVoxels --> "lightSource" WRot
+RenderVoxels +-- AnimationWrapper
+AnimationWrapper --> "model" ModelAnimation
+AnimationWrapper --> "cachedOffset" WVec
+@enduml

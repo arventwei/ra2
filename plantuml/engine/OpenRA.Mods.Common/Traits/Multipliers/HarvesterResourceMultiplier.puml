@@ -1,0 +1,17 @@
+@startuml
+class HarvesterResourceMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HarvesterResourceMultiplier {
+    + HarvesterResourceMultiplier(info:HarvesterResourceMultiplierInfo)
+    + GetModifier() : int
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Requires`1"<T> {
+}
+ConditionalTraitInfo <|-- HarvesterResourceMultiplierInfo
+"ConditionalTrait`1" "<HarvesterResourceMultiplierInfo>" <|-- HarvesterResourceMultiplier
+"Requires`1" "<HarvesterInfo>" <|-- HarvesterResourceMultiplier
+@enduml

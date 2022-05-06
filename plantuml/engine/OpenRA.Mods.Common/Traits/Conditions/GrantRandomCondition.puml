@@ -1,0 +1,12 @@
+@startuml
+class GrantRandomConditionInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantRandomCondition {
+    + GrantRandomCondition(self:Actor, info:GrantRandomConditionInfo)
+    Created(self:Actor) : void
+}
+TraitInfo <|-- GrantRandomConditionInfo
+INotifyCreated <|-- GrantRandomCondition
+GrantRandomCondition --> "info" GrantRandomConditionInfo
+@enduml

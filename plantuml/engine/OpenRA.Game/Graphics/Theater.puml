@@ -1,0 +1,23 @@
+@startuml
+class TheaterTemplate {
+    + <<readonly>> Stride : int
+    + <<readonly>> Variants : int
+    + TheaterTemplate(sprites:Sprite[], stride:int, variants:int)
+}
+class Theater <<sealed>> {
+    + Theater(tileset:TileSet, onMissingImage:Action<uint, string>)
+    + HasTileSprite(r:TerrainTile, variant:int?) : bool
+    + TileSprite(r:TerrainTile, variant:int?) : Sprite
+    + TemplateBounds(template:TerrainTemplateInfo, tileSize:Size, mapGrid:MapGridType) : Rectangle
+    + Dispose() : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+IDisposable <|-- Theater
+Theater o-> "templates<ushort,TheaterTemplate>" "Dictionary`2"
+Theater --> "sheetBuilder" SheetBuilder
+Theater --> "missingTile" Sprite
+Theater --> "random" MersenneTwister
+Theater --> "tileset" TileSet
+Theater --> "Sheet" Sheet
+@enduml

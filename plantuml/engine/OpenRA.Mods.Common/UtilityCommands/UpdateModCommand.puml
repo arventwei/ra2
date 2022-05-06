@@ -1,0 +1,15 @@
+@startuml
+class UpdateModCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+    + {static} PrintSummary(rules:IEnumerable<UpdateRule>, detailed:bool) : void
+    {static} Log(logWriter:StreamWriter, format:string, args:object[]) : void
+    {static} LogLine(logWriter:StreamWriter, format:string, args:object[]) : void
+    {static} LogLine(logWriter:StreamWriter) : void
+    {static} ApplyRules(modData:ModData, rules:IEnumerable<UpdateRule>, skipMaps:bool) : void
+}
+class "List`1"<T> {
+}
+IUtilityCommand <|-- UpdateModCommand
+@enduml

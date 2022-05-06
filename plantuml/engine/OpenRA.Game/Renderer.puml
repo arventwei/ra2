@@ -1,0 +1,83 @@
+@startuml
+class Renderer <<sealed>> {
+    + WindowHasInputFocus : bool <<get>>
+    depthMargin : float
+    + Renderer(platform:IPlatform, graphicSettings:GraphicSettings)
+    {static} GetResolution(graphicsSettings:GraphicSettings) : Size
+    + SetUIScale(scale:float) : void
+    + InitializeFonts(modData:ModData) : void
+    + InitializeDepthBuffer(mapGrid:MapGrid) : void
+    BeginFrame() : void
+    + BeginWorld(worldViewport:Rectangle) : void
+    + BeginUI() : void
+    + SetPalette(palette:HardwarePalette) : void
+    + EndFrame(inputHandler:IInputHandler) : void
+    + DrawBatch(vertices:Vertex[], numVertices:int, type:PrimitiveType) : void
+    + DrawBatch(vertices:IVertexBuffer<T>, firstVertex:int, numVertices:int, type:PrimitiveType) : void
+    + Flush() : void
+    + WindowScale : float <<get>>
+    + NativeWindowScale : float <<get>>
+    + CreateVertexBuffer(length:int) : IVertexBuffer<Vertex>
+    + EnableScissor(rect:Rectangle) : void
+    + DisableScissor() : void
+    + EnableDepthBuffer() : void
+    + DisableDepthBuffer() : void
+    + ClearDepthBuffer() : void
+    + EnableAntialiasingFilter() : void
+    + DisableAntialiasingFilter() : void
+    + GrabWindowMouseFocus() : void
+    + ReleaseWindowMouseFocus() : void
+    + SaveScreenshot(path:string) : void
+    + Dispose() : void
+    + SetVSyncEnabled(enabled:bool) : void
+    + GetClipboardText() : string
+    + SetClipboardText(text:string) : bool
+    + GLVersion : string <<get>>
+    + CreateFont(data:byte[]) : IFont
+    + DisplayCount : int <<get>>
+    + CurrentDisplay : int <<get>>
+}
+enum RenderType {
+    None,
+    World,
+    UI,
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "IVertexBuffer`1"<T> {
+}
+class "Stack`1"<T> {
+}
+interface IBatchRenderer {
+    Flush() : void
+}
+IDisposable <|-- Renderer
+Renderer --> "WorldSpriteRenderer" SpriteRenderer
+Renderer --> "WorldRgbaSpriteRenderer" RgbaSpriteRenderer
+Renderer --> "WorldRgbaColorRenderer" RgbaColorRenderer
+Renderer --> "WorldModelRenderer" ModelRenderer
+Renderer --> "RgbaColorRenderer" RgbaColorRenderer
+Renderer --> "SpriteRenderer" SpriteRenderer
+Renderer --> "RgbaSpriteRenderer" RgbaSpriteRenderer
+Renderer --> "Fonts<string,SpriteFont>" "IReadOnlyDictionary`2"
+Renderer --> "tempBuffer<Vertex>" "IVertexBuffer`1"
+Renderer o-> "scissorState<Rectangle>" "Stack`1"
+Renderer --> "screenBuffer" IFrameBuffer
+Renderer --> "screenSprite" Sprite
+Renderer --> "worldBuffer" IFrameBuffer
+Renderer --> "worldSprite" Sprite
+Renderer --> "fontSheetBuilder" SheetBuilder
+Renderer --> "platform" IPlatform
+Renderer o-> "lastBufferSize" Size
+Renderer o-> "lastWorldBufferSize" Size
+Renderer o-> "lastWorldViewport" Rectangle
+Renderer --> "currentPaletteTexture" ITexture
+Renderer --> "currentBatchRenderer" IBatchRenderer
+Renderer o-> "renderType" RenderType
+Renderer --> "Resolution" Size
+Renderer --> "NativeResolution" Size
+Renderer --> "GLProfile" GLProfile
+Renderer --> "CurrentBatchRenderer" IBatchRenderer
+Renderer +-- RenderType
+Renderer +-- IBatchRenderer
+@enduml

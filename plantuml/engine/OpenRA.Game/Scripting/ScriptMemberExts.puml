@@ -1,0 +1,10 @@
+@startuml
+class ScriptMemberExts <<static>> {
+    + {static} LuaDocString(t:Type) : string
+    + {static} LuaDocString(pi:ParameterInfo) : string
+    + {static} LuaDocString(mi:MemberInfo) : string
+}
+class "Dictionary`2"<T1,T2> {
+}
+ScriptMemberExts o-> "LuaTypeNameReplacements<string,string>" "Dictionary`2"
+@enduml

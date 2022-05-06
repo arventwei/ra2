@@ -1,0 +1,15 @@
+@startuml
+class GivesExperienceMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GivesExperienceMultiplier {
+    + GivesExperienceMultiplier(info:GivesExperienceMultiplierInfo)
+    GetGivesExperienceModifier() : int
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- GivesExperienceMultiplierInfo
+"ConditionalTrait`1" "<GivesExperienceMultiplierInfo>" <|-- GivesExperienceMultiplier
+IGivesExperienceModifier <|-- GivesExperienceMultiplier
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+class PlayerColorPaletteInfo {
+    + <<readonly>> BasePalette : string = null
+    + <<readonly>> BaseName : string = "player"
+    + <<readonly>> Ramp : float = 0.05f
+    + <<readonly>> AllowModifiers : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PlayerColorPalette {
+    + PlayerColorPalette(info:PlayerColorPaletteInfo)
+    + LoadPlayerPalettes(wr:WorldRenderer, playerName:string, color:Color, replaceExisting:bool) : void
+}
+TraitInfo <|-- PlayerColorPaletteInfo
+ILoadsPlayerPalettes <|-- PlayerColorPalette
+PlayerColorPalette --> "info" PlayerColorPaletteInfo
+@enduml

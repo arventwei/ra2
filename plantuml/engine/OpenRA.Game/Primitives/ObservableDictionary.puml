@@ -1,0 +1,37 @@
+@startuml
+class "ObservableSortedDictionary`2"<TKey,TValue> {
+    + ObservableSortedDictionary(comparer:IComparer<TKey>)
+    + <<override>> Add(key:TKey, value:TValue) : void
+}
+class "ObservableDictionary`2"<TKey,TValue> {
+    +  <<event>> OnAdd : Action<IObservableCollection, object> 
+    +  <<event>> OnRemove : Action<IObservableCollection, object> 
+    +  <<event>> OnRemoveAt : Action<IObservableCollection, int> 
+    +  <<event>> OnSet : Action<IObservableCollection, object, object> 
+    +  <<event>> OnRefresh : Action<IObservableCollection> 
+    + ObservableDictionary(comparer:IEqualityComparer<TKey>)
+    + <<virtual>> Add(key:TKey, value:TValue) : void
+    + Remove(key:TKey) : bool
+    + ContainsKey(key:TKey) : bool
+    + TryGetValue(key:TKey, value:TValue) : bool
+    + Clear() : void
+    + Count : int <<get>>
+    + Add(item:KeyValuePair<TKey, TValue>) : void
+    + Contains(item:KeyValuePair<TKey, TValue>) : bool
+    + CopyTo(array:KeyValuePair<TKey, TValue>[], arrayIndex:int) : void
+    + IsReadOnly : bool <<get>>
+    + Remove(item:KeyValuePair<TKey, TValue>) : bool
+    + GetEnumerator() : IEnumerator<KeyValuePair<TKey, TValue>>
+    GetEnumerator() : IEnumerator
+}
+class "IDictionary`2"<T1,T2> {
+}
+class "ICollection`1"<T> {
+}
+"ObservableDictionary`2" "<TKey,TValue>" <|-- "ObservableSortedDictionary`2"
+"IDictionary`2" "<TKey,TValue>" <|-- "ObservableDictionary`2"
+IObservableCollection <|-- "ObservableDictionary`2"
+"ObservableDictionary`2" --> "Keys<TKey>" "ICollection`1"
+"ObservableDictionary`2" --> "Values<TValue>" "ICollection`1"
+"ObservableDictionary`2" --> "ObservedItems" IEnumerable
+@enduml

@@ -1,0 +1,73 @@
+@startuml
+class LobbyLogic {
+    <<readonly>> skirmishMode : bool
+    addBotOnMapLoad : bool
+    disableTeamChat : bool
+    insufficientPlayerSpawns : bool
+    teamChat : bool
+    updateDiscordStatus : bool = true
+    <<readonly>> chatLineSound : string
+    ConnectionStateChanged(om:OrderManager) : void
+    disposed : bool
+    OptionsTabDisabled() : bool
+    + <<override>> Tick() : void
+    AddChatLine(name:string, nameColor:Color, text:string, textColor:Color) : void
+    SwitchTeamChat() : bool
+    LoadMapPreviewRules(map:MapPreview) : void
+    UpdateCurrentMap() : void
+    UpdatePlayerList() : void
+    UpdateDiscordStatus() : void
+    UpdateSpawnOccupants() : void
+    OnGameStart() : void
+}
+class LobbyFaction {
+    + Selectable : bool
+    + Name : string
+    + Description : string
+    + Side : string
+}
+class DropDownOption {
+    + Title : string
+}
+enum PanelType {
+    Players,
+    Options,
+    Music,
+    Servers,
+    Kick,
+    ForceStart,
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Func`1"<T> {
+}
+ChromeLogic <|-- LobbyLogic
+LobbyLogic o-> "DoNothing" Action
+LobbyLogic --> "modData" ModData
+LobbyLogic --> "onStart" Action
+LobbyLogic --> "onExit" Action
+LobbyLogic --> "orderManager" OrderManager
+LobbyLogic --> "worldRenderer" WorldRenderer
+LobbyLogic --> "modRules" Ruleset
+LobbyLogic --> "shellmapWorld" World
+LobbyLogic --> "services" WebServices
+LobbyLogic o-> "panel" PanelType
+LobbyLogic --> "lobby" Widget
+LobbyLogic --> "editablePlayerTemplate" Widget
+LobbyLogic --> "nonEditablePlayerTemplate" Widget
+LobbyLogic --> "emptySlotTemplate" Widget
+LobbyLogic --> "editableSpectatorTemplate" Widget
+LobbyLogic --> "nonEditableSpectatorTemplate" Widget
+LobbyLogic --> "newSpectatorTemplate" Widget
+LobbyLogic --> "lobbyChatPanel" ScrollPanelWidget
+LobbyLogic --> "chatTemplate" Widget
+LobbyLogic --> "players" ScrollPanelWidget
+LobbyLogic o-> "factions<string,LobbyFaction>" "Dictionary`2"
+LobbyLogic --> "colorPreview" ColorPreviewManagerWidget
+LobbyLogic o-> "tabCompletion" TabCompletionLogic
+LobbyLogic --> "map" MapPreview
+LobbyLogic o-> "spawnOccupants<int,SpawnOccupant>" "Dictionary`2"
+DropDownOption o-> "IsSelected<bool>" "Func`1"
+DropDownOption --> "OnClick" Action
+LobbyLogic +-- PanelType
+@enduml

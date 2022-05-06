@@ -1,0 +1,10 @@
+@startuml
+class InfiltrateProperties {
+    + InfiltrateProperties(context:ScriptContext, self:Actor)
+    + Infiltrate(target:Actor) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- InfiltrateProperties
+"Requires`1" "<InfiltratesInfo>" <|-- InfiltrateProperties
+@enduml

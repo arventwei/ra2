@@ -1,0 +1,10 @@
+@startuml
+class CursorSequence {
+    + <<readonly>> Name : string
+    + <<readonly>> Start : int
+    + <<readonly>> Length : int
+    + <<readonly>> Palette : string
+    + CursorSequence(cache:FrameCache, name:string, cursorSrc:string, palette:string, info:MiniYaml)
+}
+CursorSequence --> "Hotspot" int2
+@enduml

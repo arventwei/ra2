@@ -1,0 +1,22 @@
+@startuml
+abstract class ConditionalTraitInfo {
+    + EnabledByDefault : bool <<get>>
+    + <<virtual>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+abstract class "ConditionalTrait`1"<InfoType> {
+    + <<readonly>> Info : InfoType
+    + <<virtual>> GetVariableObservers() : IEnumerable<VariableObserver>
+    + IsTraitDisabled : bool <<get>>
+    + ConditionalTrait(info:InfoType)
+    Created(self:Actor) : void
+    RequiredConditionsChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+}
+TraitInfo <|-- ConditionalTraitInfo
+IObservesVariablesInfo <|-- ConditionalTraitInfo
+IRulesetLoaded <|-- ConditionalTraitInfo
+ConditionalTraitInfo o-> "RequiresCondition" BooleanExpression
+IObservesVariables <|-- "ConditionalTrait`1"
+IDisabledTrait <|-- "ConditionalTrait`1"
+INotifyCreated <|-- "ConditionalTrait`1"
+ISync <|-- "ConditionalTrait`1"
+@enduml

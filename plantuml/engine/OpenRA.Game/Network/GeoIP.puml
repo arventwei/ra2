@@ -1,0 +1,21 @@
+@startuml
+class GeoIP {
+    + {static} Initialize(databasePath:string) : void
+    + {static} LookupCountry(ip:IPAddress) : string
+}
+class IP2LocationReader {
+    <<readonly>> columnCount : uint
+    <<readonly>> v4Count : uint
+    <<readonly>> v4Offset : uint
+    <<readonly>> v6Count : uint
+    <<readonly>> v6Offset : uint
+    + IP2LocationReader(source:Stream)
+    AddressForIndex(index:long, isIPv6:bool) : BigInteger
+    CountryForIndex(index:long, isIPv6:bool) : string
+    + LookupCountry(ip:IPAddress) : string
+}
+GeoIP --> "database" IP2LocationReader
+GeoIP +-- IP2LocationReader
+IP2LocationReader --> "Date" DateTime
+IP2LocationReader --> "stream" Stream
+@enduml

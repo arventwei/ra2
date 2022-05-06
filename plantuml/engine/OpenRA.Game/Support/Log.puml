@@ -1,0 +1,17 @@
+@startuml
+class ChannelInfo <<struct>> {
+    + Filename : string
+    + IsTimestamped : bool
+}
+class Log <<static>> {
+    {static} FilenamesForChannel(channelName:string, baseFilename:string) : IEnumerable<string>
+    + {static} Channel(channelName:string) : ChannelInfo
+    + {static} AddChannel(channelName:string, baseFilename:string, isTimestamped:bool) : void
+    + {static} Write(channelName:string, value:string) : void
+    + {static} Write(channelName:string, format:string, args:object[]) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+ChannelInfo --> "Writer" TextWriter
+Log o-> "Channels<string,ChannelInfo>" "Dictionary`2"
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+class MouseAttachmentWidget {
+    + ClickThrough : bool = true
+    palette : string
+    + MouseAttachmentWidget(modData:ModData, worldRenderer:WorldRenderer)
+    + <<override>> Draw() : void
+    + SetAttachment(location:int2, sprite:Sprite, palette:string) : void
+    + Reset() : void
+}
+Widget <|-- MouseAttachmentWidget
+MouseAttachmentWidget --> "sprite" Sprite
+MouseAttachmentWidget --> "worldRenderer" WorldRenderer
+MouseAttachmentWidget --> "graphicSettings" GraphicSettings
+MouseAttachmentWidget --> "location" int2
+MouseAttachmentWidget --> "ChildOrigin" int2
+@enduml

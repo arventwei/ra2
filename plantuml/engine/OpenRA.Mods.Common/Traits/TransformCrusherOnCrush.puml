@@ -1,0 +1,19 @@
+@startuml
+class TransformCrusherOnCrushInfo {
+    + <<readonly>> IntoActor : string = null
+    + <<readonly>> SkipMakeAnims : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TransformCrusherOnCrush {
+    <<readonly>> faction : string
+    + TransformCrusherOnCrush(init:ActorInitializer, info:TransformCrusherOnCrushInfo)
+    WarnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+    OnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- TransformCrusherOnCrushInfo
+TransformCrusherOnCrushInfo o-> "CrushClasses<CrushClass>" "BitSet`1"
+INotifyCrushed <|-- TransformCrusherOnCrush
+TransformCrusherOnCrush --> "info" TransformCrusherOnCrushInfo
+@enduml

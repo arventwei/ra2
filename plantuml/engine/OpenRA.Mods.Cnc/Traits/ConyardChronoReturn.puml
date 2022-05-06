@@ -1,0 +1,60 @@
+@startuml
+class ConyardChronoReturnInfo {
+    + <<readonly>> Sequence : string = "pdox"
+    + <<readonly>> Body : string = "body"
+    + <<readonly>> Condition : string = null
+    + <<readonly>> Damage : int = 1000
+    + <<readonly>> OriginalActor : string = "mcv"
+    + <<readonly>> ChronoshiftSound : string = "chrono2.aud"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ConyardChronoReturn {
+    <<readonly>> faction : string
+    conditionToken : int
+    duration : int
+    returnOriginal : bool
+    selling : bool
+    returnTicks : int = 0
+    triggered : bool
+    + ConyardChronoReturn(init:ActorInitializer, info:ConyardChronoReturnInfo)
+    GetVariableObservers() : IEnumerable<VariableObserver>
+    ReplacementConditionChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+    TriggerVortex() : void
+    ChooseBestDestinationCell(mobileInfo:MobileInfo, destination:CPos) : CPos?
+    ReturnToOrigin() : void
+    Tick(self:Actor) : void
+    ModifyActorInit(init:TypeDictionary) : void
+    ModifyDeathActorInit(self:Actor, init:TypeDictionary) : void
+    ModifyTransformActorInit(self:Actor, init:TypeDictionary) : void
+    Sold(self:Actor) : void
+    Selling(self:Actor) : void
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- ConyardChronoReturnInfo
+"Requires`1" "<HealthInfo>" <|-- ConyardChronoReturnInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- ConyardChronoReturnInfo
+IObservesVariablesInfo <|-- ConyardChronoReturnInfo
+ConyardChronoReturnInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+ConyardChronoReturnInfo o-> "ReturnOriginalActorOnCondition" BooleanExpression
+ConyardChronoReturnInfo o-> "Facing" WAngle
+ConyardChronoReturnInfo o-> "TimeBarColor" Color
+ITick <|-- ConyardChronoReturn
+ISync <|-- ConyardChronoReturn
+IObservesVariables <|-- ConyardChronoReturn
+ISelectionBar <|-- ConyardChronoReturn
+INotifySold <|-- ConyardChronoReturn
+IDeathActorInitModifier <|-- ConyardChronoReturn
+ITransformActorInitModifier <|-- ConyardChronoReturn
+ConyardChronoReturn --> "info" ConyardChronoReturnInfo
+ConyardChronoReturn --> "wsb" WithSpriteBody
+ConyardChronoReturn --> "health" Health
+ConyardChronoReturn --> "self" Actor
+ConyardChronoReturn --> "chronosphere" Actor
+ConyardChronoReturn --> "origin" CPos
+@enduml

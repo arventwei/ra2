@@ -1,0 +1,62 @@
+@startuml
+class SupportPowersWidget {
+    + <<readonly>> ReadyText : string = ""
+    + <<readonly>> HoldText : string = ""
+    + <<readonly>> OverlayFont : string = "TinyBold"
+    + <<readonly>> IconMargin : int = 10
+    + <<readonly>> TooltipContainer : string
+    + <<readonly>> TooltipTemplate : string = "SUPPORT_POWER_TOOLTIP"
+    + <<readonly>> HotkeyPrefix : string = null
+    + <<readonly>> HotkeyCount : int = 0
+    + <<readonly>> ClockAnimation : string = "clock"
+    + <<readonly>> ClockSequence : string = "idle"
+    + <<readonly>> ClockPalette : string = "chrome"
+    + <<readonly>> Horizontal : bool = false
+    + IconCount : int <<get>>
+    +  <<event>> OnIconCountChanged : Action<int, int> 
+    + {static} LinterHotkeyNames(widgetNode:MiniYamlNode, emitError:Action<string>, emitWarning:Action<string>) : IEnumerable<string>
+    + SupportPowersWidget(modData:ModData, world:World, worldRenderer:WorldRenderer)
+    + <<override>> Initialize(args:WidgetArgs) : void
+    + RefreshIcons() : void
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+    + <<override>> Draw() : void
+    + <<override>> Tick() : void
+    + <<override>> MouseEntered() : void
+    + <<override>> MouseExited() : void
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Func`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+class SupportPowerIcon {
+}
+Widget <|-- SupportPowersWidget
+SupportPowersWidget o-> "IconSize" int2
+SupportPowersWidget o-> "IconSpriteOffset" int2
+SupportPowersWidget --> "modData" ModData
+SupportPowersWidget --> "worldRenderer" WorldRenderer
+SupportPowersWidget --> "spm" SupportPowerManager
+SupportPowersWidget --> "icon" Animation
+SupportPowersWidget --> "clock" Animation
+SupportPowersWidget o-> "icons<Rectangle,SupportPowerIcon>" "Dictionary`2"
+SupportPowersWidget --> "TooltipIcon" SupportPowerIcon
+SupportPowersWidget --> "GetTooltipIcon<SupportPowerIcon>" "Func`1"
+SupportPowersWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+SupportPowersWidget --> "eventBounds" Rectangle
+SupportPowersWidget --> "EventBounds" Rectangle
+SupportPowersWidget --> "overlayFont" SpriteFont
+SupportPowersWidget --> "iconOffset" float2
+SupportPowersWidget --> "holdOffset" float2
+SupportPowersWidget --> "readyOffset" float2
+SupportPowersWidget --> "timeOffset" float2
+SupportPowersWidget +-- SupportPowerIcon
+SupportPowerIcon --> "Power" SupportPowerInstance
+SupportPowerIcon --> "Pos" float2
+SupportPowerIcon --> "Sprite" Sprite
+SupportPowerIcon --> "Palette" PaletteReference
+SupportPowerIcon --> "IconClockPalette" PaletteReference
+SupportPowerIcon --> "Hotkey" HotkeyReference
+@enduml

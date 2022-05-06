@@ -1,0 +1,21 @@
+@startuml
+class WithDeliveryAnimationInfo {
+    + <<readonly>> ActiveSequence : string = "active"
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithDeliveryAnimation {
+    + WithDeliveryAnimation(self:Actor, info:WithDeliveryAnimationInfo)
+    + IncomingDelivery(self:Actor) : void
+    + Delivered(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithDeliveryAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithDeliveryAnimationInfo
+"ConditionalTrait`1" "<WithDeliveryAnimationInfo>" <|-- WithDeliveryAnimation
+INotifyDelivery <|-- WithDeliveryAnimation
+WithDeliveryAnimation --> "wsb" WithSpriteBody
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+enum AirAttackType {
+    Default,
+    Hover,
+    Strafe,
+}
+class AttackAircraftInfo {
+    + <<readonly>> AbortOnResupply : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackAircraft {
+    + AttackAircraft(self:Actor, info:AttackAircraftInfo)
+    + <<override>> GetAttackActivity(self:Actor, source:AttackSource, newTarget:Target, allowMove:bool, forceAttack:bool, targetLineColor:Color?) : Activity
+}
+class "Requires`1"<T> {
+}
+AttackFollowInfo <|-- AttackAircraftInfo
+"Requires`1" "<AircraftInfo>" <|-- AttackAircraftInfo
+AttackAircraftInfo o-> "AttackType" AirAttackType
+AttackAircraftInfo o-> "StrafeRunLength" WDist
+AttackFollow <|-- AttackAircraft
+AttackAircraft --> "Info" AttackAircraftInfo
+AttackAircraft --> "aircraftInfo" AircraftInfo
+@enduml

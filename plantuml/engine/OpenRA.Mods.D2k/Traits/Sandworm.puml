@@ -1,0 +1,32 @@
+@startuml
+class SandwormInfo {
+    + <<readonly>> TargetRescanInterval : int = 125
+    + <<readonly>> ChanceToDisappear : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Sandworm {
+    + IsMovingTowardTarget : bool <<get>>
+    + IsAttacking : bool
+    targetCountdown : int
+    disposed : bool
+    + Sandworm(self:Actor, info:SandwormInfo)
+    + <<override>> DoAction(self:Actor, targetCell:CPos) : void
+    Tick(self:Actor) : void
+    RescanForTargets(self:Actor) : void
+    Disposing(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+WandersInfo <|-- SandwormInfo
+"Requires`1" "<MobileInfo>" <|-- SandwormInfo
+"Requires`1" "<AttackBaseInfo>" <|-- SandwormInfo
+SandwormInfo o-> "MaxSearchRadius" WDist
+SandwormInfo o-> "IgnoreNoiseAttackRange" WDist
+Wanders <|-- Sandworm
+ITick <|-- Sandworm
+INotifyActorDisposing <|-- Sandworm
+Sandworm --> "WormInfo" SandwormInfo
+Sandworm --> "manager" ActorSpawnManager
+Sandworm --> "mobile" Mobile
+Sandworm --> "attackTrait" AttackBase
+@enduml

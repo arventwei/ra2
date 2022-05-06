@@ -1,0 +1,20 @@
+@startuml
+class FrameData {
+    + ClientsPlayingInFrame(frame:int) : IEnumerable<int>
+    + ClientQuit(clientId:int, lastClientFrame:int) : void
+    + AddFrameOrders(clientId:int, frame:int, orders:byte[]) : void
+    + IsReadyForFrame(frame:int) : bool
+    + ClientsNotReadyForFrame(frame:int) : IEnumerable<int>
+    + OrdersForFrame(world:World, frame:int) : IEnumerable<ClientOrder>
+}
+class ClientOrder <<struct>> {
+    + Client : int
+    + <<override>> ToString() : string
+}
+class "Dictionary`2"<T1,T2> {
+}
+FrameData o-> "clientQuitTimes<int,int>" "Dictionary`2"
+FrameData o-> "framePackets<int,Dictionary<int, byte[]>>" "Dictionary`2"
+FrameData +-- ClientOrder
+ClientOrder --> "Order" Order
+@enduml

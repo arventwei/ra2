@@ -1,0 +1,35 @@
+@startuml
+enum TextAlign {
+    Left,
+    Center,
+    Right,
+}
+enum TextVAlign {
+    Top,
+    Middle,
+    Bottom,
+}
+class LabelWidget {
+    + Text : string = null
+    + Font : string
+    + Contrast : bool
+    + Shadow : bool
+    + ContrastRadius : int
+    + WordWrap : bool = false
+    + LabelWidget()
+    + <<override>> Draw() : void
+    + <<override>> Clone() : Widget
+}
+class "Func`1"<T> {
+}
+Widget <|-- LabelWidget
+LabelWidget o-> "Align" TextAlign
+LabelWidget o-> "VAlign" TextVAlign
+LabelWidget o-> "TextColor" Color
+LabelWidget o-> "ContrastColorDark" Color
+LabelWidget o-> "ContrastColorLight" Color
+LabelWidget --> "GetText<string>" "Func`1"
+LabelWidget --> "GetColor<Color>" "Func`1"
+LabelWidget --> "GetContrastColorDark<Color>" "Func`1"
+LabelWidget --> "GetContrastColorLight<Color>" "Func`1"
+@enduml

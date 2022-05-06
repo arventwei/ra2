@@ -1,0 +1,10 @@
+@startuml
+class HarvesterProperties {
+    + HarvesterProperties(context:ScriptContext, self:Actor)
+    + FindResources() : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- HarvesterProperties
+"Requires`1" "<HarvesterInfo>" <|-- HarvesterProperties
+@enduml

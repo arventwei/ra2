@@ -1,0 +1,5 @@
+@startuml
+class XORDeltaCompression <<static>> {
+    + {static} DecodeInto(src:byte[], dest:byte[], srcOffset:int) : int
+}
+@enduml

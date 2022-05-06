@@ -1,0 +1,34 @@
+@startuml
+class ReplayConnection <<sealed>> {
+    ordersFrame : int
+    + LocalClientId : int <<get>>
+    + ErrorMessage : string <<get>>
+    + <<readonly>> TickCount : int
+    + <<readonly>> FinalGameTick : int
+    + <<readonly>> IsValid : bool
+    + <<readonly>> Filename : string
+    + ReplayConnection(replayFilename:string)
+    + Send(frame:int, orders:List<byte[]>) : void
+    + SendImmediate(orders:IEnumerable<byte[]>) : void
+    + SendSync(frame:int, syncData:byte[]) : void
+    + Receive(packetFn:Action<int, byte[]>) : void
+    + Dispose() : void
+}
+class Chunk {
+    + Frame : int
+}
+class "Queue`1"<T> {
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+IConnection <|-- ReplayConnection
+ReplayConnection o-> "chunks<Chunk>" "Queue`1"
+ReplayConnection o-> "sync<byte[]>" "List`1"
+ReplayConnection o-> "lastClientsFrame<int,int>" "Dictionary`2"
+ReplayConnection --> "ConnectionState" ConnectionState
+ReplayConnection --> "EndPoint" IPEndPoint
+ReplayConnection --> "LobbyInfo" Session
+ReplayConnection +-- Chunk
+@enduml

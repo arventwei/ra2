@@ -1,0 +1,15 @@
+@startuml
+class GiveCashCrateActionInfo {
+    + Amount : int = 2000
+    + UseCashTick : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GiveCashCrateAction {
+    + GiveCashCrateAction(self:Actor, info:GiveCashCrateActionInfo)
+    + <<override>> Activate(collector:Actor) : void
+    + <<override>> GetSelectionShares(collector:Actor) : int
+}
+CrateActionInfo <|-- GiveCashCrateActionInfo
+CrateAction <|-- GiveCashCrateAction
+GiveCashCrateAction --> "info" GiveCashCrateActionInfo
+@enduml

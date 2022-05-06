@@ -1,0 +1,7 @@
+@startuml
+class CheckVoiceReferences {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, rules:Ruleset) : void
+    CheckVoices(actorInfo:ActorInfo, emitError:Action<string>, rules:Ruleset, voiceSet:string) : void
+}
+ILintRulesPass <|-- CheckVoiceReferences
+@enduml

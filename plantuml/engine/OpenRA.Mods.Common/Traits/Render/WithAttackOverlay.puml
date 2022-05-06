@@ -1,0 +1,28 @@
+@startuml
+class WithAttackOverlayInfo {
+    + <<readonly>> Sequence : string = null
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<readonly>> Delay : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithAttackOverlay {
+    attacking : bool
+    tick : int
+    + WithAttackOverlay(init:ActorInitializer, info:WithAttackOverlayInfo)
+    PlayOverlay(self:Actor) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- WithAttackOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithAttackOverlayInfo
+WithAttackOverlayInfo o-> "DelayRelativeTo" AttackDelayType
+INotifyAttack <|-- WithAttackOverlay
+ITick <|-- WithAttackOverlay
+WithAttackOverlay --> "overlay" Animation
+WithAttackOverlay --> "renderSprites" RenderSprites
+WithAttackOverlay --> "info" WithAttackOverlayInfo
+@enduml

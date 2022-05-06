@@ -1,0 +1,12 @@
+@startuml
+class DisguiseProperties {
+    + DisguiseProperties(context:ScriptContext, self:Actor)
+    + DisguiseAs(target:Actor) : void
+    + DisguiseAsType(actorType:string, newOwner:Player) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- DisguiseProperties
+"Requires`1" "<DisguiseInfo>" <|-- DisguiseProperties
+DisguiseProperties --> "disguise" Disguise
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+class Fly {
+    <<readonly>> targetLineColor : Color?
+    useLastVisibleTarget : bool
+    + Fly(self:Actor, t:Target, nearEnough:WDist, initialTargetPosition:WPos?, targetLineColor:Color?)
+    + Fly(self:Actor, t:Target, initialTargetPosition:WPos?, targetLineColor:Color?)
+    + Fly(self:Actor, t:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?)
+    + {static} FlyTick(self:Actor, aircraft:Aircraft, desiredFacing:WAngle, desiredAltitude:WDist, moveOverride:WVec, idleTurn:bool) : void
+    + {static} FlyTick(self:Actor, aircraft:Aircraft, desiredFacing:WAngle, desiredAltitude:WDist, idleTurn:bool) : void
+    + {static} VerticalTakeOffOrLandTick(self:Actor, aircraft:Aircraft, desiredFacing:WAngle, desiredAltitude:WDist, idleTurn:bool) : bool
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> GetTargets(self:Actor) : IEnumerable<Target>
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+    + {static} CalculateTurnRadius(speed:int, turnSpeed:WAngle) : int
+}
+class "List`1"<T> {
+}
+Activity <|-- Fly
+Fly --> "aircraft" Aircraft
+Fly --> "maxRange" WDist
+Fly --> "minRange" WDist
+Fly --> "nearEnough" WDist
+Fly --> "target" Target
+Fly --> "lastVisibleTarget" Target
+Fly o-> "positionBuffer<WPos>" "List`1"
+@enduml

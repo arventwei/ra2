@@ -1,0 +1,16 @@
+@startuml
+class Rgba2Hex {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    PrintUsage() : bool
+    Run(utility:Utility, args:string[]) : void
+}
+class Argb2Hex {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    PrintUsage() : bool
+    Run(utility:Utility, args:string[]) : void
+}
+IUtilityCommand <|-- Rgba2Hex
+IUtilityCommand <|-- Argb2Hex
+@enduml

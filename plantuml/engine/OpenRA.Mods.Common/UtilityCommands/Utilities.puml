@@ -1,0 +1,5 @@
+@startuml
+class Utilities <<static>> {
+    + {static} GetTopLevelNodeByKey(modData:ModData, key:string, manifestPropertySelector:Func<Manifest, string[]>, mapPropertySelector:Func<Map, MiniYaml>, mapPath:string) : MiniYamlNode
+}
+@enduml

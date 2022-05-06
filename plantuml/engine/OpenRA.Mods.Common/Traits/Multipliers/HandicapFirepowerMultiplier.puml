@@ -1,0 +1,12 @@
+@startuml
+class HandicapFirepowerMultiplierInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HandicapFirepowerMultiplier {
+    + HandicapFirepowerMultiplier(self:Actor)
+    GetFirepowerModifier() : int
+}
+TraitInfo <|-- HandicapFirepowerMultiplierInfo
+IFirepowerModifier <|-- HandicapFirepowerMultiplier
+HandicapFirepowerMultiplier --> "self" Actor
+@enduml

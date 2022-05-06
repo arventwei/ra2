@@ -1,0 +1,21 @@
+@startuml
+class TerrainTunnelInfo {
+    + <<readonly>> Height : byte = 0
+    + <<readonly>> Footprint : string
+    + <<readonly>> TerrainType : string = null
+    + TunnelCells() : IEnumerable<CPos>
+    + PortalCells() : IEnumerable<CPos>
+    CellsMatching(c:char) : IEnumerable<CPos>
+}
+class TerrainTunnel {
+}
+class "TraitInfo`1"<T> {
+}
+class "Requires`1"<T> {
+}
+"TraitInfo`1" "<TerrainTunnel>" <|-- TerrainTunnelInfo
+"Requires`1" "<TerrainTunnelLayerInfo>" <|-- TerrainTunnelInfo
+ILobbyCustomRulesIgnore <|-- TerrainTunnelInfo
+TerrainTunnelInfo o-> "Location" CPos
+TerrainTunnelInfo o-> "Dimensions" CVec
+@enduml

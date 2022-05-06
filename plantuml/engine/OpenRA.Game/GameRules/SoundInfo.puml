@@ -1,0 +1,30 @@
+@startuml
+class SoundInfo {
+    + <<readonly>> DefaultVariant : string = ".aud"
+    + <<readonly>> DefaultPrefix : string = ""
+    + SoundInfo(y:MiniYaml)
+    ParseSoundPool(y:MiniYaml, key:string) : Dictionary<string, SoundPool>
+}
+class SoundPool {
+    + <<readonly>> VolumeModifier : float
+    + SoundPool(volumeModifier:float, clips:string[])
+    + GetNext() : string
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "HashSet`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+class "List`1"<T> {
+}
+SoundInfo o-> "Variants<string,string[]>" "Dictionary`2"
+SoundInfo o-> "Prefixes<string,string[]>" "Dictionary`2"
+SoundInfo o-> "Voices<string,string[]>" "Dictionary`2"
+SoundInfo o-> "Notifications<string,string[]>" "Dictionary`2"
+SoundInfo o-> "DisableVariants<string>" "HashSet`1"
+SoundInfo o-> "DisablePrefixes<string>" "HashSet`1"
+SoundInfo --> "VoicePools<Dictionary<string, SoundPool>>" "Lazy`1"
+SoundInfo --> "NotificationsPools<Dictionary<string, SoundPool>>" "Lazy`1"
+SoundPool o-> "liveclips<string>" "List`1"
+@enduml

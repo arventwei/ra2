@@ -1,0 +1,18 @@
+@startuml
+class ModelPreview {
+    <<readonly>> scale : float
+    <<readonly>> zOffset : int
+    + ModelPreview(components:ModelAnimation[], offset:WVec, zOffset:int, scale:float, lightPitch:WAngle, lightYaw:WAngle, lightAmbientColor:float[], lightDiffuseColor:float[], cameraPitch:WAngle, colorPalette:PaletteReference, normalsPalette:PaletteReference, shadowPalette:PaletteReference)
+    Tick() : void
+    RenderUI(wr:WorldRenderer, pos:int2, scale:float) : IEnumerable<IRenderable>
+    Render(wr:WorldRenderer, pos:WPos) : IEnumerable<IRenderable>
+    ScreenBounds(wr:WorldRenderer, pos:WPos) : IEnumerable<Rectangle>
+}
+IActorPreview <|-- ModelPreview
+ModelPreview --> "lightSource" WRot
+ModelPreview --> "camera" WRot
+ModelPreview --> "colorPalette" PaletteReference
+ModelPreview --> "normalsPalette" PaletteReference
+ModelPreview --> "shadowPalette" PaletteReference
+ModelPreview --> "offset" WVec
+@enduml

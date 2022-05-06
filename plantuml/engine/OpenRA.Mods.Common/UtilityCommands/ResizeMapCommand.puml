@@ -1,0 +1,11 @@
+@startuml
+class ResizeMapCommand {
+    Name : string <<get>>
+    width : int
+    height : int
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+}
+IUtilityCommand <|-- ResizeMapCommand
+ResizeMapCommand --> "map" Map
+@enduml

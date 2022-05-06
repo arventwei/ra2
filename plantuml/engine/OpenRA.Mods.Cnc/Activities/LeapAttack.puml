@@ -1,0 +1,25 @@
+@startuml
+class LeapAttack {
+    <<readonly>> allowMovement : bool
+    <<readonly>> forceAttack : bool
+    <<readonly>> targetLineColor : Color?
+    useLastVisibleTarget : bool
+    + LeapAttack(self:Actor, target:Target, allowMovement:bool, forceAttack:bool, attack:AttackLeap, info:AttackLeapInfo, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    StanceChanged(self:Actor, autoTarget:AutoTarget, oldStance:UnitStance, newStance:UnitStance) : void
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+class "BitSet`1"<T> {
+}
+Activity <|-- LeapAttack
+IActivityNotifyStanceChanged <|-- LeapAttack
+LeapAttack --> "info" AttackLeapInfo
+LeapAttack --> "attack" AttackLeap
+LeapAttack --> "mobile" Mobile
+LeapAttack --> "target" Target
+LeapAttack --> "lastVisibleTarget" Target
+LeapAttack --> "lastVisibleMinRange" WDist
+LeapAttack --> "lastVisibleMaxRange" WDist
+LeapAttack --> "lastVisibleTargetTypes<TargetableType>" "BitSet`1"
+LeapAttack --> "lastVisibleOwner" Player
+@enduml

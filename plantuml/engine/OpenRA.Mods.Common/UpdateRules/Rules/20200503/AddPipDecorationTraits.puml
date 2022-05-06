@@ -1,0 +1,22 @@
+@startuml
+class AddPipDecorationTraits {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    customPips : bool
+    + <<override>> AfterUpdate(modData:ModData) : IEnumerable<string>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+UpdateRule <|-- AddPipDecorationTraits
+AddPipDecorationTraits o-> "PipReplacements<string,string>" "Dictionary`2"
+AddPipDecorationTraits o-> "locations<string>" "List`1"
+AddPipDecorationTraits o-> "cargoPipLocations<string>" "List`1"
+AddPipDecorationTraits o-> "cargoCustomPips<string>" "HashSet`1"
+AddPipDecorationTraits o-> "harvesterPipLocations<string>" "List`1"
+AddPipDecorationTraits o-> "harvesterCustomPips<string,string>" "Dictionary`2"
+@enduml

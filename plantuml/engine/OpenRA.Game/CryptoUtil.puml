@@ -1,0 +1,19 @@
+@startuml
+class CryptoUtil <<static>> {
+    + {static} PublicKeyFingerprint(parameters:RSAParameters) : string
+    + {static} EncodePEMPublicKey(parameters:RSAParameters) : string
+    + {static} DecodePEMPublicKey(key:string) : RSAParameters
+    {static} EncodePublicKey(parameters:RSAParameters) : byte[]
+    {static} WriteTLVLength(writer:BinaryWriter, length:int) : void
+    {static} ReadTLVLength(s:Stream) : int
+    {static} TripletFullLength(dataLength:int) : int
+    + {static} DecryptString(parameters:RSAParameters, data:string) : string
+    + {static} Sign(parameters:RSAParameters, data:string) : string
+    + {static} Sign(parameters:RSAParameters, data:byte[]) : string
+    + {static} VerifySignature(parameters:RSAParameters, data:string, signature:string) : bool
+    + {static} VerifySignature(parameters:RSAParameters, data:byte[], signature:string) : bool
+    + {static} SHA1Hash(data:Stream) : string
+    + {static} SHA1Hash(data:byte[]) : string
+    + {static} SHA1Hash(data:string) : string
+}
+@enduml

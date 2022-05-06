@@ -1,0 +1,5 @@
+@startuml
+class RenderUtils {
+    + {static} ZOffsetFromCenter(self:Actor, pos:WPos, offset:int) : int
+}
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+class IonCannonPowerInfo {
+    + <<readonly>> CameraActor : string = null
+    + <<readonly>> CameraRemoveDelay : int = 25
+    + <<readonly>> Effect : string = "ionsfx"
+    + <<readonly>> EffectSequence : string = "idle"
+    + <<readonly>> EffectPalette : string = "effect"
+    + <<readonly>> Weapon : string = "IonCannon"
+    + <<readonly>> WeaponDelay : int = 7
+    + <<readonly>> OnFireSound : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class IonCannonPower {
+    + IonCannonPower(self:Actor, info:IonCannonPowerInfo)
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    + Activate(self:Actor, target:Target) : void
+}
+SupportPowerInfo <|-- IonCannonPowerInfo
+IRulesetLoaded <|-- IonCannonPowerInfo
+IonCannonPowerInfo --> "WeaponInfo" WeaponInfo
+SupportPower <|-- IonCannonPower
+IonCannonPower --> "info" IonCannonPowerInfo
+@enduml

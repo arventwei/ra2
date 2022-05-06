@@ -1,0 +1,31 @@
+@startuml
+class BaseSpawnerChildInfo {
+    + <<readonly>> ParentDeadCondition : string = null
+    + <<readonly>> AllowOwnerChange : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BaseSpawnerChild {
+    parentDeadToken : int
+    + BaseSpawnerChild(init:ActorInitializer, info:BaseSpawnerChildInfo)
+    Created(self:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+    + <<virtual>> LinkParent(self:Actor, parent:Actor, spawnerParent:BaseSpawnerParent) : void
+    TargetSwitched(lastTarget:Target, newTarget:Target) : bool
+    + <<virtual>> Stop(self:Actor) : void
+    + <<virtual>> Attack(self:Actor, target:Target) : void
+    + <<virtual>> OnParentKilled(self:Actor, attacker:Actor, disposal:SpawnerChildDisposal) : void
+    + <<virtual>> OnParentOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player, disposal:SpawnerChildDisposal) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "BitSet`1"<T> {
+}
+TraitInfo <|-- BaseSpawnerChildInfo
+BaseSpawnerChildInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+INotifyCreated <|-- BaseSpawnerChild
+INotifyKilled <|-- BaseSpawnerChild
+INotifyOwnerChanged <|-- BaseSpawnerChild
+BaseSpawnerChild --> "info" BaseSpawnerChildInfo
+BaseSpawnerChild o-> "spawnerParent" BaseSpawnerParent
+BaseSpawnerChild --> "Parent" Actor
+BaseSpawnerChild --> "lastTarget" Target
+@enduml

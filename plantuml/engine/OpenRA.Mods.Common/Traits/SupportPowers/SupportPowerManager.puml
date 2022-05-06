@@ -1,0 +1,68 @@
+@startuml
+class SupportPowerManagerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SupportPowerManager {
+    + SupportPowerManager(init:ActorInitializer)
+    {static} MakeKey(sp:SupportPower) : string
+    ActorAdded(a:Actor) : void
+    ActorRemoved(a:Actor) : void
+    Tick(self:Actor) : void
+    + ResolveOrder(self:Actor, order:Order) : void
+    + GetPowersForActor(a:Actor) : IEnumerable<SupportPowerInstance>
+    + PrerequisitesAvailable(key:string) : void
+    + PrerequisitesUnavailable(key:string) : void
+    + PrerequisitesItemHidden(key:string) : void
+    + PrerequisitesItemVisible(key:string) : void
+}
+class SupportPowerInstance {
+    + <<readonly>> Key : string
+    + <<readonly>> TotalTicks : int
+    + RemainingTicks : int <<get>>
+    + Active : bool <<get>>
+    + Disabled : bool <<get>>
+    + Ready : bool <<get>>
+    instancesEnabled : bool
+    prereqsAvailable : bool = true
+    oneShotFired : bool
+    notifiedReady : bool
+    + ResetTimer() : void
+    + SupportPowerInstance(key:string, info:SupportPowerInfo, manager:SupportPowerManager)
+    + <<virtual>> PrerequisitesAvailable(available:bool) : void
+    + <<virtual>> Tick() : void
+    + <<virtual>> Target() : void
+    + <<virtual>> Activate(order:Order) : void
+    + <<virtual>> IconOverlayTextOverride() : string
+    + <<virtual>> TooltipTimeTextOverride() : string
+}
+class SelectGenericPowerTarget {
+    <<readonly>> order : string
+    <<readonly>> cursor : string
+    + OrderKey : string <<get>>
+    + SelectGenericPowerTarget(order:string, manager:SupportPowerManager, cursor:string, button:MouseButton)
+}
+class "Requires`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Lazy`1"<T> {
+}
+class "List`1"<T> {
+}
+TraitInfo <|-- SupportPowerManagerInfo
+"Requires`1" "<DeveloperModeInfo>" <|-- SupportPowerManagerInfo
+"Requires`1" "<TechTreeInfo>" <|-- SupportPowerManagerInfo
+ITick <|-- SupportPowerManager
+IResolveOrder <|-- SupportPowerManager
+ITechTreeElement <|-- SupportPowerManager
+SupportPowerManager --> "Self" Actor
+SupportPowerManager o-> "Powers<string,SupportPowerInstance>" "Dictionary`2"
+SupportPowerManager --> "DevMode" DeveloperMode
+SupportPowerManager --> "TechTree" TechTree
+SupportPowerManager --> "RadarPings<RadarPings>" "Lazy`1"
+SupportPowerInstance o-> "Instances<SupportPower>" "List`1"
+SupportPowerInstance --> "Info" SupportPowerInfo
+OrderGenerator <|-- SelectGenericPowerTarget
+SelectGenericPowerTarget --> "manager" SupportPowerManager
+SelectGenericPowerTarget --> "expectedButton" MouseButton
+@enduml

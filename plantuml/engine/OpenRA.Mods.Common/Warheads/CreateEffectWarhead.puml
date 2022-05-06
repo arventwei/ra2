@@ -1,0 +1,19 @@
+@startuml
+class CreateEffectWarhead {
+    + <<readonly>> Image : string = "explosion"
+    + <<readonly>> ExplosionPalette : string = "effect"
+    + <<readonly>> UsePlayerPalette : bool = false
+    + <<readonly>> ForceDisplayAtGroundLevel : bool = false
+    + <<readonly>> ImpactSoundChance : int = 100
+    + <<readonly>> ImpactActors : bool = true
+    ActorTypeAtImpact(world:World, pos:WPos, firedBy:Actor) : ImpactActorType
+    + <<override>> IsValidAgainst(victim:Actor, firedBy:Actor) : bool
+    + <<override>> DoImpact(target:Target, args:WarheadArgs) : void
+    IsValidAgainstTerrain(world:World, pos:WPos) : bool
+}
+class "BitSet`1"<T> {
+}
+Warhead <|-- CreateEffectWarhead
+CreateEffectWarhead o-> "Inaccuracy" WDist
+CreateEffectWarhead o-> "TargetTypeAir<TargetableType>" "BitSet`1"
+@enduml

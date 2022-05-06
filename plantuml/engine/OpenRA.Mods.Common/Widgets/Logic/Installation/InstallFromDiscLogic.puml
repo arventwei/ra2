@@ -1,0 +1,53 @@
+@startuml
+class InstallFromDiscLogic {
+    <<const>> ShowPercentageThreshold : int = 26214400
+    + InstallFromDiscLogic(widget:Widget, content:ModContent, sources:Dictionary<string, ModContent.ModSource>, afterInstall:Action)
+    {static} IsValidDrive(d:DriveInfo) : bool
+    DetectContentDisks() : void
+    InstallFromDisc(path:string, modSource:ModContent.ModSource) : void
+    {static} CopyStream(input:Stream, output:Stream, length:long, onProgress:Action<long>) : void
+    {static} ExtractFromPackage(type:ExtractionType, path:string, actionYaml:MiniYaml, extractedFiles:List<string>, updateMessage:Action<string>) : void
+    {static} ExtractFromMSCab(path:string, actionYaml:MiniYaml, extractedFiles:List<string>, updateMessage:Action<string>) : void
+    {static} ExtractFromISCab(path:string, actionYaml:MiniYaml, extractedFiles:List<string>, updateMessage:Action<string>) : void
+    FindSourcePath(source:ModContent.ModSource, volumes:IEnumerable<string>) : string
+    IsValidSourcePath(path:string, source:ModContent.ModSource) : bool
+    ShowMessage(title:string, message:string) : void
+    ShowProgressbar(title:string, getMessage:Func<string>) : void
+    ShowList(title:string, message:string, items:IEnumerable<string>) : void
+    ShowList(title:string, message:string, groups:Dictionary<string, IEnumerable<string>>) : void
+    ShowContinueCancel(continueAction:Action) : void
+    ShowBackRetry(retryAction:Action) : void
+    ShowDisabledCancel() : void
+}
+enum Mode {
+    Progress,
+    Message,
+    List,
+}
+class "Dictionary`2"<T1,T2> {
+}
+enum ExtractionType {
+    Raw,
+    Blast,
+}
+ChromeLogic <|-- InstallFromDiscLogic
+InstallFromDiscLogic --> "content" ModContent
+InstallFromDiscLogic --> "sources<string,ModContent.ModSource>" "Dictionary`2"
+InstallFromDiscLogic --> "panel" Widget
+InstallFromDiscLogic --> "titleLabel" LabelWidget
+InstallFromDiscLogic --> "primaryButton" ButtonWidget
+InstallFromDiscLogic --> "secondaryButton" ButtonWidget
+InstallFromDiscLogic --> "progressContainer" Widget
+InstallFromDiscLogic --> "progressBar" ProgressBarWidget
+InstallFromDiscLogic --> "progressLabel" LabelWidget
+InstallFromDiscLogic --> "messageContainer" Widget
+InstallFromDiscLogic --> "messageLabel" LabelWidget
+InstallFromDiscLogic --> "listContainer" Widget
+InstallFromDiscLogic --> "listPanel" ScrollPanelWidget
+InstallFromDiscLogic --> "listHeaderTemplate" Widget
+InstallFromDiscLogic --> "listTemplate" LabelWidget
+InstallFromDiscLogic --> "listLabel" LabelWidget
+InstallFromDiscLogic o-> "visible" Mode
+InstallFromDiscLogic +-- Mode
+InstallFromDiscLogic +-- ExtractionType
+@enduml

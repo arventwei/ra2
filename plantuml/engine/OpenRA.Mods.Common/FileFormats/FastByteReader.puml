@@ -1,0 +1,11 @@
+@startuml
+class FastByteReader {
+    offset : int
+    + FastByteReader(src:byte[], offset:int)
+    + Done() : bool
+    + ReadByte() : byte
+    + ReadWord() : int
+    + CopyTo(dest:byte[], offset:int, count:int) : void
+    + Remaining() : int
+}
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class ScaredCatProperties {
+    + ScaredCatProperties(context:ScriptContext, self:Actor)
+    + Panic() : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- ScaredCatProperties
+"Requires`1" "<ScaredyCatInfo>" <|-- ScaredCatProperties
+ScaredCatProperties --> "scaredyCat" ScaredyCat
+@enduml

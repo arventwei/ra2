@@ -1,0 +1,8 @@
+@startuml
+class Media <<static>> {
+    + {static} PlayFMVFullscreen(w:World, movie:string, onComplete:Action) : void
+    + {static} PlayFMVInRadar(w:World, movie:VqaReader, onComplete:Action) : void
+    + {static} StopFMVInRadar() : void
+    + {static} LoadVqa(s:Stream) : VqaReader
+}
+@enduml

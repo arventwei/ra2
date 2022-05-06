@@ -1,0 +1,38 @@
+@startuml
+class CellRegion {
+    + CellRegion(gridType:MapGridType, topLeft:CPos, bottomRight:CPos)
+    + CellRegion(gridType:MapGridType, topLeft:MPos, bottomRight:MPos)
+    + {static} Expand(region:CellRegion, cordon:int) : CellRegion
+    + {static} BoundingRegion(shape:MapGridType, cells:IEnumerable<CPos>) : CellRegion
+    + Contains(region:CellRegion) : bool
+    + Contains(cell:CPos) : bool
+    + GetEnumerator() : CellRegionEnumerator
+    GetEnumerator() : IEnumerator<CPos>
+    GetEnumerator() : IEnumerator
+}
+class "IEnumerable`1"<T> {
+}
+class CellRegionEnumerator <<struct>> {
+    u : int
+    v : int
+    + CellRegionEnumerator(region:CellRegion)
+    + MoveNext() : bool
+    + Reset() : void
+    Current : object <<get>>
+    + Dispose() : void
+}
+class "IEnumerator`1"<T> {
+}
+"IEnumerable`1" "<CPos>" <|-- CellRegion
+CellRegion --> "TopLeft" CPos
+CellRegion --> "BottomRight" CPos
+CellRegion --> "gridType" MapGridType
+CellRegion --> "mapTopLeft" MPos
+CellRegion --> "mapBottomRight" MPos
+CellRegion --> "MapCoords" MapCoordsRegion
+CellRegion +-- CellRegionEnumerator
+"IEnumerator`1" "<CPos>" <|-- CellRegionEnumerator
+CellRegionEnumerator --> "r" CellRegion
+CellRegionEnumerator --> "current" CPos
+CellRegionEnumerator --> "Current" CPos
+@enduml

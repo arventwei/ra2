@@ -1,0 +1,55 @@
+@startuml
+interface "IGraph`1"<T> {
+    GetConnections(position:CPos) : List<GraphConnection>
+    LaneBias : int <<get>> <<set>>
+    InReverse : bool <<get>> <<set>>
+}
+class GraphConnection <<struct>> {
+    + <<readonly>> Cost : int
+    + GraphConnection(destination:CPos, cost:int)
+}
+class PathGraph <<sealed>> {
+    + <<const>> CostForInvalidCell : int
+    + LaneBias : int <<get>> <<set>>
+    + InReverse : bool <<get>> <<set>>
+    <<readonly>> checkTerrainHeight : bool
+    + PathGraph(layerPool:CellInfoLayerPool, locomotor:Locomotor, actor:Actor, world:World, check:BlockedByActor)
+    + GetConnections(position:CPos) : List<GraphConnection>
+    GetCostToNode(destNode:CPos, direction:CVec) : int
+    CalculateCellCost(neighborCPos:CPos, direction:CVec, movementCost:int) : int
+    + Dispose() : void
+}
+class "Func`2"<T1,T2> {
+}
+class CostComparer <<sealed>> {
+    CostComparer()
+    + Compare(x:GraphConnection, y:GraphConnection) : int
+}
+class "CellLayer`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IComparer`1"<T> {
+}
+IDisposable <|-- "IGraph`1"
+"IGraph`1" --> "CustomBlock<CPos,bool>" "Func`2"
+"IGraph`1" --> "CustomCost<CPos,int>" "Func`2"
+"IGraph`1" --> "IgnoreActor" Actor
+"IGraph`1" --> "World" World
+"IGraph`1" --> "Actor" Actor
+GraphConnection o-> "ConnectionCostComparer" CostComparer
+GraphConnection --> "Destination" CPos
+"IGraph`1" "<CellInfo>" <|-- PathGraph
+PathGraph --> "Actor" Actor
+PathGraph --> "World" World
+PathGraph --> "CustomBlock<CPos,bool>" "Func`2"
+PathGraph --> "CustomCost<CPos,int>" "Func`2"
+PathGraph --> "IgnoreActor" Actor
+PathGraph --> "checkConditions" BlockedByActor
+PathGraph --> "locomotor" Locomotor
+PathGraph --> "groundInfo<CellInfo>" "CellLayer`1"
+PathGraph o-> "customLayerInfo<byte,(ICustomMovementLayer Layer, CellLayer<CellInfo> Info)>" "Dictionary`2"
+GraphConnection +-- CostComparer
+"IComparer`1" "<GraphConnection>" <|-- CostComparer
+CostComparer o-> "Instance" CostComparer
+@enduml

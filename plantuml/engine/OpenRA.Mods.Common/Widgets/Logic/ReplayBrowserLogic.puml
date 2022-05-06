@@ -1,0 +1,77 @@
+@startuml
+class ReplayBrowserLogic {
+    <<volatile>> cancelLoadingReplays : bool
+    + ReplayBrowserLogic(widget:Widget, modData:ModData, onExit:Action, onStart:Action)
+    LoadReplays(dir:string, template:ScrollItemWidget) : void
+    SetupFilters() : void
+    SetupReplayDependentFilters() : void
+    SetupManagement() : void
+    RenameReplay(replay:ReplayMetadata, newFilenameWithoutExtension:string) : void
+    DeleteReplay(replay:ReplayMetadata) : void
+    EvaluateReplayVisibility(replay:ReplayMetadata) : bool
+    ApplyFilter() : void
+    SelectFirstVisibleReplay() : void
+    SelectReplay(replay:ReplayMetadata) : void
+    LoadMapPreviewRules(map:MapPreview) : void
+    WatchReplay() : void
+    AddReplay(replay:ReplayMetadata, template:ScrollItemWidget) : void
+    OnGameStart() : void
+    disposed : bool
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class ReplayState {
+    + Visible : bool
+}
+class Filter {
+    + PlayerName : string
+    + MapName : string
+    + Faction : string
+    + IsEmpty : bool <<get>>
+}
+enum GameType {
+    Any,
+    Singleplayer,
+    Multiplayer,
+}
+enum DateType {
+    Any,
+    Today,
+    LastWeek,
+    LastFortnight,
+    LastMonth,
+}
+enum DurationType {
+    Any,
+    VeryShort,
+    Short,
+    Medium,
+    Long,
+}
+ChromeLogic <|-- ReplayBrowserLogic
+ReplayBrowserLogic o-> "filter" Filter
+ReplayBrowserLogic --> "panel" Widget
+ReplayBrowserLogic --> "replayList" ScrollPanelWidget
+ReplayBrowserLogic --> "playerList" ScrollPanelWidget
+ReplayBrowserLogic --> "playerTemplate" ScrollItemWidget
+ReplayBrowserLogic --> "playerHeader" ScrollItemWidget
+ReplayBrowserLogic o-> "replays<ReplayMetadata>" "List`1"
+ReplayBrowserLogic o-> "replayState<ReplayMetadata,ReplayState>" "Dictionary`2"
+ReplayBrowserLogic --> "onStart" Action
+ReplayBrowserLogic --> "modData" ModData
+ReplayBrowserLogic --> "services" WebServices
+ReplayBrowserLogic --> "map" MapPreview
+ReplayBrowserLogic --> "selectedReplay" ReplayMetadata
+ReplayBrowserLogic +-- ReplayState
+ReplayState --> "Item" ScrollItemWidget
+ReplayBrowserLogic +-- Filter
+Filter --> "Type" GameType
+Filter --> "Date" DateType
+Filter --> "Duration" DurationType
+Filter --> "Outcome" WinState
+ReplayBrowserLogic +-- GameType
+ReplayBrowserLogic +-- DateType
+ReplayBrowserLogic +-- DurationType
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class CycleHarvestersHotkeyLogic {
+    + CycleHarvestersHotkeyLogic(widget:Widget, modData:ModData, worldRenderer:WorldRenderer, world:World, logicArgs:Dictionary<string, MiniYaml>)
+}
+SingleHotkeyBaseLogic <|-- CycleHarvestersHotkeyLogic
+CycleHarvestersHotkeyLogic --> "viewport" Viewport
+CycleHarvestersHotkeyLogic --> "selection" ISelection
+CycleHarvestersHotkeyLogic --> "world" World
+@enduml

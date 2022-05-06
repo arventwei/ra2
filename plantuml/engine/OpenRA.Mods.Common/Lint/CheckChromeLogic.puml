@@ -1,0 +1,7 @@
+@startuml
+class CheckChromeLogic {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData) : void
+    CheckInner(nodes:List<MiniYamlNode>, filename:string, emitError:Action<string>) : void
+}
+ILintPass <|-- CheckChromeLogic
+@enduml

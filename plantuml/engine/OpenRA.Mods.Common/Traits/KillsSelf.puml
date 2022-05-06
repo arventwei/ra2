@@ -1,0 +1,23 @@
+@startuml
+class KillsSelfInfo {
+    + <<readonly>> RemoveInstead : bool = false
+    + <<readonly>> GrantsCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class KillsSelf {
+    lifetime : int
+    + KillsSelf(self:Actor, info:KillsSelfInfo)
+    AddedToWorld(self:Actor) : void
+    Tick(self:Actor) : void
+    Kill(self:Actor) : void
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- KillsSelfInfo
+KillsSelfInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+"ConditionalTrait`1" "<KillsSelfInfo>" <|-- KillsSelf
+INotifyAddedToWorld <|-- KillsSelf
+ITick <|-- KillsSelf
+@enduml

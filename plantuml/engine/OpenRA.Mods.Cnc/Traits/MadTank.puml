@@ -1,0 +1,62 @@
+@startuml
+class MadTankInfo {
+    + <<readonly>> ThumpSequence : string = "piston"
+    + <<readonly>> ThumpInterval : int = 8
+    + <<readonly>> ThumpDamageWeapon : string = "MADTankThump"
+    + <<readonly>> ChargeDelay : int = 96
+    + <<readonly>> ChargeSound : string = "madchrg2.aud"
+    + <<readonly>> DetonationDelay : int = 42
+    + <<readonly>> DetonationSound : string = "madexplo.aud"
+    + <<readonly>> DetonationWeapon : string = "MADTankDetonate"
+    + <<readonly>> DriverActor : string = "e1"
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> DeployedCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class MadTank {
+    + MadTank(self:Actor, info:MadTankInfo)
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    IssueDeployOrder(self:Actor, queued:bool) : Order
+    CanIssueDeployOrder(self:Actor, queued:bool) : bool
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    ResolveOrder(self:Actor, order:Order) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class DetonationSequence {
+    <<readonly>> assignTargetOnFirstRun : bool
+    ticks : int
+    initiated : bool
+    + DetonationSequence(self:Actor, mad:MadTank)
+    + DetonationSequence(self:Actor, mad:MadTank, target:Target)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+    EjectDriver() : void
+}
+TraitInfo <|-- MadTankInfo
+IRulesetLoaded <|-- MadTankInfo
+"Requires`1" "<ExplodesInfo>" <|-- MadTankInfo
+"Requires`1" "<WithFacingSpriteBodyInfo>" <|-- MadTankInfo
+MadTankInfo --> "ThumpDamageWeaponInfo" WeaponInfo
+MadTankInfo --> "DetonationWeaponInfo" WeaponInfo
+MadTankInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+IIssueOrder <|-- MadTank
+IResolveOrder <|-- MadTank
+IOrderVoice <|-- MadTank
+IIssueDeployOrder <|-- MadTank
+MadTank --> "info" MadTankInfo
+MadTank --> "Orders<IOrderTargeter>" "IEnumerable`1"
+MadTank +-- DetonationSequence
+Activity <|-- DetonationSequence
+DetonationSequence --> "self" Actor
+DetonationSequence --> "mad" MadTank
+DetonationSequence --> "move" IMove
+DetonationSequence --> "wfsb" WithFacingSpriteBody
+DetonationSequence --> "screenShaker" ScreenShaker
+DetonationSequence --> "target" Target
+@enduml

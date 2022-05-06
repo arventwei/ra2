@@ -1,0 +1,9 @@
+@startuml
+class ExtractLuaDocsCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+    {static} RequiredTraitNames(t:Type) : string[]
+}
+IUtilityCommand <|-- ExtractLuaDocsCommand
+@enduml

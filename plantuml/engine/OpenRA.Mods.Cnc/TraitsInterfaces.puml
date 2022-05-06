@@ -1,0 +1,5 @@
+@startuml
+interface INotifyTeslaCharging {
+    Charging(self:Actor, target:Target) : void
+}
+@enduml

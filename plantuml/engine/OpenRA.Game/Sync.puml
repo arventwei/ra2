@@ -1,0 +1,28 @@
+@startuml
+class SyncAttribute <<sealed>> {
+}
+interface ISync {
+}
+class Sync <<static>> {
+    {static} EmitSyncOpcodes(type:Type, il:ILGenerator) : void
+    {static} GenerateHashFunc(t:Type) : Func<object, int>
+    + {static} HashInt2(i2:int2) : int
+    + {static} HashCPos(i2:CPos) : int
+    + {static} HashCVec(i2:CVec) : int
+    + {static} HashActor(a:Actor) : int
+    + {static} HashPlayer(p:Player) : int
+    + {static} HashTarget(t:Target) : int
+    + {static} HashUsingHashCode(t:T) : int
+    + {static} RunUnsynced(checkSyncHash:bool, world:World, fn:Action) : void
+    {static} inUnsyncedCode : bool = false
+    + {static} RunUnsynced(checkSyncHash:bool, world:World, fn:Func<T>) : T
+    + {static} AssertUnsynced(message:string) : void
+}
+class "ConcurrentCache`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+Attribute <|-- SyncAttribute
+Sync o-> "HashFunctions<Type,Func<object, int>>" "ConcurrentCache`2"
+Sync o-> "CustomHashFunctions<Type,MethodInfo>" "Dictionary`2"
+@enduml

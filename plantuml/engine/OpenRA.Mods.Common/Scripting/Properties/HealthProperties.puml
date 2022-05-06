@@ -1,0 +1,13 @@
+@startuml
+class HealthProperties {
+    + HealthProperties(context:ScriptContext, self:Actor)
+    + Health : int <<get>> <<set>>
+    + MaxHealth : int <<get>>
+    + Kill(damageTypes:object) : void
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- HealthProperties
+"Requires`1" "<IHealthInfo>" <|-- HealthProperties
+HealthProperties --> "health" IHealth
+@enduml

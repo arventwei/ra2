@@ -1,0 +1,15 @@
+@startuml
+class NoSuchCommandException {
+    + <<readonly>> Command : string
+    + NoSuchCommandException(command:string)
+    + <<override>> GetObjectData(info:SerializationInfo, context:StreamingContext) : void
+}
+class Program {
+    {static} Main(args:string[]) : void
+    {static} PrintUsage(mods:InstalledMods, actions:UtilityActions) : void
+    {static} GetActionUsage(key:string, action:Action<Utility, string[]>) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+Exception <|-- NoSuchCommandException
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+class TargetLineRenderable <<struct>> {
+    <<readonly>> width : int
+    <<readonly>> markerSize : int
+    + TargetLineRenderable(waypoints:IEnumerable<WPos>, color:Color, width:int, markerSize:int)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + {static} DrawTargetMarker(wr:WorldRenderer, color:Color, screenPos:int2, size:int) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+class "IEnumerable`1"<T> {
+}
+IRenderable <|-- TargetLineRenderable
+IFinalizedRenderable <|-- TargetLineRenderable
+TargetLineRenderable --> "waypoints<WPos>" "IEnumerable`1"
+TargetLineRenderable --> "color" Color
+TargetLineRenderable --> "Pos" WPos
+TargetLineRenderable --> "Palette" PaletteReference
+@enduml

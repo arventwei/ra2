@@ -1,0 +1,22 @@
+@startuml
+class WithAcceptDeliveredCashAnimationInfo {
+    + <<readonly>> Sequence : string = "active"
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithAcceptDeliveredCashAnimation {
+    + WithAcceptDeliveredCashAnimation(self:Actor, info:WithAcceptDeliveredCashAnimationInfo)
+    playing : bool
+    OnAcceptingCash(self:Actor, donor:Actor) : void
+    OnDeliveringCash(self:Actor, acceptor:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithAcceptDeliveredCashAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithAcceptDeliveredCashAnimationInfo
+"ConditionalTrait`1" "<WithAcceptDeliveredCashAnimationInfo>" <|-- WithAcceptDeliveredCashAnimation
+INotifyCashTransfer <|-- WithAcceptDeliveredCashAnimation
+WithAcceptDeliveredCashAnimation --> "wsb" WithSpriteBody
+@enduml

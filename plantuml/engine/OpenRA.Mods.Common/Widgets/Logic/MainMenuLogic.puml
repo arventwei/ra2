@@ -1,0 +1,55 @@
+@startuml
+class MainMenuLogic {
+    {static} fetchedNews : bool
+    newsOpen : bool
+    SwitchMenu(type:MenuType) : void
+    + MainMenuLogic(widget:Widget, world:World, modData:ModData)
+    LoadAndDisplayNews(webServices:WebServices, newsBG:Widget) : void
+    OpenNewsPanel(button:DropDownButtonWidget) : void
+    OnRemoteDirectConnect(endpoint:ConnectionTarget) : void
+    LoadMapIntoEditor(uid:string) : void
+    SetNewsStatus(message:string) : void
+    ParseNews(path:string) : NewsItem[]
+    NewsDownloadComplete(e:AsyncCompletedEventArgs, cacheFile:string, oldNews:NewsItem[], onNewsDownloaded:Action) : void
+    DisplayNews(newsItems:IEnumerable<NewsItem>) : void
+    RemoveShellmapUI() : void
+    StartSkirmishGame() : void
+    OpenMissionBrowserPanel() : void
+    OpenSkirmishLobbyPanel() : void
+    OpenMultiplayerPanel() : void
+    OpenReplayBrowserPanel() : void
+    OpenGameSaveBrowserPanel() : void
+    OpenMenuBasedOnLastGame() : void
+}
+enum MenuType {
+    Main,
+    Singleplayer,
+    Extras,
+    MapEditor,
+    StartupPrompts,
+    None,
+}
+enum MenuPanel {
+    None,
+    Missions,
+    Skirmish,
+    Multiplayer,
+    MapEditor,
+    Replays,
+    GameSaves,
+}
+class NewsItem {
+    + Title : string
+    + Author : string
+    + Content : string
+}
+ChromeLogic <|-- MainMenuLogic
+MainMenuLogic --> "rootMenu" Widget
+MainMenuLogic --> "newsPanel" ScrollPanelWidget
+MainMenuLogic --> "newsTemplate" Widget
+MainMenuLogic --> "newsStatus" LabelWidget
+MainMenuLogic +-- MenuType
+MainMenuLogic +-- MenuPanel
+MainMenuLogic +-- NewsItem
+NewsItem --> "DateTime" DateTime
+@enduml

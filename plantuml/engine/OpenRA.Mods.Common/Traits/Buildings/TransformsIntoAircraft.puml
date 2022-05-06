@@ -1,0 +1,47 @@
+@startuml
+class TransformsIntoAircraftInfo {
+    + <<readonly>> MoveIntoShroud : bool = true
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> RequiresForceMove : bool = false
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TransformsIntoAircraft {
+    + TransformsIntoAircraft(init:ActorInitializer, info:TransformsIntoAircraftInfo)
+    + AircraftCanEnter(a:Actor, modifiers:TargetModifiers) : bool
+    + AircraftCanEnter(a:Actor) : bool
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    ResolveOrder(self:Actor, order:Order) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class AircraftMoveOrderTargeter {
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + AircraftMoveOrderTargeter(self:Actor, aircraft:TransformsIntoAircraft)
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + IsQueued : bool <<get>> <<protected set>>
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+}
+ConditionalTraitInfo <|-- TransformsIntoAircraftInfo
+"Requires`1" "<TransformsInfo>" <|-- TransformsIntoAircraftInfo
+TransformsIntoAircraftInfo o-> "DockActors<string>" "HashSet`1"
+TransformsIntoAircraftInfo o-> "TargetLineColor" Color
+"ConditionalTrait`1" "<TransformsIntoAircraftInfo>" <|-- TransformsIntoAircraft
+IIssueOrder <|-- TransformsIntoAircraft
+IResolveOrder <|-- TransformsIntoAircraft
+IOrderVoice <|-- TransformsIntoAircraft
+TransformsIntoAircraft --> "self" Actor
+TransformsIntoAircraft --> "Orders<IOrderTargeter>" "IEnumerable`1"
+TransformsIntoAircraft +-- AircraftMoveOrderTargeter
+IOrderTargeter <|-- AircraftMoveOrderTargeter
+AircraftMoveOrderTargeter --> "aircraft" TransformsIntoAircraft
+@enduml

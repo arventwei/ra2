@@ -1,0 +1,27 @@
+@startuml
+class SpawnMapActorsInfo {
+}
+class SpawnMapActors {
+    + LastMapActorID : uint <<get>>
+    + WorldLoaded(world:World, wr:WorldRenderer) : void
+    PreventMapSpawn(world:World, actorReference:ActorReference, preventMapSpawns:IEnumerable<IPreventMapSpawn>) : bool
+}
+class SkipMakeAnimsInit {
+}
+class SpawnedByMapInit {
+    + SpawnedByMapInit(value:string)
+}
+class "TraitInfo`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "ValueActorInit`1"<T> {
+}
+"TraitInfo`1" "<SpawnMapActors>" <|-- SpawnMapActorsInfo
+IWorldLoaded <|-- SpawnMapActors
+SpawnMapActors o-> "Actors<string,Actor>" "Dictionary`2"
+RuntimeFlagInit <|-- SkipMakeAnimsInit
+"ValueActorInit`1" "<string>" <|-- SpawnedByMapInit
+ISuppressInitExport <|-- SpawnedByMapInit
+ISingleInstanceInit <|-- SpawnedByMapInit
+@enduml

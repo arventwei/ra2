@@ -1,0 +1,131 @@
+@startuml
+enum GLProfile {
+    Automatic,
+    ANGLE,
+    Modern,
+    Embedded,
+    Legacy,
+}
+interface IPlatform {
+    CreateWindow(size:Size, windowMode:WindowMode, scaleModifier:float, batchSize:int, videoDisplay:int, profile:GLProfile, enableLegacyGL:bool) : IPlatformWindow
+    CreateSound(device:string) : ISoundEngine
+    CreateFont(data:byte[]) : IFont
+}
+interface IHardwareCursor {
+}
+enum BlendMode {
+    None,
+    Alpha,
+    Additive,
+    Subtractive,
+    Multiply,
+    Multiplicative,
+    DoubleMultiplicative,
+    LowAdditive,
+    Screen,
+    Translucent,
+}
+interface IPlatformWindow {
+    NativeWindowScale : float <<get>>
+    EffectiveWindowScale : float <<get>>
+    DisplayCount : int <<get>>
+    CurrentDisplay : int <<get>>
+    HasInputFocus : bool <<get>>
+     <<event>> OnWindowScaleChanged : Action<float, float, float, float> 
+    PumpInput(inputHandler:IInputHandler) : void
+    GetClipboardText() : string
+    SetClipboardText(text:string) : bool
+    GrabWindowMouseFocus() : void
+    ReleaseWindowMouseFocus() : void
+    CreateHardwareCursor(name:string, size:Size, data:byte[], hotspot:int2, pixelDouble:bool) : IHardwareCursor
+    SetHardwareCursor(cursor:IHardwareCursor) : void
+    SetRelativeMouseMode(mode:bool) : void
+    SetScaleModifier(scale:float) : void
+}
+interface IGraphicsContext {
+    CreateVertexBuffer(size:int) : IVertexBuffer<Vertex>
+    CreateTexture() : ITexture
+    CreateFrameBuffer(s:Size) : IFrameBuffer
+    CreateFrameBuffer(s:Size, clearColor:Color) : IFrameBuffer
+    CreateShader(name:string) : IShader
+    EnableScissor(x:int, y:int, width:int, height:int) : void
+    DisableScissor() : void
+    Present() : void
+    DrawPrimitives(pt:PrimitiveType, firstVertex:int, numVertices:int) : void
+    Clear() : void
+    EnableDepthBuffer() : void
+    DisableDepthBuffer() : void
+    ClearDepthBuffer() : void
+    SetBlendMode(mode:BlendMode) : void
+    SetVSyncEnabled(enabled:bool) : void
+    GLVersion : string <<get>>
+}
+interface "IVertexBuffer`1"<T> {
+    Bind() : void
+    SetData(vertices:T[], length:int) : void
+    SetData(vertices:T[], offset:int, start:int, length:int) : void
+}
+interface IShader {
+    SetBool(name:string, value:bool) : void
+    SetVec(name:string, x:float) : void
+    SetVec(name:string, x:float, y:float) : void
+    SetVec(name:string, x:float, y:float, z:float) : void
+    SetVec(name:string, vec:float[], length:int) : void
+    SetTexture(param:string, texture:ITexture) : void
+    SetMatrix(param:string, mtx:float[]) : void
+    PrepareRender() : void
+}
+enum TextureScaleFilter {
+    Nearest,
+    Linear,
+}
+interface ITexture {
+    SetData(colors:uint[,]) : void
+    SetData(colors:byte[], width:int, height:int) : void
+    GetData() : byte[]
+}
+interface IFrameBuffer {
+    Bind() : void
+    Unbind() : void
+    EnableScissor(rect:Rectangle) : void
+    DisableScissor() : void
+}
+enum PrimitiveType {
+    PointList,
+    LineList,
+    TriangleList,
+}
+class "Range`1"<T> <<struct>> {
+    + <<readonly>> Start : T
+    + <<readonly>> End : T
+    + Range(start:T, end:T)
+}
+enum WindowMode {
+    Windowed,
+    Fullscreen,
+    PseudoFullscreen,
+}
+interface IFont {
+    CreateGlyph(c:char, size:int, deviceScale:float) : FontGlyph
+}
+class FontGlyph <<struct>> {
+    + Advance : float
+}
+IDisposable <|-- IHardwareCursor
+IDisposable <|-- IPlatformWindow
+IPlatformWindow --> "Context" IGraphicsContext
+IPlatformWindow --> "NativeWindowSize" Size
+IPlatformWindow --> "EffectiveWindowSize" Size
+IPlatformWindow --> "SurfaceSize" Size
+IPlatformWindow --> "GLProfile" GLProfile
+IDisposable <|-- IGraphicsContext
+IDisposable <|-- "IVertexBuffer`1"
+IDisposable <|-- ITexture
+ITexture --> "Size" Size
+ITexture --> "ScaleFilter" TextureScaleFilter
+IDisposable <|-- IFrameBuffer
+IFrameBuffer --> "Texture" ITexture
+IDisposable <|-- IFont
+FontGlyph --> "Offset" int2
+FontGlyph --> "Size" Size
+@enduml

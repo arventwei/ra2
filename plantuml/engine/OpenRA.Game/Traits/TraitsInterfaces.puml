@@ -1,0 +1,479 @@
+@startuml
+class RequireExplicitImplementationAttribute <<sealed>> {
+}
+enum DamageState {
+    Undamaged= 1,
+    Light= 2,
+    Medium= 4,
+    Heavy= 8,
+    Critical= 16,
+    Dead= 32,
+}
+enum BlockedByActor {
+    None,
+    Immovable,
+    Stationary,
+    All,
+}
+class DamageType <<sealed>> {
+    DamageType()
+}
+interface IHealthInfo {
+    MaxHP : int <<get>>
+}
+interface IHealth {
+    HP : int <<get>>
+    MaxHP : int <<get>>
+    DisplayHP : int <<get>>
+    IsDead : bool <<get>>
+    InflictDamage(self:Actor, attacker:Actor, damage:Damage, ignoreModifiers:bool) : void
+    Kill(self:Actor, attacker:Actor, damageTypes:BitSet<DamageType>) : void
+}
+enum PlayerRelationship {
+    None= 0,
+    Enemy= 1,
+    Neutral= 2,
+    Ally= 4,
+}
+class StanceExts <<static>> {
+    + {static} HasStance(s:PlayerRelationship, stance:PlayerRelationship) : bool
+}
+class AttackInfo {
+}
+class Damage {
+    + <<readonly>> Value : int
+    + Damage(damage:int, damageTypes:BitSet<DamageType>)
+    + Damage(damage:int)
+}
+interface ITick {
+    Tick(self:Actor) : void
+}
+interface ITickRender {
+    TickRender(wr:WorldRenderer, self:Actor) : void
+}
+interface IRender {
+    Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+}
+interface IMouseBounds {
+    MouseoverBounds(self:Actor, wr:WorldRenderer) : Polygon
+}
+interface IMouseBoundsInfo {
+}
+interface IAutoMouseBounds {
+    AutoMouseoverBounds(self:Actor, wr:WorldRenderer) : Rectangle
+}
+interface IIssueOrder {
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+}
+enum TargetModifiers {
+    None= 0,
+    ForceAttack= 1,
+    ForceQueue= 2,
+    ForceMove= 4,
+}
+class TargetModifiersExts <<static>> {
+    + {static} HasModifier(self:TargetModifiers, m:TargetModifiers) : bool
+}
+interface IOrderTargeter {
+    OrderID : string <<get>>
+    OrderPriority : int <<get>>
+    CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+    IsQueued : bool <<get>>
+    TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+}
+interface IResolveOrder {
+    ResolveOrder(self:Actor, order:Order) : void
+}
+interface IValidateOrder {
+    OrderValidation(orderManager:OrderManager, world:World, clientId:int, order:Order) : bool
+}
+interface IOrderVoice {
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+}
+interface INotifyCreated {
+    Created(self:Actor) : void
+}
+interface INotifyAddedToWorld {
+    AddedToWorld(self:Actor) : void
+}
+interface INotifyRemovedFromWorld {
+    RemovedFromWorld(self:Actor) : void
+}
+interface INotifyActorDisposing {
+    Disposing(self:Actor) : void
+}
+interface INotifyOwnerChanged {
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+interface INotifyEffectiveOwnerChanged {
+    OnEffectiveOwnerChanged(self:Actor, oldEffectiveOwner:Player, newEffectiveOwner:Player) : void
+}
+interface INotifyOwnerLost {
+    OnOwnerLost(self:Actor) : void
+}
+interface IVoiced {
+    VoiceSet : string <<get>>
+    PlayVoice(self:Actor, phrase:string, variant:string) : bool
+    PlayVoiceLocal(self:Actor, phrase:string, variant:string, volume:float) : bool
+    HasVoice(self:Actor, voice:string) : bool
+}
+interface IStoreResources {
+    Capacity : int <<get>>
+}
+interface IEffectiveOwner {
+    Disguised : bool <<get>>
+}
+interface ITooltip {
+}
+interface ITooltipInfo {
+    TooltipForPlayerStance(stance:PlayerRelationship) : string
+    IsOwnerRowVisible : bool <<get>>
+}
+interface IProvideTooltipInfo {
+    IsTooltipVisible(forPlayer:Player) : bool
+    TooltipText : string <<get>>
+}
+interface IDisabledTrait {
+    IsTraitDisabled : bool <<get>>
+}
+interface IDefaultVisibilityInfo {
+}
+interface IDefaultVisibility {
+    IsVisible(self:Actor, byPlayer:Player) : bool
+}
+interface IVisibilityModifier {
+    IsVisible(self:Actor, byPlayer:Player) : bool
+}
+interface IActorMap {
+    GetActorsAt(a:CPos) : IEnumerable<Actor>
+    GetActorsAt(a:CPos, sub:SubCell) : IEnumerable<Actor>
+    HasFreeSubCell(cell:CPos, checkTransient:bool) : bool
+    FreeSubCell(cell:CPos, preferredSubCell:SubCell, checkTransient:bool) : SubCell
+    FreeSubCell(cell:CPos, preferredSubCell:SubCell, checkIfBlocker:Func<Actor, bool>) : SubCell
+    AnyActorsAt(a:CPos) : bool
+    AnyActorsAt(a:CPos, sub:SubCell, checkTransient:bool) : bool
+    AnyActorsAt(a:CPos, sub:SubCell, withCondition:Func<Actor, bool>) : bool
+    AddInfluence(self:Actor, ios:IOccupySpace) : void
+    RemoveInfluence(self:Actor, ios:IOccupySpace) : void
+    AddCellTrigger(cells:CPos[], onEntry:Action<Actor>, onExit:Action<Actor>) : int
+    RemoveCellTrigger(id:int) : void
+    AddProximityTrigger(pos:WPos, range:WDist, vRange:WDist, onEntry:Action<Actor>, onExit:Action<Actor>) : int
+    RemoveProximityTrigger(id:int) : void
+    UpdateProximityTrigger(id:int, newPos:WPos, newRange:WDist, newVRange:WDist) : void
+    AddPosition(a:Actor, ios:IOccupySpace) : void
+    RemovePosition(a:Actor, ios:IOccupySpace) : void
+    UpdatePosition(a:Actor, ios:IOccupySpace) : void
+    ActorsInBox(a:WPos, b:WPos) : IEnumerable<Actor>
+    UpdateOccupiedCells(ios:IOccupySpace) : void
+     <<event>> CellUpdated : Action<CPos> 
+}
+interface IRenderModifier {
+    ModifyRender(self:Actor, wr:WorldRenderer, r:IEnumerable<IRenderable>) : IEnumerable<IRenderable>
+    ModifyScreenBounds(self:Actor, wr:WorldRenderer, r:IEnumerable<Rectangle>) : IEnumerable<Rectangle>
+}
+interface IProvidesCursorPaletteInfo {
+    Palette : string <<get>>
+    ReadPalette(fileSystem:IReadOnlyFileSystem) : ImmutablePalette
+}
+interface ILoadsPalettes {
+    LoadPalettes(wr:WorldRenderer) : void
+}
+interface ILoadsPlayerPalettes {
+    LoadPlayerPalettes(wr:WorldRenderer, playerName:string, playerColor:Color, replaceExisting:bool) : void
+}
+interface IPaletteModifier {
+    AdjustPalette(b:IReadOnlyDictionary<string, MutablePalette>) : void
+}
+interface ISelectionBar {
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+}
+interface ISelectionDecorations {
+    RenderSelectionAnnotations(self:Actor, worldRenderer:WorldRenderer, color:Color) : IEnumerable<IRenderable>
+    GetDecorationOrigin(self:Actor, wr:WorldRenderer, pos:string, margin:int2) : int2
+}
+interface IMapPreviewSignatureInfo {
+    PopulateMapPreviewSignatureCells(map:Map, ai:ActorInfo, s:ActorReference, destinationBuffer:List<(MPos, Color)>) : void
+}
+interface IOccupySpaceInfo {
+    OccupiedCells(info:ActorInfo, location:CPos, subCell:SubCell) : IReadOnlyDictionary<CPos, SubCell>
+    SharesCell : bool <<get>>
+}
+interface IOccupySpace {
+    OccupiedCells() : (CPos Cell, SubCell SubCell)[]
+}
+enum SubCell {
+    Invalid= byte.MaxValue,
+    Any= byte.MaxValue - 1,
+    FullCell= 0,
+    First= 1,
+}
+interface IPositionableInfo {
+    CanEnterCell(world:World, self:Actor, cell:CPos, subCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : bool
+}
+interface IPositionable {
+    CanExistInCell(location:CPos) : bool
+    IsLeavingCell(location:CPos, subCell:SubCell) : bool
+    CanEnterCell(location:CPos, ignoreActor:Actor, check:BlockedByActor) : bool
+    GetValidSubCell(preferred:SubCell) : SubCell
+    GetAvailableSubCell(location:CPos, preferredSubCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : SubCell
+    SetPosition(self:Actor, cell:CPos, subCell:SubCell) : void
+    SetPosition(self:Actor, pos:WPos) : void
+    SetVisualPosition(self:Actor, pos:WPos) : void
+}
+interface ITemporaryBlockerInfo {
+}
+interface ITemporaryBlocker {
+    CanRemoveBlockage(self:Actor, blocking:Actor) : bool
+    IsBlocking(self:Actor, cell:CPos) : bool
+}
+interface IFacing {
+}
+interface IFacingInfo {
+    GetInitialFacing() : WAngle
+}
+interface ITraitInfoInterface {
+}
+abstract class TraitInfo {
+    + <<readonly>> InstanceName : string = null
+    + {abstract} Create(init:ActorInitializer) : object
+}
+class "TraitInfo`1"<T> {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+interface ILobbyCustomRulesIgnore {
+}
+interface "Requires`1"<T> {
+}
+interface IActivityInterface {
+}
+interface INotifySelected {
+    Selected(self:Actor) : void
+}
+interface INotifySelection {
+    SelectionChanged() : void
+}
+interface IWorldLoaded {
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+}
+interface INotifyGameLoading {
+    GameLoading(w:World) : void
+}
+interface INotifyGameLoaded {
+    GameLoaded(w:World) : void
+}
+interface INotifyGameSaved {
+    GameSaved(w:World) : void
+}
+interface IGameSaveTraitData {
+    IssueTraitData(self:Actor) : List<MiniYamlNode>
+    ResolveTraitData(self:Actor, data:List<MiniYamlNode>) : void
+}
+interface ICreatePlayers {
+    CreatePlayers(w:World, playerRandom:MersenneTwister) : void
+}
+interface ICreatePlayersInfo {
+    CreateServerPlayers(map:MapPreview, lobbyInfo:Session, players:List<GameInformation.Player>, playerRandom:MersenneTwister) : void
+}
+interface IAssignSpawnPoints {
+    AssignHomeLocation(world:World, client:Session.Client, playerRandom:MersenneTwister) : CPos
+    SpawnPointForPlayer(player:Player) : int
+}
+interface IAssignSpawnPointsInfo {
+    InitializeState(map:MapPreview, lobbyInfo:Session) : object
+    AssignSpawnPoint(state:object, lobbyInfo:Session, client:Session.Client, playerRandom:MersenneTwister) : int
+}
+interface IBotInfo {
+    Type : string <<get>>
+    Name : string <<get>>
+}
+interface IBot {
+    Activate(p:Player) : void
+    QueueOrder(order:Order) : void
+}
+interface IRenderOverlay {
+    Render(wr:WorldRenderer) : void
+}
+interface INotifyBecomingIdle {
+    OnBecomingIdle(self:Actor) : void
+}
+interface INotifyIdle {
+    TickIdle(self:Actor) : void
+}
+interface IRenderAboveWorld {
+    RenderAboveWorld(self:Actor, wr:WorldRenderer) : void
+}
+interface IRenderShroud {
+    RenderShroud(wr:WorldRenderer) : void
+}
+interface IRenderTerrain {
+    RenderTerrain(wr:WorldRenderer, viewport:Viewport) : void
+}
+interface ITerrainLighting {
+     <<event>> CellChanged : Action<MPos> 
+    TintAt(pos:WPos) : float3
+}
+interface IRenderAboveShroud {
+    RenderAboveShroud(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+interface IRenderAboveShroudWhenSelected {
+    RenderAboveShroud(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+interface IRenderAnnotations {
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+interface IRenderAnnotationsWhenSelected {
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+enum SelectionPriorityModifiers {
+    None= 0,
+    Ctrl= 1,
+    Alt= 2,
+}
+interface ISelectableInfo {
+    Priority : int <<get>>
+    Voice : string <<get>>
+}
+interface ISelection {
+    Hash : int <<get>>
+    Add(a:Actor) : void
+    Remove(a:Actor) : void
+    Contains(a:Actor) : bool
+    Combine(world:World, newSelection:IEnumerable<Actor>, isCombine:bool, isClick:bool) : void
+    Clear() : void
+    RolloverContains(a:Actor) : bool
+    SetRollover(actors:IEnumerable<Actor>) : void
+    DoControlGroup(world:World, worldRenderer:WorldRenderer, group:int, mods:Modifiers, multiTapCount:int) : void
+    AddToControlGroup(a:Actor, group:int) : void
+    RemoveFromControlGroup(a:Actor) : void
+    GetControlGroupForActor(a:Actor) : int?
+}
+class TargetableType <<sealed>> {
+    TargetableType()
+}
+interface ITargetableInfo {
+    GetTargetTypes() : BitSet<TargetableType>
+}
+interface ITargetable {
+    TargetableBy(self:Actor, byActor:Actor) : bool
+    RequiresForceFire : bool <<get>>
+}
+interface ITargetablePositions {
+    TargetablePositions(self:Actor) : IEnumerable<WPos>
+    AlwaysEnabled : bool <<get>>
+}
+interface IMoveInfo {
+    GetTargetLineColor() : Color
+}
+interface IGameOver {
+    GameOver(world:World) : void
+}
+interface IWarhead {
+    Delay : int <<get>>
+    IsValidAgainst(victim:Actor, firedBy:Actor) : bool
+    IsValidAgainst(victim:FrozenActor, firedBy:Actor) : bool
+    DoImpact(target:Target, args:WarheadArgs) : void
+}
+interface "IRulesetLoaded`1"<TInfo> {
+    RulesetLoaded(rules:Ruleset, info:TInfo) : void
+}
+interface IRulesetLoaded {
+}
+interface ILobbyOptions {
+    LobbyOptions(rules:Ruleset) : IEnumerable<LobbyOption>
+}
+class LobbyOption {
+    + <<readonly>> Id : string
+    + <<readonly>> Name : string
+    + <<readonly>> Description : string
+    + <<readonly>> DefaultValue : string
+    + <<readonly>> IsLocked : bool
+    + <<readonly>> IsVisible : bool
+    + <<readonly>> DisplayOrder : int
+    + LobbyOption(id:string, name:string, description:string, visible:bool, displayorder:int, values:IReadOnlyDictionary<string, string>, defaultValue:string, locked:bool)
+    + <<virtual>> ValueChangedMessage(playerName:string, newValue:string) : string
+}
+class LobbyBooleanOption {
+    + LobbyBooleanOption(id:string, name:string, description:string, visible:bool, displayorder:int, defaultValue:bool, locked:bool)
+    + <<override>> ValueChangedMessage(playerName:string, newValue:string) : string
+}
+interface IUnlocksRenderPlayer {
+    RenderPlayerUnlocked : bool <<get>>
+}
+interface ICreationActivity {
+    GetCreationActivity() : Activity
+}
+interface IObservesVariablesInfo {
+}
+class VariableObserver <<struct>> {
+    + VariableObserver(notifier:VariableObserverNotifier, variables:IEnumerable<string>)
+}
+interface IObservesVariables {
+    GetVariableObservers() : IEnumerable<VariableObserver>
+}
+class "BitSet`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+Attribute <|-- RequireExplicitImplementationAttribute
+ITraitInfoInterface <|-- IHealthInfo
+IHealth --> "DamageState" DamageState
+AttackInfo --> "Damage" Damage
+AttackInfo --> "Attacker" Actor
+AttackInfo --> "DamageState" DamageState
+AttackInfo --> "PreviousDamageState" DamageState
+Damage --> "DamageTypes<DamageType>" "BitSet`1"
+ITraitInfoInterface <|-- IMouseBoundsInfo
+IIssueOrder --> "Orders<IOrderTargeter>" "IEnumerable`1"
+IEffectiveOwner --> "Owner" Player
+ITooltip --> "TooltipInfo" ITooltipInfo
+ITooltip --> "Owner" Player
+ITraitInfoInterface <|-- ITooltipInfo
+ITraitInfoInterface <|-- IDefaultVisibilityInfo
+IActorMap --> "LargestActorRadius" WDist
+IActorMap --> "LargestBlockingActorRadius" WDist
+ITraitInfoInterface <|-- IProvidesCursorPaletteInfo
+ITraitInfoInterface <|-- IMapPreviewSignatureInfo
+ITraitInfoInterface <|-- IOccupySpaceInfo
+IOccupySpace --> "CenterPosition" WPos
+IOccupySpace --> "TopLeft" CPos
+IOccupySpaceInfo <|-- IPositionableInfo
+IOccupySpace <|-- IPositionable
+ITraitInfoInterface <|-- ITemporaryBlockerInfo
+IFacing --> "TurnSpeed" WAngle
+IFacing --> "Facing" WAngle
+IFacing --> "Orientation" WRot
+ITraitInfoInterface <|-- IFacingInfo
+ITraitInfoInterface <|-- TraitInfo
+TraitInfo <|-- "TraitInfo`1"
+ITraitInfoInterface <|-- ICreatePlayersInfo
+ITraitInfoInterface <|-- IAssignSpawnPointsInfo
+ITraitInfoInterface <|-- IBotInfo
+IBot --> "Info" IBotInfo
+IBot --> "Player" Player
+ITraitInfoInterface <|-- ISelectableInfo
+ISelectableInfo --> "PriorityModifiers" SelectionPriorityModifiers
+ISelection --> "Actors<Actor>" "IEnumerable`1"
+ITraitInfoInterface <|-- ITargetableInfo
+ITargetable --> "TargetTypes<TargetableType>" "BitSet`1"
+ITraitInfoInterface <|-- IMoveInfo
+"IRulesetLoaded`1" "<ActorInfo>" <|-- IRulesetLoaded
+ITraitInfoInterface <|-- IRulesetLoaded
+ITraitInfoInterface <|-- ILobbyOptions
+LobbyOption --> "Values<string,string>" "IReadOnlyDictionary`2"
+LobbyOption <|-- LobbyBooleanOption
+LobbyBooleanOption o-> "BoolValues<string,string>" "Dictionary`2"
+ITraitInfoInterface <|-- IObservesVariablesInfo
+VariableObserver --> "Notifier" VariableObserverNotifier
+VariableObserver --> "Variables<string>" "IEnumerable`1"
+@enduml

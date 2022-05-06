@@ -1,0 +1,20 @@
+@startuml
+class IndexedPlayerPaletteInfo {
+    + <<readonly>> BasePalette : string = null
+    + <<readonly>> BaseName : string = "player"
+    + <<readonly>> AllowModifiers : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class IndexedPlayerPalette {
+    + IndexedPlayerPalette(info:IndexedPlayerPaletteInfo)
+    + LoadPlayerPalettes(wr:WorldRenderer, playerName:string, color:Color, replaceExisting:bool) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+TraitInfo <|-- IndexedPlayerPaletteInfo
+IRulesetLoaded <|-- IndexedPlayerPaletteInfo
+IndexedPlayerPaletteInfo --> "PlayerIndex<string,int[]>" "Dictionary`2"
+ILoadsPlayerPalettes <|-- IndexedPlayerPalette
+IndexedPlayerPalette --> "info" IndexedPlayerPaletteInfo
+@enduml

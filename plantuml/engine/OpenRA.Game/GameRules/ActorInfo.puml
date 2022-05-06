@@ -1,0 +1,21 @@
+@startuml
+class ActorInfo {
+    + <<const>> AbstractActorPrefix : string = "^"
+    + <<const>> TraitInstanceSeparator : char = '@'
+    + <<readonly>> Name : string
+    + ActorInfo(creator:ObjectCreator, name:string, node:MiniYaml)
+    + ActorInfo(name:string, traitInfos:TraitInfo[])
+    {static} LoadTraitInfo(creator:ObjectCreator, traitName:string, my:MiniYaml) : TraitInfo
+    + TraitsInConstructOrder() : IEnumerable<TraitInfo>
+    + {static} PrerequisitesOf(info:TraitInfo) : IEnumerable<Type>
+    + HasTraitInfo() : bool
+    + TraitInfo() : T
+    + TraitInfoOrDefault() : T
+    + TraitInfos() : IEnumerable<T>
+    + GetAllTargetTypes() : BitSet<TargetableType>
+}
+class "List`1"<T> {
+}
+ActorInfo o-> "traits" TypeDictionary
+ActorInfo o-> "constructOrderCache<TraitInfo>" "List`1"
+@enduml

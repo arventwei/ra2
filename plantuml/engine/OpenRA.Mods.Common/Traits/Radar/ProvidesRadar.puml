@@ -1,0 +1,12 @@
+@startuml
+class ProvidesRadarInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ProvidesRadar {
+    + ProvidesRadar(info:ProvidesRadarInfo)
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ProvidesRadarInfo
+"ConditionalTrait`1" "<ProvidesRadarInfo>" <|-- ProvidesRadar
+@enduml

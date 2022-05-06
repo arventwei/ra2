@@ -1,0 +1,44 @@
+@startuml
+class SheetOverflowException {
+    + SheetOverflowException(message:string)
+}
+enum SheetType {
+    Indexed= 1,
+    BGRA= 4,
+}
+class SheetBuilder <<sealed>> {
+    <<readonly>> margin : int
+    rowHeight : int = 0
+    + {static} AllocateSheet(type:SheetType, sheetSize:int) : Sheet
+    + {static} FrameTypeToSheetType(t:SpriteFrameType) : SheetType
+    + SheetBuilder(t:SheetType)
+    + SheetBuilder(t:SheetType, sheetSize:int, margin:int)
+    + SheetBuilder(t:SheetType, allocateSheet:Func<Sheet>, margin:int)
+    + Add(frame:ISpriteFrame) : Sprite
+    + Add(src:byte[], size:Size) : Sprite
+    + Add(src:byte[], size:Size, zRamp:float, spriteOffset:float3) : Sprite
+    + Add(src:Png, scale:float) : Sprite
+    + Add(size:Size, paletteIndex:byte) : Sprite
+    NextChannel(t:TextureChannel) : TextureChannel?
+    + Allocate(imageSize:Size, scale:float) : Sprite
+    + Allocate(imageSize:Size, zRamp:float, spriteOffset:float3, scale:float) : Sprite
+    + Dispose() : void
+}
+class "List`1"<T> {
+}
+class "Func`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+Exception <|-- SheetOverflowException
+IDisposable <|-- SheetBuilder
+SheetBuilder --> "Type" SheetType
+SheetBuilder o-> "sheets<Sheet>" "List`1"
+SheetBuilder --> "allocateSheet<Sheet>" "Func`1"
+SheetBuilder --> "current" Sheet
+SheetBuilder --> "channel" TextureChannel
+SheetBuilder --> "p" int2
+SheetBuilder --> "Current" Sheet
+SheetBuilder --> "CurrentChannel" TextureChannel
+SheetBuilder --> "AllSheets<Sheet>" "IEnumerable`1"
+@enduml

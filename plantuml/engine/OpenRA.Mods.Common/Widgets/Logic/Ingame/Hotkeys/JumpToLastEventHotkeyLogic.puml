@@ -1,0 +1,8 @@
+@startuml
+class JumpToLastEventHotkeyLogic {
+    + JumpToLastEventHotkeyLogic(widget:Widget, modData:ModData, worldRenderer:WorldRenderer, world:World, logicArgs:Dictionary<string, MiniYaml>)
+}
+SingleHotkeyBaseLogic <|-- JumpToLastEventHotkeyLogic
+JumpToLastEventHotkeyLogic --> "viewport" Viewport
+JumpToLastEventHotkeyLogic --> "radarPings" RadarPings
+@enduml

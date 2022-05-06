@@ -1,0 +1,6 @@
+@startuml
+class TargetDamageWarhead {
+}
+DamageWarhead <|-- TargetDamageWarhead
+TargetDamageWarhead o-> "Spread" WDist
+@enduml

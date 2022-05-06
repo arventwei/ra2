@@ -1,0 +1,22 @@
+@startuml
+class GrantConditionOnMovementInfo {
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnMovement {
+    conditionToken : int
+    + GrantConditionOnMovement(self:Actor, info:GrantConditionOnMovementInfo)
+    UpdateCondition(self:Actor, types:MovementType) : void
+    MovementTypeChanged(self:Actor, types:MovementType) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- GrantConditionOnMovementInfo
+"Requires`1" "<IMoveInfo>" <|-- GrantConditionOnMovementInfo
+GrantConditionOnMovementInfo o-> "ValidMovementTypes" MovementType
+"ConditionalTrait`1" "<GrantConditionOnMovementInfo>" <|-- GrantConditionOnMovement
+INotifyMoving <|-- GrantConditionOnMovement
+GrantConditionOnMovement --> "movement" IMove
+@enduml

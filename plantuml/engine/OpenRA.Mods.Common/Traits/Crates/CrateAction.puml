@@ -1,0 +1,23 @@
+@startuml
+class CrateActionInfo {
+    + <<readonly>> SelectionShares : int = 10
+    + <<readonly>> Image : string = "crate-effects"
+    + <<readonly>> Sequence : string = null
+    + <<readonly>> Palette : string = "effect"
+    + <<readonly>> Sound : string = null
+    + <<readonly>> Notification : string = null
+    + <<readonly>> TimeDelay : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CrateAction {
+    + CrateAction(self:Actor, info:CrateActionInfo)
+    + GetSelectionSharesOuter(collector:Actor) : int
+    + <<virtual>> GetSelectionShares(collector:Actor) : int
+    + <<virtual>> Activate(collector:Actor) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- CrateActionInfo
+"ConditionalTrait`1" "<CrateActionInfo>" <|-- CrateAction
+CrateAction --> "self" Actor
+@enduml

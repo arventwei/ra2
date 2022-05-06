@@ -1,0 +1,55 @@
+@startuml
+class EditorActionManagerInfo {
+}
+class EditorActionManager {
+    +  <<event>> ItemAdded : Action<EditorActionContainer> 
+    +  <<event>> ItemRemoved : Action<EditorActionContainer> 
+    +  <<event>> OnChange : Action 
+    nextId : int
+    + Modified : bool
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + Add(editorAction:IEditorAction) : void
+    + Undo() : void
+    ClearRedo() : void
+    + Redo() : void
+    + HasUndos() : bool
+    + HasRedos() : bool
+    + Rewind(id:int) : void
+    + Forward(id:int) : void
+    + HasUnsavedItems() : bool
+}
+enum EditorActionStatus {
+    History,
+    Active,
+    Future,
+}
+interface IEditorAction {
+    Execute() : void
+    Do() : void
+    Undo() : void
+    Text : string <<get>>
+}
+class OpenMapAction {
+    + OpenMapAction()
+    + Execute() : void
+    + Do() : void
+    + Undo() : void
+    + Text : string <<get>>
+}
+class EditorActionContainer {
+    + Id : int <<get>>
+    + EditorActionContainer(id:int, action:IEditorAction)
+}
+class "TraitInfo`1"<T> {
+}
+class "Stack`1"<T> {
+}
+"TraitInfo`1" "<EditorActionManager>" <|-- EditorActionManagerInfo
+IWorldLoaded <|-- EditorActionManager
+EditorActionManager o-> "undoStack<EditorActionContainer>" "Stack`1"
+EditorActionManager o-> "redoStack<EditorActionContainer>" "Stack`1"
+IEditorAction <|-- OpenMapAction
+OpenMapAction --> "Status" EditorActionStatus
+EditorActionContainer --> "Action" IEditorAction
+EditorActionContainer --> "Status" EditorActionStatus
+@enduml

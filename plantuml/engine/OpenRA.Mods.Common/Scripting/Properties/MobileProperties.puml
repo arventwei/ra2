@@ -1,0 +1,16 @@
+@startuml
+class MobileProperties {
+    + MobileProperties(context:ScriptContext, self:Actor)
+    + Move(cell:CPos, closeEnough:int) : void
+    + ScriptedMove(cell:CPos) : void
+    + MoveIntoWorld(cell:CPos) : void
+    + Scatter() : void
+    + EnterTransport(transport:Actor) : void
+    + IsMobile : bool <<get>>
+}
+class "Requires`1"<T> {
+}
+ScriptActorProperties <|-- MobileProperties
+"Requires`1" "<MobileInfo>" <|-- MobileProperties
+MobileProperties --> "mobile" Mobile
+@enduml

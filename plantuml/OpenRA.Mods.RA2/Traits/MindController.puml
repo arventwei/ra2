@@ -1,0 +1,42 @@
+@startuml
+class MindControllerInfo {
+    + <<readonly>> Capacity : int = 1
+    + <<readonly>> DiscardOldest : bool = true
+    + <<readonly>> ControllingCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class MindController {
+    + MindController(self:Actor, info:MindControllerInfo)
+    StackControllingCondition(self:Actor, condition:string) : void
+    UnstackControllingCondition(self:Actor, condition:string) : void
+    + UnlinkSlave(self:Actor, slave:Actor) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    ReleaseSlaves(self:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+    Disposing(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "List`1"<T> {
+}
+class "Stack`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+PausableConditionalTraitInfo <|-- MindControllerInfo
+"Requires`1" "<ArmamentInfo>" <|-- MindControllerInfo
+"Requires`1" "<HealthInfo>" <|-- MindControllerInfo
+MindControllerInfo o-> "ArmamentNames<string>" "HashSet`1"
+"PausableConditionalTrait`1" "<MindControllerInfo>" <|-- MindController
+INotifyAttack <|-- MindController
+INotifyKilled <|-- MindController
+INotifyActorDisposing <|-- MindController
+MindController o-> "slaves<Actor>" "List`1"
+MindController o-> "controllingTokens<int>" "Stack`1"
+MindController --> "Slaves<Actor>" "IEnumerable`1"
+@enduml

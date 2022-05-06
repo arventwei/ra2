@@ -1,0 +1,17 @@
+@startuml
+class CarryableHarvesterInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CarryableHarvester {
+    Created(self:Actor) : void
+    MovingToResources(self:Actor, targetCell:CPos) : void
+    MovingToRefinery(self:Actor, refineryActor:Actor) : void
+    MovementCancelled(self:Actor) : void
+    Harvested(self:Actor, resource:ResourceType) : void
+    Docked() : void
+    Undocked() : void
+}
+TraitInfo <|-- CarryableHarvesterInfo
+INotifyCreated <|-- CarryableHarvester
+INotifyHarvesterAction <|-- CarryableHarvester
+@enduml

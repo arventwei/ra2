@@ -1,0 +1,16 @@
+@startuml
+class GrantExternalConditionToProducedInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> Duration : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantExternalConditionToProduced {
+    + GrantExternalConditionToProduced(self:Actor, info:GrantExternalConditionToProducedInfo)
+    UnitProduced(self:Actor, other:Actor, exit:CPos) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- GrantExternalConditionToProducedInfo
+"ConditionalTrait`1" "<GrantExternalConditionToProducedInfo>" <|-- GrantExternalConditionToProduced
+INotifyProduction <|-- GrantExternalConditionToProduced
+@enduml

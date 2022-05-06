@@ -1,0 +1,20 @@
+@startuml
+class LightPaletteRotatorInfo {
+    + <<readonly>> TimeStep : float = .5f
+    + <<readonly>> ModifyIndex : int = 103
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class LightPaletteRotator {
+    t : float = 0
+    + LightPaletteRotator(info:LightPaletteRotatorInfo)
+    Tick(self:Actor) : void
+    AdjustPalette(palettes:IReadOnlyDictionary<string, MutablePalette>) : void
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- LightPaletteRotatorInfo
+LightPaletteRotatorInfo o-> "ExcludePalettes<string>" "HashSet`1"
+ITick <|-- LightPaletteRotator
+IPaletteModifier <|-- LightPaletteRotator
+LightPaletteRotator --> "info" LightPaletteRotatorInfo
+@enduml

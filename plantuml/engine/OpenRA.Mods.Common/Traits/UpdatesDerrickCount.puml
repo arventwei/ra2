@@ -1,0 +1,9 @@
+@startuml
+class UpdatesDerrickCountInfo {
+}
+class UpdatesDerrickCount {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<UpdatesDerrickCount>" <|-- UpdatesDerrickCountInfo
+@enduml

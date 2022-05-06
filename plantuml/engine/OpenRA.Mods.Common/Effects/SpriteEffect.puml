@@ -1,0 +1,23 @@
+@startuml
+class SpriteEffect {
+    <<readonly>> palette : string
+    <<readonly>> visibleThroughFog : bool
+    <<readonly>> sequence : string
+    delay : int
+    initialized : bool
+    + SpriteEffect(pos:WPos, world:World, image:string, sequence:string, palette:string, visibleThroughFog:bool, delay:int)
+    + SpriteEffect(actor:Actor, world:World, image:string, sequence:string, palette:string, visibleThroughFog:bool, delay:int)
+    + SpriteEffect(pos:WPos, facing:WAngle, world:World, image:string, sequence:string, palette:string, visibleThroughFog:bool, delay:int)
+    + SpriteEffect(posFunc:Func<WPos>, facingFunc:Func<WAngle>, world:World, image:string, sequence:string, palette:string, visibleThroughFog:bool, delay:int)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+class "Func`1"<T> {
+}
+IEffect <|-- SpriteEffect
+ISpatiallyPartitionable <|-- SpriteEffect
+SpriteEffect --> "world" World
+SpriteEffect --> "anim" Animation
+SpriteEffect --> "posFunc<WPos>" "Func`1"
+SpriteEffect --> "pos" WPos
+@enduml

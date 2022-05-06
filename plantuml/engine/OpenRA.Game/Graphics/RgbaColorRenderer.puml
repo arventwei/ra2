@@ -1,0 +1,22 @@
+@startuml
+class RgbaColorRenderer {
+    + RgbaColorRenderer(parent:SpriteRenderer)
+    + DrawLine(start:float3, end:float3, width:float, startColor:Color, endColor:Color) : void
+    + DrawLine(start:float3, end:float3, width:float, color:Color) : void
+    IntersectionOf(a:float3, da:float3, b:float3, db:float3) : float3
+    DrawDisconnectedLine(points:IEnumerable<float3>, width:float, color:Color) : void
+    DrawConnectedLine(points:float3[], width:float, color:Color, closed:bool) : void
+    + DrawLine(points:IEnumerable<float3>, width:float, color:Color, connectSegments:bool) : void
+    + DrawPolygon(vertices:float3[], width:float, color:Color) : void
+    + DrawPolygon(vertices:float2[], width:float, color:Color) : void
+    + DrawRect(tl:float3, br:float3, width:float, color:Color) : void
+    + FillTriangle(a:float3, b:float3, c:float3, color:Color) : void
+    + FillRect(tl:float3, br:float3, color:Color) : void
+    + FillRect(a:float3, b:float3, c:float3, d:float3, color:Color) : void
+    + FillRect(a:float3, b:float3, c:float3, d:float3, topLeftColor:Color, topRightColor:Color, bottomRightColor:Color, bottomLeftColor:Color) : void
+    {static} VertexWithColor(xyz:float3, color:Color) : Vertex
+    + FillEllipse(tl:float3, br:float3, color:Color, vertices:int) : void
+}
+RgbaColorRenderer o-> "Offset" float3
+RgbaColorRenderer --> "parent" SpriteRenderer
+@enduml

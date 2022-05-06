@@ -1,0 +1,12 @@
+@startuml
+class IdxEntry {
+    + <<readonly>> Filename : string
+    + <<readonly>> Offset : uint
+    + <<readonly>> Length : uint
+    + <<readonly>> SampleRate : uint
+    + <<readonly>> Flags : uint
+    + <<readonly>> ChunkSize : uint
+    + IdxEntry(s:Stream)
+    + <<override>> ToString() : string
+}
+@enduml

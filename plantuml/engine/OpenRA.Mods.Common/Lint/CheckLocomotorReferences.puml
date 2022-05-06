@@ -1,0 +1,7 @@
+@startuml
+class CheckLocomotorReferences {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, rules:Ruleset) : void
+    CheckLocomotors(actorInfo:ActorInfo, emitError:Action<string>, rules:Ruleset, locomotorInfos:LocomotorInfo[], locomotor:string) : void
+}
+ILintRulesPass <|-- CheckLocomotorReferences
+@enduml

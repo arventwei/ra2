@@ -1,0 +1,8 @@
+@startuml
+class LuaValueExts <<static>> {
+    + {static} WrappedClrType(value:LuaValue) : Type
+    + {static} TryGetClrValue(value:LuaValue, clrObject:T) : bool
+    + {static} TryGetClrValue(value:LuaValue, t:Type, clrObject:object) : bool
+    + {static} ToLuaValue(obj:object, context:ScriptContext) : LuaValue
+}
+@enduml

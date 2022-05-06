@@ -1,0 +1,32 @@
+@startuml
+class ScreenShakerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ScreenShaker {
+    ticks : int = 0
+    + ScreenShaker(info:ScreenShakerInfo)
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+    Tick(self:Actor) : void
+    + AddEffect(time:int, position:WPos, intensity:int) : void
+    + AddEffect(time:int, position:WPos, intensity:int, multiplier:float2) : void
+    GetScrollOffset() : float2
+    GetMultiplier() : float2
+    GetIntensity() : float
+}
+class ShakeEffect <<struct>> {
+    + ExpiryTime : int
+    + Intensity : int
+}
+class "List`1"<T> {
+}
+TraitInfo <|-- ScreenShakerInfo
+ScreenShakerInfo o-> "MinMultiplier" float2
+ScreenShakerInfo o-> "MaxMultiplier" float2
+ITick <|-- ScreenShaker
+IWorldLoaded <|-- ScreenShaker
+ScreenShaker --> "info" ScreenShakerInfo
+ScreenShaker --> "worldRenderer" WorldRenderer
+ScreenShaker o-> "shakeEffects<ShakeEffect>" "List`1"
+ShakeEffect --> "Position" WPos
+ShakeEffect --> "Multiplier" float2
+@enduml

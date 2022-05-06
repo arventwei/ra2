@@ -1,0 +1,45 @@
+@startuml
+interface IReadOnlyFileSystem {
+    Open(filename:string) : Stream
+    TryGetPackageContaining(path:string, package:IReadOnlyPackage, filename:string) : bool
+    TryOpen(filename:string, s:Stream) : bool
+    Exists(filename:string) : bool
+    IsExternalModFile(filename:string) : bool
+}
+class FileSystem {
+    <<readonly>> modID : string
+    + FileSystem(modID:string, installedMods:IReadOnlyDictionary<string, Manifest>, packageLoaders:IPackageLoader[])
+    + TryParsePackage(stream:Stream, filename:string, package:IReadOnlyPackage) : bool
+    + OpenPackage(filename:string) : IReadOnlyPackage
+    + Mount(name:string, explicitName:string) : void
+    + Mount(package:IReadOnlyPackage, explicitName:string) : void
+    + Unmount(package:IReadOnlyPackage) : bool
+    + UnmountAll() : void
+    + LoadFromManifest(manifest:Manifest) : void
+    GetFromCache(filename:string) : Stream
+    + Open(filename:string) : Stream
+    + TryGetPackageContaining(path:string, package:IReadOnlyPackage, filename:string) : bool
+    + TryOpen(filename:string, s:Stream) : bool
+    + Exists(filename:string) : bool
+    + IsExternalModFile(filename:string) : bool
+    + {static} ResolveAssemblyPath(path:string, manifest:Manifest, installedMods:InstalledMods) : string
+    + GetPrefix(package:IReadOnlyPackage) : string
+}
+class "IEnumerable`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Cache`2"<T1,T2> {
+}
+IReadOnlyFileSystem <|-- FileSystem
+FileSystem --> "MountedPackages<IReadOnlyPackage>" "IEnumerable`1"
+FileSystem o-> "mountedPackages<IReadOnlyPackage,int>" "Dictionary`2"
+FileSystem o-> "explicitMounts<string,IReadOnlyPackage>" "Dictionary`2"
+FileSystem o-> "modPackages<IReadOnlyPackage>" "List`1"
+FileSystem --> "installedMods<string,Manifest>" "IReadOnlyDictionary`2"
+FileSystem o-> "fileIndex<string,List<IReadOnlyPackage>>" "Cache`2"
+@enduml

@@ -1,0 +1,57 @@
+@startuml
+class TerrainTileInfo {
+    + <<readonly>> TerrainType : byte
+    + <<readonly>> Height : byte
+    + <<readonly>> RampType : byte
+    + <<readonly>> ZOffset : float = 0.0f
+    + <<readonly>> ZRamp : float = 1.0f
+}
+class TerrainTypeInfo {
+    + <<readonly>> Type : string
+    + <<readonly>> RestrictPlayerColor : bool = false
+    + <<readonly>> CustomCursor : string
+    + TerrainTypeInfo(my:MiniYaml)
+}
+class TerrainTemplateInfo {
+    + <<readonly>> Id : ushort
+    + <<readonly>> PickAny : bool
+    + <<readonly>> Palette : string
+    + TerrainTemplateInfo(tileSet:TileSet, my:MiniYaml)
+    {static} LoadTileInfo(tileSet:TileSet, my:MiniYaml) : TerrainTileInfo
+    + Contains(index:int) : bool
+    + TilesCount : int <<get>>
+}
+class TileSet {
+    + <<const>> TerrainPaletteInternalName : string = "terrain"
+    + <<readonly>> Name : string
+    + <<readonly>> Id : string
+    + <<readonly>> SheetSize : int = 512
+    + <<readonly>> IgnoreTileSpriteOffsets : bool
+    + <<readonly>> EnableDepth : bool = false
+    + <<readonly>> MinHeightColorBrightness : float = 1.0f
+    + <<readonly>> MaxHeightColorBrightness : float = 1.0f
+    <<readonly>> defaultWalkableTerrainIndex : byte
+    + TileSet(fileSystem:IReadOnlyFileSystem, filepath:string)
+    + TileSet(name:string, id:string, terrainInfo:TerrainTypeInfo[])
+    + TryGetTerrainIndex(type:string, index:byte) : bool
+    + GetTerrainIndex(type:string) : byte
+    + GetTerrainIndex(r:TerrainTile) : byte
+    + GetTileInfo(r:TerrainTile) : TerrainTileInfo
+}
+class "BitSet`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+TerrainTileInfo --> "MinColor" Color
+TerrainTileInfo --> "MaxColor" Color
+TerrainTypeInfo --> "TargetTypes<TargetableType>" "BitSet`1"
+TerrainTypeInfo o-> "AcceptsSmudgeType<string>" "HashSet`1"
+TerrainTypeInfo --> "Color" Color
+TerrainTemplateInfo --> "Size" int2
+TileSet --> "Templates<ushort,TerrainTemplateInfo>" "IReadOnlyDictionary`2"
+TileSet o-> "terrainIndexByType<string,byte>" "Dictionary`2"
+@enduml

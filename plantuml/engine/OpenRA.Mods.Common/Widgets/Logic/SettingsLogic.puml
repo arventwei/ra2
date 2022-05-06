@@ -1,0 +1,79 @@
+@startuml
+class SettingsLogic {
+    {static} <<readonly>> OriginalVideoDisplay : int
+    {static} <<readonly>> OriginalSoundDevice : string
+    {static} <<readonly>> OriginalServerDiscoverNatDevices : bool
+    validHotkeyEntryWidth : int
+    invalidHotkeyEntryWidth : int
+    isHotkeyValid : bool
+    isHotkeyDefault : bool
+    {static} SettingsLogic()
+    + SettingsLogic(widget:Widget, onExit:Action, modData:ModData, worldRenderer:WorldRenderer, logicArgs:Dictionary<string, MiniYaml>)
+    + {static} BindCheckboxPref(parent:Widget, id:string, group:object, pref:string) : void
+    {static} BindSliderPref(parent:Widget, id:string, group:object, pref:string) : void
+    {static} BindIntSliderPref(parent:Widget, id:string, group:object, pref:string) : void
+    BindHotkeyPref(hd:HotkeyDefinition, template:Widget) : void
+    RegisterSettingsPanel(type:PanelType, init:Func<Widget, Action>, reset:Func<Widget, Action>, panelID:string, buttonID:string) : void
+    InitDisplayPanel(panel:Widget) : Action
+    ResetDisplayPanel(panel:Widget) : Action
+    InitAudioPanel(panel:Widget) : Action
+    ResetAudioPanel(panel:Widget) : Action
+    InitInputPanel(panel:Widget) : Action
+    InitHotkeysPanel(panel:Widget) : Action
+    ResetInputPanel(panel:Widget) : Action
+    ResetHotkeysPanel(panel:Widget) : Action
+    InitAdvancedPanel(panel:Widget) : Action
+    ResetAdvancedPanel(panel:Widget) : Action
+    + {static} ShowMouseControlDropdown(dropdown:DropDownButtonWidget, s:GameSettings) : void
+    {static} ShowMouseScrollDropdown(dropdown:DropDownButtonWidget, s:GameSettings) : void
+    {static} ShowZoomModifierDropdown(dropdown:DropDownButtonWidget, s:GameSettings) : void
+    ShowAudioDeviceDropdown(dropdown:DropDownButtonWidget, devices:SoundDevice[]) : void
+    {static} ShowWindowModeDropdown(dropdown:DropDownButtonWidget, s:GraphicSettings) : void
+    {static} ShowLanguageDropdown(dropdown:DropDownButtonWidget, languages:IEnumerable<string>) : void
+    {static} ShowStatusBarsDropdown(dropdown:DropDownButtonWidget, s:GameSettings) : void
+    {static} ShowDisplaySelectionDropdown(dropdown:DropDownButtonWidget, s:GraphicSettings) : void
+    {static} ShowGLProfileDropdown(dropdown:DropDownButtonWidget, s:GraphicSettings) : void
+    {static} ShowTargetLinesDropdown(dropdown:DropDownButtonWidget, s:GameSettings) : void
+    + {static} ShowBattlefieldCameraDropdown(dropdown:DropDownButtonWidget, viewportSizes:WorldViewportSizes, gs:GraphicSettings) : void
+    {static} RecalculateWidgetLayout(w:Widget, insideScrollPanel:bool) : void
+    + {static} ShowUIScaleDropdown(dropdown:DropDownButtonWidget, gs:GraphicSettings) : void
+    MakeMouseFocusSettingsLive() : void
+    InitHotkeyRemapDialog(panel:Widget) : void
+    ValidateHotkey() : void
+    SaveHotkey() : void
+    ResetHotkey() : void
+    ClearHotkey() : void
+    OverrideHotkey() : void
+}
+enum PanelType {
+    Display,
+    Audio,
+    Input,
+    Hotkeys,
+    Advanced,
+}
+class "Dictionary`2"<T1,T2> {
+}
+ChromeLogic <|-- SettingsLogic
+SettingsLogic --> "OriginalGraphicsMode" WindowMode
+SettingsLogic --> "OriginalGraphicsWindowedSize" int2
+SettingsLogic --> "OriginalGraphicsFullscreenSize" int2
+SettingsLogic --> "OriginalGLProfile" GLProfile
+SettingsLogic o-> "leavePanelActions<PanelType,Action>" "Dictionary`2"
+SettingsLogic o-> "resetPanelActions<PanelType,Action>" "Dictionary`2"
+SettingsLogic --> "panelContainer" Widget
+SettingsLogic --> "tabContainer" Widget
+SettingsLogic --> "modData" ModData
+SettingsLogic --> "worldRenderer" WorldRenderer
+SettingsLogic --> "viewportSizes" WorldViewportSizes
+SettingsLogic --> "logicArgs<string,MiniYaml>" "Dictionary`2"
+SettingsLogic --> "soundDevice" SoundDevice
+SettingsLogic o-> "settingsPanel" PanelType
+SettingsLogic --> "hotkeyList" ScrollPanelWidget
+SettingsLogic --> "selectedHotkeyButton" ButtonWidget
+SettingsLogic --> "hotkeyEntryWidget" HotkeyEntryWidget
+SettingsLogic --> "duplicateHotkeyDefinition" HotkeyDefinition
+SettingsLogic --> "selectedHotkeyDefinition" HotkeyDefinition
+SettingsLogic o-> "ViewportSizeNames<WorldViewport,string>" "Dictionary`2"
+SettingsLogic +-- PanelType
+@enduml

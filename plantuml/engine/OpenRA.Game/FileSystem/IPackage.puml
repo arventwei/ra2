@@ -1,0 +1,20 @@
+@startuml
+interface IPackageLoader {
+    TryParsePackage(s:Stream, filename:string, context:FileSystem, package:IReadOnlyPackage) : bool
+}
+interface IReadOnlyPackage {
+    Name : string <<get>>
+    GetStream(filename:string) : Stream
+    Contains(filename:string) : bool
+    OpenPackage(filename:string, context:FileSystem) : IReadOnlyPackage
+}
+interface IReadWritePackage {
+    Update(filename:string, contents:byte[]) : void
+    Delete(filename:string) : void
+}
+class "IEnumerable`1"<T> {
+}
+IDisposable <|-- IReadOnlyPackage
+IReadOnlyPackage --> "Contents<string>" "IEnumerable`1"
+IReadOnlyPackage <|-- IReadWritePackage
+@enduml

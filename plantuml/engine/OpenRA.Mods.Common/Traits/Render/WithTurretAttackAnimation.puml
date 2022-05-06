@@ -1,0 +1,31 @@
+@startuml
+class WithTurretAttackAnimationInfo {
+    + <<readonly>> Armament : string = "primary"
+    + <<readonly>> Turret : string = "primary"
+    + <<readonly>> Sequence : string = null
+    + <<readonly>> Delay : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithTurretAttackAnimation {
+    tick : int
+    + WithTurretAttackAnimation(init:ActorInitializer, info:WithTurretAttackAnimationInfo)
+    PlayAttackAnimation(self:Actor) : void
+    NotifyAttack(self:Actor) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithTurretAttackAnimationInfo
+"Requires`1" "<WithSpriteTurretInfo>" <|-- WithTurretAttackAnimationInfo
+"Requires`1" "<ArmamentInfo>" <|-- WithTurretAttackAnimationInfo
+WithTurretAttackAnimationInfo o-> "DelayRelativeTo" AttackDelayType
+"ConditionalTrait`1" "<WithTurretAttackAnimationInfo>" <|-- WithTurretAttackAnimation
+ITick <|-- WithTurretAttackAnimation
+INotifyAttack <|-- WithTurretAttackAnimation
+WithTurretAttackAnimation --> "wst" WithSpriteTurret
+WithTurretAttackAnimation --> "armament" Armament
+@enduml

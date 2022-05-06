@@ -1,0 +1,7 @@
+@startuml
+class XccLocalDatabase {
+    + XccLocalDatabase(s:Stream)
+    + XccLocalDatabase(filenames:IEnumerable<string>)
+    + Data() : byte[]
+}
+@enduml

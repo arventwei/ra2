@@ -1,0 +1,23 @@
+@startuml
+class CashTricklerBarInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CashTricklerBar {
+    + CashTricklerBar(self:Actor, info:CashTricklerBarInfo)
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+}
+class "Requires`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- CashTricklerBarInfo
+"Requires`1" "<CashTricklerInfo>" <|-- CashTricklerBarInfo
+CashTricklerBarInfo o-> "DisplayRelationships" PlayerRelationship
+CashTricklerBarInfo o-> "Color" Color
+ISelectionBar <|-- CashTricklerBar
+CashTricklerBar --> "self" Actor
+CashTricklerBar --> "info" CashTricklerBarInfo
+CashTricklerBar --> "cashTricklers<CashTrickler>" "IEnumerable`1"
+@enduml

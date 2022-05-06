@@ -1,0 +1,23 @@
+@startuml
+class Land {
+    <<readonly>> desiredFacing : WAngle?
+    <<readonly>> assignTargetOnFirstRun : bool
+    <<readonly>> targetLineColor : Color?
+    landingInitiated : bool
+    finishedApproach : bool
+    + Land(self:Actor, facing:WAngle?, targetLineColor:Color?)
+    + Land(self:Actor, target:Target, facing:WAngle?, targetLineColor:Color?)
+    + Land(self:Actor, target:Target, landRange:WDist, facing:WAngle?, targetLineColor:Color?)
+    + Land(self:Actor, target:Target, offset:WVec, facing:WAngle?, targetLineColor:Color?)
+    + Land(self:Actor, target:Target, landRange:WDist, offset:WVec, facing:WAngle?, clearCells:CPos[], targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+Activity <|-- Land
+Land --> "aircraft" Aircraft
+Land --> "offset" WVec
+Land --> "landRange" WDist
+Land --> "target" Target
+Land --> "targetPosition" WPos
+Land --> "landingCell" CPos
+@enduml

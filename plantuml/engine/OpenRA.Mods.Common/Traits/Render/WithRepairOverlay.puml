@@ -1,0 +1,30 @@
+@startuml
+class WithRepairOverlayInfo {
+    + <<readonly>> StartSequence : string = null
+    + <<readonly>> Sequence : string = "active"
+    + <<readonly>> EndSequence : string = null
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithRepairOverlay {
+    visible : bool
+    repairing : bool
+    + WithRepairOverlay(self:Actor, info:WithRepairOverlayInfo)
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+    BeforeResupply(self:Actor, target:Actor, types:ResupplyType) : void
+    ResupplyTick(self:Actor, target:Actor, types:ResupplyType) : void
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- WithRepairOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithRepairOverlayInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithRepairOverlayInfo
+WithRepairOverlayInfo o-> "Offset" WVec
+"PausableConditionalTrait`1" "<WithRepairOverlayInfo>" <|-- WithRepairOverlay
+INotifyDamageStateChanged <|-- WithRepairOverlay
+INotifyResupply <|-- WithRepairOverlay
+WithRepairOverlay --> "overlay" Animation
+@enduml

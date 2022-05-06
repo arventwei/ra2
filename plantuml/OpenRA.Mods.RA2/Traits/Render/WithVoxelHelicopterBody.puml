@@ -1,0 +1,32 @@
+@startuml
+class WithVoxelHelicopterBodyInfo {
+    + <<readonly>> Sequence : string = "idle"
+    + <<readonly>> TickRate : int = 5
+    + <<readonly>> ShowShadow : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewVoxels(init:ActorPreviewInitializer, rv:RenderVoxelsInfo, image:string, orientation:Func<WRot>, facings:int, p:PaletteReference) : IEnumerable<ModelAnimation>
+}
+class WithVoxelHelicopterBody {
+    tick : uint
+    frame : uint
+    frames : uint
+    + WithVoxelHelicopterBody(self:Actor, info:WithVoxelHelicopterBodyInfo)
+    Tick(self:Actor) : void
+    ModifyActorPreviewInit(self:Actor, inits:TypeDictionary) : void
+    AutoMouseoverBounds(self:Actor, wr:WorldRenderer) : Rectangle
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithVoxelHelicopterBodyInfo
+IRenderActorPreviewVoxelsInfo <|-- WithVoxelHelicopterBodyInfo
+"Requires`1" "<RenderVoxelsInfo>" <|-- WithVoxelHelicopterBodyInfo
+"ConditionalTrait`1" "<WithVoxelHelicopterBodyInfo>" <|-- WithVoxelHelicopterBody
+IAutoMouseBounds <|-- WithVoxelHelicopterBody
+ITick <|-- WithVoxelHelicopterBody
+IActorPreviewInitModifier <|-- WithVoxelHelicopterBody
+WithVoxelHelicopterBody --> "info" WithVoxelHelicopterBodyInfo
+WithVoxelHelicopterBody --> "rv" RenderVoxels
+WithVoxelHelicopterBody --> "modelAnimation" ModelAnimation
+@enduml

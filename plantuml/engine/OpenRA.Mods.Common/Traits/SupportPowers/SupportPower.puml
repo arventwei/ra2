@@ -1,0 +1,59 @@
+@startuml
+abstract class SupportPowerInfo {
+    + <<readonly>> ChargeInterval : int = 0
+    + <<readonly>> IconImage : string = "icon"
+    + <<readonly>> Icon : string = null
+    + <<readonly>> IconPalette : string = "chrome"
+    + <<readonly>> Description : string = ""
+    + <<readonly>> LongDesc : string = ""
+    + <<readonly>> AllowMultiple : bool = false
+    + <<readonly>> OneShot : bool = false
+    + <<readonly>> Cursor : string = "ability"
+    + <<readonly>> StartFullyCharged : bool = false
+    + <<readonly>> BeginChargeSound : string = null
+    + <<readonly>> BeginChargeSpeechNotification : string = null
+    + <<readonly>> EndChargeSound : string = null
+    + <<readonly>> EndChargeSpeechNotification : string = null
+    + <<readonly>> SelectTargetSound : string = null
+    + <<readonly>> SelectTargetSpeechNotification : string = null
+    + <<readonly>> InsufficientPowerSound : string = null
+    + <<readonly>> InsufficientPowerSpeechNotification : string = null
+    + <<readonly>> LaunchSound : string = null
+    + <<readonly>> LaunchSpeechNotification : string = null
+    + <<readonly>> IncomingSound : string = null
+    + <<readonly>> IncomingSpeechNotification : string = null
+    + <<readonly>> DisplayBeacon : bool = false
+    + <<readonly>> BeaconPaletteIsPlayerPalette : bool = true
+    + <<readonly>> BeaconPalette : string = "player"
+    + <<readonly>> BeaconImage : string = "beacon"
+    + <<readonly>> BeaconPoster : string = null
+    + <<readonly>> BeaconPosterPalette : string = "chrome"
+    + <<readonly>> ClockSequence : string = null
+    + <<readonly>> BeaconSequence : string = null
+    + <<readonly>> ArrowSequence : string = null
+    + <<readonly>> CircleSequence : string = null
+    + <<readonly>> BeaconDelay : int = 0
+    + <<readonly>> DisplayRadarPing : bool = false
+    + <<readonly>> RadarPingDuration : int
+    + <<readonly>> OrderName : string
+    + <<readonly>> SupportPowerPaletteOrder : int = 9999
+    + SupportPowerInfo()
+}
+class SupportPower {
+    + SupportPower(self:Actor, info:SupportPowerInfo)
+    + <<virtual>> CreateInstance(key:string, manager:SupportPowerManager) : SupportPowerInstance
+    + <<virtual>> Charging(self:Actor, key:string) : void
+    + <<virtual>> Charged(self:Actor, key:string) : void
+    + <<virtual>> SelectTarget(self:Actor, order:string, manager:SupportPowerManager) : void
+    + <<virtual>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    + <<virtual>> PlayLaunchSounds() : void
+    + CellsMatching(location:CPos, footprint:char[], dimensions:CVec) : IEnumerable<CPos>
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- SupportPowerInfo
+SupportPowerInfo o-> "DisplayTimerRelationships" PlayerRelationship
+"PausableConditionalTrait`1" "<SupportPowerInfo>" <|-- SupportPower
+SupportPower --> "Self" Actor
+SupportPower --> "info" SupportPowerInfo
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+class GrantConditionOnTunnelLayerInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnTunnelLayer {
+    + GrantConditionOnTunnelLayer(self:Actor, info:GrantConditionOnTunnelLayerInfo)
+}
+class "GrantConditionOnLayer`1"<T> {
+}
+GrantConditionOnLayerInfo <|-- GrantConditionOnTunnelLayerInfo
+"GrantConditionOnLayer`1" "<GrantConditionOnTunnelLayerInfo>" <|-- GrantConditionOnTunnelLayer
+@enduml

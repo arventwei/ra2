@@ -1,0 +1,10 @@
+@startuml
+class Parachute {
+    groundLevel : int
+    + Parachute(self:Actor)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- Parachute
+Parachute --> "pos" IPositionable
+Parachute --> "fallVector" WVec
+@enduml

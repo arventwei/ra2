@@ -1,0 +1,12 @@
+@startuml
+class AlwaysVisibleInfo {
+}
+class AlwaysVisible {
+    + IsVisible(self:Actor, byPlayer:Player) : bool
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<AlwaysVisible>" <|-- AlwaysVisibleInfo
+IDefaultVisibilityInfo <|-- AlwaysVisibleInfo
+IDefaultVisibility <|-- AlwaysVisible
+@enduml

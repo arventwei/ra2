@@ -1,0 +1,22 @@
+@startuml
+class TargetableInfo {
+    + GetTargetTypes() : BitSet<TargetableType>
+    + RequiresForceFire : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Targetable {
+    + Targetable(self:Actor, info:TargetableInfo)
+    + <<virtual>> TargetableBy(self:Actor, viewer:Actor) : bool
+    + RequiresForceFire : bool <<get>>
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- TargetableInfo
+ITargetableInfo <|-- TargetableInfo
+TargetableInfo --> "TargetTypes<TargetableType>" "BitSet`1"
+"ConditionalTrait`1" "<TargetableInfo>" <|-- Targetable
+ITargetable <|-- Targetable
+Targetable --> "TargetTypes<TargetableType>" "BitSet`1"
+@enduml

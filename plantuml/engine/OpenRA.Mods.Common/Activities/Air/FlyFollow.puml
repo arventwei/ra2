@@ -1,0 +1,16 @@
+@startuml
+class FlyFollow {
+    <<readonly>> targetLineColor : Color?
+    useLastVisibleTarget : bool
+    wasMovingWithinRange : bool
+    + FlyFollow(self:Actor, target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+Activity <|-- FlyFollow
+FlyFollow --> "aircraft" Aircraft
+FlyFollow --> "minRange" WDist
+FlyFollow --> "maxRange" WDist
+FlyFollow --> "target" Target
+FlyFollow --> "lastVisibleTarget" Target
+@enduml

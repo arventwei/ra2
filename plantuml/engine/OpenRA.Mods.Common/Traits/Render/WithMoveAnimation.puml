@@ -1,0 +1,25 @@
+@startuml
+class WithMoveAnimationInfo {
+    + <<readonly>> MoveSequence : string = "move"
+    + <<readonly>> Body : string = "body"
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class WithMoveAnimation {
+    + WithMoveAnimation(init:ActorInitializer, info:WithMoveAnimationInfo)
+    UpdateAnimation(self:Actor, types:MovementType) : void
+    MovementTypeChanged(self:Actor, types:MovementType) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithMoveAnimationInfo
+"Requires`1" "<WithSpriteBodyInfo>" <|-- WithMoveAnimationInfo
+"Requires`1" "<IMoveInfo>" <|-- WithMoveAnimationInfo
+WithMoveAnimationInfo o-> "ValidMovementTypes" MovementType
+"ConditionalTrait`1" "<WithMoveAnimationInfo>" <|-- WithMoveAnimation
+INotifyMoving <|-- WithMoveAnimation
+WithMoveAnimation --> "movement" IMove
+WithMoveAnimation --> "wsb" WithSpriteBody
+@enduml

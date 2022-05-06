@@ -1,0 +1,28 @@
+@startuml
+class RangeCircleAnnotationRenderable <<struct>> {
+    <<const>> RangeCircleSegments : int = 32
+    <<readonly>> zOffset : int
+    <<readonly>> width : float
+    <<readonly>> borderWidth : float
+    + RangeCircleAnnotationRenderable(centerPosition:WPos, radius:WDist, zOffset:int, color:Color, width:float, borderColor:Color, borderWidth:float)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + {static} DrawRangeCircle(wr:WorldRenderer, centerPosition:WPos, radius:WDist, width:float, color:Color, borderWidth:float, borderColor:Color) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- RangeCircleAnnotationRenderable
+IFinalizedRenderable <|-- RangeCircleAnnotationRenderable
+RangeCircleAnnotationRenderable --> "centerPosition" WPos
+RangeCircleAnnotationRenderable --> "radius" WDist
+RangeCircleAnnotationRenderable --> "color" Color
+RangeCircleAnnotationRenderable --> "borderColor" Color
+RangeCircleAnnotationRenderable --> "Pos" WPos
+RangeCircleAnnotationRenderable --> "Palette" PaletteReference
+@enduml

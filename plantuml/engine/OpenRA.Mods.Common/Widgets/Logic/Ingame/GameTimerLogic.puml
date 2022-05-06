@@ -1,0 +1,6 @@
+@startuml
+class GameTimerLogic {
+    + GameTimerLogic(widget:Widget, orderManager:OrderManager, world:World)
+}
+ChromeLogic <|-- GameTimerLogic
+@enduml

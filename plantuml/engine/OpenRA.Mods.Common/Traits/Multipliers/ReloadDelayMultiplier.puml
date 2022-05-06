@@ -1,0 +1,15 @@
+@startuml
+class ReloadDelayMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ReloadDelayMultiplier {
+    + ReloadDelayMultiplier(info:ReloadDelayMultiplierInfo)
+    GetReloadModifier() : int
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ReloadDelayMultiplierInfo
+"ConditionalTrait`1" "<ReloadDelayMultiplierInfo>" <|-- ReloadDelayMultiplier
+IReloadModifier <|-- ReloadDelayMultiplier
+@enduml

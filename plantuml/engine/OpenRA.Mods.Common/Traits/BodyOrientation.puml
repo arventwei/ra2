@@ -1,0 +1,26 @@
+@startuml
+class BodyOrientationInfo {
+    + <<readonly>> QuantizedFacings : int
+    + <<readonly>> UseClassicPerspectiveFudge : bool = true
+    + LocalToWorld(vec:WVec) : WVec
+    + QuantizeOrientation(orientation:WRot, facings:int) : WRot
+    + <<virtual>> QuantizeFacing(facing:WAngle, facings:int) : WAngle
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BodyOrientation {
+    + QuantizedFacings : int <<get>>
+    + BodyOrientation(init:ActorInitializer, info:BodyOrientationInfo)
+    + LocalToWorld(vec:WVec) : WVec
+    + QuantizeOrientation(self:Actor, orientation:WRot) : WRot
+    + QuantizeFacing(facing:WAngle) : WAngle
+    + QuantizeFacing(facing:WAngle, facings:int) : WAngle
+}
+class "Lazy`1"<T> {
+}
+TraitInfo <|-- BodyOrientationInfo
+BodyOrientationInfo o-> "CameraPitch" WAngle
+ISync <|-- BodyOrientation
+BodyOrientation --> "info" BodyOrientationInfo
+BodyOrientation --> "quantizedFacings<int>" "Lazy`1"
+BodyOrientation --> "CameraPitch" WAngle
+@enduml

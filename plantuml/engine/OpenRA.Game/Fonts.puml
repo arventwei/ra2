@@ -1,0 +1,14 @@
+@startuml
+class FontData {
+    + <<readonly>> Font : string
+    + <<readonly>> Size : int
+    + <<readonly>> Ascender : int
+}
+class Fonts {
+    {static} LoadFonts(y:MiniYaml) : object
+}
+class "Dictionary`2"<T1,T2> {
+}
+IGlobalModData <|-- Fonts
+Fonts --> "FontList<string,FontData>" "Dictionary`2"
+@enduml

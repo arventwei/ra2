@@ -1,0 +1,20 @@
+@startuml
+class ExitsDebugOverlayManagerInfo {
+    + <<readonly>> Font : string = "TinyBold"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ExitsDebugOverlayManager {
+    <<const>> CommandName : string = "exits-overlay"
+    <<const>> CommandHelp : string = "Displays exits for factories."
+    + Enabled : bool
+    + ExitsDebugOverlayManager(self:Actor, info:ExitsDebugOverlayManagerInfo)
+    WorldLoaded(w:World, wr:WorldRenderer) : void
+    InvokeCommand(command:string, arg:string) : void
+}
+TraitInfo <|-- ExitsDebugOverlayManagerInfo
+IWorldLoaded <|-- ExitsDebugOverlayManager
+IChatCommand <|-- ExitsDebugOverlayManager
+ExitsDebugOverlayManager --> "Font" SpriteFont
+ExitsDebugOverlayManager --> "Info" ExitsDebugOverlayManagerInfo
+ExitsDebugOverlayManager --> "self" Actor
+@enduml

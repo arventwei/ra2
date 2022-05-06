@@ -1,0 +1,33 @@
+@startuml
+class RepairsBridgesInfo {
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> TargetCursor : string = "goldwrench"
+    + <<readonly>> TargetBlockedCursor : string = "goldwrench-blocked"
+    + <<readonly>> RepairNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RepairsBridges {
+    + RepairsBridges(info:RepairsBridgesInfo)
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    + ResolveOrder(self:Actor, order:Order) : void
+}
+class "IEnumerable`1"<T> {
+}
+class RepairBridgeOrderTargeter {
+    + RepairBridgeOrderTargeter(info:RepairsBridgesInfo)
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+TraitInfo <|-- RepairsBridgesInfo
+RepairsBridgesInfo o-> "TargetLineColor" Color
+RepairsBridgesInfo o-> "EnterBehaviour" EnterBehaviour
+IIssueOrder <|-- RepairsBridges
+IResolveOrder <|-- RepairsBridges
+IOrderVoice <|-- RepairsBridges
+RepairsBridges --> "info" RepairsBridgesInfo
+RepairsBridges --> "Orders<IOrderTargeter>" "IEnumerable`1"
+RepairsBridges +-- RepairBridgeOrderTargeter
+UnitOrderTargeter <|-- RepairBridgeOrderTargeter
+RepairBridgeOrderTargeter --> "info" RepairsBridgesInfo
+@enduml

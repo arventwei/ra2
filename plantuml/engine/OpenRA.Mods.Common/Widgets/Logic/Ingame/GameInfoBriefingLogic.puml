@@ -1,0 +1,6 @@
+@startuml
+class GameInfoBriefingLogic {
+    + GameInfoBriefingLogic(widget:Widget, modData:ModData, world:World)
+}
+ChromeLogic <|-- GameInfoBriefingLogic
+@enduml

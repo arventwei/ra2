@@ -1,0 +1,19 @@
+@startuml
+class CarrierChildInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CarrierChild {
+    + CarrierChild(init:ActorInitializer, info:CarrierChildInfo)
+    + EnterSpawner(self:Actor) : void
+    + <<override>> LinkParent(self:Actor, parent:Actor, spawnerParent:BaseSpawnerParent) : void
+    NeedsToReload(self:Actor) : bool
+    TickIdle(self:Actor) : void
+    + <<override>> Stop(self:Actor) : void
+}
+BaseSpawnerChildInfo <|-- CarrierChildInfo
+CarrierChildInfo o-> "LandingDistance" WDist
+BaseSpawnerChild <|-- CarrierChild
+INotifyIdle <|-- CarrierChild
+CarrierChild --> "Info" CarrierChildInfo
+CarrierChild --> "spawnerParent" CarrierParent
+@enduml

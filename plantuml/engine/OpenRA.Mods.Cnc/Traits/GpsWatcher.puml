@@ -1,0 +1,33 @@
+@startuml
+class GpsWatcherInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+interface IOnGpsRefreshed {
+    OnGpsRefresh(self:Actor, player:Player) : void
+}
+class GpsWatcher {
+    + Launched : bool <<get>>
+    + GrantedAllies : bool <<get>>
+    + Granted : bool <<get>>
+    explored : bool
+    + GpsWatcher(owner:Player)
+    + GpsRemove(atek:Actor) : void
+    + GpsAdd(atek:Actor) : void
+    + ReachedOrbit(launcher:Player) : void
+    + RefreshGps(launcher:Player) : void
+    RefreshGranted() : void
+    PreventShroudReset(self:Actor) : bool
+    + RegisterForOnGpsRefreshed(actor:Actor, toBeNotified:IOnGpsRefreshed) : void
+    + UnregisterForOnGpsRefreshed(actor:Actor, toBeNotified:IOnGpsRefreshed) : void
+}
+class "List`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- GpsWatcherInfo
+ISync <|-- GpsWatcher
+IPreventsShroudReset <|-- GpsWatcher
+GpsWatcher --> "owner" Player
+GpsWatcher o-> "actors<Actor>" "List`1"
+GpsWatcher o-> "notifyOnRefresh<TraitPair<IOnGpsRefreshed>>" "HashSet`1"
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+enum ResourceBarOrientation {
+    Vertical,
+    Horizontal,
+}
+class ResourceBarWidget {
+    + <<readonly>> TooltipTemplate : string
+    + <<readonly>> TooltipContainer : string
+    + TooltipFormat : string = ""
+    + IndicatorCollection : string = "sidebar-bits"
+    + IndicatorImage : string = "indicator"
+    + ResourceBarWidget(world:World)
+    + <<override>> Initialize(args:WidgetArgs) : void
+    + <<override>> MouseEntered() : void
+    + <<override>> MouseExited() : void
+    + <<override>> Draw() : void
+}
+class "Lazy`1"<T> {
+}
+class "Func`1"<T> {
+}
+Widget <|-- ResourceBarWidget
+ResourceBarWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+ResourceBarWidget o-> "Orientation" ResourceBarOrientation
+ResourceBarWidget o-> "GetProvided<float>" "Func`1"
+ResourceBarWidget o-> "GetUsed<float>" "Func`1"
+ResourceBarWidget o-> "GetBarColor<Color>" "Func`1"
+ResourceBarWidget o-> "providedLerp" EWMA
+ResourceBarWidget o-> "usedLerp" EWMA
+ResourceBarWidget --> "world" World
+ResourceBarWidget --> "indicator" Sprite
+@enduml

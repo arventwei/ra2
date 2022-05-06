@@ -1,0 +1,5 @@
+@startuml
+class Exts <<static>> {
+    + {static} Except(ts:IEnumerable<T>, t:T) : IEnumerable<T>
+}
+@enduml

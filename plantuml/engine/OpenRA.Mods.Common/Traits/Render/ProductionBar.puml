@@ -1,0 +1,31 @@
+@startuml
+class ProductionBarInfo {
+    + <<readonly>> ProductionType : string = null
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ProductionBar {
+    value : float
+    + ProductionBar(self:Actor, info:ProductionBarInfo)
+    FindQueue() : void
+    Tick(self:Actor) : void
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ProductionBarInfo
+"Requires`1" "<ProductionInfo>" <|-- ProductionBarInfo
+IRulesetLoaded <|-- ProductionBarInfo
+ProductionBarInfo o-> "Color" Color
+"ConditionalTrait`1" "<ProductionBarInfo>" <|-- ProductionBar
+ISelectionBar <|-- ProductionBar
+ITick <|-- ProductionBar
+INotifyOwnerChanged <|-- ProductionBar
+ProductionBar --> "self" Actor
+ProductionBar --> "queue" ProductionQueue
+@enduml

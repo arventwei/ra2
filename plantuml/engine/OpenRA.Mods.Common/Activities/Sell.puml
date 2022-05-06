@@ -1,0 +1,11 @@
+@startuml
+class Sell {
+    showTicks : bool
+    + Sell(self:Actor, showTicks:bool)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- Sell
+Sell --> "health" IHealth
+Sell --> "sellableInfo" SellableInfo
+Sell --> "playerResources" PlayerResources
+@enduml

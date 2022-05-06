@@ -1,0 +1,15 @@
+@startuml
+class FacingGlobal {
+    + FacingGlobal(context:ScriptContext)
+    Deprecated() : void
+    + North : int <<get>>
+    + NorthWest : int <<get>>
+    + West : int <<get>>
+    + SouthWest : int <<get>>
+    + South : int <<get>>
+    + SouthEast : int <<get>>
+    + East : int <<get>>
+    + NorthEast : int <<get>>
+}
+ScriptGlobal <|-- FacingGlobal
+@enduml

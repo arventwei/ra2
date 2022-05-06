@@ -1,0 +1,9 @@
+@startuml
+class IdxReader {
+    + <<readonly>> SoundCount : int
+    + IdxReader(s:Stream)
+}
+class "List`1"<T> {
+}
+IdxReader --> "Entries<IdxEntry>" "List`1"
+@enduml

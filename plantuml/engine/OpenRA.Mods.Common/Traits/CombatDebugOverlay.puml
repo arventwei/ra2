@@ -1,0 +1,25 @@
+@startuml
+class CombatDebugOverlayInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CombatDebugOverlay {
+    + CombatDebugOverlay(self:Actor)
+    Created(self:Actor) : void
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+    RenderArmaments(self:Actor, attack:AttackBase) : IEnumerable<IRenderable>
+    Damaged(self:Actor, e:AttackInfo) : void
+}
+class "Lazy`1"<T> {
+}
+TraitInfo <|-- CombatDebugOverlayInfo
+IRenderAnnotations <|-- CombatDebugOverlay
+INotifyDamage <|-- CombatDebugOverlay
+INotifyCreated <|-- CombatDebugOverlay
+CombatDebugOverlay o-> "TargetPosHLine" WVec
+CombatDebugOverlay o-> "TargetPosVLine" WVec
+CombatDebugOverlay --> "debugVis" DebugVisualizations
+CombatDebugOverlay --> "healthInfo" IHealthInfo
+CombatDebugOverlay --> "coords<BodyOrientation>" "Lazy`1"
+@enduml

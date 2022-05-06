@@ -1,0 +1,11 @@
+@startuml
+interface ILintPass {
+    Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData) : void
+}
+interface ILintMapPass {
+    Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, map:Map) : void
+}
+interface ILintRulesPass {
+    Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData, rules:Ruleset) : void
+}
+@enduml

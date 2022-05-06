@@ -1,0 +1,10 @@
+@startuml
+class DisposableAction <<sealed>> {
+    + DisposableAction(onDispose:Action, onFinalize:Action)
+    disposed : bool
+    + Dispose() : void
+}
+IDisposable <|-- DisposableAction
+DisposableAction --> "onDispose" Action
+DisposableAction --> "onFinalize" Action
+@enduml

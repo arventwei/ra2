@@ -1,0 +1,12 @@
+@startuml
+class Utility {
+    + Utility(modData:ModData, mods:InstalledMods)
+}
+interface IUtilityCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+}
+Utility --> "ModData" ModData
+Utility --> "Mods" InstalledMods
+@enduml

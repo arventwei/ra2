@@ -1,0 +1,9 @@
+@startuml
+class WorldLabelWithTooltipWidget {
+    + WorldLabelWithTooltipWidget(world:World)
+    + <<override>> Clone() : Widget
+    + <<override>> MouseEntered() : void
+}
+LabelWithTooltipWidget <|-- WorldLabelWithTooltipWidget
+WorldLabelWithTooltipWidget --> "world" World
+@enduml

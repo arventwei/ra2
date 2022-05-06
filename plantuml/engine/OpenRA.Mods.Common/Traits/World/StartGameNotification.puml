@@ -1,0 +1,19 @@
+@startuml
+class StartGameNotificationInfo {
+    + <<readonly>> Notification : string = "StartGame"
+    + <<readonly>> LoadedNotification : string = "GameLoaded"
+    + <<readonly>> SavedNotification : string = "GameSaved"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class StartGameNotification {
+    + StartGameNotification(info:StartGameNotificationInfo)
+    WorldLoaded(world:World, wr:WorldRenderer) : void
+    GameLoaded(world:World) : void
+    GameSaved(world:World) : void
+}
+TraitInfo <|-- StartGameNotificationInfo
+IWorldLoaded <|-- StartGameNotification
+INotifyGameLoaded <|-- StartGameNotification
+INotifyGameSaved <|-- StartGameNotification
+StartGameNotification --> "info" StartGameNotificationInfo
+@enduml

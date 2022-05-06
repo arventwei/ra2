@@ -1,0 +1,8 @@
+@startuml
+class ImportLegacyTilesetCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+}
+IUtilityCommand <|-- ImportLegacyTilesetCommand
+@enduml

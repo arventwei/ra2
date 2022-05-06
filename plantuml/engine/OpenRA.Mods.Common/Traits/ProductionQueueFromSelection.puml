@@ -1,0 +1,18 @@
+@startuml
+class ProductionQueueFromSelectionInfo {
+    + ProductionTabsWidget : string = null
+    + ProductionPaletteWidget : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ProductionQueueFromSelection {
+    + ProductionQueueFromSelection(world:World, info:ProductionQueueFromSelectionInfo)
+    SelectionChanged() : void
+}
+class "Lazy`1"<T> {
+}
+TraitInfo <|-- ProductionQueueFromSelectionInfo
+INotifySelection <|-- ProductionQueueFromSelection
+ProductionQueueFromSelection --> "world" World
+ProductionQueueFromSelection --> "tabsWidget<ProductionTabsWidget>" "Lazy`1"
+ProductionQueueFromSelection --> "paletteWidget<ProductionPaletteWidget>" "Lazy`1"
+@enduml

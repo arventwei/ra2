@@ -1,0 +1,13 @@
+@startuml
+interface IOrderGenerator {
+    Order(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : IEnumerable<Order>
+    Tick(world:World) : void
+    Render(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    RenderAboveShroud(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    RenderAnnotations(wr:WorldRenderer, world:World) : IEnumerable<IRenderable>
+    GetCursor(world:World, cell:CPos, worldPixel:int2, mi:MouseInput) : string
+    Deactivate() : void
+    HandleKeyPress(e:KeyInput) : bool
+    SelectionChanged(world:World, selected:IEnumerable<Actor>) : void
+}
+@enduml

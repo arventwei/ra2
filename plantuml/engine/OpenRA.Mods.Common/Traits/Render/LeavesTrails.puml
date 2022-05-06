@@ -1,0 +1,40 @@
+@startuml
+enum TrailType {
+    Cell,
+    CenterPosition,
+}
+class LeavesTrailsInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> Palette : string = "effect"
+    + <<readonly>> VisibleThroughFog : bool = false
+    + <<readonly>> TrailWhileStationary : bool = false
+    + <<readonly>> StationaryInterval : int = 0
+    + <<readonly>> TrailWhileMoving : bool = true
+    + <<readonly>> MovingInterval : int = 0
+    + <<readonly>> StartDelay : int = 0
+    + <<readonly>> SpawnAtLastPosition : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class LeavesTrails {
+    cachedInterval : int
+    + LeavesTrails(self:Actor, info:LeavesTrailsInfo)
+    ticks : int
+    offset : int
+    wasStationary : bool
+    isMoving : bool
+    Tick(self:Actor) : void
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- LeavesTrailsInfo
+LeavesTrailsInfo o-> "TerrainTypes<string>" "HashSet`1"
+LeavesTrailsInfo o-> "Type" TrailType
+"ConditionalTrait`1" "<LeavesTrailsInfo>" <|-- LeavesTrails
+ITick <|-- LeavesTrails
+LeavesTrails --> "body" BodyOrientation
+LeavesTrails --> "facing" IFacing
+LeavesTrails --> "cachedFacing" WAngle
+LeavesTrails --> "cachedPosition" WPos
+@enduml

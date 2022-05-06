@@ -1,0 +1,23 @@
+@startuml
+abstract class ReadOnlyAdapterStream {
+    baseStreamEmpty : bool
+    + <<sealed>> <<override>> CanSeek : bool <<get>>
+    + <<sealed>> <<override>> CanRead : bool <<get>>
+    + <<sealed>> <<override>> CanWrite : bool <<get>>
+    + <<override>> Length : long <<get>>
+    + <<sealed>> <<override>> Position : long <<get>> <<set>>
+    + <<sealed>> <<override>> Seek(offset:long, origin:SeekOrigin) : long
+    + <<sealed>> <<override>> SetLength(value:long) : void
+    + <<sealed>> <<override>> WriteByte(value:byte) : void
+    + <<sealed>> <<override>> Write(buffer:byte[], offset:int, count:int) : void
+    + <<sealed>> <<override>> Flush() : void
+    + <<sealed>> <<override>> ReadByte() : int
+    + <<sealed>> <<override>> Read(buffer:byte[], offset:int, count:int) : int
+    ConsumeData(buffer:byte[], offset:int, count:int, copied:int) : void
+}
+class "Queue`1"<T> {
+}
+Stream <|-- ReadOnlyAdapterStream
+ReadOnlyAdapterStream o-> "data<byte>" "Queue`1"
+ReadOnlyAdapterStream --> "baseStream" Stream
+@enduml

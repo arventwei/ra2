@@ -1,0 +1,60 @@
+@startuml
+class ProjectileArgs {
+}
+class WarheadArgs {
+    + Source : WPos?
+    + WarheadArgs(args:ProjectileArgs)
+    + WarheadArgs(args:WarheadArgs)
+    + WarheadArgs()
+}
+interface IProjectile {
+}
+interface IProjectileInfo {
+    Create(args:ProjectileArgs) : IProjectile
+}
+class WeaponInfo <<sealed>> {
+    + <<readonly>> AfterFireSoundDelay : int = 0
+    + <<readonly>> ReloadDelay : int = 1
+    + <<readonly>> Burst : int = 1
+    + <<readonly>> TargetActorCenter : bool = false
+    + WeaponInfo(name:string, content:MiniYaml)
+    {static} LoadProjectile(yaml:MiniYaml) : object
+    {static} LoadWarheads(yaml:MiniYaml) : object
+    + IsValidTarget(targetTypes:BitSet<TargetableType>) : bool
+    + IsValidAgainst(target:Target, world:World, firedBy:Actor) : bool
+    + IsValidAgainst(victim:Actor, firedBy:Actor) : bool
+    + IsValidAgainst(victim:FrozenActor, firedBy:Actor) : bool
+    + Impact(target:Target, args:WarheadArgs) : void
+    + Impact(target:Target, firedBy:Actor) : void
+}
+class "Func`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "List`1"<T> {
+}
+ProjectileArgs --> "Weapon" WeaponInfo
+ProjectileArgs --> "Facing" WAngle
+ProjectileArgs --> "CurrentMuzzleFacing<WAngle>" "Func`1"
+ProjectileArgs --> "Source" WPos
+ProjectileArgs --> "CurrentSource<WPos>" "Func`1"
+ProjectileArgs --> "SourceActor" Actor
+ProjectileArgs --> "PassiveTarget" WPos
+ProjectileArgs --> "GuidedTarget" Target
+WarheadArgs --> "Weapon" WeaponInfo
+WarheadArgs --> "ImpactOrientation" WRot
+WarheadArgs --> "ImpactPosition" WPos
+WarheadArgs --> "SourceActor" Actor
+WarheadArgs --> "WeaponTarget" Target
+IEffect <|-- IProjectile
+WeaponInfo o-> "Range" WDist
+WeaponInfo o-> "FirstBurstTargetOffset" WVec
+WeaponInfo o-> "FollowingBurstTargetOffset" WVec
+WeaponInfo o-> "ValidTargets<TargetableType>" "BitSet`1"
+WeaponInfo --> "InvalidTargets<TargetableType>" "BitSet`1"
+WeaponInfo o-> "TargetTypeAir<TargetableType>" "BitSet`1"
+WeaponInfo o-> "AirThreshold" WDist
+WeaponInfo o-> "MinRange" WDist
+WeaponInfo --> "Projectile" IProjectileInfo
+WeaponInfo o-> "Warheads<IWarhead>" "List`1"
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+class BuildingInfluenceInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class BuildingInfluence {
+    + BuildingInfluence(world:World)
+    + GetBuildingAt(cell:CPos) : Actor
+}
+class "CellLayer`1"<T> {
+}
+TraitInfo <|-- BuildingInfluenceInfo
+BuildingInfluence --> "map" Map
+BuildingInfluence --> "influence<Actor>" "CellLayer`1"
+@enduml

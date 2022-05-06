@@ -1,0 +1,10 @@
+@startuml
+class Turn {
+    + Turn(self:Actor, desiredFacing:WAngle)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- Turn
+Turn --> "mobile" Mobile
+Turn --> "facing" IFacing
+Turn --> "desiredFacing" WAngle
+@enduml

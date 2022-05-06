@@ -1,0 +1,32 @@
+@startuml
+class Png {
+    + Width : int <<get>> <<set>>
+    + Height : int <<get>> <<set>>
+    + Png(s:Stream)
+    + Png(data:byte[], width:int, height:int, palette:Color[], embeddedData:Dictionary<string, string>)
+    + {static} Verify(s:Stream) : bool
+    {static} UnapplyFilter(f:PngFilter, x:byte, a:byte, b:byte, c:byte) : byte
+    {static} Paeth(a:byte, b:byte, c:byte) : byte
+    {static} IsPaletted(bitDepth:byte, colorType:PngColorType) : bool
+    WritePngChunk(output:Stream, type:string, input:Stream) : void
+    + Save() : byte[]
+    + Save(path:string) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+enum PngColorType {
+    Indexed= 1,
+    Color= 2,
+    Alpha= 4,
+}
+enum PngFilter {
+    None,
+    Sub,
+    Up,
+    Average,
+    Paeth,
+}
+Png o-> "EmbeddedData<string,string>" "Dictionary`2"
+Png +-- PngColorType
+Png +-- PngFilter
+@enduml

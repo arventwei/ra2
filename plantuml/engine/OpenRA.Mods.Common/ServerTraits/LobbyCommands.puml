@@ -1,0 +1,46 @@
+@startuml
+class LobbyCommands {
+    {static} ValidateSlotCommand(server:S, conn:Connection, client:Session.Client, arg:string, requiresHost:bool) : bool
+    + {static} ValidateCommand(server:S, conn:Connection, client:Session.Client, cmd:string) : bool
+    + InterpretCommand(server:S, conn:Connection, client:Session.Client, cmd:string) : bool
+    {static} CheckAutoStart(server:S) : void
+    {static} State(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} StartGame(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} Slot(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} AllowSpectators(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} Specate(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} SlotClose(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} SlotOpen(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} SlotBot(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} Map(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} Option(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} AssignTeams(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} Kick(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} MakeAdmin(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} MakeSpectator(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} Name(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} Faction(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} Team(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} Handicap(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} ClearPlayerSpawn(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} Spawn(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} PlayerColor(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    {static} SyncLobby(server:S, conn:Connection, client:Session.Client, s:string) : bool
+    + ServerStarted(server:S) : void
+    {static} MakeSlotFromPlayerReference(pr:PlayerReference) : Session.Slot
+    + {static} LoadMapSettings(server:S, gs:Session.Global, rules:Ruleset) : void
+    {static} SanitizePlayerColor(server:S, askedColor:Color, playerIndex:int, connectionToEcho:Connection) : Color
+    {static} MissionBriefingOrDefault(server:S) : string
+    + ClientJoined(server:S, conn:Connection) : void
+    ServerEmpty(server:S) : void
+    + {static} PlayerReferenceForSlot(server:S, slot:Session.Slot) : PlayerReference
+}
+class "IDictionary`2"<T1,T2> {
+}
+ServerTrait <|-- LobbyCommands
+IInterpretCommand <|-- LobbyCommands
+INotifyServerStart <|-- LobbyCommands
+INotifyServerEmpty <|-- LobbyCommands
+IClientJoined <|-- LobbyCommands
+LobbyCommands o-> "commandHandlers<string,Func<S, Connection, Session.Client, string, bool>>" "IDictionary`2"
+@enduml

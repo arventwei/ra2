@@ -1,0 +1,17 @@
+@startuml
+class GrantExternalConditionToCrusherInfo {
+    + <<readonly>> WarnCrushCondition : string = null
+    + <<readonly>> WarnCrushDuration : int = 0
+    + <<readonly>> OnCrushCondition : string = null
+    + <<readonly>> OnCrushDuration : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantExternalConditionToCrusher {
+    + GrantExternalConditionToCrusher(self:Actor, info:GrantExternalConditionToCrusherInfo)
+    OnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+    WarnCrush(self:Actor, crusher:Actor, crushClasses:BitSet<CrushClass>) : void
+}
+TraitInfo <|-- GrantExternalConditionToCrusherInfo
+INotifyCrushed <|-- GrantExternalConditionToCrusher
+GrantExternalConditionToCrusher --> "Info" GrantExternalConditionToCrusherInfo
+@enduml

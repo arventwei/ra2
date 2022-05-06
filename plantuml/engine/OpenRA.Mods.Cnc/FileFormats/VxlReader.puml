@@ -1,0 +1,23 @@
+@startuml
+enum NormalType {
+    TiberianSun= 2,
+    RedAlert2= 4,
+}
+class VxlElement {
+    + Color : byte
+    + Normal : byte
+}
+class VxlLimb {
+    + Name : string
+    + Scale : float
+    + VoxelCount : uint
+}
+class VxlReader {
+    + <<readonly>> LimbCount : uint
+    bodySize : uint
+    {static} ReadVoxelData(s:Stream, l:VxlLimb) : void
+    + VxlReader(s:Stream)
+    + {static} Load(filename:string) : VxlReader
+}
+VxlLimb --> "Type" NormalType
+@enduml

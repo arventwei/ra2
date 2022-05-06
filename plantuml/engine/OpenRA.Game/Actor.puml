@@ -1,0 +1,107 @@
+@startuml
+class Actor <<sealed>> {
+    + <<readonly>> ActorID : uint
+    + IsInWorld : bool <<get>> <<internal set>>
+    + WillDispose : bool <<get>>
+    + Disposed : bool <<get>>
+    + Generation : int
+    + IsIdle : bool <<get>>
+    + IsDead : bool <<get>>
+    + {static} <<readonly>> InvalidConditionToken : int
+    nextConditionToken : int = 1
+    created : bool
+    setStaticTargetablePositions : bool
+    + Tick() : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+    Renderables(wr:WorldRenderer) : IEnumerable<IRenderable>
+    + ScreenBounds(wr:WorldRenderer) : IEnumerable<Rectangle>
+    Bounds(wr:WorldRenderer) : IEnumerable<Rectangle>
+    + MouseBounds(wr:WorldRenderer) : Polygon
+    + QueueActivity(queued:bool, nextActivity:Activity) : void
+    + QueueActivity(nextActivity:Activity) : void
+    + CancelActivity() : void
+    + <<override>> GetHashCode() : int
+    + <<override>> Equals(obj:object) : bool
+    + Equals(other:Actor) : bool
+    + <<override>> ToString() : string
+    + Trait() : T
+    + TraitOrDefault() : T
+    + TraitsImplementing() : IEnumerable<T>
+    + AddTrait(trait:object) : void
+    + Dispose() : void
+    + ResolveOrder(order:Order) : void
+    + ChangeOwner(newOwner:Player) : void
+    + ChangeOwnerSync(newOwner:Player) : void
+    + GetDamageState() : DamageState
+    + InflictDamage(attacker:Actor, damage:Damage) : void
+    + Kill(attacker:Actor, damageTypes:BitSet<DamageType>) : void
+    + CanBeViewedByPlayer(player:Player) : bool
+    + GetAllTargetTypes() : BitSet<TargetableType>
+    + GetEnabledTargetTypes() : BitSet<TargetableType>
+    + IsTargetableBy(byActor:Actor) : bool
+    + GetTargetablePositions() : IEnumerable<WPos>
+    UpdateConditionState(condition:string, token:int, isRevoke:bool) : void
+    + GrantCondition(condition:string) : int
+    + RevokeCondition(token:int) : int
+    + TokenValid(token:int) : bool
+    + OnScriptBind(context:ScriptContext) : void
+    + Equals(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + ToString(runtime:LuaRuntime) : LuaValue
+    + HasScriptProperty(name:string) : bool
+}
+class "IEquatable`1"<T> {
+}
+class SyncHash <<struct>> {
+    + SyncHash(trait:ISync)
+    + Hash() : int
+}
+class ConditionState {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IReadOnlyDictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+class "Func`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+IScriptBindable <|-- Actor
+IScriptNotifyBind <|-- Actor
+ILuaTableBinding <|-- Actor
+ILuaEqualityBinding <|-- Actor
+ILuaToStringBinding <|-- Actor
+"IEquatable`1" "<Actor>" <|-- Actor
+IDisposable <|-- Actor
+Actor --> "Info" ActorInfo
+Actor --> "World" World
+Actor --> "Owner" Player
+Actor --> "currentActivity" Activity
+Actor --> "CurrentActivity" Activity
+Actor --> "ReplacedByActor" Actor
+Actor --> "EffectiveOwner" IEffectiveOwner
+Actor --> "OccupiesSpace" IOccupySpace
+Actor --> "Location" CPos
+Actor --> "CenterPosition" WPos
+Actor --> "Orientation" WRot
+Actor o-> "conditionStates<string,ConditionState>" "Dictionary`2"
+Actor o-> "conditionTokens<int,string>" "Dictionary`2"
+Actor o-> "conditionCache<string,int>" "Dictionary`2"
+Actor --> "readOnlyConditionCache<string,int>" "IReadOnlyDictionary`2"
+Actor --> "facing" IFacing
+Actor --> "health" IHealth
+Actor --> "defaultVisibility" IDefaultVisibility
+Actor --> "enabledTargetablePositions<ITargetablePositions>" "IEnumerable`1"
+Actor --> "luaInterface<ScriptActorInterface>" "Lazy`1"
+Actor +-- SyncHash
+SyncHash --> "Trait" ISync
+SyncHash --> "hashFunction<object,int>" "Func`2"
+Actor +-- ConditionState
+ConditionState o-> "Notifiers<VariableObserverNotifier>" "List`1"
+ConditionState o-> "Tokens<int>" "HashSet`1"
+@enduml

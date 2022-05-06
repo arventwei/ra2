@@ -1,0 +1,19 @@
+@startuml
+class Hotkey <<struct>> {
+    + IsValid() : bool
+    + {static} TryParse(s:string, result:Hotkey) : bool
+    + {static} FromKeyInput(ki:KeyInput) : Hotkey
+    + Hotkey(virtKey:Keycode, mod:Modifiers)
+    + <<override>> GetHashCode() : int
+    + Equals(other:Hotkey) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+    + DisplayString() : string
+}
+class "IEquatable`1"<T> {
+}
+"IEquatable`1" "<Hotkey>" <|-- Hotkey
+Hotkey o-> "Invalid" Hotkey
+Hotkey --> "Key" Keycode
+Hotkey --> "Modifiers" Modifiers
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class ContrailFader {
+    ticks : int
+    + ContrailFader(pos:WPos, trail:ContrailRenderable)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- ContrailFader
+ContrailFader --> "pos" WPos
+ContrailFader --> "trail" ContrailRenderable
+@enduml

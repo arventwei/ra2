@@ -1,0 +1,23 @@
+@startuml
+class CapturableInfo {
+    + <<readonly>> CancelActivity : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Capturable {
+    + Capturable(self:Actor, info:CapturableInfo)
+    OnCapture(self:Actor, captor:Actor, oldOwner:Player, newOwner:Player, captureTypes:BitSet<CaptureType>) : void
+}
+class "Requires`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- CapturableInfo
+"Requires`1" "<CaptureManagerInfo>" <|-- CapturableInfo
+CapturableInfo o-> "Types<CaptureType>" "BitSet`1"
+CapturableInfo o-> "ValidRelationships" PlayerRelationship
+"ConditionalTrait`1" "<CapturableInfo>" <|-- Capturable
+INotifyCapture <|-- Capturable
+Capturable --> "captureManager" CaptureManager
+@enduml

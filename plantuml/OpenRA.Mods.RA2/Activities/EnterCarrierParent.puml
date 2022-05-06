@@ -1,0 +1,8 @@
+@startuml
+class EnterCarrierParent {
+    + EnterCarrierParent(self:Actor, parent:Actor, spawnerParent:CarrierParent, enterBehaviour:EnterBehaviour)
+}
+Enter <|-- EnterCarrierParent
+EnterCarrierParent --> "parent" Actor
+EnterCarrierParent --> "spawnerParent" CarrierParent
+@enduml

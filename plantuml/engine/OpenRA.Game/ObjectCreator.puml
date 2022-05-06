@@ -1,0 +1,32 @@
+@startuml
+class ObjectCreator <<sealed>> {
+    + ObjectCreator(manifest:Manifest, mods:InstalledMods)
+    ResolveAssembly(sender:object, e:ResolveEventArgs) : Assembly
+    + CreateObject(className:string) : T
+    + CreateObject(className:string, args:Dictionary<string, object>) : T
+    + FindType(className:string) : Type
+    + GetCtor(type:Type) : ConstructorInfo
+    + CreateBasic(type:Type) : object
+    + CreateUsingArgs(ctor:ConstructorInfo, args:Dictionary<string, object>) : object
+    + GetTypesImplementing() : IEnumerable<Type>
+    + GetTypes() : IEnumerable<Type>
+    + GetLoaders(formats:IEnumerable<string>, name:string) : TLoader[]
+    + Dispose() : void
+    Dispose(disposing:bool) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Cache`2"<T1,T2> {
+}
+class "Action`1"<T> {
+}
+class UseCtorAttribute <<sealed>> {
+}
+IDisposable <|-- ObjectCreator
+ObjectCreator o-> "ResolvedAssemblies<string,Assembly>" "Dictionary`2"
+ObjectCreator --> "typeCache<string,Type>" "Cache`2"
+ObjectCreator --> "ctorCache<Type,ConstructorInfo>" "Cache`2"
+ObjectCreator o-> "MissingTypeAction<string>" "Action`1"
+ObjectCreator +-- UseCtorAttribute
+Attribute <|-- UseCtorAttribute
+@enduml

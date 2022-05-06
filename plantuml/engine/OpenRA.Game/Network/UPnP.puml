@@ -1,0 +1,17 @@
+@startuml
+enum UPnPStatus {
+    Enabled,
+    Disabled,
+    NotSupported,
+}
+class UPnP {
+    {static} initialized : bool
+    + {static} <<async>> DiscoverNatDevices(timeout:int) : Task
+    + {static} <<async>> ForwardPort(listen:int, external:int) : Task
+    + {static} <<async>> RemovePortForward() : Task
+}
+UPnP --> "natDevice" NatDevice
+UPnP --> "mapping" Mapping
+UPnP --> "ExternalIP" IPAddress
+UPnP --> "Status" UPnPStatus
+@enduml

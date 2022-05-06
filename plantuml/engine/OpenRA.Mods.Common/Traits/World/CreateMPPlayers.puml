@@ -1,0 +1,15 @@
+@startuml
+class CreateMPPlayersInfo {
+    CreateServerPlayers(map:MapPreview, lobbyInfo:Session, players:List<GameInformation.Player>, playerRandom:MersenneTwister) : void
+}
+class CreateMPPlayers {
+    CreatePlayers(w:World, playerRandom:MersenneTwister) : void
+    {static} SetupPlayerMasks(p:Player, q:Player) : void
+    {static} GetClientForPlayer(p:Player) : Session.Client
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<CreateMPPlayers>" <|-- CreateMPPlayersInfo
+ICreatePlayersInfo <|-- CreateMPPlayersInfo
+ICreatePlayers <|-- CreateMPPlayers
+@enduml

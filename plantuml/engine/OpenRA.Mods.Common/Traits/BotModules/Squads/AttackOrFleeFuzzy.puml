@@ -1,0 +1,16 @@
+@startuml
+class AttackOrFleeFuzzy <<sealed>> {
+    + AttackOrFleeFuzzy(rulesForNormalOwnHealth:IEnumerable<string>, rulesForInjuredOwnHealth:IEnumerable<string>, rulesForNeadDeadOwnHealth:IEnumerable<string>)
+    AddFuzzyRule(rule:string) : void
+    + CanAttack(ownUnits:IEnumerable<Actor>, enemyUnits:IEnumerable<Actor>) : bool
+    {static} NormalizedHealth(actors:IEnumerable<Actor>, normalizeByValue:float) : float
+    {static} RelativePower(own:IEnumerable<Actor>, enemy:IEnumerable<Actor>) : float
+    {static} RelativeSpeed(own:IEnumerable<Actor>, enemy:IEnumerable<Actor>) : float
+    {static} RelativeValue(own:IEnumerable<Actor>, enemy:IEnumerable<Actor>, normalizeByValue:float, relativeFunc:Func<IEnumerable<Actor>, Func<Actor, int>, float>, getValue:Func<Actor, int>) : float
+    {static} SumOfValues(actors:IEnumerable<Actor>, getValue:Func<Actor, int>) : float
+    {static} Average(actors:IEnumerable<Actor>, getValue:Func<Actor, int>) : float
+}
+AttackOrFleeFuzzy o-> "Default" AttackOrFleeFuzzy
+AttackOrFleeFuzzy o-> "Rush" AttackOrFleeFuzzy
+AttackOrFleeFuzzy o-> "fuzzyEngine" MamdaniFuzzySystem
+@enduml

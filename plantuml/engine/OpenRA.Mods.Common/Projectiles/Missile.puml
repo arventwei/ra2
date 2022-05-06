@@ -1,0 +1,106 @@
+@startuml
+class MissileInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> Palette : string = "effect"
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<readonly>> Shadow : bool = false
+    + <<readonly>> Arm : int = 0
+    + <<readonly>> Blockable : bool = true
+    + <<readonly>> TerrainHeightAware : bool = false
+    + <<readonly>> LockOnProbability : int = 100
+    + <<readonly>> Gravity : int = 10
+    + <<readonly>> ExplodeWhenEmpty : bool = true
+    + <<readonly>> HomingActivationDelay : int = 0
+    + <<readonly>> TrailImage : string = null
+    + <<readonly>> TrailPalette : string = "effect"
+    + <<readonly>> TrailUsePlayerPalette : bool = false
+    + <<readonly>> TrailInterval : int = 2
+    + <<readonly>> TrailWhenDeactivated : bool = false
+    + <<readonly>> ContrailLength : int = 0
+    + <<readonly>> ContrailZOffset : int = 2047
+    + <<readonly>> ContrailUsePlayerColor : bool = false
+    + <<readonly>> ContrailDelay : int = 1
+    + <<readonly>> Jammable : bool = true
+    + <<readonly>> JammedDiversionRange : int = 20
+    + <<readonly>> BoundToTerrainType : string = ""
+    + <<readonly>> AllowSnapping : bool = false
+    + Create(args:ProjectileArgs) : IProjectile
+}
+class Missile {
+    <<readonly>> minLaunchSpeed : int
+    <<readonly>> maxLaunchSpeed : int
+    <<readonly>> maxSpeed : int
+    ticks : int
+    ticksToNextSmoke : int
+    trailPalette : string
+    targetPassedBy : bool
+    lockOn : bool
+    allowPassBy : bool
+    speed : int
+    loopRadius : int
+    hFacing : int
+    vFacing : int
+    + Missile(info:MissileInfo, args:ProjectileArgs)
+    {static} LoopRadius(speed:int, rot:int) : int
+    DetermineLaunchSpeedAndAngleForIncline(predClfDist:int, diffClfMslHgt:int, relTarHorDist:int, speed:int, vFacing:int) : void
+    DetermineLaunchSpeedAndAngle(world:World, speed:int, vFacing:int) : void
+    {static} WillClimbWithinDistance(vFacing:int, loopRadius:int, predClfDist:int, diffClfMslHgt:int) : bool
+    {static} IsNearInclineTop(vFacing:int, loopRadius:int, predClfDist:int) : bool
+    {static} WillClimbAroundInclineTop(vFacing:int, loopRadius:int, predClfDist:int, diffClfMslHgt:int, speed:int) : bool
+    {static} BisectionSearch(lowerBound:int, upperBound:int, testCriterion:System.Func<int, bool>) : int
+    JammedBy(tp:TraitPair<JamsMissiles>) : bool
+    ChangeSpeed(sign:int) : void
+    FreefallTick() : WVec
+    InclineLookahead(world:World, distCheck:int, predClfHgt:int, predClfDist:int, lastHtChg:int, lastHt:int) : void
+    IncreaseAltitude(predClfDist:int, diffClfMslHgt:int, relTarHorDist:int, vFacing:int) : int
+    HomingInnerTick(predClfDist:int, diffClfMslHgt:int, relTarHorDist:int, lastHtChg:int, lastHt:int, nxtRelTarHorDist:int, relTarHgt:int, vFacing:int, targetPassedBy:bool) : int
+    HomingTick(world:World, tarDistVec:WVec, relTarHorDist:int) : WVec
+    + Tick(world:World) : void
+    Explode(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+enum States {
+    Freefall,
+    Homing,
+    Hitting,
+}
+IProjectileInfo <|-- MissileInfo
+MissileInfo o-> "MinimumLaunchAngle" WAngle
+MissileInfo o-> "MaximumLaunchAngle" WAngle
+MissileInfo o-> "MinimumLaunchSpeed" WDist
+MissileInfo o-> "MaximumLaunchSpeed" WDist
+MissileInfo o-> "Speed" WDist
+MissileInfo o-> "Acceleration" WDist
+MissileInfo o-> "Width" WDist
+MissileInfo o-> "Inaccuracy" WDist
+MissileInfo o-> "InaccuracyType" InaccuracyType
+MissileInfo o-> "LockOnInaccuracy" WDist
+MissileInfo o-> "HorizontalRateOfTurn" WAngle
+MissileInfo o-> "VerticalRateOfTurn" WAngle
+MissileInfo o-> "RangeLimit" WDist
+MissileInfo o-> "AirburstAltitude" WDist
+MissileInfo o-> "CruiseAltitude" WDist
+MissileInfo o-> "ContrailWidth" WDist
+MissileInfo o-> "ContrailColor" Color
+MissileInfo o-> "CloseEnough" WDist
+IProjectile <|-- Missile
+ISync <|-- Missile
+Missile --> "info" MissileInfo
+Missile --> "args" ProjectileArgs
+Missile --> "anim" Animation
+Missile --> "gravity" WVec
+Missile --> "minLaunchAngle" WAngle
+Missile --> "maxLaunchAngle" WAngle
+Missile --> "contrail" ContrailRenderable
+Missile --> "state" States
+Missile --> "targetPosition" WPos
+Missile --> "offset" WVec
+Missile --> "tarVel" WVec
+Missile --> "predVel" WVec
+Missile --> "pos" WPos
+Missile --> "velocity" WVec
+Missile --> "distanceCovered" WDist
+Missile --> "rangeLimit" WDist
+Missile --> "renderFacing" WAngle
+Missile +-- States
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+class FlashPaletteEffectInfo {
+    + <<readonly>> Length : int = 20
+    + <<readonly>> Type : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class FlashPaletteEffect {
+    + FlashPaletteEffect(info:FlashPaletteEffectInfo)
+    remainingFrames : int
+    + Enable(ticks:int) : void
+    Tick(self:Actor) : void
+    + AdjustPalette(palettes:IReadOnlyDictionary<string, MutablePalette>) : void
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- FlashPaletteEffectInfo
+FlashPaletteEffectInfo o-> "ExcludePalettes<string>" "HashSet`1"
+FlashPaletteEffectInfo o-> "Color" Color
+IPaletteModifier <|-- FlashPaletteEffect
+ITick <|-- FlashPaletteEffect
+FlashPaletteEffect --> "Info" FlashPaletteEffectInfo
+@enduml

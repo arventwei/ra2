@@ -1,0 +1,29 @@
+@startuml
+class Resupply {
+    <<readonly>> stayOnResupplier : bool
+    <<readonly>> wasRepaired : bool
+    <<readonly>> unitCost : int
+    remainingTicks : int
+    played : bool
+    actualResupplyStarted : bool
+    + Resupply(self:Actor, host:Actor, closeEnough:WDist, stayOnResupplier:bool)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> Cancel(self:Actor, keepQueue:bool) : void
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+    OnResupplyEnding(self:Actor, isHostInvalid:bool) : void
+    RepairTick(self:Actor) : void
+    RearmTick(self:Actor) : void
+}
+Activity <|-- Resupply
+Resupply --> "health" IHealth
+Resupply --> "host" Target
+Resupply --> "closeEnough" WDist
+Resupply --> "repairable" Repairable
+Resupply --> "repairableNear" RepairableNear
+Resupply --> "rearmable" Rearmable
+Resupply --> "move" IMove
+Resupply --> "aircraft" Aircraft
+Resupply --> "moveInfo" IMoveInfo
+Resupply --> "playerResources" PlayerResources
+Resupply o-> "activeResupplyTypes" ResupplyType
+@enduml

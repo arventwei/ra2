@@ -1,0 +1,14 @@
+@startuml
+class PathFinderUnitPathCacheDecorator {
+    + PathFinderUnitPathCacheDecorator(pathFinder:IPathFinder, cacheStorage:ICacheStorage<List<CPos>>)
+    + FindUnitPath(source:CPos, target:CPos, self:Actor, ignoreActor:Actor, check:BlockedByActor) : List<CPos>
+    + FindUnitPathToRange(source:CPos, srcSub:SubCell, target:WPos, range:WDist, self:Actor, check:BlockedByActor) : List<CPos>
+    + FindPath(search:IPathSearch) : List<CPos>
+    + FindBidiPath(fromSrc:IPathSearch, fromDest:IPathSearch) : List<CPos>
+}
+class "ICacheStorage`1"<T> {
+}
+IPathFinder <|-- PathFinderUnitPathCacheDecorator
+PathFinderUnitPathCacheDecorator --> "pathFinder" IPathFinder
+PathFinderUnitPathCacheDecorator --> "cacheStorage<List<CPos>>" "ICacheStorage`1"
+@enduml

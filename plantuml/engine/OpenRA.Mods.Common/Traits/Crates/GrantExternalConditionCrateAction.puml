@@ -1,0 +1,20 @@
+@startuml
+class GrantExternalConditionCrateActionInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> Levels : int = 1
+    + <<readonly>> Duration : int = 0
+    + <<readonly>> MaxExtraCollectors : int = 4
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantExternalConditionCrateAction {
+    + GrantExternalConditionCrateAction(self:Actor, info:GrantExternalConditionCrateActionInfo)
+    AcceptsCondition(a:Actor) : bool
+    + <<override>> GetSelectionShares(collector:Actor) : int
+    + <<override>> Activate(collector:Actor) : void
+}
+CrateActionInfo <|-- GrantExternalConditionCrateActionInfo
+GrantExternalConditionCrateActionInfo o-> "Range" WDist
+CrateAction <|-- GrantExternalConditionCrateAction
+GrantExternalConditionCrateAction --> "self" Actor
+GrantExternalConditionCrateAction --> "info" GrantExternalConditionCrateActionInfo
+@enduml

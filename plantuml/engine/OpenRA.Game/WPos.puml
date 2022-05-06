@@ -1,0 +1,31 @@
+@startuml
+class WPos <<struct>> {
+    + <<readonly>> X : int
+    + <<readonly>> Y : int
+    + <<readonly>> Z : int
+    + WPos(x:int, y:int, z:int)
+    + WPos(x:WDist, y:WDist, z:WDist)
+    + {static} Lerp(a:WPos, b:WPos, mul:int, div:int) : WPos
+    + {static} Lerp(a:WPos, b:WPos, mul:long, div:long) : WPos
+    + {static} LerpQuadratic(a:WPos, b:WPos, pitch:WAngle, mul:int, div:int) : WPos
+    + <<override>> GetHashCode() : int
+    + Equals(other:WPos) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+    + Add(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Subtract(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Equals(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+}
+class IEnumerableExtensions <<static>> {
+    + {static} Average(source:IEnumerable<WPos>) : WPos
+}
+class "IEquatable`1"<T> {
+}
+IScriptBindable <|-- WPos
+ILuaAdditionBinding <|-- WPos
+ILuaSubtractionBinding <|-- WPos
+ILuaEqualityBinding <|-- WPos
+ILuaTableBinding <|-- WPos
+"IEquatable`1" "<WPos>" <|-- WPos
+WPos o-> "Zero" WPos
+@enduml

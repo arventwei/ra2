@@ -1,0 +1,49 @@
+@startuml
+class ChronoshiftableInfo {
+    + <<readonly>> ExplodeInstead : bool = false
+    + <<readonly>> ChronoshiftSound : string = "chrono2.aud"
+    + <<readonly>> ReturnToOrigin : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Chronoshiftable {
+    killCargo : bool
+    duration : int
+    + ReturnTicks : int = 0
+    + Chronoshiftable(init:ActorInitializer, info:ChronoshiftableInfo)
+    Tick(self:Actor) : void
+    + <<virtual>> CanChronoshiftTo(self:Actor, targetLocation:CPos) : bool
+    + <<virtual>> Teleport(self:Actor, targetLocation:CPos, duration:int, killCargo:bool, chronosphere:Actor) : bool
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+    ModifyActorInit(init:TypeDictionary) : void
+    ModifyDeathActorInit(self:Actor, init:TypeDictionary) : void
+    ModifyTransformActorInit(self:Actor, init:TypeDictionary) : void
+}
+class ChronoshiftReturnInit {
+    + <<readonly>> Ticks : int
+    + <<readonly>> Duration : int
+    + ChronoshiftReturnInit(ticks:int, duration:int, origin:CPos, chronosphere:Actor)
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ChronoshiftableInfo
+ChronoshiftableInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+ChronoshiftableInfo o-> "TimeBarColor" Color
+"ConditionalTrait`1" "<ChronoshiftableInfo>" <|-- Chronoshiftable
+ITick <|-- Chronoshiftable
+ISync <|-- Chronoshiftable
+ISelectionBar <|-- Chronoshiftable
+IDeathActorInitModifier <|-- Chronoshiftable
+ITransformActorInitModifier <|-- Chronoshiftable
+Chronoshiftable --> "self" Actor
+Chronoshiftable --> "chronosphere" Actor
+Chronoshiftable --> "iPositionable" IPositionable
+Chronoshiftable --> "Origin" CPos
+CompositeActorInit <|-- ChronoshiftReturnInit
+ISingleInstanceInit <|-- ChronoshiftReturnInit
+ChronoshiftReturnInit --> "Origin" CPos
+ChronoshiftReturnInit --> "Chronosphere" ActorInitActorReference
+@enduml

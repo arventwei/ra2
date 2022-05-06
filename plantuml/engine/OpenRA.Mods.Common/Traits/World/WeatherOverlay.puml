@@ -1,0 +1,44 @@
+@startuml
+class WeatherOverlayInfo {
+    + <<readonly>> ParticleDensityFactor : int = 8
+    + <<readonly>> ChangingWindLevel : bool = true
+    + <<readonly>> InstantWindChanges : bool = false
+    + <<readonly>> UseSquares : bool = true
+    + <<readonly>> LineTailAlphaValue : byte = 200
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WeatherOverlay {
+    windStrength : float
+    targetWindStrengthIndex : int
+    windUpdateCountdown : long
+    + WeatherOverlay(world:World, info:WeatherOverlayInfo)
+    ViewportZoomExtentsChanged(minZoom:float, maxZoom:float) : void
+    Tick(self:Actor) : void
+    RenderAboveWorld(self:Actor, wr:WorldRenderer) : void
+}
+class Particle <<struct>> {
+    + <<readonly>> Size : int
+    + <<readonly>> DirectionScatterX : float
+    + <<readonly>> Gravity : float
+    + <<readonly>> SwingOffset : float
+    + <<readonly>> SwingSpeed : float
+    + <<readonly>> SwingDirection : int
+    + <<readonly>> SwingAmplitude : float
+    + Particle(info:WeatherOverlayInfo, r:MersenneTwister, viewport:Rectangle)
+    Particle(source:Particle)
+    + Particle(source:Particle, pos:float2)
+    + Particle(source:Particle, pos:float2, swingDirection:int, swingOffset:float)
+}
+TraitInfo <|-- WeatherOverlayInfo
+ILobbyCustomRulesIgnore <|-- WeatherOverlayInfo
+ITick <|-- WeatherOverlay
+IRenderAboveWorld <|-- WeatherOverlay
+INotifyViewportZoomExtentsChanged <|-- WeatherOverlay
+WeatherOverlay --> "info" WeatherOverlayInfo
+WeatherOverlay --> "world" World
+WeatherOverlay --> "viewportSize" Size
+WeatherOverlay +-- Particle
+Particle --> "Pos" float2
+Particle --> "Color" Color
+Particle --> "TailColor" Color
+@enduml

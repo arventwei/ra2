@@ -1,0 +1,18 @@
+@startuml
+class CashTricklerMultiplierInfo {
+    + <<readonly>> Modifier : int = 100
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CashTricklerMultiplier {
+    + CashTricklerMultiplier(info:CashTricklerMultiplierInfo)
+    GetCashTricklerModifier() : int
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- CashTricklerMultiplierInfo
+"Requires`1" "<CashTricklerInfo>" <|-- CashTricklerMultiplierInfo
+"ConditionalTrait`1" "<CashTricklerMultiplierInfo>" <|-- CashTricklerMultiplier
+ICashTricklerModifier <|-- CashTricklerMultiplier
+@enduml

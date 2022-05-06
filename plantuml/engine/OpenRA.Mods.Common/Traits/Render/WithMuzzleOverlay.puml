@@ -1,0 +1,33 @@
+@startuml
+class WithMuzzleOverlayInfo {
+    + <<readonly>> IgnoreOffset : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithMuzzleOverlay {
+    + WithMuzzleOverlay(self:Actor, info:WithMuzzleOverlayInfo)
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Render(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    ScreenBounds(self:Actor, wr:WorldRenderer) : IEnumerable<Rectangle>
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Func`1"<T> {
+}
+ConditionalTraitInfo <|-- WithMuzzleOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithMuzzleOverlayInfo
+"Requires`1" "<AttackBaseInfo>" <|-- WithMuzzleOverlayInfo
+"Requires`1" "<ArmamentInfo>" <|-- WithMuzzleOverlayInfo
+"ConditionalTrait`1" "<WithMuzzleOverlayInfo>" <|-- WithMuzzleOverlay
+INotifyAttack <|-- WithMuzzleOverlay
+IRender <|-- WithMuzzleOverlay
+ITick <|-- WithMuzzleOverlay
+WithMuzzleOverlay o-> "visible<Barrel,bool>" "Dictionary`2"
+WithMuzzleOverlay o-> "anims<Barrel,AnimationWithOffset>" "Dictionary`2"
+WithMuzzleOverlay --> "getFacing<WAngle>" "Func`1"
+@enduml

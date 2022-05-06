@@ -1,0 +1,12 @@
+@startuml
+class WidgetLoader {
+    + WidgetLoader(modData:ModData)
+    + LoadWidget(args:WidgetArgs, parent:Widget, w:string) : Widget
+    + LoadWidget(args:WidgetArgs, parent:Widget, node:MiniYamlNode) : Widget
+    {static} NewWidget(widgetType:string, args:WidgetArgs) : Widget
+}
+class "Dictionary`2"<T1,T2> {
+}
+WidgetLoader o-> "widgets<string,MiniYamlNode>" "Dictionary`2"
+WidgetLoader --> "modData" ModData
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+class LobbyOptionsLogic {
+    <<readonly>> yMargin : int
+    validOptions : bool
+    + <<override>> Tick() : void
+    RebuildOptions() : void
+}
+class "Func`1"<T> {
+}
+ChromeLogic <|-- LobbyOptionsLogic
+LobbyOptionsLogic --> "panel" ScrollPanelWidget
+LobbyOptionsLogic --> "optionsContainer" Widget
+LobbyOptionsLogic --> "checkboxRowTemplate" Widget
+LobbyOptionsLogic --> "dropdownRowTemplate" Widget
+LobbyOptionsLogic --> "getMap<MapPreview>" "Func`1"
+LobbyOptionsLogic --> "orderManager" OrderManager
+LobbyOptionsLogic --> "configurationDisabled<bool>" "Func`1"
+LobbyOptionsLogic --> "mapPreview" MapPreview
+@enduml

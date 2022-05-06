@@ -1,0 +1,15 @@
+@startuml
+class MissionDataInfo {
+    + <<readonly>> Briefing : string
+    + <<readonly>> BackgroundVideo : string
+    + <<readonly>> BriefingVideo : string
+    + <<readonly>> StartVideo : string
+    + <<readonly>> WinVideo : string
+    + <<readonly>> LossVideo : string
+}
+class MissionData {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<MissionData>" <|-- MissionDataInfo
+@enduml

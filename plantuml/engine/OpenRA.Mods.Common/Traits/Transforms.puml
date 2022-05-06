@@ -1,0 +1,39 @@
+@startuml
+class TransformsInfo {
+    + <<readonly>> IntoActor : string = null
+    + <<readonly>> TransformNotification : string = null
+    + <<readonly>> NoTransformNotification : string = null
+    + <<readonly>> DeployCursor : string = "deploy"
+    + <<readonly>> DeployBlockedCursor : string = "deploy-blocked"
+    + <<readonly>> Voice : string = "Action"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Transforms {
+    <<readonly>> faction : string
+    + Transforms(init:ActorInitializer, info:TransformsInfo)
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    + CanDeploy() : bool
+    + GetTransformActivity(self:Actor) : Activity
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    IssueDeployOrder(self:Actor, queued:bool) : Order
+    CanIssueDeployOrder(self:Actor, queued:bool) : bool
+    + DeployTransform(queued:bool) : void
+    + ResolveOrder(self:Actor, order:Order) : void
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+PausableConditionalTraitInfo <|-- TransformsInfo
+TransformsInfo o-> "Offset" CVec
+TransformsInfo o-> "Facing" WAngle
+"PausableConditionalTrait`1" "<TransformsInfo>" <|-- Transforms
+IIssueOrder <|-- Transforms
+IResolveOrder <|-- Transforms
+IOrderVoice <|-- Transforms
+IIssueDeployOrder <|-- Transforms
+Transforms --> "self" Actor
+Transforms --> "actorInfo" ActorInfo
+Transforms --> "buildingInfo" BuildingInfo
+Transforms --> "Orders<IOrderTargeter>" "IEnumerable`1"
+@enduml

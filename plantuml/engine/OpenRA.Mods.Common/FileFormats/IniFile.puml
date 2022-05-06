@@ -1,0 +1,29 @@
+@startuml
+class IniFile {
+    + IniFile(s:Stream)
+    + IniFile(streams:Stream[])
+    + Load(s:Stream) : void
+    ProcessSection(line:string) : IniSection
+    {static} ProcessEntry(line:string, currentSection:IniSection) : bool
+    + GetSection(s:string) : IniSection
+    + GetSection(s:string, allowFail:bool) : IniSection
+}
+class IniSection {
+    + Name : string <<get>>
+    + IniSection(name:string)
+    + Add(key:string, value:string) : void
+    + Contains(key:string) : bool
+    + GetValue(key:string, defaultValue:string) : string
+    + GetEnumerator() : IEnumerator<KeyValuePair<string, string>>
+    GetEnumerator() : IEnumerator
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+IniFile o-> "sections<string,IniSection>" "Dictionary`2"
+IniFile o-> "sectionPattern" Regex
+IniFile --> "Sections<IniSection>" "IEnumerable`1"
+"IEnumerable`1" "<KeyValuePair<string, string>>" <|-- IniSection
+IniSection o-> "values<string,string>" "Dictionary`2"
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+class IngameRadarDisplayLogic {
+    + IngameRadarDisplayLogic(widget:Widget, world:World)
+}
+ChromeLogic <|-- IngameRadarDisplayLogic
+@enduml

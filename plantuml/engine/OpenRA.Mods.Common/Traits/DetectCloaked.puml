@@ -1,0 +1,17 @@
+@startuml
+class DetectCloakedInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class DetectCloaked {
+    + DetectCloaked(info:DetectCloakedInfo)
+}
+class "BitSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- DetectCloakedInfo
+DetectCloakedInfo o-> "CloakTypes<CloakType>" "BitSet`1"
+DetectCloakedInfo o-> "Range" WDist
+"ConditionalTrait`1" "<DetectCloakedInfo>" <|-- DetectCloaked
+DetectCloaked --> "Range" WDist
+@enduml

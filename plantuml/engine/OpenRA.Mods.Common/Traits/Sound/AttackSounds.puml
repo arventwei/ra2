@@ -1,0 +1,22 @@
+@startuml
+class AttackSoundsInfo {
+    + <<readonly>> Delay : int = 0
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class AttackSounds {
+    tick : int
+    + AttackSounds(init:ActorInitializer, info:AttackSoundsInfo)
+    PlaySound(self:Actor) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Tick(self:Actor) : void
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- AttackSoundsInfo
+AttackSoundsInfo o-> "DelayRelativeTo" AttackDelayType
+"ConditionalTrait`1" "<AttackSoundsInfo>" <|-- AttackSounds
+INotifyAttack <|-- AttackSounds
+ITick <|-- AttackSounds
+AttackSounds --> "info" AttackSoundsInfo
+@enduml

@@ -1,0 +1,77 @@
+@startuml
+enum UncloakType {
+    None= 0,
+    Attack= 1,
+    Move= 2,
+    Unload= 4,
+    Infiltrate= 8,
+    Demolish= 16,
+    Damage= 32,
+    Heal= 64,
+    SelfHeal= 128,
+    Dock= 256,
+}
+class CloakType {
+}
+class CloakInfo {
+    + <<readonly>> InitialDelay : int = 10
+    + <<readonly>> CloakDelay : int = 30
+    + <<readonly>> CloakSound : string = null
+    + <<readonly>> UncloakSound : string = null
+    + <<readonly>> Palette : string = "cloak"
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<readonly>> CloakedCondition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Cloak {
+    remainingTime : int
+    isDocking : bool
+    lastPos : CPos?
+    wasCloaked : bool = false
+    firstTick : bool = true
+    cloakedToken : int
+    + Cloak(info:CloakInfo)
+    + Cloaked : bool <<get>>
+    + Uncloak() : void
+    + Uncloak(time:int) : void
+    Attacking(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    PreparingAttack(self:Actor, target:Target, a:Armament, barrel:Barrel) : void
+    Damaged(self:Actor, e:AttackInfo) : void
+    ModifyRender(self:Actor, wr:WorldRenderer, r:IEnumerable<IRenderable>) : IEnumerable<IRenderable>
+    ModifyScreenBounds(self:Actor, wr:WorldRenderer, bounds:IEnumerable<Rectangle>) : IEnumerable<Rectangle>
+    Tick(self:Actor) : void
+    + IsVisible(self:Actor, viewer:Player) : bool
+    RadarColorOverride(self:Actor, color:Color) : Color
+    MovingToResources(self:Actor, targetCell:CPos) : void
+    MovingToRefinery(self:Actor, refineryActor:Actor) : void
+    MovementCancelled(self:Actor) : void
+    Harvested(self:Actor, resource:ResourceType) : void
+    Docked() : void
+    Undocked() : void
+    Unloading(self:Actor) : void
+    Demolishing(self:Actor) : void
+    Infiltrating(self:Actor) : void
+    StartingResupply(self:Actor, host:Actor) : void
+    StoppingResupply(self:Actor, host:Actor) : void
+}
+class "BitSet`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- CloakInfo
+CloakInfo o-> "UncloakOn" UncloakType
+CloakInfo o-> "CloakTypes<CloakType>" "BitSet`1"
+"PausableConditionalTrait`1" "<CloakInfo>" <|-- Cloak
+IRenderModifier <|-- Cloak
+INotifyDamage <|-- Cloak
+INotifyUnload <|-- Cloak
+INotifyDemolition <|-- Cloak
+INotifyInfiltration <|-- Cloak
+INotifyAttack <|-- Cloak
+ITick <|-- Cloak
+IVisibilityModifier <|-- Cloak
+IRadarColorModifier <|-- Cloak
+INotifyCreated <|-- Cloak
+INotifyHarvesterAction <|-- Cloak
+INotifyBeingResupplied <|-- Cloak
+@enduml

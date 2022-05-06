@@ -1,0 +1,16 @@
+@startuml
+class Drag {
+    length : int
+    ticks : int = 0
+    desiredFacing : WAngle?
+    + Drag(self:Actor, start:WPos, end:WPos, length:int, facing:WAngle?)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> GetTargets(self:Actor) : IEnumerable<Target>
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+Activity <|-- Drag
+Drag --> "positionable" IPositionable
+Drag --> "disableable" IDisabledTrait
+Drag --> "start" WPos
+Drag --> "end" WPos
+@enduml

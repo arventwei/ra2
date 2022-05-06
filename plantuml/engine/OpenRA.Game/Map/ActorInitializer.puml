@@ -1,0 +1,72 @@
+@startuml
+interface IActorInitializer {
+    GetOrDefault(info:TraitInfo) : T
+    Get(info:TraitInfo) : T
+    GetValue(info:TraitInfo) : U
+    GetValue(info:TraitInfo, fallback:U) : U
+    Contains(info:TraitInfo) : bool
+    GetOrDefault() : T
+    Get() : T
+    GetValue() : U
+    GetValue(fallback:U) : U
+    Contains() : bool
+}
+class ActorInitializer {
+    + ActorInitializer(actor:Actor, dict:TypeDictionary)
+    + GetOrDefault(info:TraitInfo) : T
+    + Get(info:TraitInfo) : T
+    + GetValue(info:TraitInfo) : U
+    + GetValue(info:TraitInfo, fallback:U) : U
+    + Contains(info:TraitInfo) : bool
+    + GetOrDefault() : T
+    + Get() : T
+    + GetValue() : U
+    + GetValue(fallback:U) : U
+    + Contains() : bool
+}
+abstract class ActorInit {
+    + <<readonly>> InstanceName : string
+    + {abstract} Save() : MiniYaml
+}
+interface ISingleInstanceInit {
+}
+abstract class "ValueActorInit`1"<T> {
+    + <<virtual>> Value : T <<get>>
+    + <<virtual>> Initialize(yaml:MiniYaml) : void
+    + <<virtual>> Initialize(value:T) : void
+    + <<override>> Save() : MiniYaml
+}
+abstract class CompositeActorInit {
+    + <<virtual>> Initialize(yaml:MiniYaml) : void
+    + <<virtual>> Initialize(values:Dictionary<string, object>) : void
+    + <<virtual>> InitializeArgs() : Dictionary<string, Type>
+    + <<override>> Save() : MiniYaml
+}
+class LocationInit {
+    + LocationInit(value:CPos)
+}
+class OwnerInit {
+    + <<readonly>> InternalName : string
+    + OwnerInit(value:Player)
+    + OwnerInit(value:string)
+    + Value(world:World) : Player
+    + Initialize(yaml:MiniYaml) : void
+    + Initialize(player:Player) : void
+    + <<override>> Save() : MiniYaml
+}
+abstract class RuntimeFlagInit {
+    + <<override>> Save() : MiniYaml
+}
+IActorInitializer --> "World" World
+IActorInitializer <|-- ActorInitializer
+ActorInitializer --> "Self" Actor
+ActorInitializer --> "World" World
+ActorInit <|-- "ValueActorInit`1"
+ActorInit <|-- CompositeActorInit
+"ValueActorInit`1" "<CPos>" <|-- LocationInit
+ISingleInstanceInit <|-- LocationInit
+ActorInit <|-- OwnerInit
+ISingleInstanceInit <|-- OwnerInit
+ActorInit <|-- RuntimeFlagInit
+ISuppressInitExport <|-- RuntimeFlagInit
+@enduml

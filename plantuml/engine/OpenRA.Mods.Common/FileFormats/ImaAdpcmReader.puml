@@ -1,0 +1,12 @@
+@startuml
+class ImaAdpcmChunk <<struct>> {
+    + CompressedSize : int
+    + OutputSize : int
+    + {static} Read(s:Stream) : ImaAdpcmChunk
+}
+class ImaAdpcmReader {
+    + {static} DecodeImaAdpcmSample(b:byte, index:int, current:int) : short
+    + {static} LoadImaAdpcmSound(raw:byte[], index:int) : byte[]
+    + {static} LoadImaAdpcmSound(raw:byte[], index:int, currentSample:int) : byte[]
+}
+@enduml

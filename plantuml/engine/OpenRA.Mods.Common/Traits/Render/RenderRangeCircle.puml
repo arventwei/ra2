@@ -1,0 +1,37 @@
+@startuml
+enum RangeCircleMode {
+    Maximum,
+    Minimum,
+}
+class RenderRangeCircleInfo {
+    + <<readonly>> RangeCircleType : string = null
+    + <<readonly>> Width : float = 1
+    + <<readonly>> BorderWidth : float = 3
+    + RenderAnnotations(wr:WorldRenderer, w:World, ai:ActorInfo, centerPosition:WPos) : IEnumerable<IRenderable>
+    + <<override>> Create(init:ActorInitializer) : object
+    + RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+}
+class RenderRangeCircle {
+    + RenderRangeCircle(self:Actor, info:RenderRangeCircleInfo)
+    + RangeCircleRenderables(wr:WorldRenderer) : IEnumerable<IRenderable>
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+class "Requires`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+TraitInfo <|-- RenderRangeCircleInfo
+IPlaceBuildingDecorationInfo <|-- RenderRangeCircleInfo
+IRulesetLoaded <|-- RenderRangeCircleInfo
+"Requires`1" "<AttackBaseInfo>" <|-- RenderRangeCircleInfo
+RenderRangeCircleInfo o-> "FallbackRange" WDist
+RenderRangeCircleInfo o-> "RangeCircleMode" RangeCircleMode
+RenderRangeCircleInfo o-> "Color" Color
+RenderRangeCircleInfo o-> "BorderColor" Color
+RenderRangeCircleInfo --> "range<WDist>" "Lazy`1"
+IRenderAnnotationsWhenSelected <|-- RenderRangeCircle
+RenderRangeCircle --> "Info" RenderRangeCircleInfo
+RenderRangeCircle --> "self" Actor
+RenderRangeCircle --> "attack" AttackBase
+@enduml

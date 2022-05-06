@@ -1,0 +1,17 @@
+@startuml
+class FactionInfo {
+    + <<readonly>> Name : string = null
+    + <<readonly>> InternalName : string = null
+    + <<readonly>> Side : string = null
+    + <<readonly>> Description : string = null
+    + <<readonly>> Selectable : bool = true
+}
+class Faction {
+}
+class "TraitInfo`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+"TraitInfo`1" "<Faction>" <|-- FactionInfo
+FactionInfo o-> "RandomFactionMembers<string>" "HashSet`1"
+@enduml

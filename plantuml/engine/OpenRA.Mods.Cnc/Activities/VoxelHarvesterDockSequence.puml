@@ -1,0 +1,10 @@
+@startuml
+class VoxelHarvesterDockSequence {
+    + VoxelHarvesterDockSequence(self:Actor, refinery:Actor, dockAngle:WAngle, isDragRequired:bool, dragOffset:WVec, dragLength:int)
+    + <<override>> OnStateDock(self:Actor) : void
+    + <<override>> OnStateUndock(self:Actor) : void
+}
+HarvesterDockSequence <|-- VoxelHarvesterDockSequence
+VoxelHarvesterDockSequence --> "body" WithVoxelUnloadBody
+VoxelHarvesterDockSequence --> "spriteOverlay" WithDockingOverlay
+@enduml

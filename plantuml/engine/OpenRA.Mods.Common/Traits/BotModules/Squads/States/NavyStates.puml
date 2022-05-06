@@ -1,0 +1,39 @@
+@startuml
+abstract class NavyStateBase {
+}
+class NavyUnitsIdleState {
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class NavyUnitsAttackMoveState {
+    lastUpdatedTick : int
+    lastLeaderLocation : CPos?
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class NavyUnitsAttackState {
+    lastUpdatedTick : int
+    lastLeaderLocation : CPos?
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+class NavyUnitsFleeState {
+    + Activate(owner:Squad) : void
+    + Tick(owner:Squad) : void
+    + Deactivate(owner:Squad) : void
+}
+StateBase <|-- NavyStateBase
+NavyStateBase <|-- NavyUnitsIdleState
+IState <|-- NavyUnitsIdleState
+NavyStateBase <|-- NavyUnitsAttackMoveState
+IState <|-- NavyUnitsAttackMoveState
+NavyUnitsAttackMoveState --> "lastTarget" Actor
+NavyStateBase <|-- NavyUnitsAttackState
+IState <|-- NavyUnitsAttackState
+NavyUnitsAttackState --> "lastTarget" Actor
+NavyStateBase <|-- NavyUnitsFleeState
+IState <|-- NavyUnitsFleeState
+@enduml

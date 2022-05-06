@@ -1,0 +1,49 @@
+@startuml
+class RallyPointInfo {
+    + <<readonly>> Image : string = "rallypoint"
+    + <<readonly>> LineWidth : int = 1
+    + <<readonly>> FlagSequence : string = "flag"
+    + <<readonly>> CirclesSequence : string = "circles"
+    + <<readonly>> Cursor : string = "ability"
+    + <<readonly>> Palette : string = "player"
+    + <<readonly>> IsPlayerPalette : bool = true
+    + <<readonly>> Notification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RallyPoint {
+    <<const>> OrderID : string = "SetRallyPoint"
+    + PaletteName : string <<get>>
+    <<const>> ForceSet : uint = 1
+    + ResetPath(self:Actor) : void
+    + RallyPoint(self:Actor, info:RallyPointInfo)
+    Created(self:Actor) : void
+    + OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    + ResolveOrder(self:Actor, order:Order) : void
+    + {static} IsForceSet(order:Order) : bool
+}
+class "List`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class RallyPointOrderTargeter {
+    <<readonly>> cursor : string
+    + RallyPointOrderTargeter(cursor:string)
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + ForceSet : bool <<get>>
+    + IsQueued : bool <<get>> <<protected set>>
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+}
+TraitInfo <|-- RallyPointInfo
+IIssueOrder <|-- RallyPoint
+IResolveOrder <|-- RallyPoint
+INotifyOwnerChanged <|-- RallyPoint
+INotifyCreated <|-- RallyPoint
+RallyPoint --> "Path<CPos>" "List`1"
+RallyPoint --> "Info" RallyPointInfo
+RallyPoint --> "Orders<IOrderTargeter>" "IEnumerable`1"
+RallyPoint +-- RallyPointOrderTargeter
+IOrderTargeter <|-- RallyPointOrderTargeter
+@enduml

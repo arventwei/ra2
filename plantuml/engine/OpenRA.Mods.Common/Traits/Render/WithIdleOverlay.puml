@@ -1,0 +1,28 @@
+@startuml
+class WithIdleOverlayInfo {
+    + <<readonly>> Image : string = null
+    + <<readonly>> StartSequence : string = null
+    + <<readonly>> Sequence : string = "idle-overlay"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<readonly>> IsDecoration : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class WithIdleOverlay {
+    + WithIdleOverlay(self:Actor, info:WithIdleOverlayInfo)
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- WithIdleOverlayInfo
+IRenderActorPreviewSpritesInfo <|-- WithIdleOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithIdleOverlayInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithIdleOverlayInfo
+WithIdleOverlayInfo o-> "Offset" WVec
+"PausableConditionalTrait`1" "<WithIdleOverlayInfo>" <|-- WithIdleOverlay
+INotifyDamageStateChanged <|-- WithIdleOverlay
+WithIdleOverlay --> "overlay" Animation
+@enduml

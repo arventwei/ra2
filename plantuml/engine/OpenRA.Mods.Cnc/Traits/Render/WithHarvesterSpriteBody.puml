@@ -1,0 +1,17 @@
+@startuml
+class WithHarvesterSpriteBodyInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithHarvesterSpriteBody {
+    + WithHarvesterSpriteBody(init:ActorInitializer, info:WithHarvesterSpriteBodyInfo)
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+WithFacingSpriteBodyInfo <|-- WithHarvesterSpriteBodyInfo
+"Requires`1" "<HarvesterInfo>" <|-- WithHarvesterSpriteBodyInfo
+WithFacingSpriteBody <|-- WithHarvesterSpriteBody
+ITick <|-- WithHarvesterSpriteBody
+WithHarvesterSpriteBody --> "info" WithHarvesterSpriteBodyInfo
+WithHarvesterSpriteBody --> "harv" Harvester
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+enum LintDictionaryReference {
+    None= 0,
+    Keys= 1,
+    Values= 2,
+}
+class ActorReferenceAttribute <<sealed>> {
+    + ActorReferenceAttribute(requiredTraits:Type[], dictionaryReference:LintDictionaryReference)
+    + ActorReferenceAttribute(requiredTrait:Type, dictionaryReference:LintDictionaryReference)
+}
+class WeaponReferenceAttribute <<sealed>> {
+}
+class SequenceReferenceAttribute <<sealed>> {
+    + <<readonly>> ImageReference : string
+    + <<readonly>> Prefix : bool
+    + <<readonly>> AllowNullImage : bool
+    + SequenceReferenceAttribute(imageReference:string, prefix:bool, allowNullImage:bool, dictionaryReference:LintDictionaryReference)
+}
+class GrantedConditionReferenceAttribute <<sealed>> {
+}
+class ConsumedConditionReferenceAttribute <<sealed>> {
+}
+class PaletteDefinitionAttribute <<sealed>> {
+    + <<readonly>> IsPlayerPalette : bool
+    + PaletteDefinitionAttribute(isPlayerPalette:bool)
+}
+class PaletteReferenceAttribute <<sealed>> {
+    + <<readonly>> IsPlayerPalette : bool
+    + PaletteReferenceAttribute(isPlayerPalette:bool)
+    + <<readonly>> PlayerPaletteReferenceSwitch : string
+    + PaletteReferenceAttribute(playerPaletteReferenceSwitch:string)
+}
+Attribute <|-- ActorReferenceAttribute
+ActorReferenceAttribute --> "DictionaryReference" LintDictionaryReference
+Attribute <|-- WeaponReferenceAttribute
+Attribute <|-- SequenceReferenceAttribute
+SequenceReferenceAttribute --> "DictionaryReference" LintDictionaryReference
+Attribute <|-- GrantedConditionReferenceAttribute
+Attribute <|-- ConsumedConditionReferenceAttribute
+Attribute <|-- PaletteDefinitionAttribute
+Attribute <|-- PaletteReferenceAttribute
+@enduml

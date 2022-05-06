@@ -1,0 +1,16 @@
+@startuml
+class "ObservableCollection`1"<T> {
+    +  <<event>> OnAdd : Action<IObservableCollection, object> 
+    +  <<event>> OnRemove : Action<IObservableCollection, object> 
+    +  <<event>> OnRemoveAt : Action<IObservableCollection, int> 
+    +  <<event>> OnSet : Action<IObservableCollection, object, object> 
+    +  <<event>> OnRefresh : Action<IObservableCollection> 
+    + ObservableCollection()
+    + ObservableCollection(list:IList<T>)
+}
+class "Collection`1"<T> {
+}
+"Collection`1" "<T>" <|-- "ObservableCollection`1"
+IObservableCollection <|-- "ObservableCollection`1"
+"ObservableCollection`1" --> "ObservedItems" IEnumerable
+@enduml

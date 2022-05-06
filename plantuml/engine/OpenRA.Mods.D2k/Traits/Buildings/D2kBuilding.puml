@@ -1,0 +1,31 @@
+@startuml
+class D2kBuildingInfo {
+    + <<readonly>> Damage : int = 500
+    + <<readonly>> DamageInterval : int = 100
+    + <<readonly>> DamageThreshold : int = 50
+    + <<readonly>> StartOnThreshold : bool = true
+    + <<readonly>> ConcreteTemplate : ushort = 88
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class D2kBuilding {
+    safeTiles : int
+    totalTiles : int
+    damageThreshold : int
+    damageTicks : int
+    + D2kBuilding(init:ActorInitializer, info:D2kBuildingInfo)
+    Created(self:Actor) : void
+    Tick(self:Actor) : void
+}
+class "BitSet`1"<T> {
+}
+BuildingInfo <|-- D2kBuildingInfo
+D2kBuildingInfo o-> "DamageTypes<DamageType>" "BitSet`1"
+Building <|-- D2kBuilding
+ITick <|-- D2kBuilding
+INotifyCreated <|-- D2kBuilding
+D2kBuilding --> "info" D2kBuildingInfo
+D2kBuilding --> "layer" BuildableTerrainLayer
+D2kBuilding --> "health" IHealth
+D2kBuilding --> "techTree" TechTree
+D2kBuilding --> "bi" BuildingInfluence
+@enduml

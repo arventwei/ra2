@@ -1,0 +1,23 @@
+@startuml
+class WithVoxelBodyInfo {
+    + <<readonly>> Sequence : string = "idle"
+    + <<readonly>> ShowShadow : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewVoxels(init:ActorPreviewInitializer, rv:RenderVoxelsInfo, image:string, orientation:Func<WRot>, facings:int, p:PaletteReference) : IEnumerable<ModelAnimation>
+}
+class WithVoxelBody {
+    + WithVoxelBody(self:Actor, info:WithVoxelBodyInfo)
+    AutoMouseoverBounds(self:Actor, wr:WorldRenderer) : Rectangle
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithVoxelBodyInfo
+IRenderActorPreviewVoxelsInfo <|-- WithVoxelBodyInfo
+"Requires`1" "<RenderVoxelsInfo>" <|-- WithVoxelBodyInfo
+"ConditionalTrait`1" "<WithVoxelBodyInfo>" <|-- WithVoxelBody
+IAutoMouseBounds <|-- WithVoxelBody
+WithVoxelBody --> "modelAnimation" ModelAnimation
+WithVoxelBody --> "rv" RenderVoxels
+@enduml

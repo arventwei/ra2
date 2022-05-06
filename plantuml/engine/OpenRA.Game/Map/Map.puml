@@ -1,0 +1,131 @@
+@startuml
+class BinaryDataHeader <<struct>> {
+    + <<readonly>> Format : byte
+    + <<readonly>> TilesOffset : uint
+    + <<readonly>> HeightsOffset : uint
+    + <<readonly>> ResourcesOffset : uint
+    + BinaryDataHeader(s:Stream, expectedSize:int2)
+}
+enum MapVisibility {
+    Lobby= 1,
+    Shellmap= 2,
+    MissionSelector= 4,
+}
+class MapField {
+    <<readonly>> key : string
+    <<readonly>> fieldName : string
+    <<readonly>> required : bool
+    <<readonly>> ignoreIfValue : string
+    + MapField(key:string, fieldName:string, required:bool, ignoreIfValue:string)
+    + Deserialize(map:Map, nodes:List<MiniYamlNode>) : void
+    + Serialize(map:Map, nodes:List<MiniYamlNode>) : void
+}
+class Map {
+    + <<const>> SupportedMapFormat : int = 11
+    + MapFormat : int <<get>>
+    + <<readonly>> TileFormat : byte = 2
+    + RequiresMod : string
+    + Title : string
+    + Author : string
+    + Tileset : string
+    + LockPreview : bool
+    + Uid : string <<get>>
+    + InvalidCustomRules : bool <<get>>
+    initializedCellProjection : bool
+    + {static} ComputeUID(package:IReadOnlyPackage) : string
+    + Map(modData:ModData, tileset:TileSet, width:int, height:int)
+    + Map(modData:ModData, package:IReadOnlyPackage)
+    PostInit() : void
+    UpdateRamp(cell:CPos) : void
+    InitializeCellProjection() : void
+    UpdateProjection(cell:CPos) : void
+    ProjectedCellHeightInner(puv:PPos) : byte
+    ProjectCellInner(uv:MPos) : PPos[]
+    + Save(toPackage:IReadWritePackage) : void
+    + SaveBinaryData() : byte[]
+    + GetTerrainColorPair(uv:MPos) : (Color Left, Color Right)
+    + SavePreview() : byte[]
+    + Contains(cell:CPos) : bool
+    + Contains(uv:MPos) : bool
+    ContainsAllProjectedCellsCovering(uv:MPos) : bool
+    + Contains(puv:PPos) : bool
+    + CenterOfCell(cell:CPos) : WPos
+    + CenterOfSubCell(cell:CPos, subCell:SubCell) : WPos
+    + DistanceAboveTerrain(pos:WPos) : WDist
+    + Offset(delta:CVec, dz:int) : WVec
+    + CellContaining(pos:WPos) : CPos
+    + ProjectedCellCovering(pos:WPos) : PPos
+    + ProjectedCellsCovering(uv:MPos) : PPos[]
+    + Unproject(puv:PPos) : List<MPos>
+    + ProjectedHeight(puv:PPos) : byte
+    + FacingBetween(cell:CPos, towards:CPos, fallbackfacing:WAngle) : WAngle
+    + Resize(width:int, height:int) : void
+    + SetBounds(tl:PPos, br:PPos) : void
+    + FixOpenAreas() : void
+    + GetTerrainIndex(cell:CPos) : byte
+    + GetTerrainInfo(cell:CPos) : TerrainTypeInfo
+    + Clamp(cell:CPos) : CPos
+    + Clamp(uv:MPos) : MPos
+    + Clamp(puv:PPos) : PPos
+    + ChooseRandomCell(rand:MersenneTwister) : CPos
+    + ChooseClosestEdgeCell(cell:CPos) : CPos
+    + ChooseClosestEdgeCell(uv:MPos) : MPos
+    + ChooseClosestMatchingEdgeCell(cell:CPos, match:Func<CPos, bool>) : CPos
+    UpdateEdgeCells() : List<CPos>
+    + ChooseRandomEdgeCell(rand:MersenneTwister) : CPos
+    + DistanceToEdge(pos:WPos, dir:WVec) : WDist
+    + FindTilesInAnnulus(center:CPos, minRange:int, maxRange:int, allowOutsideBounds:bool) : IEnumerable<CPos>
+    + FindTilesInCircle(center:CPos, maxRange:int, allowOutsideBounds:bool) : IEnumerable<CPos>
+    + Open(filename:string) : Stream
+    + TryGetPackageContaining(path:string, package:IReadOnlyPackage, filename:string) : bool
+    + TryOpen(filename:string, s:Stream) : bool
+    + Exists(filename:string) : bool
+    + IsExternalModFile(filename:string) : bool
+}
+enum Type {
+    Normal,
+    NodeList,
+    MiniYaml,
+}
+class "List`1"<T> {
+}
+class "CellLayer`1"<T> {
+}
+MapField --> "field" FieldInfo
+MapField --> "property" PropertyInfo
+MapField --> "type" Type
+IReadOnlyFileSystem <|-- Map
+Map --> "Bounds" Rectangle
+Map o-> "Visibility" MapVisibility
+Map --> "MapSize" int2
+Map o-> "PlayerDefinitions<MiniYamlNode>" "List`1"
+Map o-> "ActorDefinitions<MiniYamlNode>" "List`1"
+Map --> "RuleDefinitions" MiniYaml
+Map --> "SequenceDefinitions" MiniYaml
+Map --> "ModelSequenceDefinitions" MiniYaml
+Map --> "WeaponDefinitions" MiniYaml
+Map --> "VoiceDefinitions" MiniYaml
+Map --> "MusicDefinitions" MiniYaml
+Map --> "NotificationDefinitions" MiniYaml
+Map --> "TranslationDefinitions" MiniYaml
+Map --> "Grid" MapGrid
+Map --> "Package" IReadOnlyPackage
+Map --> "Rules" Ruleset
+Map --> "InvalidCustomRulesException" Exception
+Map --> "ProjectedTopLeft" WPos
+Map --> "ProjectedBottomRight" WPos
+Map --> "Tiles<TerrainTile>" "CellLayer`1"
+Map --> "Resources<ResourceTile>" "CellLayer`1"
+Map --> "Height<byte>" "CellLayer`1"
+Map --> "Ramp<byte>" "CellLayer`1"
+Map --> "CustomTerrain<byte>" "CellLayer`1"
+Map --> "AllCells" CellRegion
+Map --> "AllEdgeCells<CPos>" "List`1"
+Map --> "modData" ModData
+Map --> "cachedTerrainIndexes<short>" "CellLayer`1"
+Map --> "cellProjection<PPos[]>" "CellLayer`1"
+Map --> "inverseCellProjection<List<MPos>>" "CellLayer`1"
+Map --> "projectedHeight<byte>" "CellLayer`1"
+Map --> "CellHeightStep" WDist
+MapField +-- Type
+@enduml

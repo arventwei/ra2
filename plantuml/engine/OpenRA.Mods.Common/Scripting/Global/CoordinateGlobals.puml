@@ -1,0 +1,32 @@
+@startuml
+class CPosGlobal {
+    + CPosGlobal(context:ScriptContext)
+    + New(x:int, y:int) : CPos
+}
+class CVecGlobal {
+    + CVecGlobal(context:ScriptContext)
+    + New(x:int, y:int) : CVec
+}
+class WPosGlobal {
+    + WPosGlobal(context:ScriptContext)
+    + New(x:int, y:int, z:int) : WPos
+}
+class WVecGlobal {
+    + WVecGlobal(context:ScriptContext)
+    + New(x:int, y:int, z:int) : WVec
+}
+class WDistGlobal {
+    + WDistGlobal(context:ScriptContext)
+    + New(r:int) : WDist
+    + FromCells(numCells:int) : WDist
+}
+ScriptGlobal <|-- CPosGlobal
+CPosGlobal --> "Zero" CPos
+ScriptGlobal <|-- CVecGlobal
+CVecGlobal --> "Zero" CVec
+ScriptGlobal <|-- WPosGlobal
+WPosGlobal --> "Zero" WPos
+ScriptGlobal <|-- WVecGlobal
+WVecGlobal --> "Zero" WVec
+ScriptGlobal <|-- WDistGlobal
+@enduml

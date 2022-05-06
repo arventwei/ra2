@@ -1,0 +1,15 @@
+@startuml
+class CircleShape {
+    + <<readonly>> VerticalTopOffset : int = 0
+    + <<readonly>> VerticalBottomOffset : int = 0
+    + CircleShape()
+    + CircleShape(radius:WDist)
+    + Initialize() : void
+    + DistanceFromEdge(v:WVec) : WDist
+    + DistanceFromEdge(pos:WPos, origin:WPos, orientation:WRot) : WDist
+    RenderDebugOverlay(wr:WorldRenderer, origin:WPos, orientation:WRot) : IEnumerable<IRenderable>
+}
+IHitShape <|-- CircleShape
+CircleShape --> "OuterRadius" WDist
+CircleShape o-> "Radius" WDist
+@enduml

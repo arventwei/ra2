@@ -1,0 +1,26 @@
+@startuml
+class WithDockedOverlayInfo {
+    + <<readonly>> Sequence : string = "docking-overlay"
+    + <<readonly>> Palette : string = null
+    + <<readonly>> IsPlayerPalette : bool = false
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithDockedOverlay {
+    docked : bool
+    + WithDockedOverlay(self:Actor, info:WithDockedOverlayInfo)
+    PlayDockingOverlay() : void
+    Docked(self:Actor, harvester:Actor) : void
+    Undocked(self:Actor, harvester:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+PausableConditionalTraitInfo <|-- WithDockedOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithDockedOverlayInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithDockedOverlayInfo
+WithDockedOverlayInfo o-> "Offset" WVec
+"PausableConditionalTrait`1" "<WithDockedOverlayInfo>" <|-- WithDockedOverlay
+INotifyDocking <|-- WithDockedOverlay
+WithDockedOverlay --> "anim" AnimationWithOffset
+@enduml

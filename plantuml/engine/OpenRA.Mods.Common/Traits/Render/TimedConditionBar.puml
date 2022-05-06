@@ -1,0 +1,21 @@
+@startuml
+class TimedConditionBarInfo {
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TimedConditionBar {
+    value : float
+    + TimedConditionBar(self:Actor, info:TimedConditionBarInfo)
+    Update(duration:int, remaining:int) : void
+    Condition : string <<get>>
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+}
+TraitInfo <|-- TimedConditionBarInfo
+TimedConditionBarInfo o-> "Color" Color
+ISelectionBar <|-- TimedConditionBar
+IConditionTimerWatcher <|-- TimedConditionBar
+TimedConditionBar --> "info" TimedConditionBarInfo
+TimedConditionBar --> "self" Actor
+@enduml

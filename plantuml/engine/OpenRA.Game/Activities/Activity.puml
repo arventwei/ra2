@@ -1,0 +1,37 @@
+@startuml
+enum ActivityState {
+    Queued,
+    Active,
+    Canceling,
+    Done,
+}
+class TargetLineNode {
+    + TargetLineNode(target:Target, color:Color, tile:Sprite)
+}
+abstract class Activity {
+    + IsInterruptible : bool <<get>> <<protected set>>
+    + ChildHasPriority : bool <<get>> <<protected set>>
+    + IsCanceling : bool <<get>>
+    finishing : bool
+    firstRunCompleted : bool
+    lastRun : bool
+    + Activity()
+    + TickOuter(self:Actor) : Activity
+    + <<virtual>> Tick(self:Actor) : bool
+    + <<virtual>> Cancel(self:Actor, keepQueue:bool) : void
+    + Queue(activity:Activity) : void
+    + QueueChild(activity:Activity) : void
+    + <<virtual>> GetTargets(self:Actor) : IEnumerable<Target>
+    + <<virtual>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+    + DebugLabelComponents() : IEnumerable<string>
+    + ActivitiesImplementing(includeChildren:bool) : IEnumerable<T>
+}
+TargetLineNode --> "Target" Target
+TargetLineNode --> "Color" Color
+TargetLineNode --> "Tile" Sprite
+IActivityInterface <|-- Activity
+Activity --> "State" ActivityState
+Activity --> "childActivity" Activity
+Activity --> "nextActivity" Activity
+Activity --> "NextActivity" Activity
+@enduml

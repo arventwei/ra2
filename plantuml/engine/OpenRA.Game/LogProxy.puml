@@ -1,0 +1,9 @@
+@startuml
+interface ILog {
+    Write(channel:string, format:string, args:object[]) : void
+}
+class LogProxy {
+    + Write(channel:string, format:string, args:object[]) : void
+}
+ILog <|-- LogProxy
+@enduml

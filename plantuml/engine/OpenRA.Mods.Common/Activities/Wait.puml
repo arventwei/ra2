@@ -1,0 +1,18 @@
+@startuml
+class Wait {
+    remainingTicks : int
+    + Wait(period:int)
+    + Wait(period:int, interruptible:bool)
+    + <<override>> Tick(self:Actor) : bool
+}
+class WaitFor {
+    + WaitFor(f:Func<bool>)
+    + WaitFor(f:Func<bool>, interruptible:bool)
+    + <<override>> Tick(self:Actor) : bool
+}
+class "Func`1"<T> {
+}
+Activity <|-- Wait
+Activity <|-- WaitFor
+WaitFor --> "f<bool>" "Func`1"
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+class D2kActorPreviewPlaceBuildingPreviewInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class D2kActorPreviewPlaceBuildingPreview {
+}
+class D2kActorPreviewPlaceBuildingPreviewPreview {
+    <<readonly>> checkUnsafeTiles : bool
+    + D2kActorPreviewPlaceBuildingPreviewPreview(wr:WorldRenderer, ai:ActorInfo, info:D2kActorPreviewPlaceBuildingPreviewInfo, init:TypeDictionary)
+}
+class "HashSet`1"<T> {
+}
+class "CachedTransform`2"<T1,T2> {
+}
+ActorPreviewPlaceBuildingPreviewInfo <|-- D2kActorPreviewPlaceBuildingPreviewInfo
+D2kActorPreviewPlaceBuildingPreviewInfo o-> "UnsafeTerrainTypes<string>" "HashSet`1"
+ActorPreviewPlaceBuildingPreviewPreview <|-- D2kActorPreviewPlaceBuildingPreviewPreview
+D2kActorPreviewPlaceBuildingPreviewPreview --> "info" D2kActorPreviewPlaceBuildingPreviewInfo
+D2kActorPreviewPlaceBuildingPreviewPreview --> "buildOk" Sprite
+D2kActorPreviewPlaceBuildingPreviewPreview --> "buildUnsafe" Sprite
+D2kActorPreviewPlaceBuildingPreviewPreview --> "buildBlocked" Sprite
+D2kActorPreviewPlaceBuildingPreviewPreview --> "unpathableCells<CPos,List<CPos>>" "CachedTransform`2"
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+class StateMachine {
+    + Update(squad:Squad) : void
+    + ChangeState(squad:Squad, newState:IState, rememberPrevious:bool) : void
+    + RevertToPreviousState(squad:Squad, saveCurrentState:bool) : void
+}
+interface IState {
+    Activate(bot:Squad) : void
+    Tick(bot:Squad) : void
+    Deactivate(bot:Squad) : void
+}
+StateMachine --> "currentState" IState
+StateMachine --> "previousState" IState
+@enduml

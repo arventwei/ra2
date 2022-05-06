@@ -1,0 +1,28 @@
+@startuml
+class ExitInfo {
+    + <<readonly>> Facing : WAngle? = null
+    + <<readonly>> ExitDelay : int = 0
+    + <<readonly>> Priority : int = 1
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Exit {
+    + Exit(init:ActorInitializer, info:ExitInfo)
+}
+class ExitExts <<static>> {
+    + {static} NearestExitOrDefault(actor:Actor, pos:WPos, productionType:string, p:Func<Exit, bool>) : Exit
+    + {static} Exits(actor:Actor, productionType:string) : IEnumerable<Exit>
+    + {static} RandomExitOrDefault(actor:Actor, world:World, productionType:string, p:Func<Exit, bool>) : Exit
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- ExitInfo
+"Requires`1" "<IOccupySpaceInfo>" <|-- ExitInfo
+ExitInfo o-> "SpawnOffset" WVec
+ExitInfo o-> "ExitCell" CVec
+ExitInfo o-> "ProductionTypes<string>" "HashSet`1"
+"ConditionalTrait`1" "<ExitInfo>" <|-- Exit
+@enduml

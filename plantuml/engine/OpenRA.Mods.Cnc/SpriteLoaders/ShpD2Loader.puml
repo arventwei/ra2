@@ -1,0 +1,24 @@
+@startuml
+class ShpD2Loader {
+    IsShpD2(s:Stream) : bool
+    ParseFrames(s:Stream) : ShpD2Frame[]
+    + TryParseSprite(s:Stream, frames:ISpriteFrame[], metadata:TypeDictionary) : bool
+}
+enum FormatFlags {
+    PaletteTable= 1,
+    NotLCWCompressed= 2,
+    VariableLengthTable= 4,
+}
+class ShpD2Frame {
+    + DisableExportPadding : bool <<get>>
+    + ShpD2Frame(s:Stream)
+}
+ISpriteLoader <|-- ShpD2Loader
+ShpD2Loader +-- FormatFlags
+ShpD2Loader +-- ShpD2Frame
+ISpriteFrame <|-- ShpD2Frame
+ShpD2Frame --> "Type" SpriteFrameType
+ShpD2Frame --> "Size" Size
+ShpD2Frame --> "FrameSize" Size
+ShpD2Frame --> "Offset" float2
+@enduml

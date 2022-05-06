@@ -1,0 +1,9 @@
+@startuml
+class LCWCompression <<static>> {
+    {static} ReplicatePrevious(dest:byte[], destIndex:int, srcIndex:int, count:int) : void
+    + {static} DecodeInto(src:byte[], dest:byte[], srcOffset:int, reverse:bool) : int
+    {static} CountSame(src:byte[], offset:int, maxCount:int) : int
+    {static} WriteCopyBlocks(src:byte[], offset:int, count:int, output:MemoryStream) : void
+    + {static} Encode(src:byte[]) : byte[]
+}
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+class WithProductionDoorOverlayInfo {
+    + <<readonly>> Sequence : string = "build-door"
+    + RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithProductionDoorOverlay {
+    desiredFrame : int
+    + WithProductionDoorOverlay(self:Actor, info:WithProductionDoorOverlayInfo)
+    Tick(self:Actor) : void
+    DamageStateChanged(self:Actor, e:AttackInfo) : void
+    UnitProduced(self:Actor, other:Actor, exit:CPos) : void
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- WithProductionDoorOverlayInfo
+IRenderActorPreviewSpritesInfo <|-- WithProductionDoorOverlayInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- WithProductionDoorOverlayInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- WithProductionDoorOverlayInfo
+"Requires`1" "<BuildingInfo>" <|-- WithProductionDoorOverlayInfo
+"ConditionalTrait`1" "<WithProductionDoorOverlayInfo>" <|-- WithProductionDoorOverlay
+ITick <|-- WithProductionDoorOverlay
+INotifyProduction <|-- WithProductionDoorOverlay
+INotifyDamageStateChanged <|-- WithProductionDoorOverlay
+WithProductionDoorOverlay --> "door" Animation
+WithProductionDoorOverlay --> "openExit" CPos
+WithProductionDoorOverlay --> "exitingActor" Actor
+@enduml

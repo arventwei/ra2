@@ -1,0 +1,17 @@
+@startuml
+class MapNotificationEffect {
+    <<readonly>> duration : int
+    <<readonly>> category : string
+    <<readonly>> notification : string
+    <<readonly>> visible : bool
+    remainingDelay : int
+    + MapNotificationEffect(player:Player, category:string, notification:string, delay:int, pingVisible:bool, pos:WPos, pingColor:Color, pingDuration:int)
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- MapNotificationEffect
+MapNotificationEffect --> "radarPings" RadarPings
+MapNotificationEffect --> "pos" WPos
+MapNotificationEffect --> "player" Player
+MapNotificationEffect --> "color" Color
+@enduml

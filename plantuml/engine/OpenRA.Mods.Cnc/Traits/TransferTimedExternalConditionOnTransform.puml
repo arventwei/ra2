@@ -1,0 +1,23 @@
+@startuml
+class TransferTimedExternalConditionOnTransformInfo {
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TransferTimedExternalConditionOnTransform {
+    duration : int = 0
+    remaining : int = 0
+    + TransferTimedExternalConditionOnTransform(info:TransferTimedExternalConditionOnTransformInfo)
+    BeforeTransform(self:Actor) : void
+    OnTransform(self:Actor) : void
+    AfterTransform(toActor:Actor) : void
+    Update(duration:int, remaining:int) : void
+    Condition : string <<get>>
+}
+class "Requires`1"<T> {
+}
+TraitInfo <|-- TransferTimedExternalConditionOnTransformInfo
+"Requires`1" "<TransformsInfo>" <|-- TransferTimedExternalConditionOnTransformInfo
+IConditionTimerWatcher <|-- TransferTimedExternalConditionOnTransform
+INotifyTransform <|-- TransferTimedExternalConditionOnTransform
+TransferTimedExternalConditionOnTransform --> "info" TransferTimedExternalConditionOnTransformInfo
+@enduml

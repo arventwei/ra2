@@ -1,0 +1,76 @@
+@startuml
+enum PowerState {
+    Normal= 1,
+    Low= 2,
+    Critical= 4,
+}
+enum WinState {
+    Undefined,
+    Won,
+    Lost,
+}
+class PlayerBitMask {
+}
+class Player {
+    + <<const>> PlayerActorType : string = "Player"
+    + <<const>> EditorPlayerActorType : string = "EditorPlayer"
+    + <<readonly>> PlayerName : string
+    + <<readonly>> InternalName : string
+    + <<readonly>> NonCombatant : bool = false
+    + <<readonly>> Playable : bool = true
+    + <<readonly>> ClientIndex : int
+    + <<readonly>> Handicap : int
+    + <<readonly>> IsBot : bool
+    + <<readonly>> BotType : string
+    + <<readonly>> SpawnPoint : int
+    + <<readonly>> DisplaySpawnPoint : int
+    + HasObjectives : bool = false
+    + Spectating : bool <<get>>
+    <<readonly>> inMissionMap : bool
+    <<readonly>> spectating : bool
+    + UnlockedRenderPlayer : bool <<get>>
+    + {static} ResolveFaction(factionName:string, factionInfos:IEnumerable<FactionInfo>, playerRandom:MersenneTwister, requireSelectable:bool) : FactionInfo
+    {static} ResolveFaction(world:World, factionName:string, playerRandom:MersenneTwister, requireSelectable:bool) : FactionInfo
+    {static} ResolveDisplayFaction(world:World, factionName:string) : FactionInfo
+    + {static} ResolvePlayerName(client:Session.Client, clients:IEnumerable<Session.Client>, botInfos:IEnumerable<IBotInfo>) : string
+    + Player(world:World, client:Session.Client, pr:PlayerReference, playerRandom:MersenneTwister)
+    + <<override>> ToString() : string
+    + RelationshipWith(other:Player) : PlayerRelationship
+    + IsAlliedWith(p:Player) : bool
+    + PlayerStanceColor(a:Actor) : Color
+    + OnScriptBind(context:ScriptContext) : void
+    + Equals(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + ToString(runtime:LuaRuntime) : LuaValue
+}
+class StanceColors <<struct>> {
+}
+class "LongBitSet`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+IScriptBindable <|-- Player
+IScriptNotifyBind <|-- Player
+ILuaTableBinding <|-- Player
+ILuaEqualityBinding <|-- Player
+ILuaToStringBinding <|-- Player
+Player --> "PlayerActor" Actor
+Player --> "Color" Color
+Player --> "Faction" FactionInfo
+Player --> "HomeLocation" CPos
+Player --> "PlayerReference" PlayerReference
+Player --> "Shroud" Shroud
+Player --> "FrozenActorLayer" FrozenActorLayer
+Player --> "DisplayFaction" FactionInfo
+Player o-> "WinState" WinState
+Player --> "World" World
+Player --> "PlayerMask<PlayerBitMask>" "LongBitSet`1"
+Player o-> "AlliedPlayersMask<PlayerBitMask>" "LongBitSet`1"
+Player o-> "EnemyPlayersMask<PlayerBitMask>" "LongBitSet`1"
+Player --> "stanceColors" StanceColors
+Player --> "luaInterface<ScriptPlayerInterface>" "Lazy`1"
+Player +-- StanceColors
+StanceColors --> "Self" Color
+StanceColors --> "Allies" Color
+StanceColors --> "Enemies" Color
+StanceColors --> "Neutrals" Color
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+class CommandBarBlacklistInfo {
+    + <<readonly>> DisableStop : bool = true
+    + <<readonly>> DisableWaypointMode : bool = true
+}
+class CommandBarBlacklist {
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<CommandBarBlacklist>" <|-- CommandBarBlacklistInfo
+@enduml

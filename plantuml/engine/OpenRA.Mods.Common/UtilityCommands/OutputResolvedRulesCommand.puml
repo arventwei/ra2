@@ -1,0 +1,8 @@
+@startuml
+class OutputResolvedRulesCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+}
+IUtilityCommand <|-- OutputResolvedRulesCommand
+@enduml

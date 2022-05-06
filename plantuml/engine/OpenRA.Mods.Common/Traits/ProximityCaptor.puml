@@ -1,0 +1,12 @@
+@startuml
+class ProximityCaptorInfo {
+}
+class ProximityCaptor {
+}
+class "TraitInfo`1"<T> {
+}
+class "BitSet`1"<T> {
+}
+"TraitInfo`1" "<ProximityCaptor>" <|-- ProximityCaptorInfo
+ProximityCaptorInfo o-> "Types<CaptureType>" "BitSet`1"
+@enduml

@@ -1,0 +1,203 @@
+@startuml
+class OpenGL <<static>> {
+    + {static} Version : string <<get>>
+    + <<const>> GL_FALSE : int = 0
+    + <<const>> GL_COLOR_BUFFER_BIT : int = 0x4000
+    + <<const>> GL_DEPTH_BUFFER_BIT : int = 0x0100
+    + <<const>> GL_STENCIL_BUFFER_BIT : int = 0x0400
+    + <<const>> GL_UNSIGNED_BYTE : int = 0x1401
+    + <<const>> GL_FLOAT : int = 0x1406
+    + <<const>> GL_NO_ERROR : int = 0
+    + <<const>> GL_INVALID_ENUM : int = 0x0500
+    + <<const>> GL_INVALID_VALUE : int = 0x0501
+    + <<const>> GL_INVALID_OPERATION : int = 0x0502
+    + <<const>> GL_STACK_OVERFLOW : int = 0x0503
+    + <<const>> GL_STACK_UNDERFLOW : int = 0x0504
+    + <<const>> GL_OUT_OF_MEMORY : int = 0x0505
+    + <<const>> GL_INVALID_FRAMEBUFFER_OPERATION : int = 0x0506
+    + <<const>> GL_CONTEXT_LOST : int = 0x0507
+    + <<const>> GL_TABLE_TOO_LARGE : int = 0x8031
+    + <<const>> GL_POINTS : int = 0
+    + <<const>> GL_LINES : int = 0x0001
+    + <<const>> GL_TRIANGLES : int = 0x0004
+    + <<const>> GL_ALPHA_TEST : int = 0x0BC0
+    + <<const>> GL_BLEND : int = 0x0BE2
+    + <<const>> GL_STENCIL_TEST : int = 0x0B90
+    + <<const>> GL_DEPTH_TEST : int = 0x0B71
+    + <<const>> GL_SCISSOR_TEST : int = 0x0C11
+    + <<const>> GL_TEXTURE_2D : int = 0x0DE1
+    + <<const>> GL_TEXTURE_WRAP_S : int = 0x2802
+    + <<const>> GL_TEXTURE_WRAP_T : int = 0x2803
+    + <<const>> GL_TEXTURE_MAG_FILTER : int = 0x2800
+    + <<const>> GL_TEXTURE_MIN_FILTER : int = 0x2801
+    + <<const>> GL_NEAREST : int = 0x2600
+    + <<const>> GL_LINEAR : int = 0x2601
+    + <<const>> GL_DEPTH_COMPONENT : int = 0x1902
+    + <<const>> GL_LEQUAL : int = 0x0203
+    + <<const>> GL_ZERO : int = 0
+    + <<const>> GL_ONE : int = 1
+    + <<const>> GL_SRC_COLOR : int = 0x0300
+    + <<const>> GL_ONE_MINUS_SRC_COLOR : int = 0x0301
+    + <<const>> GL_SRC_ALPHA : int = 0x0302
+    + <<const>> GL_ONE_MINUS_SRC_ALPHA : int = 0x0303
+    + <<const>> GL_DST_ALPHA : int = 0x0304
+    + <<const>> GL_ONE_MINUS_DST_ALPHA : int = 0x0305
+    + <<const>> GL_DST_COLOR : int = 0x0306
+    + <<const>> GL_ONE_MINUS_DST_COLOR : int = 0x0307
+    + <<const>> GL_FUNC_ADD : int = 0x8006
+    + <<const>> GL_FUNC_SUBTRACT : int = 0x800A
+    + <<const>> GL_FUNC_REVERSE_SUBTRACT : int = 0x800B
+    + <<const>> GL_BLEND_COLOR : int = 0x8005
+    + <<const>> GL_CLIENT_PIXEL_STORE_BIT : int = 0x0001
+    + <<const>> GL_RGBA : int = 0x1908
+    + <<const>> GL_BGRA : int = 0x80E1
+    + <<const>> GL_RGBA8 : int = 0x8058
+    + <<const>> GL_CLAMP_TO_EDGE : int = 0x812F
+    + <<const>> GL_TEXTURE_BASE_LEVEL : int = 0x813C
+    + <<const>> GL_TEXTURE_MAX_LEVEL : int = 0x813D
+    + <<const>> GL_ARRAY_BUFFER : int = 0x8892
+    + <<const>> GL_DYNAMIC_DRAW : int = 0x88E8
+    + <<const>> GL_TEXTURE0 : int = 0x84C0
+    + <<const>> GL_DEPTH_COMPONENT16 : int = 0x81A5
+    + <<const>> GL_FRAGMENT_SHADER : int = 0x8B30
+    + <<const>> GL_VERTEX_SHADER : int = 0x8B31
+    + <<const>> GL_SAMPLER_2D : int = 0x8B5E
+    + <<const>> GL_COMPILE_STATUS : int = 0x8B81
+    + <<const>> GL_LINK_STATUS : int = 0x8B82
+    + <<const>> GL_INFO_LOG_LENGTH : int = 0x8B84
+    + <<const>> GL_ACTIVE_UNIFORMS : int = 0x8B86
+    + <<const>> GL_DEBUG_OUTPUT : int = 0x92E0
+    + <<const>> GL_DEBUG_OUTPUT_SYNCHRONOUS : int = 0x8242
+    + <<const>> GL_DEBUG_SOURCE_API : int = 0x8246
+    + <<const>> GL_DEBUG_SOURCE_WINDOW_SYSTEM : int = 0x8247
+    + <<const>> GL_DEBUG_SOURCE_SHADER_COMPILER : int = 0x8248
+    + <<const>> GL_DEBUG_SOURCE_THIRD_PARTY : int = 0x8249
+    + <<const>> GL_DEBUG_SOURCE_APPLICATION : int = 0x824A
+    + <<const>> GL_DEBUG_SOURCE_OTHER : int = 0x824B
+    + <<const>> GL_DEBUG_TYPE_ERROR : int = 0x824C
+    + <<const>> GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR : int = 0x824D
+    + <<const>> GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR : int = 0x824E
+    + <<const>> GL_DEBUG_TYPE_PORTABILITY : int = 0x824F
+    + <<const>> GL_DEBUG_TYPE_PERFORMANCE : int = 0x8250
+    + <<const>> GL_DEBUG_TYPE_MARKER : int = 0x8268
+    + <<const>> GL_DEBUG_TYPE_PUSH_GROUP : int = 0x8269
+    + <<const>> GL_DEBUG_TYPE_POP_GROUP : int = 0x826A
+    + <<const>> GL_DEBUG_TYPE_OTHER : int = 0x8251
+    + <<const>> GL_DEBUG_SEVERITY_HIGH : int = 0x9146
+    + <<const>> GL_DEBUG_SEVERITY_MEDIUM : int = 0x9147
+    + <<const>> GL_DEBUG_SEVERITY_LOW : int = 0x9148
+    + <<const>> GL_DEBUG_SEVERITY_NOTIFICATION : int = 0x826B
+    + <<const>> GL_PACK_ROW_LENGTH : int = 0x0D02
+    + <<const>> GL_PACK_ALIGNMENT : int = 0x0D05
+    + <<const>> GL_VIEWPORT : int = 0x0BA2
+    + <<const>> GL_VENDOR : int = 0x1F00
+    + <<const>> GL_RENDERER : int = 0x1F01
+    + <<const>> GL_VERSION : int = 0x1F02
+    + <<const>> GL_EXTENSIONS : int = 0x1F03
+    + <<const>> GL_NUM_EXTENSIONS : int = 0x821D
+    + <<const>> GL_SHADING_LANGUAGE_VERSION : int = 0x8B8C
+    + <<const>> GL_FRAMEBUFFER : int = 0x8D40
+    + <<const>> GL_RENDERBUFFER : int = 0x8D41
+    + <<const>> GL_COLOR_ATTACHMENT0 : int = 0x8CE0
+    + <<const>> GL_DEPTH_ATTACHMENT : int = 0x8D00
+    + <<const>> GL_FRAMEBUFFER_COMPLETE : int = 0x8CD5
+    + <<const>> GL_FRAMEBUFFER_BINDING : int = 0x8CA6
+    + {static} glGetString(name:int) : string
+    + {static} glGetStringi(name:int, index:uint) : string
+    + {static} Initialize(preferLegacyProfile:bool) : void
+    {static} Bind(name:string) : T
+    + {static} DetectGLFeatures(preferLegacyProfile:bool) : bool
+    + {static} WriteGraphicsLog(message:string) : void
+    + {static} CheckGLError() : void
+    {static} DebugMessageHandler(source:int, type:int, id:uint, severity:int, length:int, message:StringBuilder, userparam:IntPtr) : void
+    {static} BuildErrorText(source:int, type:int, severity:int, message:StringBuilder) : string
+}
+enum GLFeatures {
+    None= 0,
+    DebugMessagesCallback= 1,
+    ESReadFormatBGRA= 2,
+}
+class "Dictionary`2"<T1,T2> {
+}
+OpenGL --> "Profile" GLProfile
+OpenGL --> "Features" GLFeatures
+OpenGL o-> "ErrorToText<int,string>" "Dictionary`2"
+OpenGL o-> "DebugSourceToText<int,string>" "Dictionary`2"
+OpenGL o-> "DebugTypeToText<int,string>" "Dictionary`2"
+OpenGL o-> "DebugSeverityToText<int,string>" "Dictionary`2"
+OpenGL --> "DebugMessageHandle" DebugProc
+OpenGL --> "glDebugMessageCallback" DebugMessageCallback
+OpenGL --> "glDebugMessageInsert" DebugMessageInsert
+OpenGL --> "glFlush" Flush
+OpenGL --> "glViewport" Viewport
+OpenGL --> "glClear" Clear
+OpenGL --> "glClearColor" ClearColor
+OpenGL --> "glGetError" GetError
+OpenGL --> "glGetStringInternal" GetString
+OpenGL --> "glGetStringiInternal" GetStringi
+OpenGL --> "glGetIntegerv" GetIntegerv
+OpenGL --> "glFinish" Finish
+OpenGL --> "glCreateProgram" CreateProgram
+OpenGL --> "glUseProgram" UseProgram
+OpenGL --> "glGetProgramiv" GetProgramiv
+OpenGL --> "glCreateShader" CreateShader
+OpenGL --> "glShaderSource" ShaderSource
+OpenGL --> "glCompileShader" CompileShader
+OpenGL --> "glGetShaderiv" GetShaderiv
+OpenGL --> "glAttachShader" AttachShader
+OpenGL --> "glGetShaderInfoLog" GetShaderInfoLog
+OpenGL --> "glLinkProgram" LinkProgram
+OpenGL --> "glGetProgramInfoLog" GetProgramInfoLog
+OpenGL --> "glGetUniformLocation" GetUniformLocation
+OpenGL --> "glGetActiveUniform" GetActiveUniform
+OpenGL --> "glUniform1i" Uniform1i
+OpenGL --> "glUniform1f" Uniform1f
+OpenGL --> "glUniform2f" Uniform2f
+OpenGL --> "glUniform3f" Uniform3f
+OpenGL --> "glUniform1fv" Uniform1fv
+OpenGL --> "glUniform2fv" Uniform2fv
+OpenGL --> "glUniform3fv" Uniform3fv
+OpenGL --> "glUniform4fv" Uniform4fv
+OpenGL --> "glUniformMatrix4fv" UniformMatrix4fv
+OpenGL --> "glGenBuffers" GenBuffers
+OpenGL --> "glBindBuffer" BindBuffer
+OpenGL --> "glGenVertexArrays" GenVertexArrays
+OpenGL --> "glBindVertexArray" BindVertexArray
+OpenGL --> "glBufferData" BufferData
+OpenGL --> "glBufferSubData" BufferSubData
+OpenGL --> "glDeleteBuffers" DeleteBuffers
+OpenGL --> "glBindAttribLocation" BindAttribLocation
+OpenGL --> "glBindFragDataLocation" BindFragDataLocation
+OpenGL --> "glVertexAttribPointer" VertexAttribPointer
+OpenGL --> "glEnableVertexAttribArray" EnableVertexAttribArray
+OpenGL --> "glDisableVertexAttribArray" DisableVertexAttribArray
+OpenGL --> "glDrawArrays" DrawArrays
+OpenGL --> "glEnable" Enable
+OpenGL --> "glDisable" Disable
+OpenGL --> "glBlendEquation" BlendEquation
+OpenGL --> "glBlendEquationSeparate" BlendEquationSeparate
+OpenGL --> "glBlendFunc" BlendFunc
+OpenGL --> "glDepthFunc" DepthFunc
+OpenGL --> "glScissor" Scissor
+OpenGL --> "glReadPixels" ReadPixels
+OpenGL --> "glGenTextures" GenTextures
+OpenGL --> "glDeleteTextures" DeleteTextures
+OpenGL --> "glIsTexture" IsTexture
+OpenGL --> "glBindTexture" BindTexture
+OpenGL --> "glActiveTexture" ActiveTexture
+OpenGL --> "glTexImage2D" TexImage2D
+OpenGL --> "glGetTexImage" GetTexImage
+OpenGL --> "glTexParameteri" TexParameteri
+OpenGL --> "glTexParameterf" TexParameterf
+OpenGL --> "glGenFramebuffers" GenFramebuffers
+OpenGL --> "glBindFramebuffer" BindFramebuffer
+OpenGL --> "glFramebufferTexture2D" FramebufferTexture2D
+OpenGL --> "glDeleteFramebuffers" DeleteFramebuffers
+OpenGL --> "glGenRenderbuffers" GenRenderbuffers
+OpenGL --> "glBindRenderbuffer" BindRenderbuffer
+OpenGL --> "glRenderbufferStorage" RenderbufferStorage
+OpenGL --> "glDeleteRenderbuffers" DeleteRenderbuffers
+OpenGL --> "glFramebufferRenderbuffer" FramebufferRenderbuffer
+OpenGL --> "glCheckFramebufferStatus" CheckFramebufferStatus
+OpenGL +-- GLFeatures
+@enduml

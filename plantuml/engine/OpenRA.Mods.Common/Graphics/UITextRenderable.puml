@@ -1,0 +1,28 @@
+@startuml
+class UITextRenderable <<struct>> {
+    <<readonly>> zOffset : int
+    <<readonly>> text : string
+    + UITextRenderable(font:SpriteFont, effectiveWorldPos:WPos, screenPos:int2, zOffset:int, color:Color, bgDark:Color, bgLight:Color, text:string)
+    + UITextRenderable(font:SpriteFont, effectiveWorldPos:WPos, screenPos:int2, zOffset:int, color:Color, text:string)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+IRenderable <|-- UITextRenderable
+IFinalizedRenderable <|-- UITextRenderable
+UITextRenderable --> "font" SpriteFont
+UITextRenderable --> "effectiveWorldPos" WPos
+UITextRenderable --> "screenPos" int2
+UITextRenderable --> "color" Color
+UITextRenderable --> "bgDark" Color
+UITextRenderable --> "bgLight" Color
+UITextRenderable --> "Pos" WPos
+UITextRenderable --> "Palette" PaletteReference
+@enduml

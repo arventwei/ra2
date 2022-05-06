@@ -1,0 +1,33 @@
+@startuml
+class CVec <<struct>> {
+    + <<readonly>> X : int
+    + <<readonly>> Y : int
+    + CVec(x:int, y:int)
+    + {static} Max(a:CVec, b:CVec) : CVec
+    + {static} Min(a:CVec, b:CVec) : CVec
+    + {static} Dot(a:CVec, b:CVec) : int
+    + Sign() : CVec
+    + Abs() : CVec
+    + LengthSquared : int <<get>>
+    + Length : int <<get>>
+    + Clamp(r:Rectangle) : CVec
+    + <<override>> GetHashCode() : int
+    + Equals(other:CVec) : bool
+    + <<override>> Equals(obj:object) : bool
+    + <<override>> ToString() : string
+    + Add(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Subtract(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Minus(runtime:LuaRuntime) : LuaValue
+    + Equals(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+}
+class "IEquatable`1"<T> {
+}
+IScriptBindable <|-- CVec
+ILuaAdditionBinding <|-- CVec
+ILuaSubtractionBinding <|-- CVec
+ILuaUnaryMinusBinding <|-- CVec
+ILuaEqualityBinding <|-- CVec
+ILuaTableBinding <|-- CVec
+"IEquatable`1" "<CVec>" <|-- CVec
+CVec o-> "Zero" CVec
+@enduml

@@ -1,0 +1,169 @@
+@startuml
+class MobileInfo {
+    + <<readonly>> Locomotor : string = null
+    + <<readonly>> Speed : int = 1
+    + <<readonly>> AlwaysTurnInPlace : bool = false
+    + <<readonly>> Cursor : string = "move"
+    + <<readonly>> BlockedCursor : string = "move-blocked"
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> EditorFacingDisplayOrder : int = 3
+    ActorPreviewInits(ai:ActorInfo, type:ActorPreviewType) : IEnumerable<ActorInit>
+    + GetTargetLineColor() : Color
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RulesetLoaded(rules:Ruleset, ai:ActorInfo) : void
+    + GetInitialFacing() : WAngle
+    + CanEnterCell(world:World, self:Actor, cell:CPos, subCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : bool
+    + CanStayInCell(world:World, cell:CPos) : bool
+    + OccupiedCells(info:ActorInfo, location:CPos, subCell:SubCell) : IReadOnlyDictionary<CPos, SubCell>
+    SharesCell : bool <<get>>
+    ActorOptions(ai:ActorInfo, world:World) : IEnumerable<EditorActorOption>
+}
+class Mobile {
+    <<readonly>> returnToCellOnCreation : bool
+    <<readonly>> returnToCellOnCreationRecalculateSubCell : bool = true
+    <<readonly>> creationActivityDelay : int
+    requireForceMove : bool
+    + IsImmovable : bool <<get>>
+    + TurnToMove : bool
+    + IsBlocking : bool <<get>>
+    + IsMovingBetweenCells : bool <<get>>
+    + PathHash : int
+    + OccupiedCells() : (CPos, SubCell)[]
+    + Mobile(init:ActorInitializer, info:MobileInfo)
+    Tick(self:Actor) : void
+    + UpdateMovement(self:Actor) : void
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+    + Nudge(nudger:Actor) : void
+    + GetAdjacentCell(nextCell:CPos, preferToAvoid:Func<CPos, bool>) : CPos?
+    {static} IsMovable(otherActor:Actor) : bool
+    + IsLeaving() : bool
+    + CanInteractWithGroundLayer(self:Actor) : bool
+    + GetValidSubCell(preferred:SubCell) : SubCell
+    + SetPosition(self:Actor, cell:CPos, subCell:SubCell) : void
+    + SetPosition(self:Actor, pos:WPos) : void
+    + SetVisualPosition(self:Actor, pos:WPos) : void
+    + IsLeavingCell(location:CPos, subCell:SubCell) : bool
+    + GetAvailableSubCell(a:CPos, preferredSubCell:SubCell, ignoreActor:Actor, check:BlockedByActor) : SubCell
+    + CanExistInCell(cell:CPos) : bool
+    + CanEnterCell(cell:CPos, ignoreActor:Actor, check:BlockedByActor) : bool
+    + CanStayInCell(cell:CPos) : bool
+    + SetLocation(from:CPos, fromSub:SubCell, to:CPos, toSub:SubCell) : void
+    + FinishedMoving(self:Actor) : void
+    AnyCrushables(actors:List<Actor>) : bool
+    + AddInfluence() : void
+    + RemoveInfluence() : void
+    WrapMove(inner:Activity) : Activity
+    + MoveTo(cell:CPos, nearEnough:int, ignoreActor:Actor, evaluateNearestMovableCell:bool, targetLineColor:Color?) : Activity
+    + MoveWithinRange(target:Target, range:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + MoveWithinRange(target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + MoveFollow(self:Actor, target:Target, minRange:WDist, maxRange:WDist, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + ReturnToCell(self:Actor) : Activity
+    + MoveToTarget(self:Actor, target:Target, initialTargetPosition:WPos?, targetLineColor:Color?) : Activity
+    + MoveIntoTarget(self:Actor, target:Target) : Activity
+    + VisualMove(self:Actor, fromPos:WPos, toPos:WPos) : Activity
+    + EstimatedMoveDuration(self:Actor, fromPos:WPos, toPos:WPos) : int
+    + NearestMoveableCell(target:CPos) : CPos
+    + CanEnterTargetNow(self:Actor, target:Target) : bool
+    + MovementSpeedForCell(self:Actor, cell:CPos) : int
+    + NearestMoveableCell(target:CPos, minRange:int, maxRange:int) : CPos
+    + NearestCell(target:CPos, check:Func<CPos, bool>, minRange:int, maxRange:int) : CPos
+    + EnteringCell(self:Actor) : void
+    + ScriptedMove(cell:CPos) : Activity
+    + MoveTo(pathFunc:Func<BlockedByActor, List<CPos>>) : Activity
+    VisualMove(self:Actor, fromPos:WPos, toPos:WPos, cell:CPos) : Activity
+    ClosestGroundCell() : CPos?
+    ModifyActorPreviewInit(self:Actor, inits:TypeDictionary) : void
+    ModifyDeathActorInit(self:Actor, init:TypeDictionary) : void
+    OnBecomingIdle(self:Actor) : void
+    OnNotifyBlockingMove(self:Actor, blocking:Actor) : void
+    + <<override>> GetVariableObservers() : IEnumerable<VariableObserver>
+    RequireForceMoveConditionChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+    ImmovableConditionChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    ResolveOrder(self:Actor, order:Order) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    GetCreationActivity() : Activity
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+class ReturnToCellActivity {
+    <<readonly>> recalculateSubCell : bool
+    delay : int
+    + ReturnToCellActivity(self:Actor, delay:int, recalculateSubCell:bool)
+    + <<override>> Tick(self:Actor) : bool
+}
+class "IEnumerable`1"<T> {
+}
+class MoveOrderTargeter {
+    <<readonly>> rejectMove : bool
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + MoveOrderTargeter(self:Actor, unit:Mobile)
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + IsQueued : bool <<get>> <<protected set>>
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+}
+PausableConditionalTraitInfo <|-- MobileInfo
+IMoveInfo <|-- MobileInfo
+IPositionableInfo <|-- MobileInfo
+IFacingInfo <|-- MobileInfo
+IActorPreviewInitInfo <|-- MobileInfo
+IEditorActorOptions <|-- MobileInfo
+MobileInfo o-> "InitialFacing" WAngle
+MobileInfo o-> "TurnSpeed" WAngle
+MobileInfo o-> "TargetLineColor" Color
+MobileInfo o-> "PreviewFacing" WAngle
+MobileInfo o-> "RequireForceMoveCondition" BooleanExpression
+MobileInfo o-> "ImmovableCondition" BooleanExpression
+MobileInfo --> "LocomotorInfo" LocomotorInfo
+MobileInfo --> "locomotor" Locomotor
+"PausableConditionalTrait`1" "<MobileInfo>" <|-- Mobile
+IIssueOrder <|-- Mobile
+IResolveOrder <|-- Mobile
+IOrderVoice <|-- Mobile
+IPositionable <|-- Mobile
+IMove <|-- Mobile
+ITick <|-- Mobile
+ICreationActivity <|-- Mobile
+IFacing <|-- Mobile
+IDeathActorInitModifier <|-- Mobile
+INotifyAddedToWorld <|-- Mobile
+INotifyRemovedFromWorld <|-- Mobile
+INotifyBlockingMove <|-- Mobile
+IActorPreviewInitModifier <|-- Mobile
+INotifyBecomingIdle <|-- Mobile
+Mobile --> "self" Actor
+Mobile --> "speedModifiers<IEnumerable<int>>" "Lazy`1"
+Mobile --> "movementTypes" MovementType
+Mobile --> "CurrentMovementTypes" MovementType
+Mobile --> "oldFacing" WAngle
+Mobile --> "orientation" WRot
+Mobile --> "oldPos" WPos
+Mobile --> "fromCell" CPos
+Mobile --> "toCell" CPos
+Mobile --> "FromSubCell" SubCell
+Mobile --> "ToSubCell" SubCell
+Mobile --> "Facing" WAngle
+Mobile --> "Orientation" WRot
+Mobile --> "TurnSpeed" WAngle
+Mobile --> "FromCell" CPos
+Mobile --> "ToCell" CPos
+Mobile --> "Locomotor" Locomotor
+Mobile --> "Pathfinder" IPathFinder
+Mobile --> "CenterPosition" WPos
+Mobile --> "TopLeft" CPos
+Mobile --> "Orders<IOrderTargeter>" "IEnumerable`1"
+Mobile +-- ReturnToCellActivity
+Activity <|-- ReturnToCellActivity
+ReturnToCellActivity --> "mobile" Mobile
+ReturnToCellActivity --> "cell" CPos
+ReturnToCellActivity --> "subCell" SubCell
+ReturnToCellActivity --> "pos" WPos
+Mobile +-- MoveOrderTargeter
+IOrderTargeter <|-- MoveOrderTargeter
+MoveOrderTargeter --> "mobile" Mobile
+MoveOrderTargeter --> "locomotorInfo" LocomotorInfo
+@enduml

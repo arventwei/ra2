@@ -1,0 +1,8 @@
+@startuml
+class ExceptionHandler <<static>> {
+    + {static} HandleFatalError(ex:Exception) : void
+    {static} BuildExceptionReport(ex:Exception) : StringBuilder
+    {static} AppendIndentedFormatLine(sb:StringBuilder, indent:int, format:string, args:object[]) : StringBuilder
+    {static} BuildExceptionReport(ex:Exception, sb:StringBuilder, indent:int) : StringBuilder
+}
+@enduml

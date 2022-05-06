@@ -1,0 +1,23 @@
+@startuml
+class StreamExts <<static>> {
+    + {static} ReadBytes(s:Stream, count:int) : byte[]
+    + {static} ReadBytes(s:Stream, buffer:byte[], offset:int, count:int) : void
+    + {static} Peek(s:Stream) : int
+    + {static} ReadUInt8(s:Stream) : byte
+    + {static} ReadUInt16(s:Stream) : ushort
+    + {static} ReadInt16(s:Stream) : short
+    + {static} ReadUInt32(s:Stream) : uint
+    + {static} ReadInt32(s:Stream) : int
+    + {static} Write(s:Stream, value:int) : void
+    + {static} ReadFloat(s:Stream) : float
+    + {static} ReadDouble(s:Stream) : double
+    + {static} ReadASCII(s:Stream, length:int) : string
+    + {static} ReadASCIIZ(s:Stream) : string
+    + {static} ReadAllText(s:Stream) : string
+    + {static} ReadAllBytes(s:Stream) : byte[]
+    + {static} WriteArray(s:Stream, data:byte[]) : void
+    + {static} ReadAllLines(s:Stream) : IEnumerable<string>
+    + {static} ReadString(s:Stream, encoding:Encoding, maxLength:int) : string
+    + {static} WriteString(s:Stream, encoding:Encoding, text:string) : int
+}
+@enduml

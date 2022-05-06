@@ -1,0 +1,6 @@
+@startuml
+class GameSaveLoadingLogic {
+    + GameSaveLoadingLogic(widget:Widget, modData:ModData, world:World)
+}
+ChromeLogic <|-- GameSaveLoadingLogic
+@enduml

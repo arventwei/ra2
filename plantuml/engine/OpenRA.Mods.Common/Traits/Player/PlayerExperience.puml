@@ -1,0 +1,11 @@
+@startuml
+class PlayerExperienceInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PlayerExperience {
+    + Experience : int <<get>>
+    + GiveExperience(num:int) : void
+}
+TraitInfo <|-- PlayerExperienceInfo
+ISync <|-- PlayerExperience
+@enduml

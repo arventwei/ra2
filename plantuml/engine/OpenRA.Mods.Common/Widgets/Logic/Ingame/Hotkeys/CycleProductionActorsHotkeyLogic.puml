@@ -1,0 +1,10 @@
+@startuml
+class CycleProductionActorsHotkeyLogic {
+    <<readonly>> clickSound : string
+    + CycleProductionActorsHotkeyLogic(widget:Widget, modData:ModData, worldRenderer:WorldRenderer, world:World, logicArgs:Dictionary<string, MiniYaml>)
+}
+SingleHotkeyBaseLogic <|-- CycleProductionActorsHotkeyLogic
+CycleProductionActorsHotkeyLogic --> "viewport" Viewport
+CycleProductionActorsHotkeyLogic --> "selection" ISelection
+CycleProductionActorsHotkeyLogic --> "world" World
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+class CopyIsometricSelectableHeight {
+    + <<override>> Name : string <<get>>
+    + <<override>> Description : string <<get>>
+    complete : bool
+    + <<override>> BeforeUpdate(modData:ModData) : IEnumerable<string>
+    + <<override>> AfterUpdate(modData:ModData) : IEnumerable<string>
+    + <<override>> UpdateActorNode(modData:ModData, actorNode:MiniYamlNode) : IEnumerable<string>
+}
+class "Dictionary`2"<T1,T2> {
+}
+UpdateRule <|-- CopyIsometricSelectableHeight
+CopyIsometricSelectableHeight o-> "selectionHeight<string,int>" "Dictionary`2"
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+class ParallelProductionQueueInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class ParallelProductionQueue {
+    + ParallelProductionQueue(init:ActorInitializer, playerActor:Actor, info:ParallelProductionQueueInfo)
+    + <<override>> IsProducing(item:ProductionItem) : bool
+    + <<override>> RemainingTimeActual(item:ProductionItem) : int
+}
+ProductionQueueInfo <|-- ParallelProductionQueueInfo
+ProductionQueue <|-- ParallelProductionQueue
+@enduml

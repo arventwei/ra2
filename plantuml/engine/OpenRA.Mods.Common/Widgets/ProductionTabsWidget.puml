@@ -1,0 +1,60 @@
+@startuml
+class ProductionTab {
+    + Name : string
+}
+class ProductionTabGroup {
+    + Group : string
+    + NextQueueName : int = 1
+    + Alert : bool <<get>>
+    + Update(allQueues:IEnumerable<ProductionQueue>) : void
+}
+class ProductionTabsWidget {
+    + <<readonly>> PaletteWidget : string = null
+    + <<readonly>> TypesContainer : string = null
+    + <<readonly>> BackgroundContainer : string = null
+    + <<readonly>> TabWidth : int = 30
+    + <<readonly>> ArrowWidth : int = 20
+    + <<readonly>> ClickSound : string
+    + <<readonly>> ClickDisabledSound : string
+    + Button : string = "button"
+    + Background : string = "panel-black"
+    + <<readonly>> Decorations : string = "scrollpanel-decorations"
+    + <<readonly>> DecorationScrollLeft : string = "left"
+    + <<readonly>> DecorationScrollRight : string = "right"
+    contentWidth : int = 0
+    listOffset : float = 0
+    leftPressed : bool = false
+    rightPressed : bool = false
+    queueGroup : string
+    + ProductionTabsWidget(world:World)
+    + <<override>> Initialize(args:WidgetArgs) : void
+    + SelectNextTab(reverse:bool) : bool
+    + PickUpCompletedBuilding() : void
+    + QueueGroup : string <<get>> <<set>>
+    + <<override>> Draw() : void
+    Scroll(amount:int) : void
+    + ActorChanged(a:Actor) : void
+    + <<override>> Tick() : void
+    + <<override>> YieldMouseFocus(mi:MouseInput) : bool
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> HandleKeyPress(e:KeyInput) : bool
+}
+class "List`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "Lazy`1"<T> {
+}
+ProductionTab --> "Queue" ProductionQueue
+ProductionTabGroup o-> "Tabs<ProductionTab>" "List`1"
+Widget <|-- ProductionTabsWidget
+ProductionTabsWidget --> "world" World
+ProductionTabsWidget o-> "PreviousProductionTabKey" HotkeyReference
+ProductionTabsWidget o-> "NextProductionTabKey" HotkeyReference
+ProductionTabsWidget --> "Groups<string,ProductionTabGroup>" "Dictionary`2"
+ProductionTabsWidget --> "font" SpriteFont
+ProductionTabsWidget --> "leftButtonRect" Rectangle
+ProductionTabsWidget --> "rightButtonRect" Rectangle
+ProductionTabsWidget --> "paletteWidget<ProductionPaletteWidget>" "Lazy`1"
+ProductionTabsWidget --> "CurrentQueue" ProductionQueue
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+class GivesBuildableAreaInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GivesBuildableArea {
+    + GivesBuildableArea(info:GivesBuildableAreaInfo)
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+ConditionalTraitInfo <|-- GivesBuildableAreaInfo
+GivesBuildableAreaInfo o-> "AreaTypes<string>" "HashSet`1"
+"ConditionalTrait`1" "<GivesBuildableAreaInfo>" <|-- GivesBuildableArea
+GivesBuildableArea o-> "noAreaTypes<string>" "HashSet`1"
+GivesBuildableArea --> "AreaTypes<string>" "HashSet`1"
+@enduml

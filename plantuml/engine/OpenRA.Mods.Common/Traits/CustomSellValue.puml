@@ -1,0 +1,13 @@
+@startuml
+class CustomSellValueInfo {
+    + <<readonly>> Value : int = 0
+}
+class CustomSellValue {
+}
+class CustomSellValueExts <<static>> {
+    + {static} GetSellValue(a:Actor) : int
+}
+class "TraitInfo`1"<T> {
+}
+"TraitInfo`1" "<CustomSellValue>" <|-- CustomSellValueInfo
+@enduml

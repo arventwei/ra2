@@ -1,0 +1,14 @@
+@startuml
+class HistoryLogLogic {
+    + HistoryLogLogic(widget:Widget, world:World, worldRenderer:WorldRenderer, logicArgs:Dictionary<string, MiniYaml>)
+    ItemAdded(editorAction:EditorActionContainer) : void
+    ItemRemoved(editorAction:EditorActionContainer) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+ChromeLogic <|-- HistoryLogLogic
+HistoryLogLogic --> "panel" ScrollPanelWidget
+HistoryLogLogic --> "editorActionManager" EditorActionManager
+HistoryLogLogic --> "template" ScrollItemWidget
+HistoryLogLogic o-> "states<EditorActionContainer,ScrollItemWidget>" "Dictionary`2"
+@enduml

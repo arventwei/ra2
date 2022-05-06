@@ -1,0 +1,16 @@
+@startuml
+class GrantConditionOnBotOwnerInfo {
+    + <<readonly>> Condition : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnBotOwner {
+    conditionToken : int
+    + GrantConditionOnBotOwner(init:ActorInitializer, info:GrantConditionOnBotOwnerInfo)
+    Created(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+}
+TraitInfo <|-- GrantConditionOnBotOwnerInfo
+INotifyCreated <|-- GrantConditionOnBotOwner
+INotifyOwnerChanged <|-- GrantConditionOnBotOwner
+GrantConditionOnBotOwner --> "info" GrantConditionOnBotOwnerInfo
+@enduml

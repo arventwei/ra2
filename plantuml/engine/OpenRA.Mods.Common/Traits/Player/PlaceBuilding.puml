@@ -1,0 +1,25 @@
+@startuml
+class PlaceBuildingInit {
+}
+class PlaceBuildingInfo {
+    + <<readonly>> NewOptionsNotificationDelay : int = 10
+    + <<readonly>> NewOptionsNotification : string = null
+    + <<readonly>> CannotPlaceNotification : string = null
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PlaceBuilding {
+    triggerNotification : bool
+    tick : int
+    + PlaceBuilding(info:PlaceBuildingInfo)
+    ResolveOrder(self:Actor, order:Order) : void
+    Tick(self:Actor) : void
+    PlayNotification(self:Actor) : void
+    {static} GetNumBuildables(p:Player) : int
+}
+RuntimeFlagInit <|-- PlaceBuildingInit
+TraitInfo <|-- PlaceBuildingInfo
+PlaceBuildingInfo o-> "ToggleVariantKey" HotkeyReference
+IResolveOrder <|-- PlaceBuilding
+ITick <|-- PlaceBuilding
+PlaceBuilding --> "info" PlaceBuildingInfo
+@enduml

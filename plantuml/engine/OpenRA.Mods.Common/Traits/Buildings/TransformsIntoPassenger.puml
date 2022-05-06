@@ -1,0 +1,35 @@
+@startuml
+class TransformsIntoPassengerInfo {
+    + <<readonly>> CargoType : string = null
+    + <<readonly>> Weight : int = 1
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> RequiresForceMove : bool = false
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class TransformsIntoPassenger {
+    + TransformsIntoPassenger(self:Actor, info:TransformsIntoPassengerInfo)
+    IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    IsCorrectCargoType(target:Actor, modifiers:TargetModifiers) : bool
+    IsCorrectCargoType(target:Actor) : bool
+    CanEnter(target:Actor) : bool
+    ResolveOrder(self:Actor, order:Order) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+}
+class "Requires`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+ConditionalTraitInfo <|-- TransformsIntoPassengerInfo
+"Requires`1" "<TransformsInfo>" <|-- TransformsIntoPassengerInfo
+TransformsIntoPassengerInfo o-> "TargetLineColor" Color
+"ConditionalTrait`1" "<TransformsIntoPassengerInfo>" <|-- TransformsIntoPassenger
+IIssueOrder <|-- TransformsIntoPassenger
+IResolveOrder <|-- TransformsIntoPassenger
+IOrderVoice <|-- TransformsIntoPassenger
+TransformsIntoPassenger --> "self" Actor
+TransformsIntoPassenger --> "Orders<IOrderTargeter>" "IEnumerable`1"
+@enduml

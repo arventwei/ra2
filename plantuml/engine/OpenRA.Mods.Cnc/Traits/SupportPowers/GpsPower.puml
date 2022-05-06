@@ -1,0 +1,37 @@
+@startuml
+class GpsPowerInfo {
+    + <<readonly>> RevealDelay : int = 0
+    + <<readonly>> DoorImage : string = "atek"
+    + <<readonly>> DoorSequence : string = "active"
+    + <<readonly>> DoorPalette : string = "player"
+    + <<readonly>> DoorPaletteIsPlayerPalette : bool = true
+    + <<readonly>> SatelliteImage : string = "sputnik"
+    + <<readonly>> SatelliteSequence : string = "idle"
+    + <<readonly>> SatellitePalette : string = "player"
+    + <<readonly>> SatellitePaletteIsPlayerPalette : bool = true
+    + <<readonly>> RequiresActiveRadar : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GpsPower {
+    + GpsPower(self:Actor, info:GpsPowerInfo)
+    + <<override>> Charged(self:Actor, key:string) : void
+    + <<override>> Activate(self:Actor, order:Order, manager:SupportPowerManager) : void
+    Killed(self:Actor, e:AttackInfo) : void
+    Selling(self:Actor) : void
+    Sold(self:Actor) : void
+    RemoveGps(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    NoActiveRadar : bool <<get>>
+    wasPaused : bool
+    Tick(self:Actor) : void
+}
+SupportPowerInfo <|-- GpsPowerInfo
+SupportPower <|-- GpsPower
+INotifyKilled <|-- GpsPower
+INotifySold <|-- GpsPower
+INotifyOwnerChanged <|-- GpsPower
+ITick <|-- GpsPower
+GpsPower --> "self" Actor
+GpsPower --> "info" GpsPowerInfo
+GpsPower --> "owner" GpsWatcher
+@enduml

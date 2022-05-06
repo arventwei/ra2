@@ -1,0 +1,9 @@
+@startuml
+class ExtractMapRules {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    MergeAndPrint(map:Map, key:string, value:MiniYaml) : void
+    Run(utility:Utility, args:string[]) : void
+}
+IUtilityCommand <|-- ExtractMapRules
+@enduml

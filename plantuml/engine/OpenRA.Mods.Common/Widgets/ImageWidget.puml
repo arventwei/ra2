@@ -1,0 +1,25 @@
+@startuml
+class ImageWidget {
+    + <<readonly>> TooltipTemplate : string
+    + <<readonly>> TooltipContainer : string
+    + ImageCollection : string = ""
+    + ImageName : string = ""
+    + ClickThrough : bool = true
+    + TooltipText : string
+    + ImageWidget()
+    + <<override>> Clone() : Widget
+    + <<override>> Draw() : void
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + <<override>> MouseEntered() : void
+    + <<override>> MouseExited() : void
+}
+class "Func`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+Widget <|-- ImageWidget
+ImageWidget --> "GetImageName<string>" "Func`1"
+ImageWidget --> "GetImageCollection<string>" "Func`1"
+ImageWidget --> "tooltipContainer<TooltipContainerWidget>" "Lazy`1"
+ImageWidget --> "GetTooltipText<string>" "Func`1"
+@enduml

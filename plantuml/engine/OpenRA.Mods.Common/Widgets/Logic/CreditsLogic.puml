@@ -1,0 +1,16 @@
+@startuml
+class CreditsLogic {
+    showMod : bool = false
+    + CreditsLogic(widget:Widget, modData:ModData, onExit:Action)
+    ShowCredits(modCredits:bool) : void
+    ParseLines(file:Stream) : IEnumerable<string>
+}
+class "IEnumerable`1"<T> {
+}
+ChromeLogic <|-- CreditsLogic
+CreditsLogic --> "modData" ModData
+CreditsLogic --> "scrollPanel" ScrollPanelWidget
+CreditsLogic --> "template" LabelWidget
+CreditsLogic --> "modLines<string>" "IEnumerable`1"
+CreditsLogic --> "engineLines<string>" "IEnumerable`1"
+@enduml

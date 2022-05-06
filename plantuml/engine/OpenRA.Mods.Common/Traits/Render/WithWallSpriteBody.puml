@@ -1,0 +1,40 @@
+@startuml
+interface IWallConnectorInfo {
+    GetWallConnectionType() : string
+}
+class WithWallSpriteBodyInfo {
+    + <<readonly>> Type : string = "wall"
+    + <<override>> Create(init:ActorInitializer) : object
+    + <<override>> RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+    GetWallConnectionType() : string
+}
+class WithWallSpriteBody {
+    adjacent : int = 0
+    dirty : bool = true
+    AdjacentWallCanConnect(self:Actor, wallLocation:CPos, wallType:string, facing:CVec) : bool
+    SetDirty() : void
+    + WithWallSpriteBody(init:ActorInitializer, info:WithWallSpriteBodyInfo)
+    Tick(self:Actor) : void
+    {static} UpdateNeighbours(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+}
+class RuntimeNeighbourInit {
+    + RuntimeNeighbourInit(value:Dictionary<CPos, string[]>)
+}
+class "Requires`1"<T> {
+}
+class "ValueActorInit`1"<T> {
+}
+ITraitInfoInterface <|-- IWallConnectorInfo
+WithSpriteBodyInfo <|-- WithWallSpriteBodyInfo
+IWallConnectorInfo <|-- WithWallSpriteBodyInfo
+"Requires`1" "<BuildingInfo>" <|-- WithWallSpriteBodyInfo
+WithSpriteBody <|-- WithWallSpriteBody
+INotifyRemovedFromWorld <|-- WithWallSpriteBody
+IWallConnector <|-- WithWallSpriteBody
+ITick <|-- WithWallSpriteBody
+WithWallSpriteBody --> "wallInfo" WithWallSpriteBodyInfo
+"ValueActorInit`1" "<Dictionary<CPos, string[]>>" <|-- RuntimeNeighbourInit
+ISuppressInitExport <|-- RuntimeNeighbourInit
+ISingleInstanceInit <|-- RuntimeNeighbourInit
+@enduml

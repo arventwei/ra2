@@ -1,0 +1,24 @@
+@startuml
+class ImmobileInfo {
+    + <<readonly>> OccupiesSpace : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+    + OccupiedCells(info:ActorInfo, location:CPos, subCell:SubCell) : IReadOnlyDictionary<CPos, SubCell>
+    SharesCell : bool <<get>>
+}
+class Immobile {
+    + Immobile(init:ActorInitializer, info:ImmobileInfo)
+    + OccupiedCells() : (CPos, SubCell)[]
+    AddedToWorld(self:Actor) : void
+    RemovedFromWorld(self:Actor) : void
+}
+TraitInfo <|-- ImmobileInfo
+IOccupySpaceInfo <|-- ImmobileInfo
+IOccupySpace <|-- Immobile
+ISync <|-- Immobile
+INotifyAddedToWorld <|-- Immobile
+INotifyRemovedFromWorld <|-- Immobile
+Immobile --> "location" CPos
+Immobile --> "position" WPos
+Immobile --> "TopLeft" CPos
+Immobile --> "CenterPosition" WPos
+@enduml

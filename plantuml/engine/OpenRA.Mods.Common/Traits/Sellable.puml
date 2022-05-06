@@ -1,0 +1,28 @@
+@startuml
+class SellableInfo {
+    + <<readonly>> RefundPercent : int = 50
+    + <<readonly>> ShowTicks : bool = true
+    + <<readonly>> ShowTooltipText : bool = true
+    + <<readonly>> SkipMakeAnimation : bool = false
+    + <<readonly>> Cursor : string = "sell"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Sellable {
+    + Sellable(self:Actor, info:SellableInfo)
+    + ResolveOrder(self:Actor, order:Order) : void
+    + Sell(self:Actor) : void
+    + IsTooltipVisible(forPlayer:Player) : bool
+    + TooltipText : string <<get>>
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Lazy`1"<T> {
+}
+ConditionalTraitInfo <|-- SellableInfo
+"ConditionalTrait`1" "<SellableInfo>" <|-- Sellable
+IResolveOrder <|-- Sellable
+IProvideTooltipInfo <|-- Sellable
+Sellable --> "self" Actor
+Sellable --> "health<IHealth>" "Lazy`1"
+Sellable --> "info" SellableInfo
+@enduml

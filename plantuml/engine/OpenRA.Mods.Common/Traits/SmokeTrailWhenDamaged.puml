@@ -1,0 +1,26 @@
+@startuml
+class SmokeTrailWhenDamagedInfo {
+    + <<readonly>> Interval : int = 3
+    + <<readonly>> Sprite : string = "smokey"
+    + <<readonly>> Sequence : string = "idle"
+    + <<readonly>> Palette : string = "effect"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SmokeTrailWhenDamaged {
+    ticks : int
+    + SmokeTrailWhenDamaged(self:Actor, info:SmokeTrailWhenDamagedInfo)
+    Tick(self:Actor) : void
+}
+class "Requires`1"<T> {
+}
+class "Func`1"<T> {
+}
+TraitInfo <|-- SmokeTrailWhenDamagedInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- SmokeTrailWhenDamagedInfo
+SmokeTrailWhenDamagedInfo o-> "Offset" WVec
+SmokeTrailWhenDamagedInfo o-> "MinDamage" DamageState
+ITick <|-- SmokeTrailWhenDamaged
+SmokeTrailWhenDamaged --> "info" SmokeTrailWhenDamagedInfo
+SmokeTrailWhenDamaged --> "body" BodyOrientation
+SmokeTrailWhenDamaged --> "getFacing<WAngle>" "Func`1"
+@enduml

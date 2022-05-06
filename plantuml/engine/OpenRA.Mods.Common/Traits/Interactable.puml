@@ -1,0 +1,18 @@
+@startuml
+class InteractableInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Interactable {
+    + Interactable(info:InteractableInfo)
+    Created(self:Actor) : void
+    AutoBounds(self:Actor, wr:WorldRenderer) : Rectangle
+    Bounds(self:Actor, wr:WorldRenderer, bounds:int[]) : Polygon
+    MouseoverBounds(self:Actor, wr:WorldRenderer) : Polygon
+    + DecorationBounds(self:Actor, wr:WorldRenderer) : Rectangle
+}
+TraitInfo <|-- InteractableInfo
+IMouseBoundsInfo <|-- InteractableInfo
+INotifyCreated <|-- Interactable
+IMouseBounds <|-- Interactable
+Interactable --> "info" InteractableInfo
+@enduml

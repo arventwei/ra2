@@ -1,0 +1,17 @@
+@startuml
+class DeployForGrantedCondition {
+    <<readonly>> canTurn : bool
+    <<readonly>> moving : bool
+    + DeployForGrantedCondition(self:Actor, deploy:GrantConditionOnDeploy, moving:bool)
+    + <<override>> Tick(self:Actor) : bool
+}
+class DeployInner {
+    initiated : bool
+    + DeployInner(self:Actor, deployment:GrantConditionOnDeploy)
+    + <<override>> Tick(self:Actor) : bool
+}
+Activity <|-- DeployForGrantedCondition
+DeployForGrantedCondition --> "deploy" GrantConditionOnDeploy
+Activity <|-- DeployInner
+DeployInner --> "deployment" GrantConditionOnDeploy
+@enduml

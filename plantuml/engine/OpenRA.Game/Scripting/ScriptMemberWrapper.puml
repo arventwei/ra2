@@ -1,0 +1,15 @@
+@startuml
+class ScriptMemberWrapper {
+    + <<readonly>> Target : object
+    + <<readonly>> IsMethod : bool
+    + <<readonly>> IsGetProperty : bool
+    + <<readonly>> IsSetProperty : bool
+    + ScriptMemberWrapper(context:ScriptContext, target:object, mi:MemberInfo)
+    Invoke(args:LuaVararg) : LuaValue
+    + Get(runtime:LuaRuntime) : LuaValue
+    + Set(runtime:LuaRuntime, value:LuaValue) : void
+    + {static} WrappableMembers(t:Type) : IEnumerable<MemberInfo>
+}
+ScriptMemberWrapper --> "context" ScriptContext
+ScriptMemberWrapper --> "Member" MemberInfo
+@enduml

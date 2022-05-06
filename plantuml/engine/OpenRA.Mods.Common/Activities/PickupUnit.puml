@@ -1,0 +1,30 @@
+@startuml
+class PickupUnit {
+    <<readonly>> delay : int
+    + PickupUnit(self:Actor, cargo:Actor, delay:int)
+    + <<override>> Tick(self:Actor) : bool
+    + <<override>> TargetLineNodes(self:Actor) : IEnumerable<TargetLineNode>
+}
+enum PickupState {
+    Intercept,
+    LockCarryable,
+    Pickup,
+}
+class AttachUnit {
+    + AttachUnit(self:Actor, cargo:Actor)
+}
+Activity <|-- PickupUnit
+PickupUnit --> "cargo" Actor
+PickupUnit --> "carryall" Carryall
+PickupUnit --> "carryable" Carryable
+PickupUnit --> "carryableFacing" IFacing
+PickupUnit --> "carryableBody" BodyOrientation
+PickupUnit o-> "targetLockRange" WDist
+PickupUnit o-> "state" PickupState
+PickupUnit +-- PickupState
+PickupUnit +-- AttachUnit
+Activity <|-- AttachUnit
+AttachUnit --> "cargo" Actor
+AttachUnit --> "carryable" Carryable
+AttachUnit --> "carryall" Carryall
+@enduml

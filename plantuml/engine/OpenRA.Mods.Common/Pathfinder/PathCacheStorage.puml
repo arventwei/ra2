@@ -1,0 +1,24 @@
+@startuml
+class PathCacheStorage {
+    <<const>> MaxPathAge : int = 50
+    + PathCacheStorage(world:World)
+    + Remove(key:string) : void
+    + Store(key:string, data:List<CPos>) : void
+    + Retrieve(key:string) : List<CPos>
+    IsExpired(path:CachedPath) : bool
+}
+class "ICacheStorage`1"<T> {
+}
+class CachedPath {
+    + Tick : int
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+"ICacheStorage`1" "<List<CPos>>" <|-- PathCacheStorage
+PathCacheStorage --> "world" World
+PathCacheStorage o-> "cachedPaths<string,CachedPath>" "Dictionary`2"
+PathCacheStorage +-- CachedPath
+CachedPath --> "Result<CPos>" "List`1"
+@enduml

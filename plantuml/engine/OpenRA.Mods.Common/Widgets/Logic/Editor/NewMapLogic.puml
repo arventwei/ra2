@@ -1,0 +1,7 @@
+@startuml
+class NewMapLogic {
+    + NewMapLogic(onExit:Action, onSelect:Action<string>, widget:Widget, world:World, modData:ModData)
+}
+ChromeLogic <|-- NewMapLogic
+NewMapLogic --> "panel" Widget
+@enduml

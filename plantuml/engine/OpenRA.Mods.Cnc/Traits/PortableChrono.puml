@@ -1,0 +1,65 @@
+@startuml
+class PortableChronoInfo {
+    + <<readonly>> ChargeDelay : int = 500
+    + <<readonly>> HasDistanceLimit : bool = true
+    + <<readonly>> MaxDistance : int = 12
+    + <<readonly>> ChronoshiftSound : string = "chrotnk1.aud"
+    + <<readonly>> DeployCursor : string = "deploy"
+    + <<readonly>> DeployBlockedCursor : string = "deploy-blocked"
+    + <<readonly>> TargetCursor : string = "chrono-target"
+    + <<readonly>> TargetBlockedCursor : string = "move-blocked"
+    + <<readonly>> KillCargo : bool = true
+    + <<readonly>> FlashScreen : bool = false
+    + <<readonly>> Voice : string = "Action"
+    + <<readonly>> CircleWidth : float = 1
+    + <<readonly>> CircleBorderWidth : float = 3
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PortableChrono {
+    chargeTick : int = 0
+    + PortableChrono(self:Actor, info:PortableChronoInfo)
+    Tick(self:Actor) : void
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    + ResolveOrder(self:Actor, order:Order) : void
+    VoicePhraseForOrder(self:Actor, order:Order) : string
+    + ResetChargeTime() : void
+    + CanTeleport : bool <<get>>
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+}
+class PortableChronoOrderTargeter {
+    <<readonly>> targetCursor : string
+    + PortableChronoOrderTargeter(targetCursor:string)
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + IsQueued : bool <<get>> <<protected set>>
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+}
+class PortableChronoOrderGenerator {
+    + PortableChronoOrderGenerator(self:Actor, info:PortableChronoInfo)
+}
+class "Requires`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+TraitInfo <|-- PortableChronoInfo
+"Requires`1" "<IMoveInfo>" <|-- PortableChronoInfo
+PortableChronoInfo o-> "CircleColor" Color
+PortableChronoInfo o-> "CircleBorderColor" Color
+PortableChronoInfo o-> "TargetLineColor" Color
+IIssueOrder <|-- PortableChrono
+IResolveOrder <|-- PortableChrono
+ITick <|-- PortableChrono
+ISelectionBar <|-- PortableChrono
+IOrderVoice <|-- PortableChrono
+ISync <|-- PortableChrono
+PortableChrono --> "Info" PortableChronoInfo
+PortableChrono --> "move" IMove
+PortableChrono --> "Orders<IOrderTargeter>" "IEnumerable`1"
+IOrderTargeter <|-- PortableChronoOrderTargeter
+OrderGenerator <|-- PortableChronoOrderGenerator
+PortableChronoOrderGenerator --> "self" Actor
+PortableChronoOrderGenerator --> "info" PortableChronoInfo
+@enduml

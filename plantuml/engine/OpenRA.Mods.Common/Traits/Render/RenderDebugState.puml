@@ -1,0 +1,27 @@
+@startuml
+class RenderDebugStateInfo {
+    + <<readonly>> Font : string = "TinyBold"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class RenderDebugState {
+    tagString : string
+    + RenderDebugState(self:Actor, info:RenderDebugStateInfo)
+    Created(self:Actor) : void
+    AddedToWorld(self:Actor) : void
+    OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    GetColor() : Color
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+TraitInfo <|-- RenderDebugStateInfo
+INotifyAddedToWorld <|-- RenderDebugState
+INotifyOwnerChanged <|-- RenderDebugState
+INotifyCreated <|-- RenderDebugState
+IRenderAnnotationsWhenSelected <|-- RenderDebugState
+RenderDebugState --> "debugVis" DebugVisualizations
+RenderDebugState --> "font" SpriteFont
+RenderDebugState --> "self" Actor
+RenderDebugState --> "offset" WVec
+RenderDebugState --> "ai" SquadManagerBotModule
+RenderDebugState --> "color" Color
+@enduml

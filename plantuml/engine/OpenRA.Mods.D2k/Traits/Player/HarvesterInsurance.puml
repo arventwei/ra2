@@ -1,0 +1,11 @@
+@startuml
+class HarvesterInsuranceInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HarvesterInsurance {
+    + HarvesterInsurance(self:Actor)
+    + TryActivate() : void
+}
+TraitInfo <|-- HarvesterInsuranceInfo
+HarvesterInsurance --> "self" Actor
+@enduml

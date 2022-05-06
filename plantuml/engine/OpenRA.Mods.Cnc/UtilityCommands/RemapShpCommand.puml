@@ -1,0 +1,9 @@
+@startuml
+class RemapShpCommand {
+    Name : string <<get>>
+    ValidateArguments(args:string[]) : bool
+    Run(utility:Utility, args:string[]) : void
+    {static} ColorDistance(a:uint, b:uint) : int
+}
+IUtilityCommand <|-- RemapShpCommand
+@enduml

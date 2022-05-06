@@ -1,0 +1,15 @@
+@startuml
+class DeployOrderTargeter {
+    + DeployOrderTargeter(order:string, priority:int)
+    + DeployOrderTargeter(order:string, priority:int, cursor:Func<string>)
+    + OrderID : string <<get>>
+    + OrderPriority : int <<get>>
+    + TargetOverridesSelection(self:Actor, target:Target, actorsAt:List<Actor>, xy:CPos, modifiers:TargetModifiers) : bool
+    + CanTarget(self:Actor, target:Target, othersAtTarget:List<Actor>, modifiers:TargetModifiers, cursor:string) : bool
+    + IsQueued : bool <<get>> <<protected set>>
+}
+class "Func`1"<T> {
+}
+IOrderTargeter <|-- DeployOrderTargeter
+DeployOrderTargeter --> "cursor<string>" "Func`1"
+@enduml

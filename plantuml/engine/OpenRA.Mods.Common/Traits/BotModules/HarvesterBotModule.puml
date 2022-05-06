@@ -1,0 +1,42 @@
+@startuml
+class HarvesterBotModuleInfo {
+    + <<readonly>> ScanForIdleHarvestersInterval : int = 50
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HarvesterBotModule {
+    scanForIdleHarvestersTicks : int
+    + HarvesterBotModule(self:Actor, info:HarvesterBotModuleInfo)
+    BotTick(bot:IBot) : void
+    FindNextResource(actor:Actor, harv:HarvesterTraitWrapper) : Target
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class HarvesterTraitWrapper {
+    + HarvesterTraitWrapper(actor:Actor)
+}
+class "Func`2"<T1,T2> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+ConditionalTraitInfo <|-- HarvesterBotModuleInfo
+HarvesterBotModuleInfo o-> "HarvesterTypes<string>" "HashSet`1"
+HarvesterBotModuleInfo o-> "RefineryTypes<string>" "HashSet`1"
+HarvesterBotModuleInfo o-> "HarvesterEnemyAvoidanceRadius" WDist
+"ConditionalTrait`1" "<HarvesterBotModuleInfo>" <|-- HarvesterBotModule
+IBotTick <|-- HarvesterBotModule
+HarvesterBotModule --> "world" World
+HarvesterBotModule --> "player" Player
+HarvesterBotModule --> "unitCannotBeOrdered<Actor,bool>" "Func`2"
+HarvesterBotModule o-> "harvesters<Actor,HarvesterTraitWrapper>" "Dictionary`2"
+HarvesterBotModule --> "pathfinder" IPathFinder
+HarvesterBotModule --> "domainIndex" DomainIndex
+HarvesterBotModule --> "resLayer" ResourceLayer
+HarvesterBotModule --> "claimLayer" ResourceClaimLayer
+HarvesterBotModule +-- HarvesterTraitWrapper
+HarvesterTraitWrapper --> "Actor" Actor
+HarvesterTraitWrapper --> "Harvester" Harvester
+HarvesterTraitWrapper --> "Parachutable" Parachutable
+HarvesterTraitWrapper --> "Locomotor" Locomotor
+@enduml

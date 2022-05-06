@@ -1,0 +1,17 @@
+@startuml
+class RevealShroudEffect {
+    <<readonly>> duration : int
+    ticks : int
+    + RevealShroudEffect(pos:WPos, radius:WDist, type:Shroud.SourceType, forPlayer:Player, stances:PlayerRelationship, delay:int, duration:int)
+    AddCellsToPlayerShroud(p:Player, uv:PPos[]) : void
+    RemoveCellsFromPlayerShroud(p:Player) : void
+    ProjectedCells(world:World) : PPos[]
+    + Tick(world:World) : void
+    + Render(wr:WorldRenderer) : IEnumerable<IRenderable>
+}
+IEffect <|-- RevealShroudEffect
+RevealShroudEffect --> "pos" WPos
+RevealShroudEffect --> "player" Player
+RevealShroudEffect --> "revealRadius" WDist
+RevealShroudEffect --> "validStances" PlayerRelationship
+@enduml

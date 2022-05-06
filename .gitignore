@@ -5,6 +5,7 @@ user.config
 Release
 Debug
 bin
+node_modules
 obj
 *.ncb
 *.vcproj*

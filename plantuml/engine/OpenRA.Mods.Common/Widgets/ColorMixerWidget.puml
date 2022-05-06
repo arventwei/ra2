@@ -1,0 +1,31 @@
+@startuml
+class ColorMixerWidget {
+    + STrim : float = 0.025f
+    + VTrim : float = 0.025f
+    +  <<event>> OnChange : Action 
+    + H : float <<get>>
+    + S : float <<get>>
+    + V : float <<get>>
+    isMoving : bool
+    update : bool
+    <<readonly>> syncWorker : object
+    <<readonly>> bufferSync : object
+    workerAlive : bool
+    + ColorMixerWidget()
+    + ColorMixerWidget(other:ColorMixerWidget)
+    + SetPaletteRange(sMin:float, sMax:float, vMin:float, vMax:float) : void
+    + <<override>> Initialize(args:WidgetArgs) : void
+    GenerateBitmap() : void
+    GenerateBitmapWorker() : void
+    + <<override>> Draw() : void
+    SetValueFromPx(xy:int2) : void
+    PxFromValue() : int2
+    + <<override>> HandleMouseInput(mi:MouseInput) : bool
+    + Set(hue:float) : void
+    + Set(color:Color) : void
+}
+Widget <|-- ColorMixerWidget
+ColorMixerWidget --> "mixerSprite" Sprite
+ColorMixerWidget --> "workerThread" Thread
+ColorMixerWidget --> "Color" Color
+@enduml

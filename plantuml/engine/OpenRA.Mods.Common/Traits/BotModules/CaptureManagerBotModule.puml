@@ -1,0 +1,38 @@
+@startuml
+class CaptureManagerBotModuleInfo {
+    + <<readonly>> MinimumCaptureDelay : int = 375
+    + <<readonly>> MaximumCaptureTargetOptions : int = 10
+    + <<readonly>> CheckCaptureTargetsForVisibility : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class CaptureManagerBotModule {
+    <<readonly>> maximumCaptureTargetOptions : int
+    minCaptureDelayTicks : int
+    + CaptureManagerBotModule(self:Actor, info:CaptureManagerBotModuleInfo)
+    BotTick(bot:IBot) : void
+    GetVisibleActorsBelongingToPlayer(owner:Player) : IEnumerable<Actor>
+    GetActorsThatCanBeOrderedByPlayer(owner:Player) : IEnumerable<Actor>
+    QueueCaptureOrders(bot:IBot) : void
+}
+class "HashSet`1"<T> {
+}
+class "ConditionalTrait`1"<T> {
+}
+class "Func`2"<T1,T2> {
+}
+class "Predicate`1"<T> {
+}
+class "List`1"<T> {
+}
+ConditionalTraitInfo <|-- CaptureManagerBotModuleInfo
+CaptureManagerBotModuleInfo o-> "CapturingActorTypes<string>" "HashSet`1"
+CaptureManagerBotModuleInfo o-> "CapturableActorTypes<string>" "HashSet`1"
+CaptureManagerBotModuleInfo o-> "CapturableRelationships" PlayerRelationship
+"ConditionalTrait`1" "<CaptureManagerBotModuleInfo>" <|-- CaptureManagerBotModule
+IBotTick <|-- CaptureManagerBotModule
+CaptureManagerBotModule --> "world" World
+CaptureManagerBotModule --> "player" Player
+CaptureManagerBotModule --> "isEnemyUnit<Actor,bool>" "Func`2"
+CaptureManagerBotModule --> "unitCannotBeOrderedOrIsIdle<Actor>" "Predicate`1"
+CaptureManagerBotModule o-> "activeCapturers<Actor>" "List`1"
+@enduml

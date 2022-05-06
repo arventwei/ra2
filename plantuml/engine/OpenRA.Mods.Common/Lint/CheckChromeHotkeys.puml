@@ -1,0 +1,14 @@
+@startuml
+class ChromeLogicArgsHotkeys <<sealed>> {
+    + ChromeLogicArgsHotkeys(logicArgKeys:string[])
+}
+class CustomLintableHotkeyNames <<sealed>> {
+}
+class CheckChromeHotkeys {
+    + Run(emitError:Action<string>, emitWarning:Action<string>, modData:ModData) : void
+    CheckInner(modData:ModData, namedKeys:string[], checkWidgetFields:(string Widget, string Field)[], customLintMethods:Dictionary<string, List<string>>, nodes:List<MiniYamlNode>, filename:string, parent:MiniYamlNode, emitError:Action<string>, emitWarning:Action<string>) : void
+}
+Attribute <|-- ChromeLogicArgsHotkeys
+Attribute <|-- CustomLintableHotkeyNames
+ILintPass <|-- CheckChromeHotkeys
+@enduml

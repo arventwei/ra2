@@ -1,0 +1,28 @@
+@startuml
+class WithCargoPipsDecorationInfo {
+    + <<readonly>> PipCount : int
+    + <<readonly>> Image : string = "pips"
+    + <<readonly>> EmptySequence : string = "pip-empty"
+    + <<readonly>> FullSequence : string = "pip-green"
+    + <<readonly>> Palette : string = "chrome"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WithCargoPipsDecoration {
+    <<readonly>> pipCount : int
+    + WithCargoPipsDecoration(self:Actor, info:WithCargoPipsDecorationInfo)
+    GetPipSequence(i:int) : string
+}
+class "Requires`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "WithDecorationBase`1"<T> {
+}
+WithDecorationBaseInfo <|-- WithCargoPipsDecorationInfo
+"Requires`1" "<CargoInfo>" <|-- WithCargoPipsDecorationInfo
+WithCargoPipsDecorationInfo o-> "PipStride" int2
+WithCargoPipsDecorationInfo o-> "CustomPipSequences<string,string>" "Dictionary`2"
+"WithDecorationBase`1" "<WithCargoPipsDecorationInfo>" <|-- WithCargoPipsDecoration
+WithCargoPipsDecoration --> "cargo" Cargo
+WithCargoPipsDecoration --> "pips" Animation
+@enduml

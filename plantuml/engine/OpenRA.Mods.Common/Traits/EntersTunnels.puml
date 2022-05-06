@@ -1,0 +1,50 @@
+@startuml
+class EntersTunnelsInfo {
+    + <<readonly>> EnterCursor : string = "enter"
+    + <<readonly>> EnterBlockedCursor : string = "enter-blocked"
+    + <<readonly>> Voice : string = "Action"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class EntersTunnels {
+    requireForceMove : bool
+    + EntersTunnels(self:Actor, info:EntersTunnelsInfo)
+    CanEnterTunnel(target:Actor, modifiers:TargetModifiers) : bool
+    + IssueOrder(self:Actor, order:IOrderTargeter, target:Target, queued:bool) : Order
+    + VoicePhraseForOrder(self:Actor, order:Order) : string
+    + ResolveOrder(self:Actor, order:Order) : void
+    GetVariableObservers() : IEnumerable<VariableObserver>
+    RequireForceMoveConditionChanged(self:Actor, conditions:IReadOnlyDictionary<string, int>) : void
+}
+class "Requires`1"<T> {
+}
+class "IEnumerable`1"<T> {
+}
+class EnterTunnelOrderTargeter {
+    <<readonly>> enterCursor : string
+    <<readonly>> enterBlockedCursor : string
+    + EnterTunnelOrderTargeter(enterCursor:string, enterBlockedCursor:string, canTarget:Func<Actor, TargetModifiers, bool>, useEnterCursor:Func<Actor, bool>)
+    + <<override>> CanTargetActor(self:Actor, target:Actor, modifiers:TargetModifiers, cursor:string) : bool
+    + <<override>> CanTargetFrozenActor(self:Actor, target:FrozenActor, modifiers:TargetModifiers, cursor:string) : bool
+}
+class "Func`3"<T1,T2,T3> {
+}
+class "Func`2"<T1,T2> {
+}
+TraitInfo <|-- EntersTunnelsInfo
+"Requires`1" "<IMoveInfo>" <|-- EntersTunnelsInfo
+IObservesVariablesInfo <|-- EntersTunnelsInfo
+EntersTunnelsInfo o-> "TargetLineColor" Color
+EntersTunnelsInfo o-> "RequireForceMoveCondition" BooleanExpression
+IIssueOrder <|-- EntersTunnels
+IResolveOrder <|-- EntersTunnels
+IOrderVoice <|-- EntersTunnels
+IObservesVariables <|-- EntersTunnels
+EntersTunnels --> "info" EntersTunnelsInfo
+EntersTunnels --> "move" IMove
+EntersTunnels --> "moveInfo" IMoveInfo
+EntersTunnels --> "Orders<IOrderTargeter>" "IEnumerable`1"
+EntersTunnels +-- EnterTunnelOrderTargeter
+UnitOrderTargeter <|-- EnterTunnelOrderTargeter
+EnterTunnelOrderTargeter --> "canTarget<Actor,TargetModifiers,bool>" "Func`3"
+EnterTunnelOrderTargeter --> "useEnterCursor<Actor,bool>" "Func`2"
+@enduml

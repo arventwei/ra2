@@ -1,0 +1,33 @@
+@startuml
+class WDist <<struct>> {
+    + <<readonly>> Length : int
+    + LengthSquared : long <<get>>
+    + WDist(r:int)
+    + {static} FromCells(cells:int) : WDist
+    + {static} FromPDF(r:MersenneTwister, samples:int) : WDist
+    + {static} TryParse(s:string, result:WDist) : bool
+    + <<override>> GetHashCode() : int
+    + Equals(other:WDist) : bool
+    + <<override>> Equals(obj:object) : bool
+    + CompareTo(obj:object) : int
+    + CompareTo(other:WDist) : int
+    + <<override>> ToString() : string
+    + Add(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Subtract(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+    + Equals(runtime:LuaRuntime, left:LuaValue, right:LuaValue) : LuaValue
+}
+class "IComparable`1"<T> {
+}
+class "IEquatable`1"<T> {
+}
+IComparable <|-- WDist
+"IComparable`1" "<WDist>" <|-- WDist
+"IEquatable`1" "<WDist>" <|-- WDist
+IScriptBindable <|-- WDist
+ILuaAdditionBinding <|-- WDist
+ILuaSubtractionBinding <|-- WDist
+ILuaEqualityBinding <|-- WDist
+ILuaTableBinding <|-- WDist
+WDist o-> "Zero" WDist
+WDist o-> "MaxValue" WDist
+@enduml

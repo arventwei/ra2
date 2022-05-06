@@ -1,0 +1,35 @@
+@startuml
+class UpdateUtils <<static>> {
+    {static} LoadModYaml(modData:ModData, files:IEnumerable<string>) : YamlFileSet
+    {static} LoadExternalMapYaml(modData:ModData, yaml:MiniYaml, externalFilenames:HashSet<string>) : YamlFileSet
+    {static} LoadInternalMapYaml(modData:ModData, mapPackage:IReadWritePackage, yaml:MiniYaml, externalFilenames:HashSet<string>) : YamlFileSet
+    + {static} UpdateMap(modData:ModData, mapPackage:IReadWritePackage, rule:UpdateRule, files:YamlFileSet, externalFilenames:HashSet<string>) : List<string>
+    {static} FilterExternalModFiles(modData:ModData, files:IEnumerable<string>, externalFilenames:HashSet<string>) : IEnumerable<string>
+    + {static} UpdateMod(modData:ModData, rule:UpdateRule, files:YamlFileSet, externalFilenames:HashSet<string>) : List<string>
+    {static} ApplyChromeTransformInner(modData:ModData, current:MiniYamlNode, transform:UpdateRule.ChromeNodeTransform) : IEnumerable<string>
+    {static} ApplyChromeTransform(modData:ModData, files:YamlFileSet, transform:UpdateRule.ChromeNodeTransform) : IEnumerable<string>
+    {static} ApplyTopLevelTransform(modData:ModData, files:YamlFileSet, transform:UpdateRule.TopLevelNodeTransform) : IEnumerable<string>
+    + {static} FormatMessageList(messages:IEnumerable<string>, indent:int, separator:string) : string
+}
+class UpdateExtensions <<static>> {
+    + {static} Save(files:YamlFileSet) : void
+    + {static} IsRemoval(node:MiniYamlNode) : bool
+    + {static} RenameKey(node:MiniYamlNode, newKey:string, preserveSuffix:bool, includeRemovals:bool) : void
+    + {static} NodeValue(node:MiniYamlNode) : T
+    + {static} ReplaceValue(node:MiniYamlNode, value:string) : void
+    + {static} AddNode(node:MiniYamlNode, key:string, value:object) : void
+    + {static} AddNode(node:MiniYamlNode, toAdd:MiniYamlNode) : void
+    + {static} RemoveNode(node:MiniYamlNode, toRemove:MiniYamlNode) : void
+    + {static} MoveNode(node:MiniYamlNode, fromNode:MiniYamlNode, toNode:MiniYamlNode) : void
+    + {static} MoveAndRenameNode(node:MiniYamlNode, fromNode:MiniYamlNode, toNode:MiniYamlNode, newKey:string, preserveSuffix:bool, includeRemovals:bool) : void
+    + {static} RemoveNodes(node:MiniYamlNode, match:string, ignoreSuffix:bool, includeRemovals:bool) : int
+    + {static} KeyMatches(node:MiniYamlNode, match:string, ignoreSuffix:bool, includeRemovals:bool) : bool
+    + {static} KeyContains(node:MiniYamlNode, match:string, ignoreSuffix:bool, includeRemovals:bool) : bool
+    + {static} ChildrenMatching(node:MiniYamlNode, match:string, ignoreSuffix:bool, includeRemovals:bool) : IEnumerable<MiniYamlNode>
+    + {static} ChildrenContaining(node:MiniYamlNode, match:string, ignoreSuffix:bool, includeRemovals:bool) : IEnumerable<MiniYamlNode>
+    + {static} LastChildMatching(node:MiniYamlNode, match:string, includeRemovals:bool) : MiniYamlNode
+    + {static} RenameChildrenMatching(node:MiniYamlNode, match:string, newKey:string, preserveSuffix:bool, includeRemovals:bool) : void
+}
+class "List`1"<T> {
+}
+@enduml

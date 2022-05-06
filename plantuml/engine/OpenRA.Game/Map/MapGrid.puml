@@ -1,0 +1,33 @@
+@startuml
+enum MapGridType {
+    Rectangular,
+    RectangularIsometric,
+}
+enum RampSplit {
+    Flat,
+    X,
+    Y,
+}
+enum RampCornerHeight {
+    Low= 0,
+    Half= 1,
+    Full= 2,
+}
+class CellRamp <<struct>> {
+    + <<readonly>> CenterHeightOffset : int
+    + CellRamp(type:MapGridType, tl:RampCornerHeight, tr:RampCornerHeight, br:RampCornerHeight, bl:RampCornerHeight, split:RampSplit)
+    + HeightOffset(dX:int, dY:int) : int
+}
+class MapGrid {
+    + <<readonly>> MaximumTerrainHeight : byte = 0
+    + <<readonly>> MaximumTileSearchRange : int = 50
+    + <<readonly>> EnableDepthBuffer : bool = false
+    + MapGrid(yaml:MiniYaml)
+    CreateTilesByDistance() : CVec[][]
+    + OffsetOfSubCell(subCell:SubCell) : WVec
+}
+IGlobalModData <|-- MapGrid
+MapGrid o-> "Type" MapGridType
+MapGrid o-> "TileSize" Size
+MapGrid o-> "DefaultSubCell" SubCell
+@enduml

@@ -1,0 +1,101 @@
+@startuml
+class ActorEditLogic {
+    <<readonly>> editPanelPadding : int
+    <<readonly>> scrollVisibleTimeout : long = 100
+    lastScrollTime : long = 0
+    initialActorID : string
+    + ActorEditLogic(widget:Widget, world:World, worldRenderer:WorldRenderer, logicArgs:Dictionary<string, MiniYaml>)
+    SetActorID(actorId:string) : void
+    IsValid() : bool
+    + <<override>> Tick() : void
+    Delete() : void
+    Cancel() : void
+    Reset() : void
+    Close() : void
+    Save() : void
+}
+class "EditorActorOptionActionHandle`1"<T> {
+    value : T
+    <<readonly>> initialValue : T
+    + EditorActorOptionActionHandle(change:Action<EditorActorPreview, T>, value:T)
+    + OnChange(value:T) : void
+    + Do(actor:EditorActorPreview) : void
+    + Undo(actor:EditorActorPreview) : void
+    + IsDirty : bool <<get>>
+    + ShouldDoOnSave : bool <<get>>
+}
+interface IEditActorHandle {
+    Do(actor:EditorActorPreview) : void
+    Undo(actor:EditorActorPreview) : void
+    IsDirty : bool <<get>>
+    ShouldDoOnSave : bool <<get>>
+}
+class EditActorEditorAction {
+    + Text : string <<get>>
+    <<readonly>> actorId : string
+    + EditActorEditorAction(editorActorLayer:EditorActorLayer, actor:EditorActorPreview, handles:IEnumerable<IEditActorHandle>)
+    + Execute() : void
+    + Do() : void
+    + Undo() : void
+}
+class EditActorPreview {
+    + EditActorPreview(actor:EditorActorPreview)
+    + IsDirty : bool <<get>>
+    + SetActorID(actorID:string) : void
+    + Add(editActor:IEditActorHandle) : void
+    + GetDirtyHandles() : IEnumerable<IEditActorHandle>
+    + Reset() : void
+}
+class SetActorIdAction {
+    <<readonly>> initial : string
+    newID : string
+    + Set(actorId:string) : void
+    + SetActorIdAction(initial:string)
+    + Do(actor:EditorActorPreview) : void
+    + Undo(actor:EditorActorPreview) : void
+    + IsDirty : bool <<get>>
+    + ShouldDoOnSave : bool <<get>>
+}
+enum ActorIDStatus {
+    Normal= 0,
+    Duplicate= 1,
+    Empty= 3,
+}
+class "Action`2"<T1,T2> {
+}
+class "IEnumerable`1"<T> {
+}
+class "List`1"<T> {
+}
+ChromeLogic <|-- ActorEditLogic
+ActorEditLogic --> "worldRenderer" WorldRenderer
+ActorEditLogic --> "editorActorLayer" EditorActorLayer
+ActorEditLogic --> "editorActionManager" EditorActionManager
+ActorEditLogic --> "editor" EditorViewportControllerWidget
+ActorEditLogic --> "actorEditPanel" BackgroundWidget
+ActorEditLogic --> "typeLabel" LabelWidget
+ActorEditLogic --> "actorIDField" TextFieldWidget
+ActorEditLogic --> "actorIDErrorLabel" LabelWidget
+ActorEditLogic --> "initContainer" Widget
+ActorEditLogic --> "buttonContainer" Widget
+ActorEditLogic --> "checkboxOptionTemplate" Widget
+ActorEditLogic --> "sliderOptionTemplate" Widget
+ActorEditLogic --> "dropdownOptionTemplate" Widget
+ActorEditLogic o-> "lastScrollPosition" int2
+ActorEditLogic o-> "actorIDStatus" ActorIDStatus
+ActorEditLogic o-> "nextActorIDStatus" ActorIDStatus
+ActorEditLogic --> "currentActorInner" EditorActorPreview
+ActorEditLogic --> "editActorPreview" EditActorPreview
+ActorEditLogic --> "CurrentActor" EditorActorPreview
+IEditActorHandle <|-- "EditorActorOptionActionHandle`1"
+"EditorActorOptionActionHandle`1" --> "change<EditorActorPreview,T>" "Action`2"
+IEditorAction <|-- EditActorEditorAction
+EditActorEditorAction --> "handles<IEditActorHandle>" "IEnumerable`1"
+EditActorEditorAction --> "editorActorLayer" EditorActorLayer
+EditActorEditorAction --> "actor" EditorActorPreview
+EditActorPreview --> "actor" EditorActorPreview
+EditActorPreview --> "setActorIdAction" SetActorIdAction
+EditActorPreview o-> "handles<IEditActorHandle>" "List`1"
+IEditActorHandle <|-- SetActorIdAction
+ActorEditLogic +-- ActorIDStatus
+@enduml

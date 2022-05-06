@@ -1,0 +1,55 @@
+@startuml
+class EditorTileBrush <<sealed>> {
+    + <<readonly>> Template : ushort
+    <<readonly>> cursorToken : int
+    painting : bool
+    + EditorTileBrush(editorWidget:EditorViewportControllerWidget, id:ushort, wr:WorldRenderer)
+    + HandleMouseInput(mi:MouseInput) : bool
+    PaintCell(cell:CPos, isMoving:bool) : void
+    FloodFillWithBrush(cell:CPos, isMoving:bool) : void
+    PlacementOverlapsSameTemplate(template:TerrainTemplateInfo, cell:CPos) : bool
+    + Tick() : void
+    + Dispose() : void
+}
+class PaintTileEditorAction {
+    + Text : string <<get>>
+    <<readonly>> template : ushort
+    + PaintTileEditorAction(template:ushort, map:Map, cell:CPos)
+    + Execute() : void
+    + Do() : void
+    + Undo() : void
+}
+class FloodFillEditorAction {
+    + Text : string <<get>>
+    <<readonly>> template : ushort
+    + FloodFillEditorAction(template:ushort, map:Map, cell:CPos)
+    + Execute() : void
+    + Do() : void
+    + Undo() : void
+    PaintSingleCell(cellToPaint:CPos) : void
+}
+class UndoTile {
+    + Height : byte <<get>>
+    + UndoTile(cell:CPos, mapTile:TerrainTile, height:byte)
+}
+class "Queue`1"<T> {
+}
+IEditorBrush <|-- EditorTileBrush
+EditorTileBrush --> "worldRenderer" WorldRenderer
+EditorTileBrush --> "world" World
+EditorTileBrush --> "editorWidget" EditorViewportControllerWidget
+EditorTileBrush --> "editorActionManager" EditorActionManager
+EditorTileBrush --> "editorCursor" EditorCursorLayer
+IEditorAction <|-- PaintTileEditorAction
+PaintTileEditorAction --> "map" Map
+PaintTileEditorAction --> "cell" CPos
+PaintTileEditorAction o-> "undoTiles<UndoTile>" "Queue`1"
+PaintTileEditorAction --> "terrainTemplate" TerrainTemplateInfo
+IEditorAction <|-- FloodFillEditorAction
+FloodFillEditorAction --> "map" Map
+FloodFillEditorAction --> "cell" CPos
+FloodFillEditorAction o-> "undoTiles<UndoTile>" "Queue`1"
+FloodFillEditorAction --> "terrainTemplate" TerrainTemplateInfo
+UndoTile --> "Cell" CPos
+UndoTile --> "MapTile" TerrainTile
+@enduml

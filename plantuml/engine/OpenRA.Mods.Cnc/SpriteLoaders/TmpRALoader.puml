@@ -1,0 +1,18 @@
+@startuml
+class TmpRALoader {
+    IsTmpRA(s:Stream) : bool
+    ParseFrames(s:Stream) : TmpRAFrame[]
+    + TryParseSprite(s:Stream, frames:ISpriteFrame[], metadata:TypeDictionary) : bool
+}
+class TmpRAFrame {
+    + DisableExportPadding : bool <<get>>
+    + TmpRAFrame(data:byte[], size:Size)
+}
+ISpriteLoader <|-- TmpRALoader
+TmpRALoader +-- TmpRAFrame
+ISpriteFrame <|-- TmpRAFrame
+TmpRAFrame --> "Type" SpriteFrameType
+TmpRAFrame --> "Size" Size
+TmpRAFrame --> "FrameSize" Size
+TmpRAFrame --> "Offset" float2
+@enduml

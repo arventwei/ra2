@@ -1,0 +1,27 @@
+@startuml
+class SubterraneanActorLayerInfo {
+    + <<readonly>> TerrainType : string = "Subterranean"
+    + <<readonly>> SmoothingRadius : int = 2
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class SubterraneanActorLayer {
+    <<readonly>> terrainIndex : byte
+    + SubterraneanActorLayer(self:Actor, info:SubterraneanActorLayerInfo)
+    EnabledForActor(a:ActorInfo, li:LocomotorInfo) : bool
+    Index : byte <<get>>
+    InteractsWithDefaultLayer : bool <<get>>
+    ReturnToGroundLayerOnIdle : bool <<get>>
+    CenterOfCell(cell:CPos) : WPos
+    ValidTransitionCell(cell:CPos, li:LocomotorInfo) : bool
+    EntryMovementCost(a:ActorInfo, li:LocomotorInfo, cell:CPos) : int
+    ExitMovementCost(a:ActorInfo, li:LocomotorInfo, cell:CPos) : int
+    GetTerrainIndex(cell:CPos) : byte
+}
+class "CellLayer`1"<T> {
+}
+TraitInfo <|-- SubterraneanActorLayerInfo
+SubterraneanActorLayerInfo o-> "HeightOffset" WDist
+ICustomMovementLayer <|-- SubterraneanActorLayer
+SubterraneanActorLayer --> "map" Map
+SubterraneanActorLayer --> "height<int>" "CellLayer`1"
+@enduml

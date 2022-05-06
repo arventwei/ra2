@@ -1,0 +1,18 @@
+@startuml
+class HarvesterAttackNotifierInfo {
+    + <<readonly>> NotifyInterval : int = 30
+    + <<readonly>> RadarPingDuration : int
+    + Notification : string = "HarvesterAttack"
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class HarvesterAttackNotifier {
+    lastAttackTime : int
+    + HarvesterAttackNotifier(self:Actor, info:HarvesterAttackNotifierInfo)
+    Damaged(self:Actor, e:AttackInfo) : void
+}
+TraitInfo <|-- HarvesterAttackNotifierInfo
+HarvesterAttackNotifierInfo o-> "RadarPingColor" Color
+INotifyDamage <|-- HarvesterAttackNotifier
+HarvesterAttackNotifier --> "radarPings" RadarPings
+HarvesterAttackNotifier --> "info" HarvesterAttackNotifierInfo
+@enduml

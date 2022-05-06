@@ -1,0 +1,11 @@
+@startuml
+class PlayerColorRemap {
+    + {static} GetRemapIndex(ramp:int[], i:int) : int
+    + PlayerColorRemap(ramp:int[], c:Color, rampFraction:float)
+    + GetRemappedColor(original:Color, index:int) : Color
+}
+class "Dictionary`2"<T1,T2> {
+}
+IPaletteRemap <|-- PlayerColorRemap
+PlayerColorRemap --> "remapColors<int,Color>" "Dictionary`2"
+@enduml

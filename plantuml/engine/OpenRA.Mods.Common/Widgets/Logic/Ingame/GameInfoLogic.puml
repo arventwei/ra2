@@ -1,0 +1,13 @@
+@startuml
+enum IngameInfoPanel {
+    AutoSelect,
+    Map,
+    Objectives,
+    Debug,
+    Chat,
+}
+class GameInfoLogic {
+    + GameInfoLogic(widget:Widget, world:World, activePanel:IngameInfoPanel, hideMenu:Action<bool>)
+}
+ChromeLogic <|-- GameInfoLogic
+@enduml

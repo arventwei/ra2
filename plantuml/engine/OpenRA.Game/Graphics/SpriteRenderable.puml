@@ -1,0 +1,37 @@
+@startuml
+class SpriteRenderable <<struct>> {
+    <<readonly>> zOffset : int
+    <<readonly>> scale : float
+    <<readonly>> isDecoration : bool
+    <<readonly>> ignoreWorldTint : bool
+    + SpriteRenderable(sprite:Sprite, pos:WPos, offset:WVec, zOffset:int, palette:PaletteReference, scale:float, isDecoration:bool)
+    + SpriteRenderable(sprite:Sprite, pos:WPos, offset:WVec, zOffset:int, palette:PaletteReference, scale:float, isDecoration:bool, ignoreWorldTint:bool)
+    + SpriteRenderable(sprite:Sprite, pos:WPos, offset:WVec, zOffset:int, palette:PaletteReference, scale:float, tint:float3, isDecoration:bool, ignoreWorldTint:bool)
+    + ZOffset : int <<get>>
+    + IsDecoration : bool <<get>>
+    + WithPalette(newPalette:PaletteReference) : IRenderable
+    + WithZOffset(newOffset:int) : IRenderable
+    + OffsetBy(vec:WVec) : IRenderable
+    + AsDecoration() : IRenderable
+    + WithTint(newTint:float3) : IRenderable
+    ScreenPosition(wr:WorldRenderer) : float3
+    + PrepareRender(wr:WorldRenderer) : IFinalizedRenderable
+    + Render(wr:WorldRenderer) : void
+    + RenderDebugGeometry(wr:WorldRenderer) : void
+    + ScreenBounds(wr:WorldRenderer) : Rectangle
+}
+class "IEnumerable`1"<T> {
+}
+IRenderable <|-- SpriteRenderable
+ITintableRenderable <|-- SpriteRenderable
+IFinalizedRenderable <|-- SpriteRenderable
+SpriteRenderable o-> "None<IRenderable>" "IEnumerable`1"
+SpriteRenderable --> "sprite" Sprite
+SpriteRenderable --> "pos" WPos
+SpriteRenderable --> "offset" WVec
+SpriteRenderable --> "palette" PaletteReference
+SpriteRenderable --> "tint" float3
+SpriteRenderable --> "Pos" WPos
+SpriteRenderable --> "Offset" WVec
+SpriteRenderable --> "Palette" PaletteReference
+@enduml

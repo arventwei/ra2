@@ -1,0 +1,28 @@
+@startuml
+class GrantConditionOnProductionInfo {
+    + <<readonly>> Condition : string = null
+    + <<readonly>> Duration : int
+    + <<readonly>> ShowSelectionBar : bool = true
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class GrantConditionOnProduction {
+    token : int
+    ticks : int
+    + GrantConditionOnProduction(self:Actor, info:GrantConditionOnProductionInfo)
+    UnitProduced(self:Actor, other:Actor, exit:CPos) : void
+    Tick(self:Actor) : void
+    GetValue() : float
+    GetColor() : Color
+    DisplayWhenEmpty : bool <<get>>
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- GrantConditionOnProductionInfo
+GrantConditionOnProductionInfo o-> "Actors<string>" "HashSet`1"
+GrantConditionOnProductionInfo o-> "SelectionBarColor" Color
+INotifyProduction <|-- GrantConditionOnProduction
+ITick <|-- GrantConditionOnProduction
+ISync <|-- GrantConditionOnProduction
+ISelectionBar <|-- GrantConditionOnProduction
+GrantConditionOnProduction --> "info" GrantConditionOnProductionInfo
+@enduml

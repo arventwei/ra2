@@ -1,0 +1,35 @@
+@startuml
+class SpiceBloomInfo {
+    + <<readonly>> SpurtSequence : string = "spurt"
+    + <<readonly>> ResourceType : string = "Spice"
+    + <<readonly>> Weapon : string = null
+    + <<readonly>> Range : int = 5
+    + <<override>> Create(init:ActorInitializer) : object
+    + RenderPreviewSprites(init:ActorPreviewInitializer, rs:RenderSpritesInfo, image:string, facings:int, p:PaletteReference) : IEnumerable<IActorPreview>
+}
+class SpiceBloom {
+    <<readonly>> growTicks : int
+    ticks : int
+    bodyFrame : int = 0
+    showSpurt : bool = true
+    + SpiceBloom(self:Actor, info:SpiceBloomInfo)
+    Tick(self:Actor) : void
+    SeedResources(self:Actor) : void
+    Killed(self:Actor, e:AttackInfo) : void
+}
+class "Requires`1"<T> {
+}
+class "HashSet`1"<T> {
+}
+TraitInfo <|-- SpiceBloomInfo
+IRenderActorPreviewSpritesInfo <|-- SpiceBloomInfo
+"Requires`1" "<RenderSpritesInfo>" <|-- SpiceBloomInfo
+SpiceBloomInfo o-> "GrowthTerrainTypes<string>" "HashSet`1"
+ITick <|-- SpiceBloom
+INotifyKilled <|-- SpiceBloom
+SpiceBloom --> "info" SpiceBloomInfo
+SpiceBloom --> "resType" ResourceType
+SpiceBloom --> "resLayer" ResourceLayer
+SpiceBloom --> "body" Animation
+SpiceBloom --> "spurt" Animation
+@enduml

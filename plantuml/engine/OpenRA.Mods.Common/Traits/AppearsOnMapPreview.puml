@@ -1,0 +1,16 @@
+@startuml
+class AppearsOnMapPreviewInfo {
+    + <<readonly>> Terrain : string = null
+    PopulateMapPreviewSignatureCells(map:Map, ai:ActorInfo, s:ActorReference, destinationBuffer:List<(MPos, Color)>) : void
+}
+class AppearsOnMapPreview {
+}
+class "TraitInfo`1"<T> {
+}
+class "Requires`1"<T> {
+}
+"TraitInfo`1" "<AppearsOnMapPreview>" <|-- AppearsOnMapPreviewInfo
+IMapPreviewSignatureInfo <|-- AppearsOnMapPreviewInfo
+"Requires`1" "<IOccupySpaceInfo>" <|-- AppearsOnMapPreviewInfo
+AppearsOnMapPreviewInfo o-> "Color" Color
+@enduml

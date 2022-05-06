@@ -1,0 +1,26 @@
+@startuml
+class WarheadDebugOverlayInfo {
+    + <<readonly>> DisplayDuration : int = 25
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class WarheadDebugOverlay {
+    + WarheadDebugOverlay(info:WarheadDebugOverlayInfo)
+    + AddImpact(pos:WPos, range:WDist[], color:Color) : void
+    RenderAnnotations(self:Actor, wr:WorldRenderer) : IEnumerable<IRenderable>
+    SpatiallyPartitionable : bool <<get>>
+}
+class WHImpact {
+    + Time : int
+    + WHImpact(pos:WPos, range:WDist[], time:int, color:Color)
+}
+class "List`1"<T> {
+}
+TraitInfo <|-- WarheadDebugOverlayInfo
+IRenderAnnotations <|-- WarheadDebugOverlay
+WarheadDebugOverlay --> "info" WarheadDebugOverlayInfo
+WarheadDebugOverlay o-> "impacts<WHImpact>" "List`1"
+WarheadDebugOverlay +-- WHImpact
+WHImpact --> "CenterPosition" WPos
+WHImpact --> "Color" Color
+WHImpact --> "OuterRange" WDist
+@enduml

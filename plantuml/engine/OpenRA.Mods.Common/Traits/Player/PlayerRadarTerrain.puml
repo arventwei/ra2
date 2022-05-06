@@ -1,0 +1,25 @@
+@startuml
+class PlayerRadarTerrainInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class PlayerRadarTerrain {
+    + IsInitialized : bool <<get>>
+    +  <<event>> CellTerrainColorChanged : Action<MPos> 
+    + PlayerRadarTerrain(self:Actor)
+    UpdateShroudCell(puv:PPos) : void
+    UpdateTerrainCell(uv:MPos) : void
+    UpdateTerrainCellColor(uv:MPos) : void
+    + WorldLoaded(w:World, wr:WorldRenderer) : void
+    + {static} GetColor(map:Map, uv:MPos) : (int Left, int Right)
+}
+class "Requires`1"<T> {
+}
+class "CellLayer`1"<T> {
+}
+TraitInfo <|-- PlayerRadarTerrainInfo
+"Requires`1" "<ShroudInfo>" <|-- PlayerRadarTerrainInfo
+IWorldLoaded <|-- PlayerRadarTerrain
+PlayerRadarTerrain --> "world" World
+PlayerRadarTerrain --> "terrainColor<(int, int)>" "CellLayer`1"
+PlayerRadarTerrain --> "shroud" Shroud
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+class ScrollItemWidget {
+    + <<readonly>> BaseName : string = "scrollitem"
+    + <<readonly>> EnableChildMouseOver : bool = false
+    + ItemKey : string
+    + ScrollItemWidget(modData:ModData)
+    + <<override>> Initialize(args:WidgetArgs) : void
+    + <<override>> Draw() : void
+    + <<override>> Clone() : Widget
+    + {static} Setup(template:ScrollItemWidget, isSelected:Func<bool>, onClick:Action) : ScrollItemWidget
+    + {static} Setup(template:ScrollItemWidget, isSelected:Func<bool>, onClick:Action, onDoubleClick:Action) : ScrollItemWidget
+    + {static} Setup(key:string, template:ScrollItemWidget, isSelected:Func<bool>, onClick:Action, onDoubleClick:Action) : ScrollItemWidget
+}
+class "Func`1"<T> {
+}
+ButtonWidget <|-- ScrollItemWidget
+ScrollItemWidget o-> "IsSelected<bool>" "Func`1"
+@enduml

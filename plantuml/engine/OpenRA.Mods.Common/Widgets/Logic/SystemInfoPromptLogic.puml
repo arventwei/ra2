@@ -1,0 +1,10 @@
+@startuml
+class SystemInfoPromptLogic {
+    <<const>> SystemInformationVersion : int = 4
+    {static} GetSystemInformation() : Dictionary<string, (string Label, string Value)>
+    + {static} ShouldShowPrompt() : bool
+    + {static} CreateParameterString() : string
+    + SystemInfoPromptLogic(widget:Widget, onComplete:Action)
+}
+ChromeLogic <|-- SystemInfoPromptLogic
+@enduml

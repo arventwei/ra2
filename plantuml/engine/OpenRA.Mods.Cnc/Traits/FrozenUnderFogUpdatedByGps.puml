@@ -1,0 +1,35 @@
+@startuml
+class FrozenUnderFogUpdatedByGpsInfo {
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class FrozenUnderFogUpdatedByGps {
+    + FrozenUnderFogUpdatedByGps(init:ActorInitializer)
+    + OnOwnerChanged(self:Actor, oldOwner:Player, newOwner:Player) : void
+    Disposing(self:Actor) : void
+    + OnGpsRefresh(self:Actor, player:Player) : void
+    ActOnFrozenActorsForAllPlayers(action:FrozenActorAction) : void
+    ActOnFrozenActorForPlayer(player:Player, action:FrozenActorAction) : void
+    ActOnFrozenActorForTraits(t:Traits, action:FrozenActorAction) : void
+}
+class "Action`4"<T1,T2,T3,T4> {
+}
+class "Requires`1"<T> {
+}
+class Traits {
+    + Traits(player:Player, frozenUnderFogUpdatedByGps:FrozenUnderFogUpdatedByGps)
+}
+class "PlayerDictionary`1"<T> {
+}
+TraitInfo <|-- FrozenUnderFogUpdatedByGpsInfo
+"Requires`1" "<FrozenUnderFogInfo>" <|-- FrozenUnderFogUpdatedByGpsInfo
+INotifyOwnerChanged <|-- FrozenUnderFogUpdatedByGps
+INotifyActorDisposing <|-- FrozenUnderFogUpdatedByGps
+IOnGpsRefreshed <|-- FrozenUnderFogUpdatedByGps
+FrozenUnderFogUpdatedByGps o-> "Refresh" FrozenActorAction
+FrozenUnderFogUpdatedByGps o-> "Remove" FrozenActorAction
+FrozenUnderFogUpdatedByGps --> "traits<Traits>" "PlayerDictionary`1"
+FrozenUnderFogUpdatedByGps --> "self" Actor
+FrozenUnderFogUpdatedByGps +-- Traits
+Traits --> "FrozenActorLayer" FrozenActorLayer
+Traits --> "GpsWatcher" GpsWatcher
+@enduml

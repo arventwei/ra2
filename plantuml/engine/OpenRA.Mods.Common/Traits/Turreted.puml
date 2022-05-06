@@ -1,0 +1,64 @@
+@startuml
+class TurretedInfo {
+    + <<readonly>> Turret : string = "primary"
+    + <<readonly>> RealignDelay : int = 40
+    + <<readonly>> EditorTurretFacingDisplayOrder : int = 4
+    ActorPreviewInits(ai:ActorInfo, type:ActorPreviewType) : IEnumerable<ActorInit>
+    ActorOptions(ai:ActorInfo, world:World) : IEnumerable<EditorActorOption>
+    + {static} WorldFacingFromInit(init:IActorInitializer, info:TraitInfo, defaultFacing:WAngle) : Func<WAngle>
+    + WorldFacingFromInit(init:IActorInitializer) : Func<WAngle>
+    + LocalFacingFromInit(init:IActorInitializer) : Func<WAngle>
+    + PreviewPosition(init:ActorPreviewInitializer, orientation:Func<WRot>) : Func<WVec>
+    + PreviewOrientation(init:ActorPreviewInitializer, orientation:Func<WRot>, facings:int) : Func<WRot>
+    + <<override>> Create(init:ActorInitializer) : object
+}
+class Turreted {
+    + QuantizedFacings : int = 0
+    realignTick : int = 0
+    realignDesired : bool
+    + Name : string <<get>>
+    + Turreted(init:ActorInitializer, info:TurretedInfo)
+    Tick(self:Actor) : void
+    MoveTurret() : void
+    + FaceTarget(self:Actor, target:Target) : bool
+    + <<virtual>> HasAchievedDesiredFacing : bool <<get>>
+    + Position(self:Actor) : WVec
+    + ModifyDeathActorInit(self:Actor, init:TypeDictionary) : void
+    ModifyActorPreviewInit(self:Actor, inits:TypeDictionary) : void
+}
+class TurretFacingInit {
+    + TurretFacingInit(info:TraitInfo, value:WAngle)
+    + TurretFacingInit(instanceName:string, value:WAngle)
+    + TurretFacingInit(value:WAngle)
+}
+class DynamicTurretFacingInit {
+    + DynamicTurretFacingInit(info:TraitInfo, value:Func<WAngle>)
+}
+class "Requires`1"<T> {
+}
+class "PausableConditionalTrait`1"<T> {
+}
+class "ValueActorInit`1"<T> {
+}
+PausableConditionalTraitInfo <|-- TurretedInfo
+"Requires`1" "<BodyOrientationInfo>" <|-- TurretedInfo
+IActorPreviewInitInfo <|-- TurretedInfo
+IEditorActorOptions <|-- TurretedInfo
+TurretedInfo o-> "TurnSpeed" WAngle
+TurretedInfo o-> "InitialFacing" WAngle
+TurretedInfo o-> "Offset" WVec
+"PausableConditionalTrait`1" "<TurretedInfo>" <|-- Turreted
+ITick <|-- Turreted
+IDeathActorInitModifier <|-- Turreted
+IActorPreviewInitModifier <|-- Turreted
+Turreted --> "attack" AttackTurreted
+Turreted --> "facing" IFacing
+Turreted --> "body" BodyOrientation
+Turreted --> "desiredDirection" WVec
+Turreted --> "WorldOrientation" WRot
+Turreted --> "LocalOrientation" WRot
+Turreted --> "Offset" WVec
+Turreted --> "DesiredLocalFacing" WAngle
+"ValueActorInit`1" "<WAngle>" <|-- TurretFacingInit
+"ValueActorInit`1" "<Func<WAngle>>" <|-- DynamicTurretFacingInit
+@enduml
