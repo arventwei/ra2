@@ -1,9 +1,9 @@
 user.config
-engine
 
 # Visual Studio
 .vs
 Release
+Debug
 bin
 obj
 *.ncb
